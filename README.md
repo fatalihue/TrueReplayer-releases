@@ -38,96 +38,49 @@
 ## Features
 
 ### Recording & Replay
-
-- **Mouse clicks** — Left, right, and middle button (press and release captured separately)
-- **Mouse scroll** — Scroll up and down events
-- **Keyboard** — All keys including modifiers, function keys, numpad, and symbols
-- **Delays** — Capture real timing between actions or use a fixed delay
-- **Raw Input support** — Works with games that use Raw Input (e.g., Roblox)
-- **Insert mode** — Click any row to record new actions at that position
-- **Looping** — Set a repeat count (or infinite) with optional delay between iterations
-- **Live highlighting** — Current action highlights during replay with auto-scroll
-- **Replay progress** — Status bar shows action counter, progress bar, and elapsed timer
+- Record mouse clicks (left, right, middle), scroll, and keyboard with real or fixed delays
+- Insert mode — record new actions at any position in the list
+- Looping with repeat count or infinite, with optional interval between iterations
+- Live highlighting and auto-scroll during replay
+- Raw Input support for games (e.g., Roblox)
+- Silent click capture — insert mouse actions manually without triggering the actual click
+- International keyboard layout support (ABNT2 and others)
 
 ### Action Table
-
-- **Inline editing** — Double-click any cell to edit delay, coordinates, key, or notes
-- **Sheet panel** — Double-click a row to open a detailed side panel editor
-- **Drag & drop reordering** — Drag grip handles to reorder; supports multi-row drag
-- **Multi-selection** — Ctrl+click, Shift+click, or Ctrl+A to select multiple rows
-- **Bulk operations** — Set delay, duplicate, or delete all selected actions at once
-- **Column visibility** — Show or hide Action, Key, X, Y, Delay, Notes columns from the toolbar
-- **Color-coded actions** — Each action type (mouse, key, scroll) has a distinct color pill
+- Inline editing, drag & drop reordering, and multi-selection
+- Bulk operations — set delay, duplicate, or delete selected actions
+- Color-coded action types and configurable column visibility
 
 ### Send Text
-
-Insert blocks of text as typed keystrokes with special capabilities:
-
-- **Emoji picker** — Search and insert any emoji
-- **Dynamic variables** — `{clipboard}`, `{date}`, `{time}`, `{datetime}`
-- **Special keys** — `{enter}`, `{tab}`, `{backspace}`
-- **Snippets** — Save and reuse frequently used text blocks
-
-![Send Text](Image%20App/TrueReplayer3.png)
+- Insert text blocks as typed keystrokes with emoji picker, dynamic variables (`{clipboard}`, `{date}`, `{time}`), special keys, and reusable snippets
 
 ### Profiles
-
-Organize macros into reusable profiles stored as JSON files:
-
-- **Hotkeys** — Assign a keyboard shortcut to instantly load and replay a profile
-- **Hotstrings** — Type a trigger sequence to auto-execute a profile (instant or terminator mode)
-- **Window targeting** — Restrict a profile hotkey to fire only when a specific window is active (by process name or window title with Contains/Regex matching)
-- **Click-to-detect** — Click on any window to set it as the target
-- **Search & filter** — Find profiles by name instantly
-- **Import & Export** — Share profiles as `.trprofile` files with conflict resolution
+- Organize macros into profiles with hotkeys, hotstrings, and folders
+- Window targeting — restrict hotkeys to specific windows (process name or title match)
+- Import & export as `.trprofile` files with conflict resolution
+- Pin favorite profiles to the top
 
 ### Command Palette
-
-Press **Ctrl+K** to open a fuzzy search overlay across:
-
-- All commands and actions
-- Profile names
-- Settings and options
+- **Ctrl+K** — fuzzy search across commands, profiles, and settings
 
 ### Theme Editor
-
-Personalize the interface with 14 built-in presets or fully custom colors:
-
-- **Presets** — Midnight, Carbon, Amethyst, Emerald, Rose, Ocean, Amber, Slate, Nord, Dracula, Monokai, Copper, Sakura, Neon
-- **Custom colors** — Accent, semantic (recording red, replay green), action type pill colors
-- **Mono font selector** — Choose between Consolas, Cascadia Mono, Cascadia Code, Courier New, Lucida Console
-- **Import & Export** — Share custom themes as JSON
-
-![Theme Editor](Image%20App/TrueReplayer2.png)
+- 14 built-in presets (Midnight, Nord, Dracula, Monokai, and more)
+- Full color customization with import/export
 
 ### Settings
+- Execution delays, recording filters, customizable hotkeys
+- Always on top, system tray, run on startup, auto-updates
 
-| Section | Options |
-|---------|---------|
-| **Execution** | Fixed delay (ms), loop count, loop delay |
-| **Recording** | Toggle mouse clicks, scroll, keyboard, profile keys |
-| **Hotkeys** | Recording, replay, profile keys toggle, bring-to-front |
-| **Window** | Always on top, system tray, run on startup, startup minimized |
-| **Updates** | Auto-check and manual check for updates |
-
-### Additional
-
-- **Auto-updates** — Built-in update system checks for new versions automatically
-- **Multi-monitor support** — Coordinates work across all displays
-- **Clipboard integration** — `{clipboard}` reads current clipboard content at replay time
-- **Unsaved changes guard** — Prompts to save before closing or switching profiles
-- **Toast notifications** — Success, error, and info messages with stacked queue
-- **Minimize to tray** — Keeps the app running in the background
-- **Self-contained** — No .NET installation required; everything is bundled
+---
 
 ## Default Hotkeys
 
-| Action | Default Key |
-|--------|-------------|
-| Start/Stop Recording | `Ctrl+PageUp` |
-| Start/Stop Replay | `Ctrl+PageDown` |
+| Action | Key |
+|--------|-----|
+| Record | `Ctrl+PageUp` |
+| Replay | `Ctrl+PageDown` |
 | Toggle Profile Keys | `Pause` |
 | Bring to Foreground | `Ctrl+Insert` |
 | Command Palette | `Ctrl+K` |
 
-All hotkeys can be changed in the **Hotkeys** section of Global settings.
+All hotkeys can be changed in Settings.

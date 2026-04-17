@@ -72,6 +72,7 @@
 - **Arrastar e soltar** — reordena linhas individuais ou múltiplas pelas alças de grip
 - **Seleção múltipla** — `Ctrl`+clique, `Shift`+clique ou `Ctrl`+A
 - **Operações em lote** — atualiza delay, coordenadas ou notas em todas as linhas selecionadas
+- **Skip** — exclui ações selecionadas do replay temporariamente sem deletar; linhas skipped ficam discretas e o estado é salvo junto com o profile
 - **Select Similar** — seleciona todas as ações do mesmo tipo com um clique
 - **Visibilidade de colunas** — mostra/esconde colunas pela toolbar
 - **Copy & Paste entre profiles** — transfere ações entre quaisquer dois profiles

@@ -72,6 +72,7 @@
 - **Drag & drop** — reorder single or multiple rows with grip handles
 - **Multi-selection** — `Ctrl`+click, `Shift`+click, or `Ctrl`+A
 - **Bulk operations** — update delay, coordinates, or notes across all selected rows
+- **Skip** — temporarily exclude selected actions from replay without deleting them; skipped rows render dimmed and the state is saved with the profile
 - **Select Similar** — select every action of the same type with one click
 - **Column visibility** — show/hide columns from the toolbar
 - **Copy & Paste between profiles** — transfer actions between any two profiles

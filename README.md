@@ -1,25 +1,28 @@
 <p align="center">
-  <img src="TrueReplayer.ico" width="80" />
+  <img src="TrueReplayer.ico" width="84" alt="TrueReplayer" />
 </p>
 
 <h1 align="center">TrueReplayer</h1>
 
 <p align="center">
-  A modern macro recorder and replayer for Windows built with WinUI 3.<br/>
-  Record mouse clicks, keyboard inputs, scroll actions, and browser elements — then replay them with precision.
+  <b>Macro recorder and replayer for Windows.</b><br/>
+  Record mouse, keyboard, scroll, and browser actions — then replay with precision.
 </p>
 
 <p align="center">
   <a href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest">
-    <img src="https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF" alt="Latest Release" />
+    <img src="https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=release" alt="Latest Release" />
   </a>
-  <img src="https://img.shields.io/badge/platform-Windows%2010%2F11-0078D4?style=flat-square" alt="Platform" />
+  <img src="https://img.shields.io/badge/windows-10%20%2F%2011-0078D4?style=flat-square" alt="Windows 10/11" />
   <img src="https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square" alt=".NET 8" />
+  <img src="https://img.shields.io/badge/arch-x64-6bcb77?style=flat-square" alt="x64" />
+</p>
+
+<p align="center">
+  <img src="Image%20App/MainWindow.png" alt="TrueReplayer main window" width="900" />
 </p>
 
 ---
-
-![Main Window](Image%20App/TrueReplayerNew.png)
 
 ## Download
 
@@ -27,122 +30,165 @@
   <img src="https://img.shields.io/badge/Download-Latest%20Release-60CDFF?style=for-the-badge&logo=windows" alt="Download" />
 </a>
 
-**Installer** — Run `TrueReplayer-win-Setup.exe` for automatic installation with auto-updates.
+| Package | Use |
+|---|---|
+| `TrueReplayer-win-Setup.exe` | Installs the app and enables **auto-updates** (recommended) |
+| `TrueReplayer-win-Portable.zip` | Extract and run — no install, no auto-update |
+| `TrueReplayer-ChromeExtension-1.2.0.zip` | Enables browser automation actions (load unpacked in `chrome://extensions`) |
 
-**Portable** — Extract `TrueReplayer-win-Portable.zip` and run `TrueReplayer.exe` — no installation needed.
-
-**Chrome Extension** — Download `TrueReplayer-ChromeExtension-1.1.0.zip`, extract it, then load unpacked in `chrome://extensions` (enable Developer mode).
-
-> **Requires:** Windows 10 (1809) or later — x64
+> **Requires** Windows 10 (1809+) or Windows 11 — x64
 
 ---
 
-## Features
+## Highlights
 
-### Recording & Replay
+- 🎯 **Precise replay** with Raw Input support — works with games like Roblox
+- 🪟 **Window-aware** — lock size, position, and auto-focus a target window before replay
+- 🌐 **Browser automation** — click, type, and navigate with CSS selectors (Chrome extension)
+- ⌨️ **Hotkeys & hotstrings** to trigger any profile from anywhere
+- 📁 **Profiles & folders** with inherited window targets
+- 🎨 **Fluent dark UI** with 14 theme presets and full custom colors
 
-- **Mouse clicks** — Left, right, and middle button (press and release captured separately)
-- **Mouse scroll** — Scroll up and down events
-- **Keyboard** — All keys including modifiers, function keys, numpad, and symbols
-- **Delays** — Capture real timing between actions or use a fixed delay
-- **Raw Input support** — Works with games that use Raw Input (e.g., Roblox)
-- **Insert mode** — Click any row to record new actions at that position
-- **Looping** — Set a repeat count (or infinite) with optional delay between iterations
-- **Live highlighting** — Current action highlights during replay with auto-scroll
-- **Replay progress** — Status bar shows action counter, progress bar, and elapsed timer
+---
 
-### Action Table
+## Recording & Replay
 
-- **Inline editing** — Double-click any cell to edit delay, coordinates, key, or notes
-- **Sheet panel** — Double-click a row to open a detailed side panel editor
-- **Drag & drop reordering** — Drag grip handles to reorder; supports multi-row drag
-- **Multi-selection** — Ctrl+click, Shift+click, or Ctrl+A to select multiple rows
-- **Bulk operations** — Set delay, duplicate, or delete all selected actions at once
-- **Column visibility** — Show or hide Action, Key, X, Y, Delay, Notes columns from the toolbar
-- **Color-coded actions** — Each action type (mouse, key, scroll, browser, text, image) has a distinct color pill
+- **Mouse** — left / right / middle clicks, scroll, drag (press and release captured separately)
+- **Keyboard** — all keys including modifiers, function keys, numpad, and symbols
+- **Delays** — capture real timing or use a fixed delay; optional **random delay (jitter)**
+- **Insert mode** — click any row to record new actions at that position
+- **Looping** — repeat count (or infinite) with optional delay between iterations
+- **Live replay feedback** — current action highlights, status bar shows progress and elapsed time
+- **Clicker mode** — autoclicker with selectable button (left / right / middle)
 
-### Send Text
+## Action Table
 
-Insert blocks of text as typed keystrokes with special capabilities:
+- **Inline editing** — double-click any cell to edit delay, coordinates, key, or notes
+- **Sheet panel** — double-click a row to open a detailed side editor
+- **Drag & drop** — reorder single or multiple rows with grip handles
+- **Multi-selection** — `Ctrl`+click, `Shift`+click, or `Ctrl`+A
+- **Bulk operations** — update delay, coordinates, or notes across all selected rows
+- **Select Similar** — select every action of the same type with one click
+- **Column visibility** — show/hide columns from the toolbar
+- **Copy & Paste between profiles** — transfer actions between any two profiles
+- **Undo / Redo** — full history with `Ctrl+Z` / `Ctrl+Y`
 
-- **Emoji picker** — Search and insert any emoji
+## Window Target
+
+Lock a profile to a specific application window for reliable, stateless replay.
+
+<p align="center">
+  <img src="Image%20App/TargetConfig.png" alt="Target Configuration dialog" width="780" />
+</p>
+
+- **Click-to-detect** — click any window to capture its process and title
+- **Match modes** — `Contains` or regex against the window title
+- **Relative Coordinates** — record clicks relative to the window, so it replays correctly even if the window moves
+- **Lock Size** — saves the window's width/height on recording and restores them before replay
+- **Lock Position** — saves the window's X/Y and restores it alongside the size *(new in 1.9.41)*
+- **Bring to Focus** — auto-focus the target window before replaying, preserving maximized/fullscreen state
+- **Update Window Size & Position** — recapture geometry without re-recording
+- **Convert Coordinates** — bulk-convert actions between absolute and window-relative
+
+## Profiles & Folders
+
+- **JSON profile files** — stored under `Documents\TrueReplayer\Profiles`
+- **Folders** — group profiles visually with custom colors; collapse / disable whole folders
+- **Inherited settings** — folders can define the window target, relative coords, and bring-to-focus — all profiles inside inherit automatically
+- **Hotkeys** — assign a keyboard shortcut to instantly trigger a profile
+- **Hotstrings** — type a sequence (e.g. `/hello`) to auto-fire a profile (instant or terminator mode)
+- **Import / Export** — share profiles as `.trprofile` files, with folder organization and images preserved
+- **Search** — filter profiles by name instantly
+- **Unsaved changes guard** — prompts before switching or closing
+
+## Send Text
+
+Insert blocks of text as typed keystrokes with dynamic content.
+
+<p align="center">
+  <img src="Image%20App/SendText.png" alt="Send Text dialog" width="780" />
+</p>
+
+- **Emoji picker** — search and insert any emoji
 - **Dynamic variables** — `{clipboard}`, `{date}`, `{time}`, `{datetime}`
 - **Special keys** — `{enter}`, `{tab}`, `{backspace}`
-- **Snippets** — Save and reuse frequently used text blocks
+- **Snippets** — save and reuse frequent text blocks
 
-![Send Text](Image%20App/TrueReplayer3.png)
+## Browser Automation
 
-### Browser Automation (Chrome Extension)
+Drive Chrome-based browsers with the TrueReplayer extension. Uses CSS selectors instead of fragile screen coordinates.
 
-Automate web interactions using CSS selectors instead of screen coordinates:
+| Action | What it does |
+|---|---|
+| **Browser Click / Right Click** | Click an element by CSS selector or visible text |
+| **Browser Input Text** | Type into an input, with `{clipboard}` / `{date}` / `{time}` / `{datetime}` placeholders |
+| **Browser Wait** | Wait for an element to appear before proceeding |
+| **Browser Navigate** | Open a URL in the current tab or a new tab |
 
-- **Browser Left Click / Right Click** — Click elements by CSS selector or visible text
-- **Browser Input Text** — Type into input fields with `{clipboard}`, `{date}`, `{time}`, `{datetime}` placeholders
-- **Browser Wait** — Wait for an element to appear before proceeding
-- **Browser Navigate** — Open a URL in the current tab or a new tab
-- **Pick Element** — Visual element picker with blue highlights — click to capture the CSS selector
-- **Text Match** — Match elements by visible text (e.g., "Submit") as an alternative to CSS selectors
-- **Auto-detect inputs** — Recording automatically creates Input Text actions when clicking input fields
-- **Alarm-based reconnect** — Extension reconnects reliably even after Chrome idles for a long time
+- **Visual Pick Element** — click anywhere in the page to capture a robust CSS selector
+- **Text Match** — match by visible text (e.g. `Submit`) as an alternative to selectors
+- **Auto-detect inputs** — clicking an input field during recording creates an Input Text action automatically
+- **Reliable reconnect** — alarm-based keep-alive, reconnects cleanly after Chrome idles
 
-### Profiles
+> 📘 Setup guide: see [`docs/extension-setup/`](docs/extension-setup/)
 
-Organize macros into reusable profiles stored as JSON files:
+## Appearance
 
-- **Hotkeys** — Assign a keyboard shortcut to instantly load and replay a profile
-- **Hotstrings** — Type a trigger sequence to auto-execute a profile (instant or terminator mode)
-- **Window targeting** — Restrict a profile hotkey to fire only when a specific window is active (by process name or window title with Contains/Regex matching)
-- **Click-to-detect** — Click on any window to set it as the target
-- **Search & filter** — Find profiles by name instantly
-- **Import & Export** — Share profiles as `.trprofile` files with conflict resolution
+Personalize the interface with 14 presets or fully custom colors.
 
-### Command Palette
-
-Press **Ctrl+K** to open a fuzzy search overlay across:
-
-- All commands and actions
-- Profile names
-- Settings and options
-
-### Theme Editor
-
-Personalize the interface with 14 built-in presets or fully custom colors:
+<p align="center">
+  <img src="Image%20App/Themes.png" alt="Theme Editor" width="780" />
+</p>
 
 - **Presets** — Midnight, Carbon, Amethyst, Emerald, Rose, Ocean, Amber, Slate, Nord, Dracula, Monokai, Copper, Sakura, Neon
-- **Custom colors** — Accent, semantic (recording red, replay green), action type pill colors
-- **Mono font selector** — Choose between Consolas, Cascadia Mono, Cascadia Code, Courier New, Lucida Console
-- **Import & Export** — Share custom themes as JSON
+- **Custom colors** — accent, semantic (recording red, replay green), action-type pill colors
+- **Mono font** — Consolas, Cascadia Mono, Cascadia Code, Courier New, Lucida Console
+- **Import / Export** themes as JSON
 
-![Theme Editor](Image%20App/TrueReplayer2.png)
+## Command Palette
 
-### Settings
+Press `Ctrl+K` for fuzzy search across commands, profiles, and settings — everything reachable without the mouse.
+
+## Settings
 
 | Section | Options |
-|---------|---------|
-| **Execution** | Fixed delay (ms), loop count, loop delay |
+|---|---|
+| **Execution** | Fixed delay, loop count, loop interval, random delay (jitter), clicker button |
 | **Recording** | Toggle mouse clicks, scroll, keyboard, profile keys, browser actions |
-| **Hotkeys** | Recording, replay, profile keys toggle, bring-to-front |
-| **Window** | Always on top, system tray, run on startup, startup minimized |
-| **Updates** | Auto-check and manual check for updates |
+| **Hotkeys** | Recording, replay, profile-keys toggle, bring-to-foreground |
+| **Window** | Always on top, system tray, run on startup, start minimized, run as administrator |
+| **Updates** | Auto-check on launch, manual check |
 
-### Additional
+## Quality of Life
 
-- **Auto-updates** — Built-in update system checks for new versions automatically
-- **Multi-monitor support** — Coordinates work across all displays
-- **Clipboard integration** — `{clipboard}` reads current clipboard content at replay time
-- **Unsaved changes guard** — Prompts to save before closing or switching profiles
-- **Toast notifications** — Success, error, and info messages with stacked queue
-- **Minimize to tray** — Keeps the app running in the background
-- **Self-contained** — No .NET installation required; everything is bundled
+- **Auto-updates** — checks and installs in the background on launch *(installer builds)*
+- **Multi-monitor** — coordinates work across all displays
+- **System tray** — minimize to tray; global **Bring to Foreground** hotkey restores from tray *(new in 1.9.41)*
+- **Auto-recovery** — if the UI crashes, the app reloads itself within 5 seconds
+- **Escape closes menus** — context menus and dropdowns dismiss with `Esc`
+- **Toast notifications** — stacked success / error / info messages
+- **Unsaved changes guard** — never lose work to an accidental close
+- **WebView2 runtime check** — prompts to install if missing
+
+---
 
 ## Default Hotkeys
 
-| Action | Default Key |
-|--------|-------------|
-| Start/Stop Recording | `Ctrl+PageUp` |
-| Start/Stop Replay | `Ctrl+PageDown` |
+| Action | Key |
+|---|---|
+| Start / Stop Recording | `Ctrl+PageUp` |
+| Start / Stop Replay | `Ctrl+PageDown` |
 | Toggle Profile Keys | `Pause` |
 | Bring to Foreground | `Ctrl+Insert` |
 | Command Palette | `Ctrl+K` |
+| Undo / Redo | `Ctrl+Z` / `Ctrl+Y` |
 
-All hotkeys can be changed in the **Hotkeys** section of Global settings.
+All hotkeys can be remapped in **Settings → Hotkeys**.
+
+---
+
+## System Requirements
+
+- Windows 10 version 1809 or later / Windows 11 — x64 only
+- [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) (bundled on Windows 11; prompted on Windows 10)
+- ~500 MB disk space (self-contained .NET 8 runtime — no install required)

@@ -1,3 +1,7 @@
+<p align="right">
+  <sub><b>English</b> &nbsp;·&nbsp; <a href="README.pt-BR.md">Português (BR)</a></sub>
+</p>
+
 <p align="center">
   <img src="TrueReplayer.ico" width="84" alt="TrueReplayer" />
 </p>

@@ -1,5 +1,5 @@
 <p align="right">
-  <sub><b>English</b> &nbsp;·&nbsp; <a href="README.pt-BR.md">Português (BR)</a></sub>
+  <sub><b>Português (BR)</b> &nbsp;·&nbsp; <a href="README.en.md">English</a></sub>
 </p>
 
 <p align="center">
@@ -9,13 +9,13 @@
 <h1 align="center">TrueReplayer</h1>
 
 <p align="center">
-  <b>Macro recorder and replayer for Windows.</b><br/>
-  Record mouse, keyboard, scroll, and browser actions — then replay with precision.
+  <b>Gravador e reprodutor de macros para Windows.</b><br/>
+  Grave cliques de mouse, teclado, scroll e ações no navegador — depois reproduza com precisão.
 </p>
 
 <p align="center">
   <a href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest">
-    <img src="https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=release" alt="Latest Release" />
+    <img src="https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=release" alt="Última versão" />
   </a>
   <img src="https://img.shields.io/badge/windows-10%20%2F%2011-0078D4?style=flat-square" alt="Windows 10/11" />
   <img src="https://img.shields.io/badge/.NET-8.0-512BD4?style=flat-square" alt=".NET 8" />
@@ -23,7 +23,7 @@
 </p>
 
 <p align="center">
-  <img src="Image%20App/Main%20Window.png" alt="TrueReplayer main window" width="900" />
+  <img src="Image%20App/Main%20Window.png" alt="Janela principal do TrueReplayer" width="900" />
 </p>
 
 ---
@@ -31,239 +31,239 @@
 ## Download
 
 <a href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest">
-  <img src="https://img.shields.io/badge/Download-Latest%20Release-60CDFF?style=for-the-badge&logo=windows" alt="Download" />
+  <img src="https://img.shields.io/badge/Baixar-%C3%9Altima%20vers%C3%A3o-60CDFF?style=for-the-badge&logo=windows" alt="Baixar" />
 </a>
 
-| Package | Use |
+| Pacote | Quando usar |
 |---|---|
-| `TrueReplayer-win-Setup.exe` | Installs the app and enables **auto-updates** (recommended) |
-| `TrueReplayer-win-Portable.zip` | Extract and run — no install, no auto-update |
-| `TrueReplayer-ChromeExtension-1.2.0.zip` | Enables browser automation actions (load unpacked in `chrome://extensions`) |
+| `TrueReplayer-win-Setup.exe` | Instala o app e ativa **atualizações automáticas** (recomendado) |
+| `TrueReplayer-win-Portable.zip` | Extrai e roda — sem instalar, sem auto-update |
+| `TrueReplayer-ChromeExtension-1.2.0.zip` | Habilita as ações de automação no navegador (carregar descompactada em `chrome://extensions`) |
 
-> **Requires** Windows 10 (1809+) or Windows 11 — x64
-
----
-
-## Highlights
-
-- 🎯 **Precise replay** with Raw Input support — works with games like Roblox
-- 🪟 **Window-aware** — lock size, position, and auto-focus a target window before replay
-- 🔗 **Profile chaining** — call other profiles inline with cycle detection and repeat count
-- ⚡ **Trigger Modes** — OnPress, OnRelease, WhilePressed, Toggle for hotkey behavior
-- 🌐 **Browser automation** — click, type, and navigate with CSS selectors (Chrome extension)
-- ⌨️ **Hotkeys & hotstrings** to trigger any profile from anywhere
-- 📁 **Profiles & folders** with inherited window targets
-- 🎨 **Fluent dark UI** with 23 theme presets and full custom colors
+> **Requer** Windows 10 (1809+) ou Windows 11 — x64
 
 ---
 
-## Recording & Replay
+## Destaques
 
-- **Mouse** — left / right / middle clicks, scroll, drag (press and release captured separately)
-- **Keyboard** — all keys including modifiers, function keys, numpad, and symbols
-- **Delays** — capture real timing or use a fixed delay; optional **random delay (jitter)**
-- **Insert mode** — click any row to record new actions at that position
-- **Looping** — repeat count (or infinite) with optional delay between iterations
-- **Live replay feedback** — current action highlights, status bar shows progress and elapsed time
-- **Clicker mode** — autoclicker with selectable button (left / right / middle)
+- 🎯 **Replay preciso** com suporte a Raw Input — funciona em jogos como Roblox
+- 🪟 **Ciente da janela** — trava tamanho, posição e foco numa janela alvo antes do replay
+- 🔗 **Profile chaining** — chama outros profiles inline com cycle detection e repeat count
+- ⚡ **Trigger Modes** — OnPress, OnRelease, WhilePressed, Toggle para o comportamento da hotkey
+- 🌐 **Automação de navegador** — clica, digita e navega usando seletores CSS (extensão Chrome)
+- ⌨️ **Hotkeys e hotstrings** para disparar qualquer profile de qualquer lugar
+- 📁 **Profiles e pastas** com target de janela herdado
+- 🎨 **UI Fluent escura** com 23 temas pré-definidos e cores totalmente customizáveis
 
-## Action Table
+---
 
-- **Inline editing** — double-click any cell to edit delay, coordinates, key, or notes
-- **Sheet panel** — double-click a row to open a detailed side editor
-- **Drag & drop** — reorder single or multiple rows with grip handles
-- **Multi-selection** — `Ctrl`+click, `Shift`+click, or `Ctrl`+A
-- **Bulk operations** — update delay, coordinates, or notes across all selected rows
-- **Skip** — temporarily exclude selected actions from replay without deleting them; skipped rows render dimmed and the state is saved with the profile
-- **Select Similar** — select every action of the same type with one click
-- **Column visibility** — show/hide columns from the toolbar
-- **Copy & Paste between profiles** — transfer actions between any two profiles
-- **Undo / Redo** — full history with `Ctrl+Z` / `Ctrl+Y`
+## Gravação e Replay
+
+- **Mouse** — cliques esquerdo / direito / meio, scroll, arrastar (press e release capturados separadamente)
+- **Teclado** — todas as teclas, modificadores, F1–F12, teclado numérico e símbolos
+- **Delays** — captura o tempo real ou usa delay fixo; opcional **delay aleatório (jitter)**
+- **Modo de inserção** — clique numa linha para gravar novas ações a partir daquela posição
+- **Loops** — número de repetições (ou infinito) com delay opcional entre iterações
+- **Feedback ao vivo** — a ação atual fica destacada; barra de status mostra progresso e tempo decorrido
+- **Modo Clicker** — autoclicker com seletor de botão (esquerdo / direito / meio)
+
+## Tabela de Ações
+
+- **Edição inline** — duplo clique em qualquer célula para editar delay, coordenadas, tecla ou notas
+- **Painel lateral** — duplo clique numa linha abre um editor detalhado
+- **Arrastar e soltar** — reordena linhas individuais ou múltiplas pelas alças de grip
+- **Seleção múltipla** — `Ctrl`+clique, `Shift`+clique ou `Ctrl`+A
+- **Operações em lote** — atualiza delay, coordenadas ou notas em todas as linhas selecionadas
+- **Skip** — exclui ações selecionadas do replay temporariamente sem deletar; linhas skipped ficam discretas e o estado é salvo junto com o profile
+- **Select Similar** — seleciona todas as ações do mesmo tipo com um clique
+- **Visibilidade de colunas** — mostra/esconde colunas pela toolbar
+- **Copy & Paste entre profiles** — transfere ações entre quaisquer dois profiles
+- **Undo / Redo** — histórico completo com `Ctrl+Z` / `Ctrl+Y`
 
 ## Window Target
 
-Lock a profile to a specific application window for reliable, stateless replay.
+Amarra um profile a uma janela específica para um replay confiável e independente de estado.
 
 <p align="center">
-  <img src="Image%20App/Target%20Configuration.png" alt="Target Configuration dialog" width="780" />
+  <img src="Image%20App/Target%20Configuration.png" alt="Dialog de Target Configuration" width="780" />
 </p>
 
-- **Click-to-detect** — click any window to capture its process and title
-- **Match modes** — `Contains` or regex against the window title
-- **Relative Coordinates** — record clicks relative to the window, so it replays correctly even if the window moves
-- **Lock Size** — saves the window's width/height on recording and restores them before replay
-- **Lock Position** — saves the window's X/Y and restores it alongside the size
-- **Bring to Focus** — auto-focus the target window before replaying, preserving maximized/fullscreen state
-- **Update Window Size & Position** — recapture geometry without re-recording
-- **Convert Coordinates** — bulk-convert actions between absolute and window-relative
+- **Click-to-detect** — clique em qualquer janela para capturar processo e título
+- **Modos de match** — `Contains` ou regex no título da janela
+- **Relative Coordinates** — grava cliques relativos à janela, replay funciona mesmo se ela mudar de posição
+- **Lock Size** — salva largura/altura na gravação e restaura antes do replay
+- **Lock Position** — salva X/Y e restaura junto com o tamanho
+- **Bring to Focus** — traz a janela alvo para frente antes do replay, preservando estado maximizado/fullscreen
+- **Update Window Size & Position** — recaptura a geometria sem precisar regravar
+- **Convert Coordinates** — converte em lote entre coordenadas absolutas e relativas à janela
 
-## Profiles & Folders
+## Profiles e Pastas
 
-- **JSON profile files** — stored under `Documents\TrueReplayer\Profiles`
-- **Folders** — group profiles visually with custom colors; collapse / disable whole folders
-- **Inherited settings** — folders can define the window target, relative coords, and bring-to-focus — all profiles inside inherit automatically
-- **Hotkeys** — assign a keyboard shortcut to instantly trigger a profile
-- **Hotstrings** — type a sequence (e.g. `/hello`) to auto-fire a profile (instant or terminator mode)
-- **Trigger Modes** — choose how the hotkey behaves (see below)
-- **Import / Export** — share profiles as `.trprofile` files, with folder organization and images preserved
-- **Search** — filter profiles by name instantly
-- **Unsaved changes guard** — prompts before switching or closing
+- **Arquivos JSON** — ficam em `Documentos\TrueReplayer\Profiles`
+- **Pastas** — agrupa profiles visualmente com cores; colapsa ou desabilita pasta inteira
+- **Configuração herdada** — pastas podem definir target, relative coords e bring-to-focus — todos os profiles dentro herdam automaticamente
+- **Hotkeys** — atalho de teclado para disparar um profile instantaneamente
+- **Hotstrings** — digite uma sequência (ex: `/oi`) para executar um profile (modo instantâneo ou com terminador)
+- **Trigger Modes** — escolhe como a hotkey se comporta (veja abaixo)
+- **Import / Export** — compartilhe profiles como arquivos `.trprofile`, preservando organização em pastas e imagens
+- **Busca** — filtra profiles pelo nome em tempo real
+- **Proteção contra perda** — avisa antes de trocar ou fechar com alterações não salvas
 
 ## Trigger Modes
 
-Each profile chooses how its hotkey actually fires the macro.
+Cada profile escolhe como a hotkey dispara o macro.
 
 <p align="center">
   <img src="Image%20App/Triggers.png" alt="Trigger Modes" width="780" />
 </p>
 
-| Mode | Behavior |
+| Modo | Comportamento |
 |---|---|
-| **On Press** | Fires once when the hotkey is pressed (default) |
-| **On Release** | Fires once when the hotkey is released — the down event is swallowed |
-| **While Pressed** | Holds the hotkey to keep replaying in an infinite loop; releasing cancels |
-| **Toggle** | First press starts the replay, second press stops it |
+| **On Press** | Dispara uma vez quando a hotkey é pressionada (padrão) |
+| **On Release** | Dispara uma vez quando a hotkey é solta — o down event é absorvido |
+| **While Pressed** | Segura a hotkey para repetir o replay em loop infinito; soltar cancela |
+| **Toggle** | Primeiro toque inicia o replay, segundo toque para |
 
-- Combined hotkeys (e.g. `Alt+Q`) are supported in every mode
-- Modifier release order doesn't matter for `On Release` (`Alt↓ Q↓ Q↑ Alt↑` and `Alt↓ Q↓ Alt↑ Q↑` both fire correctly)
-- Auto-repeat protection prevents the OS keyboard repeat from spamming `On Press` triggers
+- Hotkeys combinadas (ex: `Alt+Q`) funcionam em todos os modos
+- A ordem de soltar os modificadores não importa para `On Release` (`Alt↓ Q↓ Q↑ Alt↑` e `Alt↓ Q↓ Alt↑ Q↑` ambos disparam)
+- Proteção contra auto-repeat impede que o repeat do teclado do SO dispare múltiplos `On Press`
 
 ## Profile Chaining
 
-Reuse profiles as building blocks. The new **Run Profile** action invokes another profile inline at any point in the macro.
+Reuso de profiles como blocos de construção. A nova ação **Run Profile** invoca outro profile inline em qualquer ponto do macro.
 
 <p align="center">
-  <img src="Image%20App/Run%20Profile.png" alt="Run Profile dialog" width="780" />
+  <img src="Image%20App/Run%20Profile.png" alt="Dialog de Run Profile" width="780" />
 </p>
 
-- **Repeat count** — call the sub-profile 1–999 times back-to-back per action
-- **Cycle detection** — `A → B → A` is blocked at runtime with a diagnostic log entry
-- **Max depth** of 5 prevents accidental deep recursion
-- **Auto-contained context** — sub-profile uses its own window target, lock position, and relative-coordinate metadata if set; otherwise inherits from the caller
-- **Caller restore** — after the sub-profile returns, the caller's window is re-focused so the rest of the parent macro runs against the right target
-- **Cancel propagation** — Stop ends the entire chain instantly
-- **Live status** — the status bar shows `Running A → B → C` while a sub-profile executes
+- **Repeat count** — chama o sub-profile de 1 a 999 vezes seguidas por ação
+- **Cycle detection** — `A → B → A` é bloqueado em runtime com entrada no log diagnóstico
+- **Profundidade máxima** de 5 evita recursão profunda acidental
+- **Contexto auto-contido** — sub-profile usa seu próprio window target, lock position e relative-coordinates se tiver; senão herda do caller
+- **Restore do caller** — após o sub-profile retornar, a janela do caller é re-focada para o resto do macro pai rodar no target certo
+- **Cancelamento propagado** — Stop encerra a cadeia inteira instantaneamente
+- **Status ao vivo** — barra de status mostra `Running A → B → C` enquanto sub-profile executa
 
 ## Edit Text
 
-Insert blocks of text as typed keystrokes with dynamic content and a visual clipboard transformer.
+Insere blocos de texto como se digitasse, com conteúdo dinâmico e um transformador visual de clipboard.
 
 <p align="center">
-  <img src="Image%20App/Edit%20Text.png" alt="Edit Text dialog" width="780" />
+  <img src="Image%20App/Edit%20Text.png" alt="Dialog de Edit Text" width="780" />
 </p>
 
-- **Emoji picker** — search and insert any emoji
-- **Dynamic variables** — `{clipboard}`, `{date}`, `{time}`, `{datetime}`
-- **Special keys** — `{enter}`, `{tab}`, `{backspace}`, navigation arrows, repeat suffix `:N`
-- **Snippets** — save and reuse frequent text blocks
-- **Syntax highlighting** — token recognition for known variables, including chained clipboard modifiers
+- **Seletor de emoji** — busca e insere qualquer emoji
+- **Variáveis dinâmicas** — `{clipboard}`, `{date}`, `{time}`, `{datetime}`
+- **Teclas especiais** — `{enter}`, `{tab}`, `{backspace}`, setas de navegação, sufixo de repetição `:N`
+- **Snippets** — salva e reaproveita blocos de texto frequentes
+- **Syntax highlighting** — reconhecimento de tokens para variáveis conhecidas, incluindo modificadores de clipboard encadeados
 
 ### Clipboard Transform
 
-Build complex clipboard tokens visually — no syntax to memorize.
+Construa tokens complexos de clipboard visualmente — sem precisar memorizar sintaxe.
 
 <p align="center">
-  <img src="Image%20App/Clipboard.png" alt="Clipboard Transform popover" width="420" />
+  <img src="Image%20App/Clipboard.png" alt="Popover de Clipboard Transform" width="420" />
 </p>
 
-| Modifier | What it does |
+| Modificador | O que faz |
 |---|---|
-| **Trim** | Strip leading/trailing whitespace |
-| **UPPERCASE / lowercase** | Force case |
-| **Line #** | Extract a specific line (1-indexed) |
-| **Word #** | Extract a specific word |
-| **First N / Last N chars** | Slice from the start or the end |
+| **Trim** | Remove espaços nas pontas |
+| **UPPERCASE / lowercase** | Força o case |
+| **Line #** | Extrai uma linha específica (1-indexada) |
+| **Word #** | Extrai uma palavra específica |
+| **First N / Last N chars** | Pega N caracteres do início ou do fim |
 
-- Modifiers are chained in order (`{clipboard:trim:line:1:first:8}` etc.)
-- Live preview shows the actual clipboard content with all transforms applied
-- Tokens are highlighted in the editor and round-trip through Edit / Save unchanged
+- Modificadores são encadeados em ordem (`{clipboard:trim:line:1:first:8}` etc.)
+- Preview ao vivo mostra o conteúdo real do clipboard com todos os transforms aplicados
+- Tokens ficam destacados no editor e sobrevivem a Edit / Save sem alteração
 
-## Browser Automation
+## Automação de Navegador
 
-Drive Chrome-based browsers with the TrueReplayer extension. Uses CSS selectors instead of fragile screen coordinates.
+Controla navegadores baseados em Chrome com a extensão do TrueReplayer. Usa seletores CSS em vez de coordenadas de tela (que quebram facilmente).
 
-| Action | What it does |
+| Ação | O que faz |
 |---|---|
-| **Browser Click / Right Click** | Click an element by CSS selector or visible text |
-| **Browser Input Text** | Type into an input, with `{clipboard}` / `{date}` / `{time}` / `{datetime}` placeholders |
-| **Browser Wait** | Wait for an element to appear before proceeding |
-| **Browser Navigate** | Open a URL in the current tab or a new tab |
+| **Browser Click / Right Click** | Clica num elemento por seletor CSS ou texto visível |
+| **Browser Input Text** | Digita num input, com placeholders `{clipboard}` / `{date}` / `{time}` / `{datetime}` |
+| **Browser Wait** | Espera um elemento aparecer antes de prosseguir |
+| **Browser Navigate** | Abre uma URL na aba atual ou em nova aba |
 
-- **Visual Pick Element** — click anywhere in the page to capture a robust CSS selector
-- **Text Match** — match by visible text (e.g. `Submit`) as an alternative to selectors
-- **Auto-detect inputs** — clicking an input field during recording creates an Input Text action automatically
-- **Reliable reconnect** — alarm-based keep-alive, reconnects cleanly after Chrome idles
+- **Pick Element visual** — clique em qualquer elemento da página para capturar um seletor CSS robusto
+- **Text Match** — casa por texto visível (ex: `Enviar`) como alternativa ao seletor
+- **Detecção automática de inputs** — clicar num campo de input durante a gravação cria automaticamente uma ação Input Text
+- **Reconexão confiável** — keep-alive baseado em alarms, reconecta mesmo se o Chrome ficou ocioso
 
-> 📘 Setup guide: see [`docs/extension-setup/`](docs/extension-setup/)
+> 📘 Guia de configuração: veja [`docs/extension-setup/`](docs/extension-setup/)
 
-## Appearance
+## Aparência
 
-Personalize the interface with 23 presets or fully custom colors.
+Personalize a interface com 23 temas ou cores totalmente customizadas.
 
 <p align="center">
   <img src="Image%20App/Themes.png" alt="Theme Editor" width="780" />
 </p>
 
-- **Theme presets organized by accent hue:**
-  - *Neutral* — Carbon, Slate
+- **Temas organizados por matiz do accent:**
+  - *Neutro* — Carbon, Slate
   - *Pink/Rose* — Rose, Sakura
-  - *Orange/Yellow* — Copper, Amber, Gruvbox Dark
-  - *Green* — Emerald, Monokai, Neon
-  - *Cyan/Blue* — Ocean, Nord, Midnight, One Dark Pro, Night Flat *(default)*, Tokyo Night, GitHub Dark, GitHub Default, Better Solarized
-  - *Purple/Violet/Mauve* — Amethyst, Dracula, Catppuccin Mocha, Rosé Pine
-- **Custom colors** — accent, semantic (recording red, replay green), every action-type pill (mouse, key, scroll, send-text, wait-image, browser, run-profile)
-- **Mono font** — Consolas, Cascadia Mono, Cascadia Code, Courier New, Lucida Console
-- **Layout** — font size, border radius, row height, zoom
-- **Import / Export** themes as JSON
-- **Live preview** — every change applies instantly across the whole UI
+  - *Laranja/Amarelo* — Copper, Amber, Gruvbox Dark
+  - *Verde* — Emerald, Monokai, Neon
+  - *Cyan/Azul* — Ocean, Nord, Midnight, One Dark Pro, Night Flat *(padrão)*, Tokyo Night, GitHub Dark, GitHub Default, Better Solarized
+  - *Roxo/Violeta/Mauve* — Amethyst, Dracula, Catppuccin Mocha, Rosé Pine
+- **Cores customizadas** — accent, semânticas (vermelho de gravação, verde de replay), cada pill por tipo de ação (mouse, key, scroll, send-text, wait-image, browser, run-profile)
+- **Fonte monoespaçada** — Consolas, Cascadia Mono, Cascadia Code, Courier New, Lucida Console
+- **Layout** — tamanho de fonte, raio das bordas, altura da linha, zoom
+- **Import / Export** de temas como JSON
+- **Preview ao vivo** — toda mudança é aplicada instantaneamente em toda a UI
 
 ## Command Palette
 
-Press `Ctrl+K` for fuzzy search across commands, profiles, and settings — everything reachable without the mouse.
+Pressione `Ctrl+K` para busca fuzzy em comandos, profiles e configurações — tudo acessível sem o mouse.
 
-## Settings
+## Configurações
 
-| Section | Options |
+| Seção | Opções |
 |---|---|
-| **Execution** | Fixed delay, loop count, loop interval, random delay (jitter), clicker button |
-| **Recording** | Toggle mouse clicks, scroll, keyboard, profile keys, browser actions |
-| **Hotkeys** | Recording, replay, profile-keys toggle, bring-to-foreground |
-| **Window** | Always on top, system tray, run on startup, start minimized, run as administrator |
-| **Updates** | Auto-check on launch, manual check |
+| **Execution** | Delay fixo, número de loops, intervalo entre loops, delay aleatório (jitter), botão do clicker |
+| **Recording** | Liga/desliga cliques de mouse, scroll, teclado, profile keys, browser actions |
+| **Hotkeys** | Gravação, replay, toggle de profile keys, bring-to-foreground |
+| **Window** | Sempre no topo, system tray, iniciar com o Windows, iniciar minimizado, executar como administrador |
+| **Updates** | Verificação automática ao abrir, verificação manual |
 
-## Quality of Life
+## Qualidade de Vida
 
-- **Auto-updates** with changelog preview — see what's new before downloading; nothing installs without your confirmation
-- **WebView2 crash recovery** — escalating recovery strategy (Reload → Navigate → Restart) keeps the UI alive even on rare WebView2 failures
-- **Diagnostic logs** — file-based session logs in `%LOCALAPPDATA%\TrueReplayer\Logs\` with rotation; quick access via tray menu
-- **DevTools shortcut** — open WebView2 DevTools from the tray for inspection
-- **Multi-monitor** — coordinates work across all displays
-- **System tray** — minimize to tray; global **Bring to Foreground** hotkey restores from tray
-- **Auto-recovery** — if the UI crashes, the app reloads itself within 5 seconds
-- **Escape closes menus** — context menus and dropdowns dismiss with `Esc`
-- **Toast notifications** — stacked success / error / info messages
-- **Unsaved changes guard** — never lose work to an accidental close
-- **WebView2 runtime check** — prompts to install if missing
+- **Auto-update** com preview do changelog — você vê o que mudou antes de baixar; nada instala sem confirmação
+- **Recuperação de crash do WebView2** — estratégia escalonada (Reload → Navigate → Restart) mantém a UI viva mesmo em falhas raras do WebView2
+- **Logs diagnósticos** — sessão registrada em arquivo em `%LOCALAPPDATA%\TrueReplayer\Logs\` com rotação; acesso rápido pelo menu da bandeja
+- **Atalho DevTools** — abre DevTools do WebView2 pela bandeja para inspeção
+- **Multi-monitor** — coordenadas funcionam em qualquer display
+- **System tray** — minimiza pra bandeja; hotkey **Bring to Foreground** restaura da bandeja
+- **Auto-recovery** — se a UI travar, o app se recarrega em até 5 segundos
+- **Escape fecha menus** — menus de contexto e dropdowns fecham com `Esc`
+- **Notificações toast** — mensagens de sucesso / erro / info empilháveis
+- **Proteção de alterações** — nunca perca trabalho por fechar sem querer
+- **Verificação do WebView2** — avisa e redireciona para instalação se faltar
 
 ---
 
-## Default Hotkeys
+## Hotkeys Padrão
 
-| Action | Key |
+| Ação | Tecla |
 |---|---|
-| Start / Stop Recording | `Ctrl+PageUp` |
-| Start / Stop Replay | `Ctrl+PageDown` |
+| Iniciar / Parar Gravação | `Ctrl+PageUp` |
+| Iniciar / Parar Replay | `Ctrl+PageDown` |
 | Toggle Profile Keys | `Pause` |
-| Bring to Foreground | `Ctrl+Insert` |
+| Trazer pro Foreground | `Ctrl+Insert` |
 | Command Palette | `Ctrl+K` |
 | Undo / Redo | `Ctrl+Z` / `Ctrl+Y` |
 
-All hotkeys can be remapped in **Settings → Hotkeys**.
+Todas as hotkeys podem ser remapeadas em **Settings → Hotkeys**.
 
 ---
 
-## System Requirements
+## Requisitos
 
-- Windows 10 version 1809 or later / Windows 11 — x64 only
-- [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) (bundled on Windows 11; prompted on Windows 10)
-- ~500 MB disk space (self-contained .NET 8 runtime — no install required)
+- Windows 10 versão 1809 ou superior / Windows 11 — x64 apenas
+- [Microsoft Edge WebView2 Runtime](https://developer.microsoft.com/en-us/microsoft-edge/webview2/) (já vem no Windows 11; o app avisa no Windows 10 se faltar)
+- ~500 MB em disco (runtime .NET 8 incluso — não precisa instalar)

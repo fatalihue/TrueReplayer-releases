@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/Assets/Square150x150Logo.png" width="104" alt="TrueReplayer logo" />
+<img src="Assets/Square150x150Logo.png" width="104" alt="TrueReplayer logo" />
 
 # TrueReplayer
 
@@ -11,14 +11,14 @@ A fast, lightweight **macro recorder & automation tool for Windows**. Capture yo
 [![Latest release](https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=download)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%20%2F%2011%20(x64)-0078D4?style=flat-square&logo=windows)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 ![Built with .NET 8 + React](https://img.shields.io/badge/built%20with-.NET%208%20%C2%B7%20React-6bcb77?style=flat-square)
-[![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](https://github.com/fatalihue/truereplayer/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](LICENSE)
 
 **English** · [Português (BR)](README.pt-BR.md)
 
 </div>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/main.png" width="860" alt="TrueReplayer main window — a profile's action list with the profiles panel on the left and settings on the right" />
+  <img src="docs/img/main.png" width="860" alt="TrueReplayer main window — a profile's action list with the profiles panel on the left and settings on the right" />
 </p>
 
 ---
@@ -67,7 +67,7 @@ It sends input the way real apps and **games** expect (tested in Roblox and othe
 - **Browser actions** — drive Chrome by CSS selector (Click, Type, Navigate, Wait for element, Select option) via the [companion Chrome extension](docs/extension-setup/README.md).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/conditionals.png" width="760" alt="An If/Else/EndIf conditional block in the action grid" /><br>
+  <img src="docs/img/conditionals.png" width="760" alt="An If/Else/EndIf conditional block in the action grid" /><br>
   <sub><i>If / Else / EndIf blocks branch on what's on screen — an image being found, or a pixel color matching.</i></sub>
 </p>
 
@@ -75,7 +75,7 @@ It sends input the way real apps and **games** expect (tested in Roblox and othe
 A dedicated **Clicker mode** (switch with **`ScrollLock`**) for fast, steady clicking: pick the button, set a rate (clicks/sec or delay), add random jitter, restrict it to a screen region, and watch **live stats** (count, rate, elapsed, ETA, loop progress).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/clicker.png" width="760" alt="The Clicker mode live dashboard with click count, rate and progress" /><br>
+  <img src="docs/img/clicker.png" width="760" alt="The Clicker mode live dashboard with click count, rate and progress" /><br>
   <sub><i>The Clicker dashboard — live count, rate, elapsed time, loop progress and ETA.</i></sub>
 </p>
 
@@ -96,7 +96,7 @@ A dedicated **Clicker mode** (switch with **`ScrollLock`**) for fast, steady cli
 - **Import / export** profiles as portable `.trprofile` files (includes reference images and organization).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/theme.png" width="820" alt="The Theme Editor with 40+ presets and a live preview" /><br>
+  <img src="docs/img/theme.png" width="820" alt="The Theme Editor with 40+ presets and a live preview" /><br>
   <sub><i>The Theme Editor — 40+ presets with a live preview, plus full color &amp; layout control.</i></sub>
 </p>
 
@@ -148,7 +148,7 @@ That's all you need. Everything else — waits, conditions, the auto-clicker, th
 
 The complete reference — every action type, conditionals, the clicker, game mode, window targeting, Send Text tokens, browser automation, themes and settings — lives in the guide:
 
-📖 **[docs/GUIDE.md](https://github.com/fatalihue/truereplayer/blob/main/docs/GUIDE.md)** &nbsp;·&nbsp; 📖 **[Guia completo em Português](https://github.com/fatalihue/truereplayer/blob/main/docs/GUIDE.pt-BR.md)**
+📖 **[docs/GUIDE.md](docs/GUIDE.md)** &nbsp;·&nbsp; 📖 **[Guia completo em Português](docs/GUIDE.pt-BR.md)**
 
 ---
 
@@ -183,4 +183,4 @@ Two repositories:
 
 ## License
 
-[MIT](https://github.com/fatalihue/truereplayer/blob/main/LICENSE) © fatalihue
+[MIT](LICENSE) © fatalihue

@@ -1,6 +1,6 @@
 <div align="center">
 
-<img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/Assets/Square150x150Logo.png" width="104" alt="TrueReplayer logo" />
+<img src="Assets/Square150x150Logo.png" width="104" alt="TrueReplayer logo" />
 
 # TrueReplayer
 
@@ -11,14 +11,14 @@ Um gravador de macros e ferramenta de automação rápido e leve **para Windows*
 [![Latest release](https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=download)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 [![Windows 10/11](https://img.shields.io/badge/Windows-10%20%2F%2011%20(x64)-0078D4?style=flat-square&logo=windows)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 ![Built with .NET 8 + React](https://img.shields.io/badge/built%20with-.NET%208%20%C2%B7%20React-6bcb77?style=flat-square)
-[![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](https://github.com/fatalihue/truereplayer/blob/main/LICENSE)
+[![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](LICENSE)
 
 [English](README.md) · **Português (BR)**
 
 </div>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/main.png" width="860" alt="Janela principal do TrueReplayer — a lista de ações de um perfil, com o painel de perfis à esquerda e as configurações à direita" />
+  <img src="docs/img/main.png" width="860" alt="Janela principal do TrueReplayer — a lista de ações de um perfil, com o painel de perfis à esquerda e as configurações à direita" />
 </p>
 
 ---
@@ -67,7 +67,7 @@ Ele envia a entrada da forma que aplicativos e **jogos** reais esperam (testado 
 - **Ações de navegador** — controle o Chrome por seletor CSS (Click, Type, Navigate, Wait for element, Select option) por meio da [extensão Chrome complementar](docs/extension-setup/README.md).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/conditionals.png" width="760" alt="Um bloco condicional If/Else/EndIf na grade de ações" /><br>
+  <img src="docs/img/conditionals.png" width="760" alt="Um bloco condicional If/Else/EndIf na grade de ações" /><br>
   <sub><i>Blocos If / Else / EndIf ramificam conforme o que está na tela — uma imagem encontrada ou uma cor de pixel correspondente.</i></sub>
 </p>
 
@@ -75,7 +75,7 @@ Ele envia a entrada da forma que aplicativos e **jogos** reais esperam (testado 
 Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápidos e constantes: escolha o botão, defina uma taxa (cliques/seg ou delay), adicione jitter aleatório, restrinja a uma região da tela e acompanhe as **estatísticas ao vivo** (contagem, taxa, tempo decorrido, ETA, progresso do loop).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/clicker.png" width="760" alt="O dashboard ao vivo do Clicker mode com contagem de cliques, taxa e progresso" /><br>
+  <img src="docs/img/clicker.png" width="760" alt="O dashboard ao vivo do Clicker mode com contagem de cliques, taxa e progresso" /><br>
   <sub><i>O dashboard do Clicker — contagem ao vivo, taxa, tempo decorrido, progresso do loop e ETA.</i></sub>
 </p>
 
@@ -96,7 +96,7 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 - **Importe / exporte** perfis como arquivos `.trprofile` portáteis (inclui imagens de referência e organização).
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/fatalihue/truereplayer/main/docs/img/theme.png" width="820" alt="O Theme Editor com mais de 40 presets e um preview ao vivo" /><br>
+  <img src="docs/img/theme.png" width="820" alt="O Theme Editor com mais de 40 presets e um preview ao vivo" /><br>
   <sub><i>O Theme Editor — mais de 40 presets com preview ao vivo, além de controle total de cores &amp; layout.</i></sub>
 </p>
 
@@ -148,7 +148,7 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 
 A referência completa — cada tipo de ação, condicionais, o clicker, game mode, mira de janela, tokens do Send Text, automação de navegador, temas e configurações — está no guia:
 
-📖 **[Guia completo em Português](https://github.com/fatalihue/truereplayer/blob/main/docs/GUIDE.pt-BR.md)** &nbsp;·&nbsp; 📖 **[docs/GUIDE.md (English)](https://github.com/fatalihue/truereplayer/blob/main/docs/GUIDE.md)**
+📖 **[Guia completo em Português](docs/GUIDE.pt-BR.md)** &nbsp;·&nbsp; 📖 **[docs/GUIDE.md (English)](docs/GUIDE.md)**
 
 ---
 
@@ -183,4 +183,4 @@ Dois repositórios:
 
 ## Licença
 
-[MIT](https://github.com/fatalihue/truereplayer/blob/main/LICENSE) © fatalihue
+[MIT](LICENSE) © fatalihue

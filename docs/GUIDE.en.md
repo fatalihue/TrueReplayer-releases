@@ -140,7 +140,7 @@ Variables are cleared at the start of every run. Set the mode to **Cycle** and t
 
 **You get:** grab three things from three different places, then fill a form with all of them.
 
-1. Settings → **Keys** → **Hotkeys** → **Capture Slot** → press a combo.
+1. Settings → **Keys** → **Hotkeys** → **Capture Slot**. It ships as `Win+Ctrl+C` — change it if you'd rather use something else.
 2. Select some text anywhere and press that combo. Repeat — captures land in slots 1, 2, 3… up to 9, then wrap.
 3. In a profile, type `{clip:1}`, `{clip:2}`, `{clip:3}` wherever they belong.
 
@@ -646,14 +646,14 @@ Three ways to make one macro handle changing values instead of writing a new mac
 | Tool | Lives for | Read it with |
 | --- | --- | --- |
 | **Set Variable** | The current run (cleared when it starts). | `{var:name}` |
-| **Copy to Slot** / **Capture Slot** hotkey | Until you replace it — survives between runs and restarts. | `{clip:name}` or `{clip:1}`…`{clip:9}` |
+| **Copy to Slot** action / **Capture Slot** hotkey | Until you record over it — kept from one run to the next, for as long as the app stays open. | `{clip:name}` or `{clip:1}`…`{clip:9}` |
 | **`{input:Label}`** | Asked once per run, then remembered for that run. | Type the token itself |
 
 **Set Variable** *(toolbar)* — give it a **Name** and a **Value**; the value is resolved first, so it can contain `{clipboard}`, `{row:col}`, `{date}` or another `{var:}`. Storing an empty value deletes the variable. Switch the mode to **Cycle** and the value becomes a list (one item per line): each run stores the **next** line and wraps at the end, so a hotkey walks the list one item per press. Right-click the row → **Reset row position** to start over at item 1.
 
 **Copy to Slot** *(toolbar)* — copies whatever is **selected** in the focused app into a named slot. Make sure the text is actually selected first (a `Ctrl+A` keystroke just before it, for example). A failed grab leaves the previous value untouched rather than wiping it.
 
-**Capture Slot** *(hotkey)* — the by-hand version: Settings → **Keys** → **Hotkeys** → **Capture Slot**. Each press stores the current selection into the next numbered slot, `{clip:1}` through `{clip:9}`, wrapping; a toast tells you which slot it landed in. It's ignored while a macro is running — use the **Copy to Slot** action there instead.
+**Capture Slot** *(hotkey)* — the by-hand version, already bound to `Win+Ctrl+C`: go to Settings → **Keys** → **Hotkeys** → **Capture Slot** to change the combo, or clear the field to switch it off. Each press stores the current selection into the next numbered slot, `{clip:1}` through `{clip:9}`, wrapping; a toast tells you which slot it landed in. It's ignored while a macro is running — use the **Copy to Slot** action there instead.
 
 **`{input:Label}`** — pauses the run and asks you for the value: `{input:Order number}` shows a text box, `{input:Priority|menu:Low,Medium,High}` shows a pick-list. You're asked once per label per run; cancelling the prompt stops the run.
 
@@ -665,7 +665,7 @@ Three ways to make one macro handle changing values instead of writing a new mac
 
 **The situation.** To close an order you need to send one message containing three values that live on three different screens: the customer's name in the ticket, the order number in the admin panel, and the delivery code on the supplier's page. Copying them one at a time means three round trips between windows — and getting the order wrong means starting over.
 
-**Step 1 — set the hotkey (once).** Settings → **Keys** → **Hotkeys** → **Capture Slot** → press any combo, say `Ctrl+Shift+C`. It ships empty, which means disabled.
+**Step 1 — check the hotkey (once).** It already ships bound to `Win+Ctrl+C`. To use a different combo, go to Settings → **Keys** → **Hotkeys** → **Capture Slot** and press the one you want.
 
 **Step 2 — collect the three values.** Just select and press; no pasting anywhere:
 
@@ -860,7 +860,7 @@ The Settings panel (right side) has three tabs; everything **auto-saves** (no Sa
 - **Clicker** — replaces Execution/Game Mode/Recording while in Clicker mode.
 
 **Keys tab** (everything that intercepts a key):
-- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variables-slots--prompts). Defaults: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode `ScrollLock`, Capture Slot empty (disabled).
+- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variables-slots--prompts). Defaults: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode toggle `ScrollLock`, Capture Slot `Win+Ctrl+C` (clear the field to disable it).
 - **Clicker** — the Clicker Start/Pause hotkeys (`PageDown` / `PageUp`); they only fire in Clicker mode.
 - **Key Remaps** — the always-on remap layer (master switch + the remap list; see [Key Remaps](#key-remaps)).
 

@@ -140,7 +140,7 @@ As variáveis são apagadas no começo de cada execução. Coloque o modo em **C
 
 **O resultado:** você pega três coisas de três lugares diferentes e depois preenche um formulário com todas.
 
-1. Settings → **Keys** → **Hotkeys** → **Capture Slot** → pressione uma combinação.
+1. Settings → **Keys** → **Hotkeys** → **Capture Slot**. Já vem em `Win+Ctrl+C` — troque se quiser outra combinação.
 2. Selecione um texto em qualquer lugar e aperte essa combinação. Repita: as capturas vão caindo nos slots 1, 2, 3… até o 9 e, depois do 9, voltam para o 1.
 3. Num perfil, digite `{clip:1}`, `{clip:2}`, `{clip:3}` onde cada um entra.
 
@@ -655,7 +655,7 @@ Três jeitos de fazer uma única macro lidar com valores que mudam, em vez de cr
 
 **Copy to Slot** *(barra de ferramentas)* — copia o que estiver **selecionado** no app em foco para um slot com nome. Garanta que o texto esteja mesmo selecionado antes (uma tecla `Ctrl+A` logo antes, por exemplo). Se a captura falhar, o valor anterior continua lá em vez de ser apagado.
 
-**Capture Slot** *(hotkey)* — a versão manual: Settings → **Keys** → **Hotkeys** → **Capture Slot**. Cada toque guarda o texto selecionado no próximo slot numerado, de `{clip:1}` até `{clip:9}`; depois do 9 volta para o 1. Um aviso mostra em qual slot o texto foi parar. Essa hotkey não funciona enquanto uma macro está rodando — lá dentro, use a ação **Copy to Slot**.
+**Capture Slot** *(hotkey)* — a versão manual, já ligada em `Win+Ctrl+C`: Settings → **Keys** → **Hotkeys** → **Capture Slot** para trocar a combinação, ou apagar o campo para desligar. Cada toque guarda o texto selecionado no próximo slot numerado, de `{clip:1}` até `{clip:9}`; depois do 9 volta para o 1. Um aviso mostra em qual slot o texto foi parar. Essa hotkey não funciona enquanto uma macro está rodando — lá dentro, use a ação **Copy to Slot**.
 
 **`{input:Label}`** — pausa a execução e pergunta o valor: `{input:Número do pedido}` mostra uma caixa de texto e `{input:Prioridade|menu:Baixa,Média,Alta}` mostra uma lista de opções. O app pergunta uma única vez para cada rótulo, a cada execução: se você usar o mesmo `{input:Número do pedido}` mais para frente, ele repete a resposta sem perguntar outra vez. Se você fechar a caixa de pergunta, a macro para.
 
@@ -667,7 +667,7 @@ Três jeitos de fazer uma única macro lidar com valores que mudam, em vez de cr
 
 **A situação.** Para fechar um pedido você precisa mandar uma mensagem com três dados que estão em telas diferentes: o nome do cliente no chamado, o número do pedido no painel administrativo e o código de entrega na página do fornecedor. Copiando um de cada vez são três idas e voltas entre as janelas — e se você errar a ordem, recomeça tudo.
 
-**Passo 1 — ligue a hotkey (só uma vez).** Settings → **Keys** → **Hotkeys** → **Capture Slot** → aperte a combinação que quiser, por exemplo `Ctrl+Shift+C`. Ela vem vazia de fábrica, ou seja, desligada.
+**Passo 1 — confira a hotkey (só uma vez).** Ela já vem ligada em `Win+Ctrl+C`. Se quiser outra combinação, Settings → **Keys** → **Hotkeys** → **Capture Slot** e aperte a que preferir.
 
 **Passo 2 — recolha os três valores.** Agora é só selecionar e apertar, sem colar em lugar nenhum:
 
@@ -865,7 +865,7 @@ O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente
 - **Clicker** — substitui Execution/Game Mode/Recording enquanto no Clicker mode.
 
 **Aba Keys** (tudo que intercepta tecla):
-- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variáveis-slots-e-prompts). Padrões: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode toggle `ScrollLock`, Capture Slot vazio (desativado).
+- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variáveis-slots-e-prompts). Padrões: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode toggle `ScrollLock`, Capture Slot `Win+Ctrl+C` (apague o campo para desativar).
 - **Clicker** — as hotkeys de Start/Pause do Clicker (`PageDown` / `PageUp`); só disparam no Clicker mode.
 - **Key Remaps** — a camada de remap sempre ativa (chave-mestra + a lista de remaps; veja [Remaps de tecla](#remaps-de-tecla)).
 

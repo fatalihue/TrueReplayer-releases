@@ -213,7 +213,7 @@ Ligue **Run on Startup** + **Startup Minimized** (Settings → App → Startup) 
 
 **Onde os novos passos vão parar:** se você tiver linhas **selecionadas**, a gravação insere **antes** da primeira linha selecionada; **sem seleção**, ela **acrescenta** ao final. Limpe a seleção para acrescentar ao final.
 
-### Filtros de captura (Settings → Recording)
+### Filtros de captura (Settings → Profile → Recording)
 
 | Opção | Efeito |
 | --- | --- |
@@ -245,6 +245,7 @@ As configurações de **Execution** (aba Settings → Profile) controlam o tempo
 
 A tabela central lista todas as ações do perfil. Colunas: **caixa de seleção · Action (pílula colorida) · Details · Delay · Notes**.
 
+<!-- 📸 PRINT: main.png — A janela principal inteira: painel de perfis & pastas à esquerda, a grade de ações no centro (com algumas ações de exemplo e a barra de ferramentas visível no topo), o painel Settings à direita. É a foto de abertura; capriche num perfil de exemplo com variedade de ações. -->
 <p align="center">
   <img src="img/main.png" width="820" alt="A janela principal e a grade de ações do TrueReplayer" /><br>
   <sub><i>Perfis &amp; pastas à esquerda, a grade de ações no centro, configurações à direita.</i></sub>
@@ -268,7 +269,7 @@ A tabela central lista todas as ações do perfil. Colunas: **caixa de seleção
 | --- | --- |
 | **Left / Right / Middle Click** | Um único clique daquele botão em `(x, y)`. |
 | **Double Click** | Dois cliques esquerdos no mesmo ponto, cronometrados abaixo do limiar de clique duplo do sistema para que os aplicativos os tratem como um clique duplo real. |
-| **Keystroke** | Pressiona uma tecla ou combinação uma vez — ou **N vezes** com um intervalo configurável. |
+| **Keystroke** | Pressiona uma tecla ou combinação uma vez — ou **N vezes** com um intervalo configurável e um **Gap jitter** opcional (veja abaixo). |
 | **Hold Key** | Mantém uma única tecla pressionada por uma duração definida (padrão 1000 ms). Modificadores são descartados. |
 | **Key Down / Key Up** | Um pressionamento ou liberação isolado — para segurar teclas e arrastar, em que o down/up precisa ser separado. |
 | **Scroll Up / Down** | Um passo da roda do mouse na posição do cursor. |
@@ -281,9 +282,27 @@ A tabela central lista todas as ações do perfil. Colunas: **caixa de seleção
 | **Run Profile** | Executa outro perfil como um subpasso — opcionalmente um número definido de vezes. Ciclos e cadeias com mais de 5 níveis de profundidade são bloqueados automaticamente. |
 | **Activate Window** | Age sobre a janela de outro app no meio da execução: **Activate** (trazer para a frente — abrindo o app antes, se preciso), **Maximize**, **Minimize** ou **Close**. O *Activate* muda só o alvo de foco do SO, nunca o contexto de coordenadas. Veja [Automação multi-janela](#automação-multi-janela-activate-window). |
 | **If / Else / EndIf** | Ramificação condicional — veja [Blocos condicionais](#blocos-condicionais-if--else--endif). |
-| **Browser actions** | Click / Type / Navigate / Wait element / Assert element / Select option no Chrome — veja [Automação de navegador](#automação-de-navegador). |
+| **Browser actions** | Click / Right Click / Type / Navigate / Wait element / Assert element / Select option no Chrome — veja [Automação de navegador](#automação-de-navegador). |
 
 Insira ações pela **barra de ferramentas** (Send Keystroke, Send Text, Set Variable, Copy to Slot, Pause, Wait, Conditional, Browser, Run Profile, Activate Window, Data Loop). A maioria das ações abre um pequeno diálogo para configurá-las; clique na célula Details de uma ação depois para editá-la.
+
+### Send Keystroke — Press × N e Gap jitter
+
+O diálogo **Send Keystroke** tem um seletor **Press / Hold**. No modo **Press** você captura uma tecla ou combinação e tem três campos (os dois últimos ficam ativos só quando **Times to repeat** > 1):
+
+- **Times to repeat** — quantas vezes pressionar (1 a 999; padrão 1).
+- **Gap between presses** — o intervalo entre uma pressão e a próxima (padrão 30 ms; 0 a 5000).
+- **Gap jitter** — **desligado por padrão**. Ligue no pontinho à direita do rótulo e ele soma um **± % aleatório** a *cada* intervalo, sorteado a cada ciclo, para a rajada não sair num ritmo perfeitamente fixo — um intervalo constante é o jeito mais fácil de parecer robô. Ao ligar, começa em 20% (1 a 100).
+
+No modo **Hold** você define uma **Hold duration** (padrão 1000 ms) e há chips de atalho (100 ms · 500 ms · 1 s · 5 s · 30 s); modificadores são descartados.
+
+> Esse **Gap jitter** é local a *uma* ação Keystroke. Não confunda com o **Jitter** de Execution (Settings → Profile), que é um ± % global aplicado a *todos* os delays da reprodução.
+
+<!-- 📸 PRINT: send-keystroke.png — O diálogo "Send Keystroke" no modo Press com os três campos preenchidos: "Times to repeat" = 5, "Gap between presses" = 30 ms e "Gap jitter" LIGADO (pontinho de accent preenchido à direita do rótulo) com o campo % ativo (ex.: 20%). Uma tecla capturada no pad acima (ex.: F5 ou Tab) para o botão Add/Save ficar ativo. -->
+<p align="center">
+  <img src="img/send-keystroke.png" width="360" alt="O diálogo Send Keystroke com Times, Gap e Gap jitter" /><br>
+  <sub><i>Press × N com <b>Gap jitter</b> ligado — a rajada deixa de ter um ritmo fixo.</i></sub>
+</p>
 
 > **Dica — diferencie por cor, não por confiança.** O match de imagem compara a referência inteira, ótimo para forma/texto, mas é grosseiro para distinguir dois estados que diferem só na **cor** (ex.: um botão habilitado *verde* vs desabilitado *cinza*). Para isso use **Wait Pixel Color** (ou um **If** em *Pixel Color Match*): amostre um ponto no preenchimento sólido e compare a cor dentro de uma tolerância. E não use **confiança em 100%** — uma tela viva nunca fica idêntica, pixel por pixel, à referência, então uma exigência de 100% nunca é atendida e a macro para por esgotar o tempo (internamente o valor é limitado logo abaixo de 100%).
 
@@ -293,6 +312,7 @@ Insira ações pela **barra de ferramentas** (Send Keystroke, Send Text, Set Var
 
 Faça uma macro reagir ao que está na tela.
 
+<!-- 📸 PRINT: conditionals.png — (Pode REAPROVEITAR a atual — a grade de condicionais não mudou desde 2026-07-19.) Dois blocos If/Else/EndIf aninhados na grade, mostrando as cores por nível de escopo. -->
 <p align="center">
   <img src="img/conditionals.png" width="820" alt="Dois blocos If/Else/EndIf na grade de ações" /><br>
   <sub><i>Uma verificação de pixel negada (<code>if NOT</code>) e uma verificação de imagem com ramo <code>else</code>.</i></sub>
@@ -305,7 +325,7 @@ Faça uma macro reagir ao que está na tela.
 | **Image Found** | Uma imagem de referência está visível na tela. |
 | **Pixel Color Match** | O pixel em `(x, y)` corresponde a uma cor (dentro da tolerância). |
 | **Window Open** | Existe uma janela que corresponde a um processo/título — opcionalmente só quando ela está em primeiro plano. |
-| **Clipboard** | O texto do clipboard corresponde (Contains / Exact / Regex / Empty). |
+| **Clipboard** | O texto do clipboard corresponde (Contains / Equals / Regex). |
 | **Browser Element** | Um elemento no Chrome está presente, visível ou habilitado. |
 | **Random** | Um sorteio cai abaixo de N% — para macros que não devem parecer perfeitamente regulares. |
 | **Variable** | Um `{var:name}` compara verdadeiro contra um valor (igual, contém, maior que, …). |
@@ -316,6 +336,7 @@ Faça uma macro reagir ao que está na tela.
 - Se a sondagem for **verdadeira**, as ações entre **If** e **Else/EndIf** rodam; se **falsa**, a execução salta para a ramificação **Else** (se houver) ou para depois do **EndIf**.
 - **Negate (IFNOT)** inverte o teste — a ramificação *verdadeira* roda quando a sondagem **falha**.
 - **Wait for condition** (opcional) — por padrão um **If** checa uma vez e ramifica na hora. Defina um valor de *Wait for condition* (ms) e ele fica checando durante esse tempo até a condição ficar verdadeira antes de decidir: satisfez a tempo → ramo **verdadeiro**; o tempo acabou → **Else / falso**. Ótimo para *"espere até 3 s o botão habilitar, senão siga um plano B."* `0` = instantâneo (o padrão).
+- **On Probe Error** — o que fazer se a *própria verificação* der erro (ex.: uma captura de tela falha). **Treat as false** (padrão) conta como "não encontrado" e segue pelo ramo falso/Else; **Halt** para a reprodução. Deixe em *Treat as false* para uma macro tolerante.
 - Blocos podem ser **aninhados** — cada nível de aninhamento aparece na sua própria cor (com trilhos de escopo correspondentes) para manter condicionais profundas legíveis. Para criar um bloco aninhado, selecione uma linha **dentro** de um bloco existente e use **Insert Conditional**. Adicione um **Else** pela linha tracejada **+ Add Else branch**, dentro do bloco. A estrutura é validada e reparada automaticamente ao carregar (marcadores órfãos removidos, `EndIf` ausente adicionado).
 
 **Editando o conteúdo de um bloco** — ações *dentro* de um bloco são editadas de forma granular; uma operação só engloba o **bloco inteiro** quando a seleção inclui um marcador (*If / Else / EndIf*), para que marcadores nunca fiquem órfãos:
@@ -347,7 +368,7 @@ Faça uma macro reagir ao que está na tela.
 
 **Passo 6 (opcional) — o plano B.** Se você quiser fazer outra coisa quando o aviso *não* aparecer, olhe dentro do bloco: logo acima do **EndIf** tem uma linha tracejada **+ Add Else branch**. Clique nela e o **Else** entra ali. O que estiver depois do **Else** roda só quando a checagem dá negativo.
 
-> **Para inverter sem criar um Else.** Na linha **If**, o campo **Condition** tem duas opções: **Found** e **NOT Found** (é a condição invertida — o bloco roda quando a verificação **falha**). Com **NOT Found**, o corpo do bloco roda justamente quando a janela **não** está lá — bom para "se o aviso não apareceu, alguma coisa saiu errado, tire um print".
+> **Para inverter sem criar um Else.** Na linha **If**, o campo **Condition** tem duas opções: **Found** e **NOT Found** (é a condição invertida — o bloco roda quando a verificação **falha**). Com **NOT Found**, o corpo do bloco roda justamente quando a janela **não** está lá — bom para "se o aviso não apareceu, alguma coisa saiu errado, tire um print". Nas condições de estado (**Clipboard**, **Variable**, **Random** e **Time**) as opções aparecem como **Met** / **NOT Met** em vez de Found / NOT Found — mesma ideia.
 
 São duas esperas diferentes. O **Delay** é uma espera fixa que acontece **antes** da checagem e gasta o tempo inteiro mesmo que a janela já estivesse lá — ele não fica neste editor, e sim na coluna **Delay** da grade (clique na célula para editar). O **Wait for condition** gasta só o tempo que precisar. Se você preencher os dois, eles se somam. (As linhas **Else** e **EndIf** nem têm campo Delay — a célula fica em branco e não abre para edição, e um "definir atraso" em massa pula essas linhas.)
 
@@ -378,14 +399,15 @@ Comandos que não têm botão próprio, em três grupos:
 
 Vincule um perfil a um gatilho para que ele rode sem abrir o aplicativo.
 
+<!-- 📸 PRINT: hotkey.png — O diálogo Assign Hotkey com a grade de Trigger Mode mostrando os SEIS modos: On Press, On Release, While Pressed, Toggle, Double-tap, Hold (long-press). A imagem antiga pode estar sem Double-tap/Hold (2.9.0). -->
 <p align="center">
-  <img src="img/hotkey.png" width="320" alt="O diálogo Assign Hotkey com os modos de gatilho" /><br>
+  <img src="img/hotkey.png" width="320" alt="O diálogo Assign Hotkey com os seis modos de gatilho" /><br>
   <sub><i>Capture uma combinação de teclas e escolha um modo de gatilho.</i></sub>
 </p>
 
 - **Hotkey** — clique com o botão direito num perfil → **Assign hotkey**, pressione a combinação (ex.: `Ctrl+Alt+F1`), escolha um modo de gatilho. Dispara globalmente.
 - **Hotstring** — atribua uma sequência digitada (ex.: `qqsig`); ao terminar de digitá-la, o perfil roda.
-- **Chave-mestra** — `Pause` (ou Settings → Recording → **Profile Keys**) ativa/desativa **todas** as hotkeys e hotstrings de uma vez.
+- **Chave-mestra** — `Pause` (ou Settings → Profile → Recording → **Profile Keys**) ativa/desativa **todas** as hotkeys e hotstrings de uma vez.
 
 ### Modos de gatilho
 
@@ -419,6 +441,12 @@ Três tipos de gatilho por perfil (uma automação cada):
 | **Schedule** | Em um horário (`HH:mm`) nos dias da semana que você escolher. |
 | **Condition** | Quando uma condição vigiada **fica verdadeira**: uma janela abre (ou vem ao primeiro plano), um processo inicia, um arquivo aparece, um pixel bate com uma cor, uma imagem aparece na tela, ou o clipboard muda. |
 
+<!-- 📸 PRINT: automation-panel.png — O diálogo de Automação inteiro. À esquerda: a lista de automações com pelo menos uma linha armada mostrando o resumo de status (ex.: "at 08:00 · 3× · next …") + a chave Armed e o botão "Add automation". À direita: o editor com um gatilho Schedule ("At" 08:00, "Days" com Seg–Sex acesos). Rodapé: a chave-mestra "Automations enabled" + Close/Save. -->
+<p align="center">
+  <img src="img/automation-panel.png" width="820" alt="O painel de Automação: lista à esquerda, editor de gatilho à direita" /><br>
+  <sub><i>A lista de automações (com a chave <b>Armed</b>) à esquerda e o editor do gatilho à direita.</i></sub>
+</p>
+
 Como se comporta:
 
 - **Armed** — só automações armadas rodam; elas se re-armam sozinhas ao iniciar o app, então
@@ -435,6 +463,21 @@ Como se comporta:
   (**Enable Automations**). A dica da bandeja mostra quantas automações estão armadas.
 - Perfis sem alvo de janela agem sobre a janela que estiver em foco quando o gatilho disparar —
   o editor avisa. Prefira perfis com alvo (ou *Activate Window* como primeira ação).
+
+### Gatilho por imagem na tela (Image on screen)
+
+Escolha **Condition → Image on screen** para o perfil disparar quando algo aparecer na tela. O editor tem:
+
+- **Reference image** — clique em **Capture** (ícone de câmera) e recorte na tela o que vigiar; vira uma miniatura. Clique na miniatura para **recortar mais justo** sem capturar de novo.
+- **Confidence** — o quão parecido precisa ser (padrão **80%**, faixa 10–99). **Nunca 100%** — uma tela viva nunca fica idêntica, pixel por pixel.
+- **Search region** — por padrão **Full screen**. Clique em **Configure** e arraste uma caixa para limitar a busca a um pedaço da tela — mais rápido e com menos falsos positivos para um vigia que fica rodando o tempo todo. O ✕ limpa a região.
+- **Test match** — procura na tela **agora**: num acerto mostra a porcentagem e **ajusta a região** sozinho em volta do ponto encontrado (fica *Found (85%) — region snapped to it*); num erro, *Not found on screen*.
+
+<!-- 📸 PRINT: automation-image.png — Diálogo de Automação com Trigger = Condition e Condition = "Image on screen". Mostrar: a miniatura de "Reference image" preenchida, os botões "Capture" e "Test match", uma linha de resultado "Found (85%) — region snapped to it", o campo "Search region" com uma ROI definida (ex.: "420, 260 · 320 × 180") com o botão "Configure" e o ✕, e o campo "Confidence" em 80%. -->
+<p align="center">
+  <img src="img/automation-image.png" width="440" alt="Gatilho de automação por imagem na tela, com região de busca e Test match" /><br>
+  <sub><i>O gatilho <b>Image on screen</b> com região de busca, confiança e <b>Test match</b>.</i></sub>
+</p>
 
 ### Exemplo completo — a macro das 8 da manhã que roda sozinha
 
@@ -487,15 +530,16 @@ A diferença entre os dois primeiros é essa: **Interval** conta a partir do mom
 
 Vincule um perfil (ou uma pasta inteira) a uma janela de aplicativo específica.
 
+<!-- 📸 PRINT: target.png — O diálogo Target Configuration em repouso: Process Name, Title (Contains/Regex), o botão "Detect Window (click on target)", "Test front window", as chaves Relative Coordinates / Bring to Focus / Restore Position / Restore Size, o botão "Update Window Size & Position" e "Set Target". -->
 <p align="center">
   <img src="img/target.png" width="360" alt="O diálogo Target Configuration" /><br>
   <sub><i>Corresponda a uma janela por processo / título, com coordenadas relativas e opções de restauração.</i></sub>
 </p>
 
-- **Window target** — defina um nome de processo e/ou título de janela (correspondência por *contains* ou *regex*). A **hotkey do perfil só dispara quando aquela janela está em primeiro plano**. Use **Detect window** para clicar numa janela e preencher os campos automaticamente, e **Test** para verificar a correspondência.
-- **Relative Coordinates** — armazene os cliques relativos ao canto superior esquerdo da janela em vez da tela, para que a macro continue acertando o ponto certo quando a janela se mover ou for redimensionada. Use **Convert to Relative / Absolute** para migrar as coordenadas de uma macro existente.
-- **Bring to focus** — restaura + traz a janela para frente antes da reprodução.
-- **Restore position / size** — encaixa a janela de volta numa geometria salva primeiro (use **Update window** para capturar a atual).
+- **Window target** — defina um nome de processo e/ou título de janela (correspondência por *contains* ou *regex*). A **hotkey do perfil só dispara quando aquela janela está em primeiro plano**. Use **Detect Window (click on target)** para clicar numa janela e preencher os campos automaticamente, e **Test front window** para verificar a correspondência.
+- **Relative Coordinates** — armazene os cliques relativos ao canto superior esquerdo da janela em vez da tela, para que a macro continue acertando o ponto certo quando a janela se mover ou for redimensionada. Para migrar uma macro já gravada, o diálogo oferece **Apply target & convert** ao ligar a chave; fora dele, use o botão direito no perfil → **Convert coords → Relative / Absolute** (ou a paleta de comandos, `Ctrl+K`).
+- **Bring to Focus** — restaura + traz a janela para frente antes da reprodução.
+- **Restore Position / Size** — encaixa a janela de volta numa geometria salva primeiro (use **Update Window Size & Position** para capturar a atual). A mesma geometria funciona também para uma **pasta** inteira.
 
 > Se um perfil usa coordenadas relativas e sua janela alvo não é encontrada no momento da reprodução, a reprodução para com um erro (em vez de clicar no lugar errado).
 
@@ -541,7 +585,13 @@ A ação **Activate Window** troca qual app está em primeiro plano *no meio da 
 - **Multi-janela de precisão (cliques relativos por janela).** Faça um perfil **orquestrador** sem alvo que alterna **Activate Window X (launch)** → **Run Profile "passos-de-X"**, onde cada sub-perfil tem *seu próprio* alvo de janela + coordenadas relativas. Ativar X primeiro garante que o alvo do sub-perfil exista antes do primeiro clique relativo dele.
 - **Voltar para a sua janela.** Um **Activate Window** apontando para o próprio alvo do perfil é um passo "volte pra cá" no meio da execução, depois de um desvio para outro app.
 
-**Campos.** Identifique a janela por **Process** e/ou **Title** (Contains ou Regex) — use o **seletor** para escolher um processo em execução, ou **Detect window** para clicar no alvo. **Path / Args** abrem o app quando nenhuma janela corresponde (um caminho completo é o mais seguro; um `app.exe` puro só resolve se estiver no `PATH`). **Placement** opcionalmente move/redimensiona a janela ativada — só posicional; não muda onde os cliques caem. **Timeout / On timeout** decidem quanto esperar e se deve **Halt** (padrão — seguro, já que as teclas seguem a janela em foco) ou **Continue** se a janela não for encontrada ou focada. **Test** verifica se existe agora uma janela correspondente.
+**Campos.** O seletor **Action** decide o que fazer com a janela: **Activate** (trazer para a frente — abrindo o app antes, se preciso), **Maximize** (focar e maximizar), **Minimize** ou **Close** (pede para o app fechar). **Launch** (Path/Args) e **Placement** só aparecem em Activate/Maximize; **Placement** (chips) só em Activate. Identifique a janela por **Process** e/ou **Title** (Contains ou Regex) — use o **seletor** para escolher um processo em execução, ou **Detect Window (click on target)** para clicar no alvo. Se várias janelas casam, **Match #** escolhe a N‑ésima (1 = a da frente). **Path / Args** abrem o app quando nenhuma janela corresponde (um caminho completo é o mais seguro; um `app.exe` puro só resolve se estiver no `PATH`). Em **Placement**, os chips **Position** e **Size** são independentes; ligue um deles para aparecerem os campos **X / Y / Width / Height**, e **Capture from window** lê o retângulo atual da janela — só posicional, não muda onde os cliques caem. **Timeout / On Timeout** decidem quanto esperar e se deve **Halt** (padrão — seguro, já que as teclas seguem a janela em foco) ou **Continue** se a janela não for encontrada ou focada. **Test** verifica se existe agora uma janela correspondente (mostra *Found — processo · título* ou *Not found*).
+
+<!-- 📸 PRINT: activate-window.png — Painel Sheet com uma ação Activate Window selecionada e Action = Activate, mostrando o conjunto completo: o seletor "Action" (Activate/Maximize/Minimize/Close), o bloco "Match Window" (Process Name com o seletor de processos, Title com Contains/Regex, e o botão "Detect Window (click on target)"), o campo "Match #", o "Launch" Path (com "Browse…") + Args, a linha "Placement" com os chips Position/Size, o botão "Test", e "Timeout" + "On Timeout" (Halt/Continue). -->
+<p align="center">
+  <img src="img/activate-window.png" width="360" alt="O editor da ação Activate Window com o seletor Action e os campos de janela" /><br>
+  <sub><i>O verbo <b>Action</b> (Activate/Maximize/Minimize/Close) e os campos de identificação da janela.</i></sub>
+</p>
 
 ---
 
@@ -556,14 +606,18 @@ Mude para **Clicker** com **`ScrollLock`** (ou o botão Macro/Clicker). O painel
 | **Loops** | Número de cliques. **0 = infinito.** | 0 |
 | **Interval** | Pausa entre as iterações do loop. | desligado |
 | **Jitter** | Variação aleatória de ± % no delay. | desligado |
-| **Position** | Aleatoriza ligeiramente a posição do clique. | desligado |
-| **Area** | Arraste um retângulo para clicar em pontos aleatórios dentro dele (mutuamente exclusivo com o Position jitter). | desligado |
+| **Position** | Aleatoriza ligeiramente a posição do clique ao redor do cursor. | desligado |
+| **Area** | Arraste um retângulo para clicar em pontos aleatórios dentro dele. | desligado |
+| **Fixed** | Clica sempre em **um** ponto. Sem ponto definido, ele trava na posição do cursor quando o clique começa (*At start*); clique no corpo do chip para escolher o ponto na tela. | desligado |
+
+> **Position, Area e Fixed são mutuamente exclusivos** — ligar um desliga os outros dois.
 
 Inicie/pare com **`PageDown`**, pause/retome com **`PageUp`**. Enquanto roda, o **painel ao vivo** mostra a contagem de cliques, a taxa, o tempo decorrido, o progresso dos loops e o ETA.
 
+<!-- 📸 PRINT: clicker.png — O painel do Clicker AO VIVO enquanto roda (aperte PageDown para iniciar): a contagem grande de cliques, taxa, tempo decorrido, progresso dos loops, ETA e a barra de progresso — com as configurações do Clicker (Button · Rate · Loops · Interval · Jitter · Position · Area · Fixed) visíveis no painel à direita. -->
 <p align="center">
-  <img src="img/clicker.png" width="820" alt="O painel do Clicker enquanto roda" /><br>
-  <sub><i>Contagem ao vivo, taxa, tempo decorrido, progresso do loop, ETA e uma barra de progresso.</i></sub>
+  <img src="img/clicker.png" width="820" alt="O painel do Clicker enquanto roda, com as configurações à direita" /><br>
+  <sub><i>Contagem ao vivo, taxa, ETA e a barra de progresso — e as configurações (incl. <b>Fixed</b>) à direita.</i></sub>
 </p>
 
 ---
@@ -582,17 +636,27 @@ Para jogos (ex.: Roblox) que ignoram um "teleporte" instantâneo do cursor, o *G
 
 O editor **Insert Text** compõe o texto que é injetado via colagem do clipboard (para que layouts e caracteres especiais sobrevivam).
 
+<!-- 📸 PRINT: sendtext.png — O editor "Insert Text" (aberto pela barra → Send Text). Trilho da direita na aba "Insert", rolado para mostrar as QUATRO seções com os cabeçalhos: Clipboard (chips Clipboard, Advanced…, Clip slot…, Clipboard history), Values (Date, Time, DateTime, Random), Keys & timing (Enter, Tab, Delay + More keys) e Run state (Variable…, Counter, Action row #, Row column…, Row column (next)…, Ask input…). Substitui a imagem antiga, anterior aos chips winclip/rownext. -->
 <p align="center">
-  <img src="img/sendtext.png" width="820" alt="O editor Send Text com chips de token e uma paleta de teclas/clipboard" /><br>
-  <sub><i>Chips de token editáveis inline, com uma paleta de teclas &amp; clipboard ao lado.</i></sub>
+  <img src="img/sendtext.png" width="820" alt="O editor Insert Text com as quatro seções de chips de token" /><br>
+  <sub><i>Chips de token editáveis inline, com as seções Clipboard · Values · Keys &amp; timing · Run state ao lado.</i></sub>
 </p>
 
 - **Tokens** — incorpore teclas e valores especiais: `{enter}`, `{tab}`, `{space}`, setas e outras teclas; `{date}` / `{time}` / `{datetime}`; `{delay:500}` para pausar no meio do texto. Teclas repetíveis aceitam uma contagem: `{enter:3}`.
 - **Clipboard** — `{clipboard}` insere o clipboard atual; `{clipboard:upper}`, `{clipboard:trim}`, `{clipboard:line:1}` etc. o transformam (trim → extrair → limitar → ordem de caixa). Seu clipboard real é restaurado depois.
-- **Tokens de estado da execução** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}` e `{row:column}` puxam valores da macro em execução; veja [Variáveis, slots e prompts](#variáveis-slots-e-prompts) e [Data Loop](#data-loop).
+- **Histórico do clipboard** — `{winclip:1}` insere o **último** item copiado no Windows, `{winclip:2}` o penúltimo, e assim por diante (é o histórico do `Win+V`, então precisa estar ligado nas configurações do Windows). `{winclip}` sozinho vale por `{winclip:1}`. É diferente dos slots `{clip:N}`: `{winclip}` lê o histórico do sistema, `{clip}` lê o que *você* capturou no app.
+- **Tokens de estado da execução** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}`, `{row:column}` e `{rownext:column}` puxam valores da macro em execução; veja [Variáveis, slots e prompts](#variáveis-slots-e-prompts) e [Data Loop](#data-loop).
 - **Chips de token** — cada token aparece como um chip editável; clique nele para ajustar seus parâmetros.
 - **Snippets** — salve texto reutilizável sob um nome para inserção rápida depois. Os snippets ficam no app, não no perfil, então não viajam no export/import.
 - Confirme com **`Ctrl+Enter`** (o `Enter` sozinho cria uma nova linha); `Esc` cancela.
+
+O chip **Advanced…** abre um construtor de transformações do `{clipboard}` com preview ao vivo — trim, operações de linha (ordenar, remover duplicadas, inverter, juntar), extrair linha/palavra, limitar tamanho e caixa — que montam a cadeia `{clipboard:mods}` para você sem decorar a sintaxe.
+
+<!-- 📸 PRINT: advanced-clipboard.png — O editor "Advanced Clipboard" (chip Advanced… no Insert Text): as etapas TRIM, LINES, EXTRACT, LIMIT LENGTH, CASE à esquerda e o preview CLIPBOARD NOW / RESULT / TOKEN à direita. -->
+<p align="center">
+  <img src="img/advanced-clipboard.png" width="820" alt="O construtor Advanced Clipboard com preview ao vivo" /><br>
+  <sub><i>O <b>Advanced…</b> monta a cadeia <code>{clipboard:mods}</code> por etapas, com preview ao vivo.</i></sub>
+</p>
 
 O **Delivery** decide como a formatação chega, já que cada app entende uma coisa diferente:
 
@@ -611,10 +675,10 @@ O **Delivery** decide como a formatação chega, já que cada app entende uma co
 
 **Passo 2 — insira os tokens onde o texto muda.** No painel da direita, aba **Insert**, os chips estão separados por seção:
 
-- **Clipboard** — **Clipboard** (`{clipboard}`) e **Advanced…**, que monta transformações como `{clipboard:trim}`.
+- **Clipboard** — **Clipboard** (`{clipboard}`), **Advanced…** (monta transformações como `{clipboard:trim}`), **Clip slot…** (insere `{clip:nome}` de um slot que você capturou) e **Clipboard history** (insere `{winclip:1}`, o histórico do Windows).
 - **Values** — **Date**, **Time**, **DateTime** e **Random**.
 - **Keys & timing** — **Enter**, **Tab** e **Delay** (`{delay:500}`), mais um **More keys** que abre as teclas raras.
-- **Run state** — **Variable…**, **Counter**, **Row #** e outros.
+- **Run state** — **Variable…**, **Counter**, **Action row #** (`{row}` — o número da linha *da ação* na grade), **Row column…** (`{row:coluna}`), **Row column (next)…** (`{rownext:coluna}` — a *próxima* linha a cada uso) e **Ask input…** (`{input:…}`).
 
 Clique no chip e ele entra onde o cursor está. O corpo fica assim:
 
@@ -651,17 +715,55 @@ Três jeitos de fazer uma única macro lidar com valores que mudam, em vez de cr
 | Ação **Copy to Slot** / hotkey **Capture Slot** | Até você gravar outra coisa por cima — continua guardado de uma execução para outra, enquanto o app estiver aberto. | `{clip:name}` ou `{clip:1}`…`{clip:9}` |
 | **`{input:Label}`** | Só a execução atual — o app pergunta uma vez e reaproveita a resposta até o fim. | O próprio token, escrito de novo |
 
-**Set Variable** *(barra de ferramentas)* — dê um **Name** e um **Value**. O valor é montado antes de ser guardado, então pode conter `{clipboard}`, `{row:col}`, `{date}` ou até outro `{var:}`. Guardar um valor vazio apaga a variável. Mude o modo para **Cycle** e o valor vira uma lista (um item por linha): cada execução guarda a **próxima** linha e, quando chega na última, volta para a primeira — assim uma hotkey percorre a lista, um item por toque. Para voltar ao primeiro item, clique com o botão direito na linha do **Set Variable**, dentro da grade de ações → **Reset row position**.
+### Cola rápida — cada token e o que ele vira
 
-**Copy to Slot** *(barra de ferramentas)* — copia o que estiver **selecionado** no app em foco para um slot com nome. Garanta que o texto esteja mesmo selecionado antes (uma tecla `Ctrl+A` logo antes, por exemplo). Se a captura falhar, o valor anterior continua lá em vez de ser apagado.
+Exemplos mínimos. Todos podem entrar dentro de um **Send Text** (ou na tecla de um Keystroke / num campo do navegador).
+
+| Você escreve | O que sai na hora de rodar |
+| --- | --- |
+| `{var:cliente}` | O valor guardado por um **Set Variable** chamado `cliente` (vazio se nunca foi definido). |
+| `{clip:1}` … `{clip:9}` | O texto que você capturou no slot numerado 1…9. |
+| `{clip:pedido}` | O texto do slot com nome `pedido` (de uma ação **Copy to Slot**). |
+| `{input:Número do pedido}` | Abre uma caixa perguntando "Número do pedido" e digita a sua resposta. |
+| `{input:Prioridade\|menu:Baixa,Média,Alta}` | Abre uma lista de opções e digita a que você clicar. |
+| `{counter}` | O número da volta atual do loop: `1`, `2`, `3`… (vazio numa execução única). |
+| `{winclip:1}` | O último item copiado no Windows (histórico do `Win+V`). |
+| `{clipboard}` | O que está copiado agora (`{clipboard:trim}` tira espaços sobrando). |
+
+> **Regra de ouro:** um token que não encontra valor vira **texto vazio** — nunca dá erro. Se algo sair em branco, aperte **`Ctrl+K`** → **Toggle Live Variables** e rode de novo para ver o que está realmente guardado.
+
+**Set Variable** *(barra de ferramentas)* — dê um **Variable Name** e um **Value**. O valor é montado antes de ser guardado, então pode conter `{clipboard}`, `{row:col}`, `{date}` ou até outro `{var:}`. Guardar um valor vazio apaga a variável. No seletor **Mode**, mude de **Set** (padrão) para **Cycle**: o campo de valor vira **List (one item per line)** e cada execução guarda a **próxima** linha, voltando à primeira quando chega no fim — assim uma hotkey percorre a lista, um item por toque. Para recomeçar do primeiro item, clique com o botão direito na linha do **Set Variable**, na grade de ações → **Reset cycle position**.
+
+**Copy to Slot** *(barra de ferramentas)* — tem um seletor **Mode** com duas opções:
+
+- **Capture** (padrão) — copia o que estiver **selecionado** no app em foco para o slot escrito em **Slot**. Garanta que o texto esteja mesmo selecionado antes (uma tecla `Ctrl+A` logo antes, por exemplo). Se a captura falhar, o valor anterior continua lá em vez de ser apagado.
+- **Clear** — **esvazia** o slot escrito em **Slot**. Deixe o campo **em branco** para limpar **todos** os slots (1 a 9) e ainda reposicionar a hotkey **Capture Slot** de volta no slot 1. O modo Clear não digita nem cola nada e não mexe no clipboard do Windows.
+
+<!-- 📸 PRINT: copy-to-slot-clear.png — Editor do Copy to Slot (painel Sheet à direita) com o seletor Mode em "Clear" e o campo Slot EM BRANCO (placeholder "all slots"), mostrando o cartão explicativo "Empties the slot above — or ALL slots (1–9) if the name is blank…". -->
+<p align="center">
+  <img src="img/copy-to-slot-clear.png" width="360" alt="Editor do Copy to Slot no modo Clear" /><br>
+  <sub><i>O modo <b>Clear</b> esvazia um slot — ou todos, se o nome ficar em branco.</i></sub>
+</p>
 
 **Capture Slot** *(hotkey)* — a versão manual, já ligada em `Win+Ctrl+C`: Settings → **Keys** → **Hotkeys** → **Capture Slot** para trocar a combinação, ou apagar o campo para desligar. Cada toque guarda o texto selecionado no próximo slot numerado, de `{clip:1}` até `{clip:9}`; depois do 9 volta para o 1. Um aviso mostra em qual slot o texto foi parar. Essa hotkey não funciona enquanto uma macro está rodando — lá dentro, use a ação **Copy to Slot**.
 
-**`{input:Label}`** — pausa a execução e pergunta o valor: `{input:Número do pedido}` mostra uma caixa de texto e `{input:Prioridade|menu:Baixa,Média,Alta}` mostra uma lista de opções. O app pergunta uma única vez para cada rótulo, a cada execução: se você usar o mesmo `{input:Número do pedido}` mais para frente, ele repete a resposta sem perguntar outra vez. Se você fechar a caixa de pergunta, a macro para.
+**`{input:Label}`** — pausa a execução e pergunta o valor: `{input:Número do pedido}` mostra uma caixa de texto (título **Input needed**) e `{input:Prioridade|menu:Baixa,Média,Alta}` mostra uma lista de opções para clicar. O app pergunta uma única vez para cada rótulo, a cada execução: se você usar o mesmo `{input:Número do pedido}` mais para frente, ele repete a resposta sem perguntar outra vez. Na hora da pergunta o TrueReplayer **se traz para a frente** sozinho (mesmo minimizado ou escondido na bandeja) e, depois que você responde, **devolve o foco** para a janela que estava na frente — então a resposta cai no app certo, não no TrueReplayer. Fechar a caixa (**Esc** / **Cancel**) **para a macro**, e se ninguém responder em **60 segundos** a execução é abortada (para uma automação sem ninguém olhando não travar para sempre).
+
+<!-- 📸 PRINT: ask-input.png — A caixa "Input needed" durante uma execução, disparada por {input:Rótulo}: título "Input needed", o rótulo, o campo de texto e Cancel/Submit, com o rodapé "Enter para enviar · Esc cancela a execução". -->
+<p align="center">
+  <img src="img/ask-input.png" width="360" alt="A caixa Input needed durante uma execução" /><br>
+  <sub><i><code>{input:Rótulo}</code> abre esta caixa e digita a sua resposta no app certo. Com <code>|menu:…</code>, ela vira uma lista de opções para clicar.</i></sub>
+</p>
 
 **`{counter}`** — o número da repetição atual (1 na primeira volta, 2 na segunda…). Serve para numerar o texto que a macro digita, tipo "Item 1", "Item 2".
 
 > **Para ver o que está guardado.** Aperte **`Ctrl+K`** → **Toggle Live Variables** e abre um cartãozinho mostrando todas as variáveis, todos os slots e a linha de dados atual *enquanto a macro roda* — é o jeito mais rápido de descobrir por que um token está saindo vazio.
+
+<!-- 📸 PRINT: live-variables.png — O cartão flutuante Live Variables aberto durante uma execução (Ctrl+K → Toggle Live Variables), mostrando o cabeçalho "Live Variables" e as seções Variables / Slots / Current row com alguns valores em cada. -->
+<p align="center">
+  <img src="img/live-variables.png" width="360" alt="O painel Live Variables durante uma execução" /><br>
+  <sub><i>Variáveis, slots e a linha de dados atual, ao vivo enquanto a macro roda.</i></sub>
+</p>
 
 ### Exemplo completo — juntando três informações espalhadas
 
@@ -671,9 +773,9 @@ Três jeitos de fazer uma única macro lidar com valores que mudam, em vez de cr
 
 **Passo 2 — recolha os três valores.** Agora é só selecionar e apertar, sem colar em lugar nenhum:
 
-1. Selecione o nome do cliente → `Ctrl+Shift+C`. Aparece o aviso *Selection captured → {clip:1}*.
-2. Selecione o número do pedido → `Ctrl+Shift+C` → vira `{clip:2}`.
-3. Selecione o código de entrega → `Ctrl+Shift+C` → vira `{clip:3}`.
+1. Selecione o nome do cliente → `Win+Ctrl+C`. Aparece o aviso *Selection captured → {clip:1}*.
+2. Selecione o número do pedido → `Win+Ctrl+C` → vira `{clip:2}`.
+3. Selecione o código de entrega → `Win+Ctrl+C` → vira `{clip:3}`.
 
 **Passo 3 — monte a mensagem uma vez só.** Crie um perfil com uma ação **Send Text**:
 
@@ -707,6 +809,12 @@ Execute o perfil inteiro uma vez para **cada linha** de uma tabela — no estilo
 
 Abra pela **barra de ferramentas** (o ícone de tabela → *Data Loop*). A tabela é salva **dentro do perfil**, então acompanha o export/import — uma tabela grande faz o arquivo do perfil crescer.
 
+<!-- 📸 PRINT: data-loop.png — O painel Data Loop aberto com uma tabelinha de exemplo (cabeçalho "product | price" + 3 linhas). Deixe "Loop over data" MARCADO para aparecer o aviso azul "N iterations — one full run per row" junto com o controle "On row error" (Halt / Skip row), e a lista "Columns · tokens" à direita mostrando os chips {row:product}/{row:price} com as contagens ×N / unused. -->
+<p align="center">
+  <img src="img/data-loop.png" width="820" alt="O painel Data Loop com uma tabela de exemplo e o modo Loop over data" /><br>
+  <sub><i>A tabela, o modo <b>Loop over data</b> e os tokens de coluna à direita.</i></sub>
+</p>
+
 ### Colocando dados na tabela
 
 - **Colar do Excel / Sheets** — em **Paste / bulk edit…**, jogue um intervalo copiado na caixa e escolha **Replace table** ou **Append rows**. Tabs, aspas e células com várias linhas sobrevivem à colagem. **First row is the header** transforma a primeira linha em nomes de coluna (desligado → as colunas viram `col1…colN` e toda linha é dado).
@@ -720,8 +828,11 @@ Cada cabeçalho de coluna vira um token que você cola em **Insert Text**, na te
 
 | Token | Resolve para |
 | --- | --- |
-| `{row:column}` | O valor da linha atual naquela **coluna** (a busca ignora maiúsculas/minúsculas). |
-| `{row}` | O **número da linha** atual (base 1). |
+| `{row:column}` | O valor da linha **atual** naquela **coluna** — a *mesma* linha para todas as ações de uma execução (a busca ignora maiúsculas/minúsculas). |
+| `{rownext:column}` | A **próxima** linha daquela coluna a cada uso: a 1ª vez pega a linha 1, a 2ª pega a linha 2, e assim por diante. Reinicia a cada execução; passou da última linha, sai **vazio** (não volta ao topo). |
+| `{row}` | O número da linha **da ação atual na grade** (base 1) — não tem relação com a tabela de dados. |
+
+> **`{row:col}` × `{rownext:col}` — a diferença que importa.** Pense nas **colunas** como campos e nas **linhas** como uma lista. Use `{row:col}` quando cada execução preenche *um* registro (várias colunas, mesma linha) — é o par natural do **Loop over data**. Use `{rownext:col}` quando você quer despejar a *lista inteira* numa passada só: três `Send Text` com `{rownext:nome}` digitam a linha 1, a 2 e a 3 seguidas. Os dois tokens aceitam os mesmos modificadores (`{rownext:nome:trim:upper}`).
 
 - Copie um token no painel **Columns · tokens** (clique no chip) ou no menu **⋯** do cabeçalho. O painel também mostra quantas ações usam cada coluna (`×N` / *unused*) e sinaliza **órfãos** — um `{row:…}` que uma ação referencia mas a tabela não tem essa coluna (vai digitar texto vazio).
 - Cabeçalhos precisam ter **apenas letras, dígitos ou `_`** para virar token. Um cabeçalho inválido é marcado com ⚠; clique na **varinha** para corrigir automaticamente (de todo jeito ele é salvo).
@@ -749,7 +860,7 @@ Ao fazer loop sobre os dados, **On row error** decide o que uma linha com falha 
 
 ### Transformações de célula — `{row:column:mods}`
 
-Um token `{row:column}` aceita a **mesma cadeia de modificadores do `{clipboard}`** (veja [Send Text](#send-text)) — acrescente os modificadores após o nome da coluna, ex.: `{row:name:trim:upper}`. Clique num chip `{row:…}` dentro de um editor de texto para configurá-los num popover com um preview ao vivo do valor da primeira linha, ou digite a cadeia à mão. O pipeline roda numa ordem fixa: **trim → operações de lista (range / lines / sort / dedupe / reverse / join) → extração (line / word) → limite (first / last) → caixa (upper / lower / sentence / title)**.
+Um token `{row:column}` — e também `{rownext:column}` — aceita a **mesma cadeia de modificadores do `{clipboard}`** (veja [Send Text](#send-text)): acrescente os modificadores após o nome da coluna, ex.: `{row:name:trim:upper}`. Clique num chip `{row:…}` dentro de um editor de texto para configurá-los num popover com um preview ao vivo do valor da primeira linha, ou digite a cadeia à mão. O pipeline roda numa ordem fixa: **trim → operações de lista (range / lines / sort / dedupe / reverse / join) → extração (line / word) → limite (first / last) → caixa (upper / lower / sentence / title)**.
 
 ### Rodar um sub-perfil uma vez por linha
 
@@ -841,36 +952,44 @@ Um selo de **qualidade do seletor** (S → C) indica quão estável cada seletor
 
 Abra o **Theme Editor** em Settings → App → Interface → *Customise*.
 
+<!-- 📸 PRINT: theme.png — O Theme Editor aberto na GALERIA (grade de presets, com a busca), com o preview ao vivo. -->
 <p align="center">
-  <img src="img/theme.png" width="820" alt="A aba de presets do Theme Editor com um preview ao vivo" /><br>
+  <img src="img/theme.png" width="820" alt="A galeria de presets do Theme Editor com um preview ao vivo" /><br>
   <sub><i>Mais de 40 presets, com um preview ao vivo que se atualiza enquanto você edita.</i></sub>
 </p>
 
-- **Presets** — mais de 40 temas selecionados agrupados por matiz; clique para aplicar. O padrão é *Lavender Coal* (escuro).
-- **Colors** — ajuste finamente todas as 15 cores do tema via seletor, hex ou HSL; um verificador de contraste sinaliza texto com baixo contraste.
-- **Appearance** — ajuste **font size**, **border radius**, **row height**, **zoom**, as cores das pílulas por ação e uma troca automática opcional **match-system (dark/light)**.
+O editor tem três telas: ele abre na **galeria**; o botão **Customise** abre a personalização (dividida em **Colors** e **Interface**); e **Import / Export** abre a tela de compartilhar.
+
+- **Gallery** — mais de 40 presets selecionados agrupados por matiz, com busca; clique para aplicar. O padrão é *Lavender Coal* (escuro).
+- **Customise → Colors** — 29 cores em 6 grupos (Accent, Backgrounds, Text, Borders, Semantic e **Action types** — a cor da pílula de cada tipo de ação), via seletor, hex ou HSL; um verificador de contraste sinaliza texto com baixo contraste.
+- **Customise → Interface** — presets de **Density**; ajustes finos **Font Size**, **Border Radius**, **Row Height**, **Zoom**; a fonte **Monospace**; **Match Windows theme** (troca dark/light junto com o Windows, com *Dark preset* / *Light preset*); e **Enable animations** (desligue as transições para acessibilidade / hardware modesto).
 - **Import / Export** — compartilhe um tema como JSON.
-- **Animations** — uma chave-mestra para desativar as transições (acessibilidade / hardware modesto).
+
+<!-- 📸 PRINT: theme-interface.png — A tela Customise do Theme Editor com o segmento INTERFACE ativo, mostrando os presets de Density, os sliders de ajuste fino (Font Size / Border Radius / Row Height / Zoom), a fonte Monospace, e o grupo System (Match Windows theme + Enable animations). A theme.png mostra só a galeria de presets. -->
+<p align="center">
+  <img src="img/theme-interface.png" width="360" alt="A aba Interface do Theme Editor" /><br>
+  <sub><i>A aba <b>Interface</b>: densidade, tamanho de fonte, cantos, altura de linha, zoom e a troca automática com o Windows.</i></sub>
+</p>
 
 ---
 
 ## Referência de configurações
 
-O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente** (sem botão Save). Recolha o painel numa barra fina de ícones para ganhar espaço.
+O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente** (sem botão Save). Recolha o painel numa barra fina de ícones para ganhar espaço. (O painel aparece à direita na [visão geral](#a-grade-de-ações).)
 
 **Aba Profile** (por perfil / modo):
 - **Execution** — Delay, Loops, Interval, Jitter (Macro mode).
 - **Game Mode** — Smooth movement + Fast approach (e seus ajustes).
-- **Recording** — os filtros de captura + chave-mestra **Profile Keys** + captura de seletor do Browser.
+- **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, a chave-mestra **Profile Keys** e **Browser Actions** (gravar seletores CSS do Chrome em vez de coordenadas).
 - **Clicker** — substitui Execution/Game Mode/Recording enquanto no Clicker mode.
 
 **Aba Keys** (tudo que intercepta tecla):
-- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variáveis-slots-e-prompts). Padrões: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode toggle `ScrollLock`, Capture Slot `Win+Ctrl+C` (apague o campo para desativar).
+- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode, [Capture Slot](#variáveis-slots-e-prompts). Padrões: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode `ScrollLock`, Capture Slot `Win+Ctrl+C` (apague o campo para desativar).
 - **Clicker** — as hotkeys de Start/Pause do Clicker (`PageDown` / `PageUp`); só disparam no Clicker mode.
 - **Key Remaps** — a camada de remap sempre ativa (chave-mestra + a lista de remaps; veja [Remaps de tecla](#remaps-de-tecla)).
 
 **Aba App** (em todo o aplicativo):
-- **Window** — Always on top, Minimize to tray.
+- **Window** — Always On Top, System Tray.
 - **Startup** — Run on Startup, Startup Minimized, Run as Administrator.
 - **Notifications** — flash / som quando um replay termina com a janela em segundo plano.
 - **Automation** — a chave-mestra de Automations + o botão que abre o painel.

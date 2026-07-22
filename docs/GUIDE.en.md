@@ -213,7 +213,7 @@ Turn on **Run on Startup** + **Startup Minimized** (Settings → App → Startup
 
 **Where new steps land:** if you have rows **selected**, recording inserts **before** the first selected row; with **no selection**, it **appends** to the end. Clear the selection to append.
 
-### Capture filters (Settings → Recording)
+### Capture filters (Settings → Profile → Recording)
 
 | Toggle | Effect |
 | --- | --- |
@@ -245,6 +245,7 @@ Press **`Ctrl+PageDown`** (or click **Replay**) to run the active profile; press
 
 The central table lists every action in the profile. Columns: **selection checkbox · Action (colored pill) · Details · Delay · Notes**.
 
+<!-- PICT: main.png — The whole main window: profiles & folders panel on the left, the action grid in the center (with a few sample actions and the toolbar visible at the top), the Settings panel on the right. It's the opening shot; make it a sample profile with a variety of actions. -->
 <p align="center">
   <img src="img/main.png" width="820" alt="The TrueReplayer main window and action grid" /><br>
   <sub><i>Profiles &amp; folders on the left, the action grid in the center, settings on the right.</i></sub>
@@ -268,7 +269,7 @@ The central table lists every action in the profile. Columns: **selection checkb
 | --- | --- |
 | **Left / Right / Middle Click** | A single click of that button at `(x, y)`. |
 | **Double Click** | Two left clicks at the same point, timed below the system double-click threshold so apps treat it as a real double-click. |
-| **Keystroke** | Press a key or combo once — or **N times** with a configurable gap. |
+| **Keystroke** | Press a key or combo once — or **N times** with a configurable gap and an optional **Gap jitter** (see below). |
 | **Hold Key** | Hold a single key down for a set duration (default 1000 ms). Modifiers are dropped. |
 | **Key Down / Key Up** | A standalone press or release — for holds and drags where down/up must be separate. |
 | **Scroll Up / Down** | One mouse-wheel notch at the cursor. |
@@ -281,9 +282,27 @@ The central table lists every action in the profile. Columns: **selection checkb
 | **Run Profile** | Run another profile as a sub-step — optionally a set number of times. Cycles and chains deeper than 5 levels are blocked automatically. |
 | **Activate Window** | Act on another app's window mid-run: **Activate** (bring to the front — launching it first if needed), **Maximize**, **Minimize** or **Close**. *Activate* changes the OS focus target only, never the coordinate context. See [Multi-window automation](#multi-window-automation-activate-window). |
 | **If / Else / EndIf** | Conditional branch — see [Conditional blocks](#conditional-blocks-if--else--endif). |
-| **Browser actions** | Click / Type / Navigate / Wait element / Assert element / Select option in Chrome — see [Browser automation](#browser-automation). |
+| **Browser actions** | Click / Right Click / Type / Navigate / Wait element / Assert element / Select option in Chrome — see [Browser automation](#browser-automation). |
 
 Insert actions from the **toolbar** (Send Keystroke, Send Text, Set Variable, Copy to Slot, Pause, Wait, Conditional, Browser, Run Profile, Activate Window, Data Loop). Most actions open a small dialog to configure them; click an action's Details cell later to edit it.
+
+### Send Keystroke — Press × N and Gap jitter
+
+The **Send Keystroke** dialog has a **Press / Hold** selector. In **Press** mode you capture a key or combo and get three fields (the last two are only active when **Times to repeat** > 1):
+
+- **Times to repeat** — how many times to press (1 to 999; default 1).
+- **Gap between presses** — the interval between one press and the next (default 30 ms; 0 to 5000).
+- **Gap jitter** — **off by default**. Turn it on with the dot to the right of the label and it adds a random **± %** to *each* gap, drawn fresh every cycle, so the burst doesn't run at a perfectly fixed rhythm — a constant gap is the easiest way to look like a bot. Turned on, it starts at 20% (1 to 100).
+
+In **Hold** mode you set a **Hold duration** (default 1000 ms) with shortcut chips (100 ms · 500 ms · 1 s · 5 s · 30 s); modifiers are dropped.
+
+> This **Gap jitter** is local to *one* Keystroke action. Don't confuse it with the Execution **Jitter** (Settings → Profile), which is a global ± % applied to *all* replay delays.
+
+<!-- PICT: send-keystroke.png — The "Send Keystroke" dialog in Press mode with the three fields filled in: "Times to repeat" = 5, "Gap between presses" = 30 ms, and "Gap jitter" ON (the accent dot filled in to the right of the label) with the % field active (e.g. 20%). A key captured in the pad above (e.g. F5 or Tab) so the Add/Save button is active. -->
+<p align="center">
+  <img src="img/send-keystroke.png" width="360" alt="The Send Keystroke dialog with Times, Gap and Gap jitter" /><br>
+  <sub><i>Press × N with <b>Gap jitter</b> on — the burst loses its fixed rhythm.</i></sub>
+</p>
 
 > **Tip — match by colour, not confidence.** Image matching compares the whole reference, so it's great for shape/text but a blunt tool for telling apart two states that differ only in **colour** (e.g. an enabled *green* vs a disabled *grey* button). For that, use **Wait Pixel Color** (or an **If** on *Pixel Color Match*): sample a point in the solid fill and match the colour within a tolerance. Also don't set **confidence to 100%** — a live screen never reproduces a reference pixel-for-pixel, so a 100% match times out (it's capped just under 100% internally).
 
@@ -293,6 +312,7 @@ Insert actions from the **toolbar** (Send Keystroke, Send Text, Set Variable, Co
 
 Make a macro react to what's on screen.
 
+<!-- PICT: conditionals.png — (You can REUSE the current one — the conditionals grid hasn't changed since 2026-07-19.) Two nested If/Else/EndIf blocks in the grid, showing the per-scope-level colors. -->
 <p align="center">
   <img src="img/conditionals.png" width="820" alt="Two If/Else/EndIf blocks in the action grid" /><br>
   <sub><i>A negated pixel check (<code>if NOT</code>) and an image check with an <code>else</code> branch.</i></sub>
@@ -305,7 +325,7 @@ Make a macro react to what's on screen.
 | **Image Found** | A reference image is visible on screen. |
 | **Pixel Color Match** | The pixel at `(x, y)` matches a color (within tolerance). |
 | **Window Open** | A window matching a process/title exists — optionally only when it's in the foreground. |
-| **Clipboard** | The clipboard text matches (Contains / Exact / Regex / Empty). |
+| **Clipboard** | The clipboard text matches (Contains / Equals / Regex). |
 | **Browser Element** | An element in Chrome is present, visible or enabled. |
 | **Random** | A dice roll lands under N% — for macros that shouldn't look perfectly regular. |
 | **Variable** | A `{var:name}` compares true against a value (equals, contains, greater than, …). |
@@ -316,6 +336,7 @@ Make a macro react to what's on screen.
 - If the probe is **true**, the actions between **If** and **Else/EndIf** run; if **false**, execution jumps to the **Else** branch (if present) or past the **EndIf**.
 - **Negate (IFNOT)** flips the test — the *true* branch runs when the probe **fails**.
 - **Wait for condition (optional)** — by default an **If** checks once and branches instantly. Set a *Wait for condition* value (ms) and it polls that long for the condition to become true before deciding: satisfied in time → **true** branch; time runs out → **Else / false**. Great for *"wait up to 3 s for the button to enable, else take a fallback path."* `0` = instant (the default).
+- **On Probe Error** — what to do if the *check itself* errors (e.g. a screen capture fails). **Treat as false** (default) counts as "not found" and takes the false/Else branch; **Halt** stops the replay. Leave it on *Treat as false* for a forgiving macro.
 - Blocks can be **nested** — each nesting level shows in its own colour (with matching scope rails) so deep conditionals stay readable. To create a nested block, select a row **inside** an existing block, then **Insert Conditional**. Add an **Else** via the dashed **+ Add Else branch** row inside the block. The structure is validated and auto-repaired on load (orphan markers removed, missing `EndIf` added).
 
 **Editing a block's contents** — actions *inside* a block edit granularly; an operation only snaps to the **whole block** when your selection includes a marker (*If / Else / EndIf*), so markers can never be orphaned:
@@ -347,7 +368,7 @@ Make a macro react to what's on screen.
 
 **Step 6 (optional) — the plan B.** If you want to do something else when the dialog *doesn't* appear, look inside the block: just above the **EndIf** there's a dashed **+ Add Else branch** row. Click it and the **Else** drops in there. Whatever sits after the **Else** runs only when the check comes back negative.
 
-> **To flip it without an Else.** On the **If** row, the **Condition** field has two options: **Found** and **NOT Found** (that's IFNOT). With **NOT Found**, the block's body runs precisely when the window is **not** there — handy for "if the dialog never showed, something went wrong, grab a screenshot."
+> **To flip it without an Else.** On the **If** row, the **Condition** field has two options: **Found** and **NOT Found** (that's IFNOT). With **NOT Found**, the block's body runs precisely when the window is **not** there — handy for "if the dialog never showed, something went wrong, grab a screenshot." On state conditions (**Clipboard**, **Variable**, **Random** and **Time**) the options read **Met** / **NOT Met** instead of Found / NOT Found — same idea.
 
 Here's the difference between the two waits: the **If** row's own **Delay** — which isn't in this editor at all, but in the grid's **Delay** column (click the cell to edit it) — is a **fixed wait before** the check, and it always burns the whole thing, even if the window was already there; **Wait for condition** burns only as long as it needs to. Fill in both and they add up. (**Else** and **EndIf** rows have no Delay field at all — the cell is blank and not editable, and a bulk "set delay" skips them.)
 
@@ -378,6 +399,7 @@ Commands that have no button of their own, in three groups:
 
 Bind a profile to a trigger so it runs without opening the app.
 
+<!-- PICT: hotkey.png — The Assign Hotkey dialog with the Trigger Mode grid showing all SIX modes: On Press, On Release, While Pressed, Toggle, Double-tap, Hold (long-press). The old image may be missing Double-tap/Hold (2.9.0). -->
 <p align="center">
   <img src="img/hotkey.png" width="320" alt="The Assign Hotkey dialog with trigger modes" /><br>
   <sub><i>Capture a key combo and pick a trigger mode.</i></sub>
@@ -385,7 +407,7 @@ Bind a profile to a trigger so it runs without opening the app.
 
 - **Hotkey** — right-click a profile → **Assign hotkey**, press the combo (e.g. `Ctrl+Alt+F1`), pick a trigger mode. Fires globally.
 - **Hotstring** — assign a typed sequence (e.g. `qqsig`); finishing it runs the profile.
-- **Master switch** — `Pause` (or Settings → Recording → **Profile Keys**) enables/disables **all** hotkeys and hotstrings at once.
+- **Master switch** — `Pause` (or Settings → Profile → Recording → **Profile Keys**) enables/disables **all** hotkeys and hotstrings at once.
 
 ### Trigger modes
 
@@ -418,6 +440,12 @@ Three trigger kinds per profile (one automation each):
 | **Schedule** | At a clock time (`HH:mm`) on the weekdays you pick. |
 | **Condition** | When a watched condition **becomes true**: a window opens (or comes to the foreground), a process starts, a file appears, a pixel matches a color, an image appears on screen, or the clipboard changes. |
 
+<!-- PICT: automation-panel.png — The whole Automation dialog. On the left: the list of automations with at least one armed row showing the status summary (e.g. "at 08:00 · 3× · next …") plus the Armed toggle and the "Add automation" button. On the right: the editor with a Schedule trigger ("At" 08:00, "Days" with Mon–Fri lit). Footer: the "Automations enabled" master switch plus Close/Save. -->
+<p align="center">
+  <img src="img/automation-panel.png" width="820" alt="The Automation panel: list on the left, trigger editor on the right" /><br>
+  <sub><i>The list of automations (with the <b>Armed</b> toggle) on the left and the trigger editor on the right.</i></sub>
+</p>
+
 How it behaves:
 
 - **Armed** — only armed automations run; they re-arm automatically at startup, so
@@ -434,6 +462,21 @@ How it behaves:
   (**Enable Automations**). The tray tooltip shows how many automations are armed.
 - Profiles without a window target act on whatever window is focused when the trigger fires —
   the editor warns you. Prefer targeted profiles (or *Activate Window* as the first action).
+
+### On-screen image trigger (Image on screen)
+
+Pick **Condition → Image on screen** to fire the profile when something appears on screen. The editor has:
+
+- **Reference image** — click **Capture** (the camera icon) and crop what to watch for on screen; it becomes a thumbnail. Click the thumbnail to **crop tighter** without recapturing.
+- **Confidence** — how close the match must be (default **80%**, range 10–99). **Never 100%** — a live screen never reproduces a reference pixel-for-pixel.
+- **Search region** — **Full screen** by default. Click **Configure** and drag a box to limit the search to a slice of the screen — faster and with fewer false positives for a watcher that runs all the time. The ✕ clears the region.
+- **Test match** — searches the screen **now**: on a hit it shows the percentage and **snaps the region** around the found spot (reads *Found (85%) — region snapped to it*); on a miss, *Not found on screen*.
+
+<!-- PICT: automation-image.png — Automation dialog with Trigger = Condition and Condition = "Image on screen". Show: the filled "Reference image" thumbnail, the "Capture" and "Test match" buttons, a result line "Found (85%) — region snapped to it", the "Search region" field with a defined ROI (e.g. "420, 260 · 320 × 180") with the "Configure" button and the ✕, and the "Confidence" field at 80%. -->
+<p align="center">
+  <img src="img/automation-image.png" width="440" alt="On-screen image automation trigger, with search region and Test match" /><br>
+  <sub><i>The <b>Image on screen</b> trigger with search region, confidence and <b>Test match</b>.</i></sub>
+</p>
 
 ### Worked example — the 8 a.m. macro that runs itself
 
@@ -485,15 +528,16 @@ That's the difference between the first two: **Interval** counts from the moment
 
 Tie a profile (or a whole folder) to a specific application window.
 
+<!-- PICT: target.png — The Target Configuration dialog at rest: Process Name, Title (Contains/Regex), the "Detect Window (click on target)" button, "Test front window", the Relative Coordinates / Bring to Focus / Restore Position / Restore Size toggles, the "Update Window Size & Position" button and "Set Target". -->
 <p align="center">
   <img src="img/target.png" width="360" alt="The Target Configuration dialog" /><br>
   <sub><i>Match a window by process / title, with relative coordinates and restore options.</i></sub>
 </p>
 
-- **Window target** — set a process name and/or window title (match *contains* or *regex*). The profile's **hotkey only fires when that window is in front**. Use **Detect window** to click a window and auto-fill the fields, and **Test** to check the match.
-- **Relative coordinates** — store clicks relative to the window's top-left corner instead of the screen, so the macro keeps hitting the right spot when the window moves or resizes. Use **Convert to Relative / Absolute** to migrate an existing macro's coordinates.
-- **Bring to focus** — restore + foreground the window before replay.
-- **Restore position / size** — snap the window back to a saved geometry first (use **Update window** to capture the current one).
+- **Window target** — set a process name and/or window title (match *contains* or *regex*). The profile's **hotkey only fires when that window is in front**. Use **Detect Window (click on target)** to click a window and auto-fill the fields, and **Test front window** to check the match.
+- **Relative Coordinates** — store clicks relative to the window's top-left corner instead of the screen, so the macro keeps hitting the right spot when the window moves or resizes. To migrate an already-recorded macro, the dialog offers **Apply target & convert** when you flip the toggle; outside it, right-click the profile → **Convert coords → Relative / Absolute** (or the command palette, `Ctrl+K`).
+- **Bring to Focus** — restore + foreground the window before replay.
+- **Restore Position / Size** — snap the window back to a saved geometry first (use **Update Window Size & Position** to capture the current one). The same geometry works for a whole **folder** too.
 
 > If a profile uses relative coordinates and its target window isn't found at replay time, replay stops with an error (rather than clicking the wrong place).
 
@@ -539,7 +583,13 @@ The **Activate Window** action switches which app is in front *mid-run*, so one 
 - **Precision multi-window (relative clicks per window).** Make a target-less **orchestrator** profile that alternates **Activate Window X (launch)** → **Run Profile "X-steps"**, where each sub-profile owns *its own* window target + relative coordinates. Activating X first guarantees the sub-profile's target exists before its first relative click.
 - **Return to your own window.** An **Activate Window** pointing at the profile's own target is a mid-run "come back here" step after a detour into another app.
 
-**Fields.** Match the window by **Process** and/or **Title** (Contains or Regex) — use the **picker** to choose a running process, or **Detect window** to click the target. **Path / Args** launch the app when no window matches (a full path is safest; a bare `app.exe` only resolves if it's on `PATH`). **Placement** optionally moves/resizes the activated window — positional only; it does *not* change where clicks land. **Timeout / On timeout** decide how long to wait and whether to **Halt** (default — safe, since keystrokes follow whatever window is focused) or **Continue** if the window can't be found or focused. **Test** checks whether a matching window exists right now.
+**Fields.** The **Action** selector decides what to do with the window: **Activate** (bring it to the front — launching the app first if needed), **Maximize** (focus and maximize), **Minimize** or **Close** (asks the app to close). **Launch** (Path/Args) and **Placement** show only for Activate/Maximize; **Placement** (chips) only for Activate. Identify the window by **Process** and/or **Title** (Contains or Regex) — use the **picker** to choose a running process, or **Detect Window (click on target)** to click the target. If several windows match, **Match #** picks the Nth (1 = the frontmost). **Path / Args** launch the app when no window matches (a full path is safest; a bare `app.exe` only resolves if it's on `PATH`). In **Placement**, the **Position** and **Size** chips are independent; turn one on to reveal the **X / Y / Width / Height** fields, and **Capture from window** reads the window's current rectangle — positional only, it doesn't change where clicks land. **Timeout / On Timeout** decide how long to wait and whether to **Halt** (default — safe, since keystrokes follow whatever window is focused) or **Continue** if the window can't be found or focused. **Test** checks whether a matching window exists right now (shows *Found — process · title* or *Not found*).
+
+<!-- PICT: activate-window.png — Sheet panel with an Activate Window action selected and Action = Activate, showing the full set: the "Action" selector (Activate/Maximize/Minimize/Close), the "Match Window" block (Process Name with the process picker, Title with Contains/Regex, and the "Detect Window (click on target)" button), the "Match #" field, the "Launch" Path (with "Browse…") + Args, the "Placement" row with the Position/Size chips, the "Test" button, and "Timeout" + "On Timeout" (Halt/Continue). -->
+<p align="center">
+  <img src="img/activate-window.png" width="360" alt="The Activate Window action editor with the Action selector and window fields" /><br>
+  <sub><i>The <b>Action</b> verb (Activate/Maximize/Minimize/Close) and the window-matching fields.</i></sub>
+</p>
 
 ---
 
@@ -555,13 +605,17 @@ Switch to **Clicker** with **`ScrollLock`** (or the Macro/Clicker toggle). The P
 | **Interval** | Pause between loop iterations. | off |
 | **Jitter** | Random ± % on the delay. | off |
 | **Position** | Randomize the click position slightly. | off |
-| **Area** | Drag a rectangle to click random points inside it (mutually exclusive with Position jitter). | off |
+| **Area** | Drag a rectangle to click random points inside it. | off |
+| **Fixed** | Always clicks **one** point. With no point set, it locks to the cursor position when the click starts (*At start*); click the chip body to pick the point on screen. | off |
+
+> **Position, Area and Fixed are mutually exclusive** — turning one on turns off the other two.
 
 Start/stop with **`PageDown`**, pause/resume with **`PageUp`**. While running, the **live dashboard** shows the click count, rate, elapsed time, loop progress and ETA.
 
+<!-- PICT: clicker.png — The Clicker panel LIVE while running (press PageDown to start): the big click count, rate, elapsed time, loop progress, ETA and the progress bar — with the Clicker settings (Button · Rate · Loops · Interval · Jitter · Position · Area · Fixed) visible in the right-hand panel. -->
 <p align="center">
-  <img src="img/clicker.png" width="820" alt="The Clicker dashboard while running" /><br>
-  <sub><i>Live count, rate, elapsed time, loop progress, ETA and a progress bar.</i></sub>
+  <img src="img/clicker.png" width="820" alt="The Clicker dashboard while running, with the settings on the right" /><br>
+  <sub><i>Live count, rate, ETA and the progress bar — and the settings (incl. <b>Fixed</b>) on the right.</i></sub>
 </p>
 
 ---
@@ -580,17 +634,27 @@ For games (e.g. Roblox) that ignore an instant cursor "teleport", *Game mode* ma
 
 The **Insert Text** editor composes text that's injected via clipboard paste (so layouts and special characters survive).
 
+<!-- PICT: sendtext.png — The "Insert Text" editor (opened from toolbar → Send Text). Right-hand rail on the "Insert" tab, scrolled to show the FOUR sections with headings: Clipboard (chips Clipboard, Advanced…, Clip slot…, Clipboard history), Values (Date, Time, DateTime, Random), Keys & timing (Enter, Tab, Delay + More keys) and Run state (Variable…, Counter, Action row #, Row column…, Row column (next)…, Ask input…). Replaces the old image, from before the winclip/rownext chips. -->
 <p align="center">
-  <img src="img/sendtext.png" width="820" alt="The Send Text editor with token chips and a key/clipboard palette" /><br>
-  <sub><i>Editable token chips inline, with a key &amp; clipboard palette on the side.</i></sub>
+  <img src="img/sendtext.png" width="820" alt="The Insert Text editor with the four token-chip sections" /><br>
+  <sub><i>Editable token chips inline, with the Clipboard · Values · Keys &amp; timing · Run state sections on the side.</i></sub>
 </p>
 
 - **Tokens** — embed special keys and values: `{enter}`, `{tab}`, `{space}`, arrows and other keys; `{date}` / `{time}` / `{datetime}`; `{delay:500}` to pause mid-text. Repeatable keys take a count: `{enter:3}`.
 - **Clipboard** — `{clipboard}` inserts the current clipboard; `{clipboard:upper}`, `{clipboard:trim}`, `{clipboard:line:1}` etc. transform it (trim → extract → limit → case order). Your real clipboard is restored afterward.
-- **Run-state tokens** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}` and `{row:column}` pull in values from the running macro; see [Variables, slots & prompts](#variables-slots--prompts) and [Data Loop](#data-loop).
+- **Clipboard history** — `{winclip:1}` inserts the **most recent** item copied in Windows, `{winclip:2}` the one before it, and so on (it's the `Win+V` history, so it must be enabled in Windows settings). `{winclip}` alone means `{winclip:1}`. It's different from the `{clip:N}` slots: `{winclip}` reads the system history, `{clip}` reads what *you* captured in the app.
+- **Run-state tokens** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}`, `{row:column}` and `{rownext:column}` pull in values from the running macro; see [Variables, slots & prompts](#variables-slots--prompts) and [Data Loop](#data-loop).
 - **Token chips** — each token shows as an editable chip; click it to tweak its parameters.
 - **Snippets** — save reusable text under a name for quick insertion later. Snippets live in the app, not in the profile, so they don't travel with export/import.
 - Confirm with **`Ctrl+Enter`** (plain `Enter` makes a new line); `Esc` cancels.
+
+The **Advanced…** chip opens a `{clipboard}` transform builder with a live preview — trim, line ops (sort, dedupe, reverse, join), extract line/word, limit length and case — that assembles the `{clipboard:mods}` chain for you without memorizing the syntax.
+
+<!-- PICT: advanced-clipboard.png — The "Advanced Clipboard" editor (the Advanced… chip in Insert Text): the TRIM, LINES, EXTRACT, LIMIT LENGTH, CASE steps on the left and the CLIPBOARD NOW / RESULT / TOKEN preview on the right. -->
+<p align="center">
+  <img src="img/advanced-clipboard.png" width="820" alt="The Advanced Clipboard builder with a live preview" /><br>
+  <sub><i>The <b>Advanced…</b> builds the <code>{clipboard:mods}</code> chain step by step, with a live preview.</i></sub>
+</p>
 
 **Delivery** decides how the formatting arrives, since every app understands something different:
 
@@ -609,10 +673,10 @@ The **Insert Text** editor composes text that's injected via clipboard paste (so
 
 **Step 2 — drop tokens where the text changes.** In the right-hand panel, **Insert** tab, the chips sit in sections:
 
-- **Clipboard** — **Clipboard** (`{clipboard}`) and **Advanced…**, which builds transforms like `{clipboard:trim}`.
+- **Clipboard** — **Clipboard** (`{clipboard}`), **Advanced…** (builds transforms like `{clipboard:trim}`), **Clip slot…** (inserts `{clip:name}` from a slot you captured) and **Clipboard history** (inserts `{winclip:1}`, the Windows history).
 - **Values** — **Date**, **Time**, **DateTime** and **Random**.
 - **Keys & timing** — **Enter**, **Tab** and **Delay** (`{delay:500}`), plus a **More keys** toggle for the rarer keys.
-- **Run state** — **Variable…**, **Counter**, **Row #** and others.
+- **Run state** — **Variable…**, **Counter**, **Action row #** (`{row}` — the row number *of the action* in the grid), **Row column…** (`{row:column}`), **Row column (next)…** (`{rownext:column}` — the *next* row on each use) and **Ask input…** (`{input:…}`).
 
 Click a chip and it lands at the cursor. The body ends up like this:
 
@@ -649,17 +713,55 @@ Three ways to make one macro handle changing values instead of writing a new mac
 | **Copy to Slot** action / **Capture Slot** hotkey | Until you record over it — kept from one run to the next, for as long as the app stays open. | `{clip:name}` or `{clip:1}`…`{clip:9}` |
 | **`{input:Label}`** | Asked once per run, then remembered for that run. | Type the token itself |
 
-**Set Variable** *(toolbar)* — give it a **Name** and a **Value**; the value is resolved first, so it can contain `{clipboard}`, `{row:col}`, `{date}` or another `{var:}`. Storing an empty value deletes the variable. Switch the mode to **Cycle** and the value becomes a list (one item per line): each run stores the **next** line and wraps at the end, so a hotkey walks the list one item per press. Right-click the row → **Reset row position** to start over at item 1.
+### Quick reference — each token and what it becomes
 
-**Copy to Slot** *(toolbar)* — copies whatever is **selected** in the focused app into a named slot. Make sure the text is actually selected first (a `Ctrl+A` keystroke just before it, for example). A failed grab leaves the previous value untouched rather than wiping it.
+Minimal examples. All of them can go inside a **Send Text** (or in a Keystroke's key, or a browser field).
+
+| You write | What comes out at run time |
+| --- | --- |
+| `{var:customer}` | The value stored by a **Set Variable** named `customer` (empty if it was never set). |
+| `{clip:1}` … `{clip:9}` | The text you captured in numbered slot 1…9. |
+| `{clip:order}` | The text in the slot named `order` (from a **Copy to Slot** action). |
+| `{input:Order number}` | Opens a box asking "Order number" and types your answer. |
+| `{input:Priority\|menu:Low,Medium,High}` | Opens a pick-list and types the one you click. |
+| `{counter}` | The current loop pass number: `1`, `2`, `3`… (empty on a single run). |
+| `{winclip:1}` | The most recent item copied in Windows (the `Win+V` history). |
+| `{clipboard}` | Whatever is copied right now (`{clipboard:trim}` drops stray spaces). |
+
+> **Golden rule:** a token that finds no value becomes **empty text** — it never errors. If something comes out blank, press **`Ctrl+K`** → **Toggle Live Variables** and run again to see what's actually stored.
+
+**Set Variable** *(toolbar)* — give it a **Variable Name** and a **Value**; the value is resolved first, so it can contain `{clipboard}`, `{row:col}`, `{date}` or another `{var:}`. Storing an empty value deletes the variable. In the **Mode** selector, switch from **Set** (default) to **Cycle**: the value field becomes **List (one item per line)** and each run stores the **next** line, wrapping to the first at the end — so a hotkey walks the list one item per press. To start over at item 1, right-click the **Set Variable** row in the action grid → **Reset cycle position**.
+
+**Copy to Slot** *(toolbar)* — has a **Mode** selector with two options:
+
+- **Capture** (default) — copies whatever is **selected** in the focused app into the slot named in **Slot**. Make sure the text is actually selected first (a `Ctrl+A` keystroke just before it, for example). A failed grab leaves the previous value in place instead of wiping it.
+- **Clear** — **empties** the slot named in **Slot**. Leave the field **blank** to clear **all** slots (1 to 9) and also reset the **Capture Slot** hotkey cursor back to slot 1. Clear mode types and pastes nothing and doesn't touch the Windows clipboard.
+
+<!-- PICT: copy-to-slot-clear.png — The Copy to Slot editor (Sheet panel on the right) with the Mode selector on "Clear" and the Slot field BLANK (placeholder "all slots"), showing the explanatory card "Empties the slot above — or ALL slots (1–9) if the name is blank…". -->
+<p align="center">
+  <img src="img/copy-to-slot-clear.png" width="360" alt="The Copy to Slot editor in Clear mode" /><br>
+  <sub><i>The <b>Clear</b> mode empties one slot — or all of them, if the name is left blank.</i></sub>
+</p>
 
 **Capture Slot** *(hotkey)* — the by-hand version, already bound to `Win+Ctrl+C`: go to Settings → **Keys** → **Hotkeys** → **Capture Slot** to change the combo, or clear the field to switch it off. Each press stores the current selection into the next numbered slot, `{clip:1}` through `{clip:9}`, wrapping; a toast tells you which slot it landed in. It's ignored while a macro is running — use the **Copy to Slot** action there instead.
 
-**`{input:Label}`** — pauses the run and asks you for the value: `{input:Order number}` shows a text box, `{input:Priority|menu:Low,Medium,High}` shows a pick-list. You're asked once per label per run; cancelling the prompt stops the run.
+**`{input:Label}`** — pauses the run and asks you for the value: `{input:Order number}` shows a text box (titled **Input needed**) and `{input:Priority|menu:Low,Medium,High}` shows a pick-list to click. You're asked once per label per run; reuse the same `{input:Order number}` later and it repeats the answer without asking again. When it asks, TrueReplayer **brings itself to the front** on its own (even minimized or hidden in the tray) and, once you answer, **hands focus back** to the window that was in front — so the answer lands in the right app, not in TrueReplayer. Closing the box (**Esc** / **Cancel**) **stops the macro**, and if nobody answers within **60 seconds** the run is aborted (so an unattended automation doesn't hang forever).
+
+<!-- PICT: ask-input.png — The "Input needed" box during a run, triggered by {input:Label}: title "Input needed", the label, the text field and Cancel/Submit, with the footer "Enter to submit · Esc cancels the run". -->
+<p align="center">
+  <img src="img/ask-input.png" width="360" alt="The Input needed box during a run" /><br>
+  <sub><i><code>{input:Label}</code> opens this box and types your answer into the right app. With <code>|menu:…</code>, it becomes a pick-list to click.</i></sub>
+</p>
 
 **`{counter}`** — the current loop iteration number, handy for numbering output.
 
 > **Seeing what's set.** Press **`Ctrl+K`** → **Toggle Live Variables** to open a small card that shows every variable, every slot and the current data row *while the macro runs* — the quickest way to debug a token that resolves to nothing.
+
+<!-- PICT: live-variables.png — The floating Live Variables card open during a run (Ctrl+K → Toggle Live Variables), showing the "Live Variables" header and the Variables / Slots / Current row sections with a few values in each. -->
+<p align="center">
+  <img src="img/live-variables.png" width="360" alt="The Live Variables panel during a run" /><br>
+  <sub><i>Variables, slots and the current data row, live while the macro runs.</i></sub>
+</p>
 
 ### Worked example — collecting three scattered values
 
@@ -669,9 +771,9 @@ Three ways to make one macro handle changing values instead of writing a new mac
 
 **Step 2 — collect the three values.** Just select and press; no pasting anywhere:
 
-1. Select the customer's name → `Ctrl+Shift+C`. A toast reads *Selection captured → {clip:1}*.
-2. Select the order number → `Ctrl+Shift+C` → becomes `{clip:2}`.
-3. Select the delivery code → `Ctrl+Shift+C` → becomes `{clip:3}`.
+1. Select the customer's name → `Win+Ctrl+C`. A toast reads *Selection captured → {clip:1}*.
+2. Select the order number → `Win+Ctrl+C` → becomes `{clip:2}`.
+3. Select the delivery code → `Win+Ctrl+C` → becomes `{clip:3}`.
 
 **Step 3 — write the message once.** Make a profile with one **Send Text** action:
 
@@ -705,6 +807,12 @@ Run the whole profile once for **each row** of a table — mail-merge style. Pas
 
 Open it from the **toolbar** (the table icon → *Data Loop*). The table is saved **inside the profile**, so it travels with export/import — a large table grows the profile file.
 
+<!-- PICT: data-loop.png — The Data Loop panel open with a small sample table (header "product | price" + 3 rows). Leave "Loop over data" TICKED so the blue notice "N iterations — one full run per row" appears along with the "On row error" control (Halt / Skip row), and the "Columns · tokens" list on the right showing the {row:product}/{row:price} chips with the ×N / unused counts. -->
+<p align="center">
+  <img src="img/data-loop.png" width="820" alt="The Data Loop panel with a sample table and Loop over data mode" /><br>
+  <sub><i>The table, the <b>Loop over data</b> mode and the column tokens on the right.</i></sub>
+</p>
+
 ### Getting data in
 
 - **Paste from Excel / Sheets** — **Paste / bulk edit…**, drop a copied range into the box, and pick **Replace table** or **Append rows**. Tabs, quotes and multi-line cells survive the paste. **First row is the header** turns the top line into column names (off → columns become `col1…colN` and every line is data).
@@ -718,8 +826,11 @@ Every column header becomes a token you can paste into **Insert Text**, a **Keys
 
 | Token | Resolves to |
 | --- | --- |
-| `{row:column}` | The current row's value in that **column** (lookup is case-insensitive). |
-| `{row}` | The current **row number** (1-based). |
+| `{row:column}` | The **current** row's value in that **column** — the *same* row for every action in a run (lookup is case-insensitive). |
+| `{rownext:column}` | The **next** row of that column on each use: the 1st time takes row 1, the 2nd takes row 2, and so on. Resets each run; past the last row it comes out **empty** (it doesn't wrap). |
+| `{row}` | The row number **of the current action in the grid** (1-based) — nothing to do with the data table. |
+
+> **`{row:col}` vs `{rownext:col}` — the difference that matters.** Think of the **columns** as fields and the **rows** as a list. Use `{row:col}` when each run fills *one* record (several columns, same row) — it's the natural partner of **Loop over data**. Use `{rownext:col}` when you want to dump the *whole list* in one pass: three `Send Text` actions with `{rownext:name}` type row 1, row 2 and row 3 in a row. Both tokens accept the same modifiers (`{rownext:name:trim:upper}`).
 
 - Copy a token from the **Columns · tokens** rail (click the chip) or the header **⋯** menu. The rail also shows how many actions use each column (`×N` / *unused*), and flags **orphans** — a `{row:…}` an action references but the table has no such column (it types empty text).
 - Headers must be **letters, digits or `_`** to work as tokens. An invalid header is flagged ⚠; click the **wand** to auto-fix it (it still saves either way).
@@ -747,7 +858,7 @@ When looping over data, **On row error** decides what a failed row does:
 
 ### Cell transforms — `{row:column:mods}`
 
-A `{row:column}` token accepts the **same modifier chain as `{clipboard}`** (see [Send Text](#send-text)) — append the modifiers after the column name, e.g. `{row:name:trim:upper}`. Click a `{row:…}` chip inside a text editor to configure them in a popover with a live preview of the first row's value, or type the chain by hand. The pipeline runs in a fixed order: **trim → list ops (range / lines / sort / dedupe / reverse / join) → extract (line / word) → limit (first / last) → case (upper / lower / sentence / title)**.
+A `{row:column}` token — and `{rownext:column}` too — accepts the **same modifier chain as `{clipboard}`** (see [Send Text](#send-text)) — append the modifiers after the column name, e.g. `{row:name:trim:upper}`. Click a `{row:…}` chip inside a text editor to configure them in a popover with a live preview of the first row's value, or type the chain by hand. The pipeline runs in a fixed order: **trim → list ops (range / lines / sort / dedupe / reverse / join) → extract (line / word) → limit (first / last) → case (upper / lower / sentence / title)**.
 
 ### Run a sub-profile once per row
 
@@ -836,36 +947,44 @@ A **selector quality** badge (S → C) hints how stable each captured selector i
 
 Open the **Theme Editor** from Settings → App → Interface → *Customise*.
 
+<!-- PICT: theme.png — The Theme Editor open on the GALLERY (preset grid, with the search), with the live preview. -->
 <p align="center">
-  <img src="img/theme.png" width="820" alt="The Theme Editor presets tab with a live preview" /><br>
+  <img src="img/theme.png" width="820" alt="The Theme Editor preset gallery with a live preview" /><br>
   <sub><i>40+ presets, with a live preview that updates as you edit.</i></sub>
 </p>
 
-- **Presets** — 40+ curated themes grouped by hue; click to apply. The default is *Lavender Coal* (dark).
-- **Colors** — fine-tune all 15 theme colors via picker, hex or HSL; a contrast checker flags low-contrast text.
-- **Appearance** — adjust **font size, border radius, row height, zoom**, the per-action pill colors, and an optional **match-system (dark/light)** auto-switch.
+The editor has three surfaces: it opens on the **gallery**; the **Customise** button opens customization (split into **Colors** and **Interface**); and **Import / Export** opens the sharing screen.
+
+- **Gallery** — 40+ curated presets grouped by hue, with search; click to apply. The default is *Lavender Coal* (dark).
+- **Customise → Colors** — 29 colors in 6 groups (Accent, Backgrounds, Text, Borders, Semantic and **Action types** — the pill color of each action type), via picker, hex or HSL; a contrast checker flags low-contrast text.
+- **Customise → Interface** — **Density** presets; fine-tune **Font Size**, **Border Radius**, **Row Height**, **Zoom**; the **Monospace** font; **Match Windows theme** (switches dark/light along with Windows, with *Dark preset* / *Light preset*); and **Enable animations** (turn transitions off for accessibility / modest hardware).
 - **Import / Export** — share a theme as JSON.
-- **Animations** — a master toggle to disable transitions (accessibility / low-end hardware).
+
+<!-- PICT: theme-interface.png — The Theme Editor's Customise screen with the INTERFACE segment active, showing the Density presets, the fine-tune sliders (Font Size / Border Radius / Row Height / Zoom), the Monospace font, and the System group (Match Windows theme + Enable animations). theme.png shows only the preset gallery. -->
+<p align="center">
+  <img src="img/theme-interface.png" width="360" alt="The Interface tab of the Theme Editor" /><br>
+  <sub><i>The <b>Interface</b> tab: density, font size, corners, row height, zoom and the automatic switch with Windows.</i></sub>
+</p>
 
 ---
 
 ## Settings reference
 
-The Settings panel (right side) has three tabs; everything **auto-saves** (no Save button). Collapse it to a slim icon rail to reclaim space.
+The Settings panel (right side) has three tabs; everything **auto-saves** (no Save button). Collapse it to a slim icon rail to reclaim space. (The panel is shown on the right in the [overview](#the-action-grid).)
 
 **Profile tab** (per profile / mode):
 - **Execution** — Delay, Loops, Interval, Jitter (Macro mode).
 - **Game Mode** — Smooth movement + Fast approach (and their knobs).
-- **Recording** — the capture filters + **Profile Keys** master switch + Browser selector capture.
+- **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, the **Profile Keys** master switch and **Browser Actions** (record Chrome CSS selectors instead of coordinates).
 - **Clicker** — replaces Execution/Game Mode/Recording while in Clicker mode.
 
 **Keys tab** (everything that intercepts a key):
-- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode toggle, [Capture Slot](#variables-slots--prompts). Defaults: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode toggle `ScrollLock`, Capture Slot `Win+Ctrl+C` (clear the field to disable it).
+- **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode, [Capture Slot](#variables-slots--prompts). Defaults: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode `ScrollLock`, Capture Slot `Win+Ctrl+C` (clear the field to disable it).
 - **Clicker** — the Clicker Start/Pause hotkeys (`PageDown` / `PageUp`); they only fire in Clicker mode.
 - **Key Remaps** — the always-on remap layer (master switch + the remap list; see [Key Remaps](#key-remaps)).
 
 **App tab** (app-wide):
-- **Window** — Always on top, Minimize to tray.
+- **Window** — Always On Top, System Tray.
 - **Startup** — Run on Startup, Startup Minimized, Run as Administrator.
 - **Notifications** — flash / sound when a replay ends while the window is in the background.
 - **Automation** — the Automations master switch + the panel opener.

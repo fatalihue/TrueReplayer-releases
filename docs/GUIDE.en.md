@@ -540,9 +540,16 @@ How it behaves:
 - **Armed** — only armed automations run; they re-arm automatically at startup, so
   *Run on Startup* + *Startup Minimized* turns TrueReplayer into a tray daemon. Arming is
   **local to your machine**: imported, duplicated or copied profiles always arrive disarmed.
-- **One run at a time** — a fire is **skipped** (and counted in the panel) while a replay or
-  recording is running, while you have unsaved edits in the grid, or while a dialog is open.
-  An automation never discards your unsaved work.
+- **One run at a time** — there is a single engine, so a fire waits its turn: while a replay or
+  recording is running, while you have unsaved edits in the grid, or while a dialog is open, it
+  retries for a short window and, if it still doesn't fit, is **skipped** (and counted in the
+  panel). An automation never discards your unsaved work.
+- **Each fire runs the profile once** — even with the toolbar's **Loops** enabled at `0`
+  (= forever). An endless replay started by nobody would own the engine for good, and with the
+  app in the tray there is no Stop button within reach.
+- **The history survives closing the app** — how many times it fired, when it last did, and how
+  many fires were skipped. That is what answers the question only a daemon raises: *did this run
+  while I was away?*
 - **Condition fires** are edge-based by default: the condition must turn false again before the
   next fire (switch to **Continuous** to re-fire every cooldown while it stays true). A
   **Cooldown** (default 30 s) spaces fires; the clipboard watcher ignores clipboard traffic
@@ -551,6 +558,46 @@ How it behaves:
   (**Enable Automations**). The tray tooltip shows how many automations are armed.
 - Profiles without a window target act on whatever window is focused when the trigger fires —
   the editor warns you. Prefer targeted profiles (or *Activate Window* as the first action).
+
+### Checking an automation before you trust it
+
+An automation is the one thing in the app that runs **while you aren't watching**, so the panel
+has three controls that stop you finding out about a mistake weeks later.
+
+- **Run now** (top of the editor) — fires the profile **once, immediately**, down the same road
+  the trigger would use. The answer appears just below the button. It is not the same as pressing
+  Replay: it goes through the same gates an automatic fire does, so it also tells you *why it
+  didn't run* — "a replay is already going", "the grid has unsaved changes", "a dialog is open".
+  It only works on a **saved** automation: save first.
+- **The "can never fire" warning** — if the condition is missing the field it needs (a
+  **Window open** with neither process nor title, a **Process running** with no name, a
+  **File exists** with no path, an **Image on screen** with no image), the editor says so in red
+  and **Save** stays blocked until you fill it in. It used to save, arm, show a live light and
+  never fire, with nothing on screen explaining why.
+- **Armed, but not watching** — when the toggle is on and yet no watcher is running, the list row
+  says so and why: automations are paused at the master switch, the profile is disabled, or the
+  watcher stopped itself (reference image gone, condition that cannot match).
+
+The panel also **asks before discarding**: closing, pressing `Esc` or clicking another automation
+with unsaved changes opens a confirm (**Keep editing** · **Discard** · **Save and continue**), and
+the trash icon wants a **Yes** first. That matters most for the image trigger, where throwing away
+the draft costs the capture and the region you just tuned.
+
+### What a watcher costs — the *Check every* field
+
+A **Condition** trigger keeps checking for as long as it's armed, and the cost is per check. It is
+not the same for all of them: **Image on screen** captures the whole screen and compares the image
+**on every check**, while **Window open** or **File exists** are nearly free.
+
+That's what the **Check every** field is for, in milliseconds, at the end of the condition options.
+Leave it at `0` for the default (250 ms for pixel, 500 ms for clipboard, 1 s for everything else).
+It's worth raising when the thing you're waiting for is slow: an app opening, a download
+finishing, a report that lands at the end of the day. Trading 1 s for 5 s on an image watcher cuts
+the cost fivefold and gives up nothing — what you're waiting for won't appear and vanish inside
+four seconds.
+
+> With several image watchers armed at once, each one takes its own screen capture. That's where
+> raising **Check every** on the ones that aren't in a hurry makes the most difference.
 
 ### On-screen image trigger (Image on screen)
 
@@ -589,11 +636,22 @@ Pick **Condition → Image on screen** to fire the profile when something appear
 
 **Step 6 — leave the app on watch.** Settings → **App** → **Startup** → turn on **Run on Startup**, then **Startup Minimized** (the second one stays greyed out while the first is off). TrueReplayer now starts with Windows, disappears into the tray, and re-arms its automations by itself.
 
-That's the difference between the first two: **Interval** counts from the moment you armed it — arm at 9:47 with 5 minutes and it fires at 9:52, 9:57, and the clock times depend on when you flipped the switch. **Schedule** counts by the clock: 08:00 is 08:00, whenever you armed it. Use **Interval** for "every so often", **Schedule** for "every day at 8".
+That's the difference between the first two: **Interval** counts from the last fire — arm at 9:47 with 5 minutes and it fires at 9:52, 9:57, and the clock times depend on when you flipped the switch. **Schedule** counts by the clock: 08:00 is 08:00, whenever you armed it. Use **Interval** for "every so often", **Schedule** for "every day at 8".
+
+> **The Interval countdown doesn't restart when you close the app.** It picks up where it left off, anchored to the last real fire. That matters for long intervals: "every 12 hours" on a machine you shut down each night used to start over every morning and, in practice, **never fired at all**. If the moment passed while the app was closed it fires 15 seconds after launch — not instantly, so it doesn't jump on you the moment the screen comes up. Re-arming or editing the automation does start a fresh period.
+
+> **A missed Schedule doesn't ambush you later.** If the machine was asleep at 08:00 and you woke it at 18:00, that occurrence is **dropped**, with the reason recorded — a schedule names a *moment*, and running it ten hours late isn't what you asked for. Missed by a few minutes because the app was busy, and it still retries.
 
 > Arming is **local to this machine**. Imported, duplicated or copied profiles always arrive **disarmed** — deliberately, so a profile someone sent you never starts acting on your computer on its own.
 
-> **If it goes wrong.** By far the most common miss: **saving is not arming**. **Save** stores the trigger's configuration; the toggle on the list row is what actually brings the automation to life. If it's armed and still doesn't run, the fire was **skipped** — an automation never runs over your work: it skips while a replay, a recording or Clicker mode is going, while a dialog is open (or you're capturing a hotkey), or while the action list has unsaved edits. Once there are skips, the panel shows a **Skipped fires** line at the bottom of the editor, broken down by reason (*busy* · *unsaved changes* · *dialog open*) — it only appears after the first skip. A skipped **Schedule** keeps retrying for up to 3 minutes and then gives up for the day.
+> **If it goes wrong.** By far the most common miss: **saving is not arming**. **Save** stores the trigger's configuration; the toggle on the list row is what actually brings the automation to life. If it's armed and still doesn't run, the shortest path is **Run now**: it fires immediately down the same road the trigger uses and writes the reason on screen. An automatic fire is **skipped** when it can't run over your work — while a replay, a recording or Clicker mode is going, while a dialog is open (or you're capturing a hotkey), or while the action list has unsaved edits. It retries for a short window before giving up; a **Schedule** keeps trying for up to 3 minutes and then gives up for the day. Once there are skips, the panel shows a **Skipped fires** line at the bottom of the editor, broken down by reason (*busy* · *unsaved changes* · *dialog open*), and those numbers **don't reset** when you close the app.
+>
+> The quiet trap: leaving an action edited but unsaved and sending the app to the tray. In that state **no** automation fires, because none of them will run over what you haven't saved — and nothing on screen reminds you. Save the grid before you go.
+
+> **The clipboard watcher goes deaf for a moment after every replay.** That's so TrueReplayer
+> doesn't trigger itself on its own pastes. The side effect is that a copy *you* make in that
+> window is ignored too — the panel counts those separately, under
+> *Clipboard changes ignored just after a replay*.
 
 ---
 

@@ -541,9 +541,15 @@ Como se comporta:
 - **Armed** — só automações armadas rodam; elas se re-armam sozinhas ao iniciar o app, então
   *Run on Startup* + *Startup Minimized* transformam o TrueReplayer em um daemon de bandeja.
   Armar é **local da sua máquina**: perfis importados, duplicados ou copiados sempre chegam desarmados.
-- **Uma execução por vez** — um disparo é **pulado** (e contado no painel) enquanto um replay ou
-  gravação roda, enquanto há edições não salvas na grade, ou enquanto um diálogo está aberto.
-  Uma automação nunca descarta seu trabalho não salvo.
+- **Uma execução por vez** — o motor é um só, então um disparo espera a vez dele: enquanto um
+  replay ou gravação roda, enquanto há edições não salvas na grade, ou enquanto um diálogo está
+  aberto, ele tenta de novo por uma janela curta e, se não couber, é **pulado** (e contado no
+  painel). Uma automação nunca descarta seu trabalho não salvo.
+- **Cada disparo roda o perfil uma vez** — mesmo que os **Loops** da barra estejam ligados em `0`
+  (= para sempre). Um replay sem fim disparado sozinho tomaria o motor de vez, e com o app na
+  bandeja não há botão de parar ao alcance.
+- **O histórico sobrevive a fechar o app** — quantas vezes disparou, quando foi a última, e quantos
+  pulos. Serve para responder a pergunta que só um daemon levanta: *rodou enquanto eu não estava?*
 - **Disparos de condição** só acontecem na virada: por padrão a condição precisa voltar a ficar falsa antes
   do próximo disparo (mude para **Continuous** para re-disparar a cada cooldown enquanto verdadeira).
   Um **Cooldown** (padrão 30 s) espaça os disparos; o vigia de clipboard ignora o tráfego de
@@ -552,6 +558,45 @@ Como se comporta:
   (**Enable Automations**). A dica da bandeja mostra quantas automações estão armadas.
 - Perfis sem alvo de janela agem sobre a janela que estiver em foco quando o gatilho disparar —
   o editor avisa. Prefira perfis com alvo (ou *Activate Window* como primeira ação).
+
+### Conferindo uma automação antes de confiar nela
+
+Uma automação é a única coisa do app que roda **sem você olhando**, então o painel tem três
+controles para você não descobrir um erro só semanas depois.
+
+- **Rodar agora** (*Run now*, no topo do editor) — dispara o perfil **uma vez, na hora**, pelo mesmo
+  caminho que o gatilho usaria. A resposta aparece logo abaixo do botão. É diferente de apertar
+  Replay: ela passa pelas mesmas travas de um disparo automático, então também te diz *por que não
+  rodou* — "já tem um replay rodando", "a grade tem alterações não salvas", "tem um diálogo aberto".
+  Só vale para uma automação **já salva**: salve primeiro.
+- **O aviso de "nunca vai disparar"** — se a condição estiver sem o campo que ela precisa (um
+  **Window open** sem processo nem título, um **Process running** sem nome, um **File exists** sem
+  caminho, um **Image on screen** sem imagem), o editor diz isso em vermelho e o **Save** fica
+  travado até você preencher. Antes ela salvava, armava, ficava com a luz acesa e nunca disparava —
+  sem nada na tela dizendo por quê.
+- **Armada, mas não vigiando** — quando a chave está ligada e mesmo assim não há vigia rodando, a
+  linha da lista diz isso e o motivo: as automações estão pausadas na chave-mestra, o perfil está
+  desativado, ou o vigia parou sozinho (imagem de referência sumiu, condição impossível).
+
+O painel também **pergunta antes de descartar**: sair, apertar `Esc` ou clicar em outra automação
+com alterações não salvas abre uma confirmação (**Continuar editando** · **Descartar** · **Salvar e
+continuar**), e a lixeira pede um **Sim** antes de excluir. Vale principalmente para o gatilho de
+imagem, em que jogar fora o rascunho custa a captura e a região que você acabou de ajustar.
+
+### Quanto custa um vigia — o campo *Check every*
+
+Um gatilho de **Condition** fica checando enquanto está armado, e o custo é por checagem. A conta
+não é igual para todos: **Image on screen** captura a tela inteira e compara a imagem **a cada
+checagem**, enquanto **Window open** ou **File exists** são praticamente de graça.
+
+Por isso o editor tem o campo **Check every**, em milissegundos, no fim das opções de condição.
+Deixe em `0` para usar o padrão (250 ms para pixel, 500 ms para clipboard, 1 s para o resto). Vale
+mexer quando o que você espera é lento: um app abrindo, um download terminando, um relatório que
+aparece no fim do dia. Trocar 1 s por 5 s numa vigia de imagem corta o custo em cinco e você não
+perde nada — a coisa que você espera não vai aparecer e sumir em quatro segundos.
+
+> Se você tem várias vigias de imagem armadas ao mesmo tempo, cada uma faz a própria captura. É aí
+> que subir o **Check every** das que não têm pressa faz mais diferença.
 
 ### Gatilho por imagem na tela (Image on screen)
 
@@ -590,11 +635,22 @@ Escolha **Condition → Image on screen** para o perfil disparar quando algo apa
 
 **Passo 6 — deixe o app de guarda.** Settings → **App** → **Startup** → ligue **Run on Startup** e depois **Startup Minimized** (essa segunda fica **esmaecida** enquanto a primeira estiver desligada). O TrueReplayer passa a subir junto com o Windows, some para a bandeja e rearma as automações sozinho.
 
-A diferença entre os dois primeiros é essa: **Interval** conta a partir do momento em que você armou — se armar às 9h47 com 5 minutos, dispara às 9h52, 9h57, e o horário vai depender de quando você ligou. **Schedule** conta pelo relógio: 08:00 é 08:00, não importa quando você armou. Para "de tempos em tempos", use **Interval**; para "todo dia às 8", use **Schedule**.
+A diferença entre os dois primeiros é essa: **Interval** conta a partir do último disparo — se armar às 9h47 com 5 minutos, dispara às 9h52, 9h57, e o horário depende de quando você ligou. **Schedule** conta pelo relógio: 08:00 é 08:00, não importa quando você armou. Para "de tempos em tempos", use **Interval**; para "todo dia às 8", use **Schedule**.
+
+> **A contagem do Interval não recomeça quando você fecha o app.** Ela é retomada de onde parou, ancorada no último disparo de verdade. Isso importa nos intervalos longos: um "a cada 12 horas" numa máquina que você desliga toda noite antes recomeçava do zero a cada manhã e, na prática, **nunca disparava**. Se o momento passou enquanto o app estava fechado, ele dispara 15 segundos depois de abrir — não na hora, para não pular em cima de você assim que a tela acende. Rearmar ou editar a automação, sim, começa um período novo.
+
+> **Um Schedule perdido não te embosca depois.** Se a máquina estava suspensa às 08:00 e você a acordou às 18:00, aquele disparo é **descartado** com o motivo registrado — um horário nomeia um *momento*, e rodar dez horas depois não é o que você pediu. Perdido por poucos minutos (o app estava ocupado), ele ainda tenta.
 
 > Armar é **local desta máquina**. Perfis importados, duplicados ou copiados sempre chegam **desarmados** — é de propósito, para um perfil que você recebeu de alguém nunca começar a agir sozinho no seu computador sem você mandar.
 
-> **Se der errado.** O erro mais comum de longe: **salvar não é armar**. O **Save** grava a configuração do gatilho; quem faz a automação existir de verdade é a chave na lista. Se ela está armada e mesmo assim não roda, o disparo foi **pulado** — uma automação nunca atropela seu trabalho: ela pula enquanto uma reprodução, uma gravação ou o modo Clicker está rodando, enquanto há um diálogo aberto (ou você está capturando uma hotkey), ou enquanto a lista de ações tem edições não salvas. Quando há pulos, o painel mostra a linha **Skipped fires** — *Disparos pulados*, se as dicas estiverem em português — no fim do editor, separada por motivo (*ocupado* · *mudanças não salvas* · *diálogo aberto*) — ela só aparece depois do primeiro pulo. Um **Schedule** pulado tenta de novo por até 3 minutos e depois desiste do dia.
+> **Se der errado.** O erro mais comum de longe: **salvar não é armar**. O **Save** grava a configuração do gatilho; quem faz a automação existir de verdade é a chave na lista. Se ela está armada e mesmo assim não roda, o caminho mais curto é o **Rodar agora**: ele dispara na hora pelo mesmo caminho do gatilho e escreve o motivo na tela. Um disparo automático é **pulado** quando não pode atropelar seu trabalho — enquanto uma reprodução, uma gravação ou o modo Clicker está rodando, enquanto há um diálogo aberto (ou você está capturando uma hotkey), ou enquanto a lista de ações tem edições não salvas. Antes de desistir ele tenta de novo por uma janela curta; um **Schedule** insiste por até 3 minutos e depois desiste do dia. Quando há pulos, o painel mostra a linha **Skipped fires** — *Disparos pulados*, se as dicas estiverem em português — no fim do editor, separada por motivo (*ocupado* · *mudanças não salvas* · *diálogo aberto*), e esses números **não somem** quando você fecha o app.
+>
+> A armadilha silenciosa: deixar uma ação editada e sem salvar e mandar o app para a bandeja. Nesse estado **nenhuma** automação dispara, porque nenhuma delas vai passar por cima do que você não salvou — e não há nada na tela para lembrar. Salve a grade antes de sair.
+
+> **O vigia de clipboard fica surdo por um instante depois de cada replay.** É para o próprio
+> TrueReplayer não se disparar com as colagens que ele mesmo faz. O efeito colateral é que uma cópia
+> que *você* fizer nessa janelinha também é ignorada — o painel conta essas separado, em
+> *Mudanças de clipboard ignoradas logo após um replay*.
 
 ---
 

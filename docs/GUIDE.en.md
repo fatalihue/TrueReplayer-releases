@@ -326,6 +326,10 @@ The last three fields only become active when **Times to repeat** > 1 — they d
 > In a **Double Click × N** the offset is drawn once per repeat and applies to the whole double-click — the two clicks of a pair never separate, or Windows would stop reading them as a double-click at all.
 
 <!-- PICT: click-repeat.png — The Sheet panel open on a Left Click row, showing the full "REPEAT" block: "Times to repeat" = 3, "Gap between clicks" = 200 ms, "Gap jitter" ON (accent dot filled) at 20%, and "Position jitter" ON at 12 px. Frame from the REPEAT label down to the Delay field so all four rows are visible together. -->
+<p align="center">
+  <img src="img/click-repeat.png" width="360" alt="The Repeat block in the Sheet panel of a Left Click row" /><br>
+  <sub><i>Click × 3 with <b>Gap jitter</b> and <b>Position jitter</b> on — both dots lit. Off, the row clicks the same pixel at the same rhythm.</i></sub>
+</p>
 
 > **Tip — match by colour, not confidence.** Image matching compares the whole reference, so it's great for shape/text but a blunt tool for telling apart two states that differ only in **colour** (e.g. an enabled *green* vs a disabled *grey* button). For that, use **Wait Pixel Color** (or an **If** on *Pixel Color Match*): sample a point in the solid fill and match the colour within a tolerance. Also don't set **confidence to 100%** — a live screen never reproduces a reference pixel-for-pixel, so a 100% match times out (it's capped just under 100% internally).
 

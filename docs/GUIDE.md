@@ -326,6 +326,10 @@ Os três últimos campos só ficam ativos quando **Times to repeat** > 1 — ele
 > Num **Double Click × N** o deslocamento é sorteado uma vez por repetição e vale para o duplo-clique inteiro — os dois cliques do par nunca se separam, senão o Windows deixaria de lê-los como duplo-clique.
 
 <!-- 📸 PRINT: click-repeat.png — O painel Sheet aberto numa linha de Left Click, mostrando o bloco "REPEAT" completo: "Times to repeat" = 3, "Gap between clicks" = 200 ms, "Gap jitter" LIGADO (pontinho de accent preenchido) em 20% e "Position jitter" LIGADO em 12 px. Enquadre do rótulo REPEAT até o campo Delay para as quatro linhas aparecerem juntas. -->
+<p align="center">
+  <img src="img/click-repeat.png" width="360" alt="O bloco Repeat no painel Sheet de uma linha de Left Click" /><br>
+  <sub><i>Click × 3 com <b>Gap jitter</b> e <b>Position jitter</b> ligados — os dois pontinhos acesos. Desligados, a linha clica no mesmo pixel no mesmo ritmo.</i></sub>
+</p>
 
 > **Dica — diferencie por cor, não por confiança.** O match de imagem compara a referência inteira, ótimo para forma/texto, mas é grosseiro para distinguir dois estados que diferem só na **cor** (ex.: um botão habilitado *verde* vs desabilitado *cinza*). Para isso use **Wait Pixel Color** (ou um **If** em *Pixel Color Match*): amostre um ponto no preenchimento sólido e compare a cor dentro de uma tolerância. E não use **confiança em 100%** — uma tela viva nunca fica idêntica, pixel por pixel, à referência, então uma exigência de 100% nunca é atendida e a macro para por esgotar o tempo (internamente o valor é limitado logo abaixo de 100%).
 

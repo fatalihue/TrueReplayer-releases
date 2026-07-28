@@ -17,6 +17,7 @@ A referência completa de tudo o que o TrueReplayer pode fazer. Primeira vez por
 - [A grade de ações](#a-grade-de-ações)
 - [Referência de ações](#referência-de-ações)
 - [Blocos condicionais (If / Else / EndIf)](#blocos-condicionais-if--else--endif)
+- [Assert — exigir que algo seja verdade](#assert--exigir-que-algo-seja-verdade)
 - [Perfis e pastas](#perfis-e-pastas)
 - [Hotkeys e hotstrings](#hotkeys-e-hotstrings)
 - [Automação (disparo sem hotkey)](#automação-disparo-sem-hotkey)
@@ -154,7 +155,9 @@ Os slots continuam guardados de uma execução para outra, ao contrário das var
 2. Deixe **Loop over data** desligado.
 3. No **Send Text**, digite `{row:col1}` (ou o nome da sua coluna) e `{enter}`.
 
-Cada toque usa a próxima linha e avança; no fim ele volta para o topo e toca um som. Botão direito numa linha → **Reset row position** para recomeçar.
+Cada toque usa a próxima linha e avança; no fim ele volta para o topo e toca um som. Botão direito numa linha → **Reset row position** para recomeçar. O lugar onde a lista parou **fica guardado em disco** — pode fechar o app no meio e continuar amanhã.
+
+*Atalho para uma lista que muda toda hora:* pule a tabela. Copie a lista (`Ctrl+C`, de qualquer lugar) e escreva `{clipboard:next}` no **Send Text** — cada toque cola a próxima linha do que você copiou, e copiar outra coisa recomeça sozinho. Veja [Send Text](#send-text).
 
 ### 11. Troque 20 passos repetidos por um loop
 
@@ -267,8 +270,8 @@ A tabela central lista todas as ações do perfil. Colunas: **caixa de seleção
 
 | Ação | O que faz |
 | --- | --- |
-| **Left / Right / Middle Click** | Um único clique daquele botão em `(x, y)`. |
-| **Double Click** | Dois cliques esquerdos no mesmo ponto, cronometrados abaixo do limiar de clique duplo do sistema para que os aplicativos os tratem como um clique duplo real. |
+| **Left / Right / Middle Click** | Um clique daquele botão em `(x, y)` — ou **N cliques** com intervalo configurável, **Gap jitter** e **Position jitter** opcionais (veja abaixo). |
+| **Double Click** | Dois cliques esquerdos no mesmo ponto, cronometrados abaixo do limiar de clique duplo do sistema para que os aplicativos os tratem como um clique duplo real. Também aceita **× N** (veja abaixo). |
 | **Keystroke** | Pressiona uma tecla ou combinação uma vez — ou **N vezes** com um intervalo configurável e um **Gap jitter** opcional (veja abaixo). |
 | **Hold Key** | Mantém uma única tecla pressionada por uma duração definida (padrão 1000 ms). Modificadores são descartados. |
 | **Key Down / Key Up** | Um pressionamento ou liberação isolado — para segurar teclas e arrastar, em que o down/up precisa ser separado. |
@@ -282,6 +285,7 @@ A tabela central lista todas as ações do perfil. Colunas: **caixa de seleção
 | **Run Profile** | Executa outro perfil como um subpasso — opcionalmente um número definido de vezes. Ciclos e cadeias com mais de 5 níveis de profundidade são bloqueados automaticamente. |
 | **Activate Window** | Age sobre a janela de outro app no meio da execução: **Activate** (trazer para a frente — abrindo o app antes, se preciso), **Maximize**, **Minimize** ou **Close**. O *Activate* muda só o alvo de foco do SO, nunca o contexto de coordenadas. Veja [Automação multi-janela](#automação-multi-janela-activate-window). |
 | **If / Else / EndIf** | Ramificação condicional — veja [Blocos condicionais](#blocos-condicionais-if--else--endif). |
+| **Assert** | Uma linha só: **exige** que algo seja verdade e **para a execução nomeando a falha** se não for. Sem ramificação, sem `EndIf` — veja [Assert](#assert--exigir-que-algo-seja-verdade). |
 | **Browser actions** | Click / Right Click / Type / Navigate / Wait element / Assert element / Select option no Chrome — veja [Automação de navegador](#automação-de-navegador). |
 
 Insira ações pela **barra de ferramentas** (Send Keystroke, Send Text, Set Variable, Copy to Slot, Pause, Wait, Conditional, Browser, Run Profile, Activate Window, Data Loop). A maioria das ações abre um pequeno diálogo para configurá-las; clique na célula Details de uma ação depois para editá-la.
@@ -298,11 +302,30 @@ No modo **Hold** você define uma **Hold duration** (padrão 1000 ms) e há chip
 
 > Esse **Gap jitter** é local a *uma* ação Keystroke. Não confunda com o **Jitter** de Execution (Settings → Profile), que é um ± % global aplicado a *todos* os delays da reprodução.
 
+> **A captura de tecla só escuta enquanto o TrueReplayer está na frente.** Vale para o pad do **Send Keystroke** e para a hotkey de retomada do **Pause**: se você clicar em outra janela com a caixa de captura aberta — para conferir um atalho no app que está automatizando, por exemplo — o que você digitar lá **não** é capturado. Volte para o TrueReplayer e aperte a combinação. Antes ele gravava qualquer tecla do sistema, e uma caixa esquecida aberta capturava o que você estava fazendo em outro lugar.
+
 <!-- 📸 PRINT: send-keystroke.png — O diálogo "Send Keystroke" no modo Press com os três campos preenchidos: "Times to repeat" = 5, "Gap between presses" = 30 ms e "Gap jitter" LIGADO (pontinho de accent preenchido à direita do rótulo) com o campo % ativo (ex.: 20%). Uma tecla capturada no pad acima (ex.: F5 ou Tab) para o botão Add/Save ficar ativo. -->
 <p align="center">
   <img src="img/send-keystroke.png" width="360" alt="O diálogo Send Keystroke com Times, Gap e Gap jitter" /><br>
   <sub><i>Press × N com <b>Gap jitter</b> ligado — a rajada deixa de ter um ritmo fixo.</i></sub>
 </p>
+
+### Mouse Click × N — Times, Gap, Gap jitter e Position jitter
+
+O mesmo "× N" do Send Keystroke existe para os cliques de mouse — só que ele mora no **painel Sheet** da linha, não num diálogo. Clique com o botão direito na linha do clique → **Edit** (ou abra o Sheet) e procure o bloco **Repeat**. Vale para **Left Click**, **Right Click**, **Middle Click** e **Double Click**; linhas *ClickDown* / *ClickUp* separadas não têm o bloco (elas são metades de um clique, não um clique inteiro).
+
+- **Times to repeat** — quantos cliques (1 a 999; padrão 1). Em **1** a linha se comporta exatamente como sempre.
+- **Gap between clicks** — o intervalo entre um clique e o próximo (0 a 5000 ms). O padrão é **30 ms** para clique simples e **600 ms** para **Double Click** — um duplo-clique precisa de um intervalo acima da velocidade de duplo-clique do Windows (≈ ½ s) para que cada repetição conte como um duplo-clique *distinto*, em vez de virar uma rajada só.
+- **Gap jitter** — **desligado por padrão**. Ligue no pontinho à direita do rótulo: soma um **± % aleatório** a *cada* intervalo, sorteado a cada ciclo. Ao ligar, começa em 20% (1 a 100).
+- **Position jitter** — **desligado por padrão**, o pontinho fica logo abaixo do Gap jitter. Ligado, ele espalha o **ponto do clique** em **± N pixels** em cada eixo, sorteado a cada repetição. Ao ligar, começa em 3 px (1 a 500).
+
+Os três últimos campos só ficam ativos quando **Times to repeat** > 1 — eles descrevem uma rajada, e uma rajada de um clique só não tem intervalo nem dispersão.
+
+> **Quando ligar o Position jitter.** Um `Click × 3` com **Gap jitter + Position jitter** clica na mesma região variando alguns ms *e* alguns pixels — é o que faz a rajada parecer humana em jogos, onde repetir o mesmo pixel no mesmo ritmo é o sinal mais óbvio de macro. Para automação comum fora de jogos (um botão, um campo, uma célula de planilha), **deixe desligado**: ali você quer o pixel exato que escolheu.
+>
+> Num **Double Click × N** o deslocamento é sorteado uma vez por repetição e vale para o duplo-clique inteiro — os dois cliques do par nunca se separam, senão o Windows deixaria de lê-los como duplo-clique.
+
+<!-- 📸 PRINT: click-repeat.png — O painel Sheet aberto numa linha de Left Click, mostrando o bloco "REPEAT" completo: "Times to repeat" = 3, "Gap between clicks" = 200 ms, "Gap jitter" LIGADO (pontinho de accent preenchido) em 20% e "Position jitter" LIGADO em 12 px. Enquadre do rótulo REPEAT até o campo Delay para as quatro linhas aparecerem juntas. -->
 
 > **Dica — diferencie por cor, não por confiança.** O match de imagem compara a referência inteira, ótimo para forma/texto, mas é grosseiro para distinguir dois estados que diferem só na **cor** (ex.: um botão habilitado *verde* vs desabilitado *cinza*). Para isso use **Wait Pixel Color** (ou um **If** em *Pixel Color Match*): amostre um ponto no preenchimento sólido e compare a cor dentro de uma tolerância. E não use **confiança em 100%** — uma tela viva nunca fica idêntica, pixel por pixel, à referência, então uma exigência de 100% nunca é atendida e a macro para por esgotar o tempo (internamente o valor é limitado logo abaixo de 100%).
 
@@ -373,6 +396,68 @@ Faça uma macro reagir ao que está na tela.
 São duas esperas diferentes. O **Delay** é uma espera fixa que acontece **antes** da checagem e gasta o tempo inteiro mesmo que a janela já estivesse lá — ele não fica neste editor, e sim na coluna **Delay** da grade (clique na célula para editar). O **Wait for condition** gasta só o tempo que precisar. Se você preencher os dois, eles se somam. (As linhas **Else** e **EndIf** nem têm campo Delay — a célula fica em branco e não abre para edição, e um "definir atraso" em massa pula essas linhas.)
 
 > **Se der errado.** Quase todo mundo procura o **Else** no menu do botão direito, não acha, e conclui que o app não tem Else. Ele não está lá mesmo: o **+ Add Else branch** é aquela linha tracejada dentro do bloco, logo antes do **EndIf** — e ela só aparece enquanto o bloco **ainda não tem** um Else (depois que você adiciona, ela some, e isso é o certo). Ela também fica desabilitada enquanto você grava ou reproduz: pare a macro e ela volta a funcionar.
+
+---
+
+## Assert — exigir que algo seja verdade
+
+Um **If** *pergunta* e segue por um dos dois caminhos: os dois desfechos são legítimos e o silêncio é o comportamento certo. Um **Assert** *exige*: se a coisa não for verdade, ele **para a execução na hora e diz qual premissa falhou**, em vez de deixar a macro continuar clicando às cegas.
+
+É uma linha só — sem ramificação, sem `EndIf`, sem nada dentro dela.
+
+**Onde fica.** Barra de ferramentas → botão do ícone de ramificação (o mesmo do **Insert Conditional**). O menu tem duas metades: em cima **Insert Conditional** (o `If`), embaixo, depois do divisor, **Insert Assert — must be true**, com seis verificações:
+
+| Exija que… | Verdadeiro quando |
+| --- | --- |
+| **Window Open** | Existe uma janela daquele processo/título — e, se você marcar *Foreground window only*, que ela esteja **em primeiro plano**. |
+| **Process Running** | Um processo com aquele nome está rodando. |
+| **Clipboard** | O clipboard bate com o padrão (Contains / Equals / Regex). |
+| **Variable** | Um `{var:nome}` bate com o valor (igual, contém, maior que, …). |
+| **File Exists** | Um arquivo ou pasta existe no disco. |
+| **Time** | O relógio está dentro da janela de início–fim, nos dias que você escolher. |
+
+São só estas seis de propósito: **imagem** e **cor de pixel** já param a macro sozinhas quando estouram o tempo (**Wait Image** / **Wait Pixel Color**), e para um elemento de página existe o **Assert Element** em *Browser Actions*.
+
+**Os campos** (painel Sheet da linha):
+
+- **Require** — **Met / NOT Met** (ou **Found / NOT Found** nas verificações de objeto). O **NOT** aqui pesa mais que num `If`: `Assert NOT` é "isto tem que estar **ausente**" — por exemplo, exigir que a janela de erro **não** esteja na tela antes de continuar.
+- **Wait for condition** — mesma ideia do `If`: continua checando por até N ms antes de desistir. `0` = checa uma vez (padrão 1500 ms nas verificações que aceitam espera; **Time** não aceita, um relógio não muda de resposta se você insistir).
+- **On failure** — **Abort** (padrão) para a execução e nomeia a falha; **Continue** só registra um aviso no log e segue. O *Continue* **não** marca a linha de um data loop como falha — para isso deixe em **Abort** e ponha o painel Data em **Skip row**.
+- **Notes** — dê um nome à premissa. É esse texto que aparece na mensagem de falha.
+
+**Como a falha aparece.** Um aviso vermelho, com o nome que você deu e o motivo em texto claro:
+
+```
+Assert failed: 'janela do pedido' — window chrome.exe · Pedidos was not in the foreground
+Assert failed: 'código copiado'   — clipboard did not match the pattern
+Assert failed: 'só em dia útil'   — today (Saturday) is not one of Mon–Fri
+```
+
+Sem nada em **Notes** a mensagem cai para `'element'` — funciona, mas você perde a metade útil do recado.
+
+### Exemplo completo — a macro que digitou a senha na janela errada
+
+**A situação.** Uma macro sua faz login: ela clica no campo, digita o usuário, digita a senha e aperta Enter. Funciona todo dia — até o dia em que o app demora mais que o normal para abrir e a janela ainda não está na frente. Aí os cliques e a **senha** caem no que estiver por baixo: um chat, um documento, um formulário público. A macro não deu erro nenhum — ela fez exatamente o que você mandou, só que no lugar errado.
+
+**Passo 1 — selecione a linha que vem antes de digitar.** O Assert é inserido **antes** da linha selecionada.
+
+**Passo 2 — insira a exigência.** Barra de ferramentas → ícone de ramificação → embaixo, em **Insert Assert — must be true** → **Window Open**.
+
+**Passo 3 — descreva a janela.** No painel Sheet, preencha **Process Name** e/ou **Title** e marque **Foreground window only** — é justamente "estar na frente" que você está exigindo. Deixe **Require** em **Found**.
+
+**Passo 4 — dê um tempo e um nome.** **Wait for condition** em `3000` ms (ela costuma aparecer em 1 s; três segundos cobrem o dia ruim sem travar a macro). Em **Notes**, escreva `janela de login em foco`.
+
+| Linha | O que acontece |
+| --- | --- |
+| **Assert** — Window Open · `app.exe` *(foreground)* | espera até 3 s; apareceu → segue; não apareceu → **para aqui** |
+| Send Text `{var:usuario}` | só roda com a janela garantida |
+| Send Text `{clip:senha}` | idem |
+
+A diferença é essa: sem o Assert, o dia ruim vira uma senha digitada num lugar público e ninguém fica sabendo. Com ele, vira uma mensagem vermelha dizendo `Assert failed: 'janela de login em foco'` e mais nada acontece.
+
+> **Assert, If ou Wait?** As três se parecem e escolher errado falha em silêncio. **Wait Image / Wait Pixel Color** = *sincronizar* ("espere a tela ficar pronta"). **If** = *ramificar* ("se aparecer o aviso, clique em OK; se não, siga") — os dois caminhos são normais. **Assert** = *exigir* ("daqui não passa sem isto") — só existe um caminho aceitável.
+
+> **Se der errado — o Assert parou e você não esperava.** Leia o nome na mensagem: ele é o texto de **Notes** daquela linha. Se a mensagem disser `'element'`, é um Assert sem Notes — abra a linha e dê um nome, porque com três ou quatro asserts na macro a mensagem sozinha não diz qual foi. E se a premissa for só *quase sempre* verdadeira (a janela às vezes demora), não troque o Assert por um `If`: aumente o **Wait for condition**.
 
 ---
 
@@ -644,19 +729,40 @@ O editor **Insert Text** compõe o texto que é injetado via colagem do clipboar
 
 - **Tokens** — incorpore teclas e valores especiais: `{enter}`, `{tab}`, `{space}`, setas e outras teclas; `{date}` / `{time}` / `{datetime}`; `{delay:500}` para pausar no meio do texto. Teclas repetíveis aceitam uma contagem: `{enter:3}`.
 - **Clipboard** — `{clipboard}` insere o clipboard atual; `{clipboard:upper}`, `{clipboard:trim}`, `{clipboard:line:1}` etc. o transformam (trim → extrair → limitar → ordem de caixa). Seu clipboard real é restaurado depois.
+- **Uma linha por uso** — `{clipboard:next}` cola **só a próxima linha** do que você copiou e avança sozinho: o primeiro uso solta a linha 1, o seguinte a linha 2, e assim por diante. Copie uma lista de 30 códigos de uma vez e uma hotkey passa a despejar um por toque, sem você mexer no clipboard. É o irmão do `{rownext:coluna}` do Data Loop — só que os dados vêm do clipboard, não de uma tabela. Detalhes abaixo.
 - **Histórico do clipboard** — `{winclip:1}` insere o **último** item copiado no Windows, `{winclip:2}` o penúltimo, e assim por diante (é o histórico do `Win+V`, então precisa estar ligado nas configurações do Windows). `{winclip}` sozinho vale por `{winclip:1}`. É diferente dos slots `{clip:N}`: `{winclip}` lê o histórico do sistema, `{clip}` lê o que *você* capturou no app.
 - **Tokens de estado da execução** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}`, `{row:column}` e `{rownext:column}` puxam valores da macro em execução; veja [Variáveis, slots e prompts](#variáveis-slots-e-prompts) e [Data Loop](#data-loop).
 - **Chips de token** — cada token aparece como um chip editável; clique nele para ajustar seus parâmetros.
 - **Snippets** — salve texto reutilizável sob um nome para inserção rápida depois. Os snippets ficam no app, não no perfil, então não viajam no export/import.
 - Confirme com **`Ctrl+Enter`** (o `Enter` sozinho cria uma nova linha); `Esc` cancela.
 
-O chip **Advanced…** abre um construtor de transformações do `{clipboard}` com preview ao vivo — trim, operações de linha (ordenar, remover duplicadas, inverter, juntar), extrair linha/palavra, limitar tamanho e caixa — que montam a cadeia `{clipboard:mods}` para você sem decorar a sintaxe.
+O chip **Advanced…** abre um construtor de transformações do `{clipboard}` com preview ao vivo — trim, operações de linha (ordenar, remover duplicadas, inverter, juntar), extrair linha/palavra, limitar tamanho e caixa — que montam a cadeia `{clipboard:mods}` para você sem decorar a sintaxe. A primeira seção dele, **Sequence**, é a caixinha **One line per use** (o `next`).
 
 <!-- 📸 PRINT: advanced-clipboard.png — O editor "Advanced Clipboard" (chip Advanced… no Insert Text): as etapas TRIM, LINES, EXTRACT, LIMIT LENGTH, CASE à esquerda e o preview CLIPBOARD NOW / RESULT / TOKEN à direita. -->
 <p align="center">
   <img src="img/advanced-clipboard.png" width="820" alt="O construtor Advanced Clipboard com preview ao vivo" /><br>
   <sub><i>O <b>Advanced…</b> monta a cadeia <code>{clipboard:mods}</code> por etapas, com preview ao vivo.</i></sub>
 </p>
+
+### Uma linha por uso — `{clipboard:next}`
+
+Normalmente `{clipboard}` cola **tudo** o que você copiou. Com o `next`, ele cola **uma linha e guarda o lugar**:
+
+```
+{clipboard:next}
+```
+
+Copie uma coluna inteira da planilha (30 códigos, 30 linhas), dispare a macro e sai o primeiro código. Dispare de novo e sai o segundo. Sem voltar na planilha, sem copiar de novo, sem `{clipboard:line:1}`, `line:2`, `line:3` numa macro para cada linha.
+
+Ligue pelo chip **Advanced…** → seção **Sequence** → **One line per use**, ou escreva o `next` na mão.
+
+- **Onde ele para o lugar.** O avanço é preso ao **conteúdo do que você copiou**. Copiou outra coisa → a contagem recomeça na linha 1 sozinha. Copiou de volta a mesma lista → ela continua de onde estava. Você nunca precisa "resetar" nada.
+- **Linhas em branco são puladas.** Uma lista colada de uma planilha costuma vir com linhas vazias no fim; elas não gastam um uso.
+- **No fim, ele para de dar valor** — o token vira texto vazio em vez de voltar para o começo. É de propósito: recomeçar sozinho faria a macro reprocessar a lista inteira sem ninguém perceber.
+- **Combina com os outros modificadores**, e o `next` sempre roda **primeiro**: `{clipboard:next:trim:upper}` pega a próxima linha e *depois* transforma **aquela linha**. Tanto faz a ordem em que você escreve — `{clipboard:trim:next}` faz a mesma coisa.
+- **Vários `{clipboard:next}` na mesma macro** consomem uma linha cada, em ordem: dois deles num Send Text preenchem dois campos com as linhas 1 e 2, e a execução seguinte pega a 3 e a 4.
+
+> **Qual dos três usar.** `{clipboard:line:3}` = *sempre* a terceira linha. `{clipboard:next}` = a **próxima** linha, do que estiver copiado. `{rownext:coluna}` = a próxima linha da **tabela de dados** do perfil (veja [Data Loop](#data-loop)) — essa sobrevive a fechar o app; a do clipboard vale enquanto o TrueReplayer estiver aberto.
 
 O **Delivery** decide como a formatação chega, já que cada app entende uma coisa diferente:
 
@@ -729,10 +835,11 @@ Exemplos mínimos. Todos podem entrar dentro de um **Send Text** (ou na tecla de
 | `{counter}` | O número da volta atual do loop: `1`, `2`, `3`… (vazio numa execução única). |
 | `{winclip:1}` | O último item copiado no Windows (histórico do `Win+V`). |
 | `{clipboard}` | O que está copiado agora (`{clipboard:trim}` tira espaços sobrando). |
+| `{clipboard:next}` | A **próxima linha** do que está copiado — cada uso avança uma linha (veja [Send Text](#send-text)). |
 
 > **Regra de ouro:** um token que não encontra valor vira **texto vazio** — nunca dá erro. Se algo sair em branco, aperte **`Ctrl+K`** → **Toggle Live Variables** e rode de novo para ver o que está realmente guardado.
 
-**Set Variable** *(barra de ferramentas)* — dê um **Variable Name** e um **Value**. O valor é montado antes de ser guardado, então pode conter `{clipboard}`, `{row:col}`, `{date}` ou até outro `{var:}`. Guardar um valor vazio apaga a variável. No seletor **Mode**, mude de **Set** (padrão) para **Cycle**: o campo de valor vira **List (one item per line)** e cada execução guarda a **próxima** linha, voltando à primeira quando chega no fim — assim uma hotkey percorre a lista, um item por toque. Para recomeçar do primeiro item, clique com o botão direito na linha do **Set Variable**, na grade de ações → **Reset cycle position**.
+**Set Variable** *(barra de ferramentas)* — dê um **Variable Name** e um **Value**. O valor é montado antes de ser guardado, então pode conter `{clipboard}`, `{row:col}`, `{date}` ou até outro `{var:}`. Guardar um valor vazio apaga a variável. No seletor **Mode**, mude de **Set** (padrão) para **Cycle**: o campo de valor vira **List (one item per line)** e cada execução guarda a **próxima** linha, voltando à primeira quando chega no fim — assim uma hotkey percorre a lista, um item por toque. Essa posição é **guardada em disco**: fechar e reabrir o app não recomeça a lista do primeiro item. Para recomeçar de propósito, clique com o botão direito na linha do **Set Variable**, na grade de ações → **Reset cycle position**.
 
 **Copy to Slot** *(barra de ferramentas)* — tem um seletor **Mode** com duas opções:
 
@@ -849,6 +956,8 @@ A caixinha **Loop over data** decide como a tabela dirige a reprodução:
 
 > A linha é escolhida **uma vez por execução**, então um perfil com seu próprio Loop count interno repete a *mesma* linha esse número de vezes antes de passar para a próxima.
 
+> **O lugar é guardado em disco.** Esse cursor — e o do **Set Variable** em modo *Cycle* — **sobrevive a fechar o app**. Você pode trabalhar 12 linhas de uma lista de 40 hoje, desligar o computador, e amanhã a próxima execução continua da linha 13. (Antes eles viviam só na memória, então qualquer reinício recomeçava calado na linha 1 e você refazia o que já tinha feito.) Para recomeçar de propósito, use o **Reset row position** / **Reset cycle position** do botão direito.
+
 ### Pular em erro (só com loop-over-data)
 
 Ao fazer loop sobre os dados, **On row error** decide o que uma linha com falha faz:
@@ -905,7 +1014,7 @@ A diferença entre os dois modos é essa: com **Loop over data** ligado a macro 
 
 **Passo 2 — chame esse perfil em cada macro.** Abra a primeira macro, selecione a linha onde o trecho começava e vá na barra de ferramentas → **Run Profile**. No diálogo:
 
-1. Em **Profile to run**, escolha `Confirmar`.
+1. Em **Profile to run**, escolha `Confirmar`. O campo é o **mesmo buscador do painel Profiles**: comece a digitar e a lista inteira filtra junto, pastas incluídas — não é preciso lembrar em que pasta o perfil está. As setas ↑/↓ percorrem os resultados e `Enter` escolhe. (Vale igual no seletor de perfil de uma **Automação**.)
 2. Em **Repeat**, deixe `1` (é o padrão). Do lado do campo aparece *time per call* — "vez por chamada", ou seja, quantas vezes o sub-perfil roda cada vez que essa linha é executada. Aceita de 1 a 999.
 3. **Add**.
 
@@ -945,6 +1054,12 @@ Controle o Google Chrome por **seletor CSS** em vez de coordenadas de tela — r
 | **Select Option** | Escolhe uma opção num `<select>` nativo por texto, valor ou índice. |
 
 Um selo de **qualidade do seletor** (S → C) indica quão estável cada seletor capturado provavelmente será.
+
+> **Mirando pelo texto.** Quando você mira por texto, o alvo passa a ser o **elemento clicável** que carrega aquele texto — o botão ou o link inteiro —, não o `<span>` decorativo por dentro dele onde a palavra por acaso está escrita. Clicar já funcionava dos dois jeitos (o clique sobe sozinho), mas *checar* não: um botão **desabilitado** era lido pela casquinha de dentro, que não tem estado de desabilitado, e então um **Wait Element** esperando "enabled" passava num controle morto — e o **Assert Element** dava sinal verde. Agora ele olha o controle de verdade.
+>
+> No campo de **texto** dessas checagens, um padrão escrito **sem prefixo** vale como **exato** — é o que a dica do editor sempre prometeu, mas antes ele simplesmente nunca casava e a espera estourava o tempo em silêncio. Para casar só um pedaço, use um prefixo: `text*=Salvar` (contém), `text~=salvar` (contém, ignorando maiúsculas) ou `text/^Salvar.*/i` (expressão regular).
+>
+> Essas duas correções vivem na **extensão**, não no app: atualize o TrueReplayer e a extensão pede para ser recarregada (uma aba já aberta continua rodando a versão antiga até você recarregar). Se a versão dela não bater, o app avisa.
 
 ---
 
@@ -1001,6 +1116,7 @@ O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente
 ## Onde seus dados ficam
 
 - **Perfis:** `Documents\TrueReplayer\Profiles\*.json`
+- **Onde cada lista parou:** `Documents\TrueReplayer\run-cursors.json` — a posição do cursor de linha do **Data Loop** e a do **Set Variable** em modo *Cycle*, para elas continuarem de onde estavam depois de fechar o app. Apagar o arquivo com o app fechado só faz todas as listas recomeçarem do início.
 - **Configurações do app:** `appsettings.json` sob os dados locais do aplicativo.
 - **Imagens de referência, temas, dados do WebView2:** `%LocalAppData%\TrueReplayer\…` — fixados aqui para que **sobrevivam às atualizações automáticas**.
 
@@ -1030,7 +1146,13 @@ Isso é de propósito: só vale a contagem **Repeat** do diálogo *Run Profile*.
 A gravação insere **antes da primeira linha selecionada**. Clique num espaço vazio para limpar a seleção se você queria acrescentar no fim.
 
 **Um token não digitou nada.**
-Ele resolveu para vazio — um `{row:column}` cuja coluna não existe, ou um `{var:}` que nunca foi definido, os dois resolvem para texto vazio em vez de dar erro. Aperte **`Ctrl+K`** → **Toggle Live Variables** e rode de novo para ver o que está realmente definido.
+Ele resolveu para vazio — um `{row:column}` cuja coluna não existe, ou um `{var:}` que nunca foi definido, os dois resolvem para texto vazio em vez de dar erro. Aperte **`Ctrl+K`** → **Toggle Live Variables** e rode de novo para ver o que está realmente definido. Se o token for `{clipboard:next}`, é provável que a lista tenha **acabado**: ele não volta ao começo sozinho. Copie a lista de novo (ou outra) e ele recomeça na linha 1.
+
+**A macro parou sozinha com uma mensagem vermelha `Assert failed`.**
+Fez o que você mandou: uma linha **Assert** exigia algo que não estava verdadeiro. O nome entre aspas na mensagem é o texto de **Notes** daquela linha, e o resto explica o quê. Se a premissa for só *demorada* (a janela leva um instante a mais para aparecer), aumente o **Wait for condition** dessa linha em vez de tirar o Assert. Veja [Assert](#assert--exigir-que-algo-seja-verdade).
+
+**Continuei de onde não devia — a lista não recomeçou do início.**
+É de propósito: a posição do cursor de linha do **Data Loop** e a do **Set Variable** em modo *Cycle* são guardadas em disco e sobrevivem a fechar o app. Botão direito na linha → **Reset row position** / **Reset cycle position**.
 
 **A interface não carrega.**
 Instale o [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) — o aplicativo o solicita na primeira execução se estiver faltando.

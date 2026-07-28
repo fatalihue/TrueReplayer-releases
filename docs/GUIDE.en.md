@@ -17,6 +17,7 @@ The complete reference for everything TrueReplayer can do. New here? Start with 
 - [The action grid](#the-action-grid)
 - [Action reference](#action-reference)
 - [Conditional blocks (If / Else / EndIf)](#conditional-blocks-if--else--endif)
+- [Assert — require something to be true](#assert--require-something-to-be-true)
 - [Profiles & folders](#profiles--folders)
 - [Hotkeys & hotstrings](#hotkeys--hotstrings)
 - [Automation (fire without a hotkey)](#automation-fire-without-a-hotkey)
@@ -154,7 +155,9 @@ Slots survive between runs, unlike variables. To capture *during* a macro instea
 2. Leave **Loop over data** **off**.
 3. In **Send Text**, type `{row:col1}` (or your column's name) and `{enter}`.
 
-Each press uses the next row and advances; at the end it wraps back to the top and chimes. Right-click a row → **Reset row position** to start over.
+Each press uses the next row and advances; at the end it wraps back to the top and chimes. Right-click a row → **Reset row position** to start over. Where the list stopped is **saved to disk** — close the app halfway through and carry on tomorrow.
+
+*Shortcut for a list that changes constantly:* skip the table. Copy the list (`Ctrl+C`, from anywhere) and type `{clipboard:next}` in the **Send Text** — each press pastes the next line of what you copied, and copying something else restarts it by itself. See [Send Text](#send-text).
 
 ### 11. Replace 20 repeated steps with one loop
 
@@ -267,8 +270,8 @@ The central table lists every action in the profile. Columns: **selection checkb
 
 | Action | What it does |
 | --- | --- |
-| **Left / Right / Middle Click** | A single click of that button at `(x, y)`. |
-| **Double Click** | Two left clicks at the same point, timed below the system double-click threshold so apps treat it as a real double-click. |
+| **Left / Right / Middle Click** | A click of that button at `(x, y)` — or **N clicks** with a configurable gap and optional **Gap jitter** and **Position jitter** (see below). |
+| **Double Click** | Two left clicks at the same point, timed below the system double-click threshold so apps treat it as a real double-click. Also takes **× N** (see below). |
 | **Keystroke** | Press a key or combo once — or **N times** with a configurable gap and an optional **Gap jitter** (see below). |
 | **Hold Key** | Hold a single key down for a set duration (default 1000 ms). Modifiers are dropped. |
 | **Key Down / Key Up** | A standalone press or release — for holds and drags where down/up must be separate. |
@@ -282,6 +285,7 @@ The central table lists every action in the profile. Columns: **selection checkb
 | **Run Profile** | Run another profile as a sub-step — optionally a set number of times. Cycles and chains deeper than 5 levels are blocked automatically. |
 | **Activate Window** | Act on another app's window mid-run: **Activate** (bring to the front — launching it first if needed), **Maximize**, **Minimize** or **Close**. *Activate* changes the OS focus target only, never the coordinate context. See [Multi-window automation](#multi-window-automation-activate-window). |
 | **If / Else / EndIf** | Conditional branch — see [Conditional blocks](#conditional-blocks-if--else--endif). |
+| **Assert** | A single row that **requires** something to be true and **stops the run naming the failure** when it isn't. No branch, no `EndIf` — see [Assert](#assert--require-something-to-be-true). |
 | **Browser actions** | Click / Right Click / Type / Navigate / Wait element / Assert element / Select option in Chrome — see [Browser automation](#browser-automation). |
 
 Insert actions from the **toolbar** (Send Keystroke, Send Text, Set Variable, Copy to Slot, Pause, Wait, Conditional, Browser, Run Profile, Activate Window, Data Loop). Most actions open a small dialog to configure them; click an action's Details cell later to edit it.
@@ -298,11 +302,30 @@ In **Hold** mode you set a **Hold duration** (default 1000 ms) with shortcut chi
 
 > This **Gap jitter** is local to *one* Keystroke action. Don't confuse it with the Execution **Jitter** (Settings → Profile), which is a global ± % applied to *all* replay delays.
 
+> **Key capture only listens while TrueReplayer is in front.** That covers the **Send Keystroke** pad and the **Pause** resume hotkey: if you click into another window with the capture box open — to check a shortcut in the app you're automating, say — what you type over there is **not** captured. Come back to TrueReplayer and press the combo. It used to record any keystroke system-wide, so a capture box left open would pick up whatever you were doing elsewhere.
+
 <!-- PICT: send-keystroke.png — The "Send Keystroke" dialog in Press mode with the three fields filled in: "Times to repeat" = 5, "Gap between presses" = 30 ms, and "Gap jitter" ON (the accent dot filled in to the right of the label) with the % field active (e.g. 20%). A key captured in the pad above (e.g. F5 or Tab) so the Add/Save button is active. -->
 <p align="center">
   <img src="img/send-keystroke.png" width="360" alt="The Send Keystroke dialog with Times, Gap and Gap jitter" /><br>
   <sub><i>Press × N with <b>Gap jitter</b> on — the burst loses its fixed rhythm.</i></sub>
 </p>
+
+### Mouse Click × N — Times, Gap, Gap jitter and Position jitter
+
+The same "× N" Send Keystroke has exists for mouse clicks — except it lives in the row's **Sheet panel**, not in a dialog. Right-click the click row → **Edit** (or open the Sheet) and look for the **Repeat** block. It applies to **Left Click**, **Right Click**, **Middle Click** and **Double Click**; separate *ClickDown* / *ClickUp* rows don't get it (they're halves of a click, not a whole one).
+
+- **Times to repeat** — how many clicks (1 to 999; default 1). At **1** the row behaves exactly as it always did.
+- **Gap between clicks** — the interval between one click and the next (0 to 5000 ms). The default is **30 ms** for a single click and **600 ms** for **Double Click** — a double-click needs a gap above the Windows double-click speed (≈ ½ s) so each repeat registers as a *distinct* double-click instead of blurring into one long burst.
+- **Gap jitter** — **off by default**. Turn it on with the dot to the right of the label: it adds a random **± %** to *each* gap, drawn fresh every cycle. Turned on, it starts at 20% (1 to 100).
+- **Position jitter** — **off by default**, its dot sits right below Gap jitter. On, it scatters the **click point** by **± N pixels** on each axis, drawn fresh every repeat. Turned on, it starts at 3 px (1 to 500).
+
+The last three fields only become active when **Times to repeat** > 1 — they describe a burst, and a burst of one has no gap and no scatter.
+
+> **When to turn Position jitter on.** A `Click × 3` with **Gap jitter + Position jitter** clicks the same region varying a few ms *and* a few pixels — that's what makes a burst look human in games, where hitting the same pixel on the same beat is the most obvious macro tell. For ordinary desktop automation (a button, a field, a spreadsheet cell), **leave it off**: there you want the exact pixel you picked.
+>
+> In a **Double Click × N** the offset is drawn once per repeat and applies to the whole double-click — the two clicks of a pair never separate, or Windows would stop reading them as a double-click at all.
+
+<!-- PICT: click-repeat.png — The Sheet panel open on a Left Click row, showing the full "REPEAT" block: "Times to repeat" = 3, "Gap between clicks" = 200 ms, "Gap jitter" ON (accent dot filled) at 20%, and "Position jitter" ON at 12 px. Frame from the REPEAT label down to the Delay field so all four rows are visible together. -->
 
 > **Tip — match by colour, not confidence.** Image matching compares the whole reference, so it's great for shape/text but a blunt tool for telling apart two states that differ only in **colour** (e.g. an enabled *green* vs a disabled *grey* button). For that, use **Wait Pixel Color** (or an **If** on *Pixel Color Match*): sample a point in the solid fill and match the colour within a tolerance. Also don't set **confidence to 100%** — a live screen never reproduces a reference pixel-for-pixel, so a 100% match times out (it's capped just under 100% internally).
 
@@ -373,6 +396,68 @@ Make a macro react to what's on screen.
 Here's the difference between the two waits: the **If** row's own **Delay** — which isn't in this editor at all, but in the grid's **Delay** column (click the cell to edit it) — is a **fixed wait before** the check, and it always burns the whole thing, even if the window was already there; **Wait for condition** burns only as long as it needs to. Fill in both and they add up. (**Else** and **EndIf** rows have no Delay field at all — the cell is blank and not editable, and a bulk "set delay" skips them.)
 
 > **If it goes wrong.** Almost everyone hunts for **Else** in the right-click menu, doesn't find it, and concludes the app has no Else. It genuinely isn't there: **+ Add Else branch** is that dashed row inside the block, right before the **EndIf** — and it only shows while the block **doesn't yet have** an Else (once you add one it disappears, which is correct). It's also disabled while you're recording or replaying: stop the macro and it works again.
+
+---
+
+## Assert — require something to be true
+
+An **If** *asks* and takes one of two roads: both outcomes are legitimate and staying quiet is the correct behaviour. An **Assert** *requires*: if the thing isn't true, it **stops the run right there and names the assumption that failed**, instead of letting the macro carry on clicking blind.
+
+It's a single row — no branch, no `EndIf`, nothing inside it.
+
+**Where it lives.** Toolbar → the branch icon (the same one as **Insert Conditional**). The menu has two halves: **Insert Conditional** (the `If`) on top, and below the divider **Insert Assert — must be true**, with six checks:
+
+| Require that… | True when |
+| --- | --- |
+| **Window Open** | A window with that process/title exists — and, if you tick *Foreground window only*, that it's **in front**. |
+| **Process Running** | A process with that name is running. |
+| **Clipboard** | The clipboard matches the pattern (Contains / Equals / Regex). |
+| **Variable** | A `{var:name}` matches the value (equals, contains, greater than, …). |
+| **File Exists** | A file or folder exists on disk. |
+| **Time** | The clock is inside the start–end window, on the days you pick. |
+
+Only these six, on purpose: **image** and **pixel colour** already abort on their own when they time out (**Wait Image** / **Wait Pixel Color**), and a page element has its own **Assert Element** under *Browser Actions*.
+
+**The fields** (the row's Sheet panel):
+
+- **Require** — **Met / NOT Met** (or **Found / NOT Found** on object checks). The **NOT** carries more weight here than on an `If`: `Assert NOT` means "this must be **absent**" — requiring that the error dialog is *not* on screen before you continue, say.
+- **Wait for condition** — same idea as the `If`: keep re-checking for up to N ms before giving up. `0` = check once (the default is 1500 ms on the checks that accept a wait; **Time** doesn't — a clock won't change its answer because you asked twice).
+- **On failure** — **Abort** (default) stops the run and names the failure; **Continue** only logs a warning and carries on. *Continue* does **not** mark a data-loop row as failed — for that, leave it on **Abort** and set the Data panel to **Skip row**.
+- **Notes** — name the assumption. That text is what shows up in the failure message.
+
+**What a failure looks like.** A red warning, with the name you gave it and the reason in plain words:
+
+```
+Assert failed: 'order window'    — window chrome.exe · Orders was not in the foreground
+Assert failed: 'code copied'     — clipboard did not match the pattern
+Assert failed: 'weekdays only'   — today (Saturday) is not one of Mon–Fri
+```
+
+With **Notes** left empty the message falls back to `'element'` — it still works, but you lose the useful half of the message.
+
+### Worked example — the macro that typed the password into the wrong window
+
+**The situation.** One of your macros logs in: it clicks the field, types the username, types the password and hits Enter. It works every day — until the day the app takes longer than usual to open and its window isn't in front yet. Now the clicks and the **password** land in whatever is underneath: a chat, a document, a public form. The macro didn't error. It did exactly what you told it, in the wrong place.
+
+**Step 1 — select the row that comes before the typing.** The Assert is inserted **before** the selected row.
+
+**Step 2 — insert the requirement.** Toolbar → branch icon → below, under **Insert Assert — must be true** → **Window Open**.
+
+**Step 3 — describe the window.** In the Sheet panel, fill in **Process Name** and/or **Title** and tick **Foreground window only** — "being in front" is precisely what you're requiring. Leave **Require** on **Found**.
+
+**Step 4 — give it a wait and a name.** Set **Wait for condition** to `3000` ms (it usually appears within a second; three seconds covers the bad day without stalling the macro). In **Notes**, write `login window focused`.
+
+| Row | What happens |
+| --- | --- |
+| **Assert** — Window Open · `app.exe` *(foreground)* | waits up to 3 s; showed up → carry on; didn't → **stops here** |
+| Send Text `{var:username}` | only runs with the window guaranteed |
+| Send Text `{clip:password}` | same |
+
+That's the difference: without the Assert, the bad day is a password typed somewhere public and nobody finds out. With it, the bad day is a red message reading `Assert failed: 'login window focused'` and nothing else happening.
+
+> **Assert, If or Wait?** All three look alike, and picking the wrong one fails quietly. **Wait Image / Wait Pixel Color** = *synchronise* ("wait for the screen to be ready"). **If** = *branch* ("if the dialog is there click OK, otherwise carry on") — both roads are normal. **Assert** = *require* ("you don't get past here without this") — there's only one acceptable road.
+
+> **If it goes wrong — an Assert stopped a run you didn't expect it to.** Read the name in the message: it's that row's **Notes** text. If the message says `'element'`, that's an Assert with no Notes — open the row and name it, because with three or four asserts in a macro the message alone won't tell you which one it was. And if the assumption is only *usually* true (the window is sometimes slow), don't swap the Assert for an `If`: raise its **Wait for condition**.
 
 ---
 
@@ -642,19 +727,40 @@ The **Insert Text** editor composes text that's injected via clipboard paste (so
 
 - **Tokens** — embed special keys and values: `{enter}`, `{tab}`, `{space}`, arrows and other keys; `{date}` / `{time}` / `{datetime}`; `{delay:500}` to pause mid-text. Repeatable keys take a count: `{enter:3}`.
 - **Clipboard** — `{clipboard}` inserts the current clipboard; `{clipboard:upper}`, `{clipboard:trim}`, `{clipboard:line:1}` etc. transform it (trim → extract → limit → case order). Your real clipboard is restored afterward.
+- **One line per use** — `{clipboard:next}` pastes **only the next line** of what you copied and advances by itself: the first use emits line 1, the next one line 2, and so on. Copy a list of 30 codes in one go and a hotkey starts dispensing them one per press, with you never touching the clipboard again. It's the sibling of Data Loop's `{rownext:column}` — same idea, only the data comes from the clipboard instead of a table. Details below.
 - **Clipboard history** — `{winclip:1}` inserts the **most recent** item copied in Windows, `{winclip:2}` the one before it, and so on (it's the `Win+V` history, so it must be enabled in Windows settings). `{winclip}` alone means `{winclip:1}`. It's different from the `{clip:N}` slots: `{winclip}` reads the system history, `{clip}` reads what *you* captured in the app.
 - **Run-state tokens** — `{var:name}`, `{clip:name}`, `{input:Label}`, `{counter}`, `{row:column}` and `{rownext:column}` pull in values from the running macro; see [Variables, slots & prompts](#variables-slots--prompts) and [Data Loop](#data-loop).
 - **Token chips** — each token shows as an editable chip; click it to tweak its parameters.
 - **Snippets** — save reusable text under a name for quick insertion later. Snippets live in the app, not in the profile, so they don't travel with export/import.
 - Confirm with **`Ctrl+Enter`** (plain `Enter` makes a new line); `Esc` cancels.
 
-The **Advanced…** chip opens a `{clipboard}` transform builder with a live preview — trim, line ops (sort, dedupe, reverse, join), extract line/word, limit length and case — that assembles the `{clipboard:mods}` chain for you without memorizing the syntax.
+The **Advanced…** chip opens a `{clipboard}` transform builder with a live preview — trim, line ops (sort, dedupe, reverse, join), extract line/word, limit length and case — that assembles the `{clipboard:mods}` chain for you without memorizing the syntax. Its first section, **Sequence**, is the **One line per use** checkbox (the `next`).
 
 <!-- PICT: advanced-clipboard.png — The "Advanced Clipboard" editor (the Advanced… chip in Insert Text): the TRIM, LINES, EXTRACT, LIMIT LENGTH, CASE steps on the left and the CLIPBOARD NOW / RESULT / TOKEN preview on the right. -->
 <p align="center">
   <img src="img/advanced-clipboard.png" width="820" alt="The Advanced Clipboard builder with a live preview" /><br>
   <sub><i>The <b>Advanced…</b> builds the <code>{clipboard:mods}</code> chain step by step, with a live preview.</i></sub>
 </p>
+
+### One line per use — `{clipboard:next}`
+
+Normally `{clipboard}` pastes **everything** you copied. With `next`, it pastes **one line and remembers where it stopped**:
+
+```
+{clipboard:next}
+```
+
+Copy a whole spreadsheet column (30 codes, 30 lines), fire the macro, and out comes the first code. Fire it again and out comes the second. No going back to the spreadsheet, no re-copying, no macro-per-line built from `{clipboard:line:1}`, `line:2`, `line:3`.
+
+Turn it on from the **Advanced…** chip → **Sequence** section → **One line per use**, or just type `next` yourself.
+
+- **How it remembers.** The position is tied to **the content you copied**. Copy something else → the count restarts at line 1 by itself. Copy the same list back → it picks up where it left off. There's nothing to "reset".
+- **Blank lines are skipped.** A list pasted out of a spreadsheet usually carries empty lines at the end; they don't burn a use.
+- **At the end it stops producing** — the token resolves to empty text instead of wrapping around. That's deliberate: wrapping silently would make the macro reprocess the whole list with nobody noticing.
+- **It combines with the other modifiers**, and `next` always runs **first**: `{clipboard:next:trim:upper}` takes the next line and *then* transforms **that line**. The order you write them in doesn't matter — `{clipboard:trim:next}` does the same thing.
+- **Several `{clipboard:next}` in one macro** consume one line each, in order: two of them in a Send Text fill two fields with lines 1 and 2, and the next run takes 3 and 4.
+
+> **Which of the three.** `{clipboard:line:3}` = *always* the third line. `{clipboard:next}` = the **next** line of whatever is copied. `{rownext:column}` = the next row of the profile's **data table** (see [Data Loop](#data-loop)) — that one survives closing the app; the clipboard one lasts as long as TrueReplayer is open.
 
 **Delivery** decides how the formatting arrives, since every app understands something different:
 
@@ -727,10 +833,11 @@ Minimal examples. All of them can go inside a **Send Text** (or in a Keystroke's
 | `{counter}` | The current loop pass number: `1`, `2`, `3`… (empty on a single run). |
 | `{winclip:1}` | The most recent item copied in Windows (the `Win+V` history). |
 | `{clipboard}` | Whatever is copied right now (`{clipboard:trim}` drops stray spaces). |
+| `{clipboard:next}` | The **next line** of what's copied — every use advances one line (see [Send Text](#send-text)). |
 
 > **Golden rule:** a token that finds no value becomes **empty text** — it never errors. If something comes out blank, press **`Ctrl+K`** → **Toggle Live Variables** and run again to see what's actually stored.
 
-**Set Variable** *(toolbar)* — give it a **Variable Name** and a **Value**; the value is resolved first, so it can contain `{clipboard}`, `{row:col}`, `{date}` or another `{var:}`. Storing an empty value deletes the variable. In the **Mode** selector, switch from **Set** (default) to **Cycle**: the value field becomes **List (one item per line)** and each run stores the **next** line, wrapping to the first at the end — so a hotkey walks the list one item per press. To start over at item 1, right-click the **Set Variable** row in the action grid → **Reset cycle position**.
+**Set Variable** *(toolbar)* — give it a **Variable Name** and a **Value**; the value is resolved first, so it can contain `{clipboard}`, `{row:col}`, `{date}` or another `{var:}`. Storing an empty value deletes the variable. In the **Mode** selector, switch from **Set** (default) to **Cycle**: the value field becomes **List (one item per line)** and each run stores the **next** line, wrapping to the first at the end — so a hotkey walks the list one item per press. That position is **saved to disk**: closing and reopening the app won't restart the list at item 1. To start over on purpose, right-click the **Set Variable** row in the action grid → **Reset cycle position**.
 
 **Copy to Slot** *(toolbar)* — has a **Mode** selector with two options:
 
@@ -847,6 +954,8 @@ The **Loop over data** toggle decides how the table drives replay:
 
 > The row is chosen **once per run**, so a profile with its own inner Loop count repeats the *same* row that many times before moving to the next.
 
+> **The position is saved to disk.** This cursor — and the **Set Variable** *Cycle* one — **survives closing the app**. You can work 12 rows of a 40-row list today, shut the machine down, and tomorrow's first run picks up at row 13. (They used to live in memory only, so any restart silently went back to row 1 and you redid work you'd already done.) To start over on purpose, use **Reset row position** / **Reset cycle position** from the right-click menu.
+
 ### Skip on error (loop-over-data only)
 
 When looping over data, **On row error** decides what a failed row does:
@@ -902,7 +1011,7 @@ That's the difference between the two modes: with **Loop over data** on, the mac
 
 **Step 2 — call it from each macro.** Open the first macro, select the row where the block used to start, then toolbar → **Run Profile**. In the dialog:
 
-1. Under **Profile to run**, pick `Confirm`.
+1. Under **Profile to run**, pick `Confirm`. The field is the **same search box as the Profiles panel**: start typing and the whole list filters at once, folders included — no need to remember which folder the profile is in. ↑/↓ walk the results and `Enter` picks. (The same goes for an **Automation**'s profile picker.)
 2. Leave **Repeat** at `1` (the normal case — the caption beside the stepper reads *time per call*, and accepts 1–999).
 3. **Add**.
 
@@ -940,6 +1049,12 @@ Drive Google Chrome by **CSS selector** instead of screen coordinates — robust
 | **Select Option** | Choose an option in a native `<select>` by text, value or index. |
 
 A **selector quality** badge (S → C) hints how stable each captured selector is likely to be.
+
+> **Targeting by text.** When you target by text, the target is the **clickable element** carrying that text — the whole button or link — not the decorative `<span>` inside it where the word happens to sit. Clicking worked either way (the event bubbles up), but *checking* didn't: a **disabled** button was read through that inner wrapper, which has no disabled state, so a **Wait Element** waiting for "enabled" passed on a dead control — and **Assert Element** green-lit it. It now looks at the real control.
+>
+> In those checks' **text** field, a pattern written with **no prefix** counts as **exact** — which is what the editor hint always promised, but it simply never matched before and the wait timed out in silence. To match part of the text, use a prefix: `text*=Save` (contains), `text~=save` (contains, case-insensitive) or `text/^Save.*/i` (regular expression).
+>
+> Both fixes live in the **extension**, not the app: update TrueReplayer and it will ask you to reload the extension (an already-open tab keeps running the old version until you do). If the versions don't match, the app tells you.
 
 ---
 
@@ -996,6 +1111,7 @@ The Settings panel (right side) has three tabs; everything **auto-saves** (no Sa
 ## Where your data lives
 
 - **Profiles:** `Documents\TrueReplayer\Profiles\*.json`
+- **Where each list stopped:** `Documents\TrueReplayer\run-cursors.json` — the **Data Loop** row cursor and the **Set Variable** *Cycle* position, so they pick up where they left off after you close the app. Deleting the file with the app closed just restarts every list from the top.
 - **App settings:** `appsettings.json` under the app's local data.
 - **Reference images, themes, WebView2 data:** `%LocalAppData%\TrueReplayer\…` — pinned here so it **survives auto-updates**.
 
@@ -1025,7 +1141,13 @@ That's by design: only the **Repeat** count in the *Run Profile* dialog applies.
 Recording inserts **before the first selected row**. Click empty space to clear the selection if you meant to append to the end.
 
 **A token typed nothing.**
-It resolved to empty — a `{row:column}` whose column doesn't exist, or a `{var:}` that was never set, both resolve to empty text rather than erroring. Press **`Ctrl+K`** → **Toggle Live Variables** and run it again to see what's actually set.
+It resolved to empty — a `{row:column}` whose column doesn't exist, or a `{var:}` that was never set, both resolve to empty text rather than erroring. Press **`Ctrl+K`** → **Toggle Live Variables** and run it again to see what's actually set. If the token is `{clipboard:next}`, the list has most likely **run out**: it doesn't wrap around on its own. Copy the list again (or a different one) and it restarts at line 1.
+
+**The macro stopped by itself with a red `Assert failed` message.**
+It did what you told it to: an **Assert** row required something that wasn't true. The quoted name is that row's **Notes** text, and the rest says what went wrong. If the assumption is merely *slow* (the window takes a moment longer to appear), raise that row's **Wait for condition** rather than removing the Assert. See [Assert](#assert--require-something-to-be-true).
+
+**It carried on from somewhere it shouldn't have — the list didn't start over.**
+That's deliberate: the **Data Loop** row cursor and the **Set Variable** *Cycle* position are saved to disk and survive closing the app. Right-click the row → **Reset row position** / **Reset cycle position**.
 
 **The UI doesn't load.**
 Install the [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/) — the app prompts for it on first run if it's missing.

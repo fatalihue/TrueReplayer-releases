@@ -1150,6 +1150,10 @@ Controle o Google Chrome por **seletor CSS** em vez de coordenadas de tela — r
 
 Um selo de **qualidade do seletor** (S → C) indica quão estável cada seletor capturado provavelmente será.
 
+> **Em qual aba a macro age.** Na aba que estava aberta na frente **quando a execução começou** — e ela fica ali até o fim. Se você trocar de aba no meio, a macro **não vai junto**: os passos seguintes continuam na aba original. Um **Navigate** re-fixa a macro na página que ele abriu, então se a ação abre uma aba nova, os passos seguintes vão para lá. Se a aba original for fechada, a macro para dizendo *"a aba em que esta execução estava agindo foi fechada"* (`TAB_GONE`) em vez de seguir em silêncio em outro lugar.
+>
+> Antes de 2.9.10 cada passo perguntava ao Chrome "qual aba está ativa agora?", então trocar de aba no meio levava o resto da macro para a página errada — **sem nenhum erro**. Se você dependia disso, este é o comportamento que mudou.
+
 > **Mirando pelo texto.** Quando você mira por texto, o alvo passa a ser o **elemento clicável** que carrega aquele texto — o botão ou o link inteiro —, não o `<span>` decorativo por dentro dele onde a palavra por acaso está escrita. Clicar já funcionava dos dois jeitos (o clique sobe sozinho), mas *checar* não: um botão **desabilitado** era lido pela casquinha de dentro, que não tem estado de desabilitado, e então um **Wait Element** esperando "enabled" passava num controle morto — e o **Assert Element** dava sinal verde. Agora ele olha o controle de verdade.
 >
 > No campo de **texto** dessas checagens, um padrão escrito **sem prefixo** vale como **exato** — é o que a dica do editor sempre prometeu, mas antes ele simplesmente nunca casava e a espera estourava o tempo em silêncio. Para casar só um pedaço, use um prefixo: `text*=Salvar` (contém), `text~=salvar` (contém, ignorando maiúsculas) ou `text/^Salvar.*/i` (expressão regular).

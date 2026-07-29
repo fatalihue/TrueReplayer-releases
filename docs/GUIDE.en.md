@@ -1149,6 +1149,10 @@ Drive Google Chrome by **CSS selector** instead of screen coordinates — robust
 
 A **selector quality** badge (S → C) hints how stable each captured selector is likely to be.
 
+> **Which tab it acts on.** The tab that was in front **when the run started** — and it stays there. Switch tabs mid-run and the macro **does not follow**: the remaining steps keep working on the original page. A **Navigate** re-pins the macro to the page it opened, so if the action opens a new tab the following steps go there. If the original tab is closed, the macro stops with *"the tab this run was acting on was closed"* (`TAB_GONE`) instead of quietly continuing somewhere else.
+>
+> Before 2.9.10 every step asked Chrome "which tab is active right now?", so switching tabs mid-run carried the rest of the macro onto the wrong page — **with no error at all**. If you were relying on that, this is the behaviour that changed.
+
 > **Targeting by text.** When you target by text, the target is the **clickable element** carrying that text — the whole button or link — not the decorative `<span>` inside it where the word happens to sit. Clicking worked either way (the event bubbles up), but *checking* didn't: a **disabled** button was read through that inner wrapper, which has no disabled state, so a **Wait Element** waiting for "enabled" passed on a dead control — and **Assert Element** green-lit it. It now looks at the real control.
 >
 > In those checks' **text** field, a pattern written with **no prefix** counts as **exact** — which is what the editor hint always promised, but it simply never matched before and the wait timed out in silence. To match part of the text, use a prefix: `text*=Save` (contains), `text~=save` (contains, case-insensitive) or `text/^Save.*/i` (regular expression).

@@ -824,6 +824,42 @@ Turn it on from the **Advanced…** chip → **Sequence** section → **One line
 
 > **Which of the three.** `{clipboard:line:3}` = *always* the third line. `{clipboard:next}` = the **next** line of whatever is copied. `{rownext:column}` = the next row of the profile's **data table** (see [Data Loop](#data-loop)) — that one survives closing the app; the clipboard one lasts as long as TrueReplayer is open.
 
+### When the number comes from a variable — `@i`
+
+Wherever a modifier takes a number, that number can come from a **variable** instead of being
+fixed. Write `@` followed by the name:
+
+```
+Set Variable   i = 3
+Send Text      {clipboard:line:@i}      →  the third line
+```
+
+Besides your own variables, two names come ready-made:
+
+| You write | Where the number comes from |
+| --- | --- |
+| `@name` | The variable with that name (the same one `{var:name}` reads) |
+| `@counter` | The current loop pass — 1, 2, 3… |
+| `@row` | The current data-table row |
+
+It's for the case where the line you want **changes every pass**: inside a loop,
+`{clipboard:line:@counter}` takes line 1 on the first pass, line 2 on the second, and so on.
+
+- Works on **Line #**, **Word #**, **First N** and **Last N**, in `{clipboard}` as well as
+  `{row:column}` and `{rownext:column}`.
+- In the **Advanced…** window, the little **@** button beside the field switches between a fixed
+  number and a variable. With it on, the preview stops showing a result and says *"Resolved when
+  the macro runs"* — it has no way to know the value, and an invented number there would be worse
+  than none.
+- **An unknown name yields empty**, deliberately. The alternative would be pasting the whole
+  clipboard because of one mistyped name, into a customer reply.
+- **Join** does not take `@`: there the text is the literal separator, so `join:@x` joins with `@x`.
+
+> This is not the same as writing `{clipboard:line:{var:i}}` with braces — that form does **not**
+> work and never did: it pastes the whole clipboard followed by a stray brace. The `@` spelling
+> exists precisely because the brace one would change the meaning of tokens already saved in your
+> profiles.
+
 **Delivery** decides how the formatting arrives, since every app understands something different:
 
 | Mode | Sends |
@@ -896,6 +932,7 @@ Minimal examples. All of them can go inside a **Send Text** (or in a Keystroke's
 | `{winclip:1}` | The most recent item copied in Windows (the `Win+V` history). |
 | `{clipboard}` | Whatever is copied right now (`{clipboard:trim}` drops stray spaces). |
 | `{clipboard:next}` | The **next line** of what's copied — every use advances one line (see [Send Text](#send-text)). |
+| `{clipboard:line:@i}` | The line whose number is in the variable `i` (`@counter` = the loop pass, `@row` = the data row). |
 
 > **Golden rule:** a token that finds no value becomes **empty text** — it never errors. If something comes out blank, press **`Ctrl+K`** → **Toggle Live Variables** and run again to see what's actually stored.
 
@@ -1117,6 +1154,31 @@ A **selector quality** badge (S → C) hints how stable each captured selector i
 > In those checks' **text** field, a pattern written with **no prefix** counts as **exact** — which is what the editor hint always promised, but it simply never matched before and the wait timed out in silence. To match part of the text, use a prefix: `text*=Save` (contains), `text~=save` (contains, case-insensitive) or `text/^Save.*/i` (regular expression).
 >
 > Both fixes live in the **extension**, not the app: update TrueReplayer and it will ask you to reload the extension (an already-open tab keeps running the old version until you do). If the versions don't match, the app tells you.
+
+### Run report — which step broke, and why
+
+A browser macro is the one most likely to rot: the site changes, a selector stops matching, and the
+macro quietly does nothing without saying why. After a run, open **`Ctrl+K`** → **Run report** and
+you get the run step by step.
+
+Each row shows the grid row number, the action type, what it targeted and **how long it took**. Plus
+two things only the report can tell you:
+
+- **Matched through a fallback.** When you pick an element, the app stores backup selectors
+  alongside the primary one. A step that matched through a backup is flagged — and **that is not an
+  error, it's a warning**: the selector *you* picked no longer matches, and the macro is one site
+  change away from breaking. A step that **passed** can carry this flag, and that is exactly when to
+  re-pick the element.
+- **Why it failed, in words.** A failure doesn't arrive as "error": it arrives with the reason —
+  nothing matched the selector, found but not visible, found but disabled, found but something is on
+  top of it, the selector isn't valid CSS, the page didn't finish loading — and, where it applies,
+  what to do about it.
+
+<!-- PICT: run-report.png — The "Run report" panel open (Ctrl+K → Run report) after a failing browser run. Show: the warning banner at the top ("N step(s) matched through a FALLBACK selector…"), at least one green step carrying the "matched via fallback tier B · <selector>" line, and one red step with its code (e.g. COVERED), the explanation and the tip. Footer reading "N steps · N s · 1 failed". -->
+
+> **Last run only.** The report is not a history: each run replaces the previous one, and closing
+> the app discards it. It exists for the run you just watched fail. For a record that sticks around,
+> the session log is still the place (tray → **Open Logs Folder**).
 
 ---
 

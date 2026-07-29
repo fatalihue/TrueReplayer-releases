@@ -824,6 +824,40 @@ Ligue pelo chip **Advanced…** → seção **Sequence** → **One line per use*
 
 > **Qual dos três usar.** `{clipboard:line:3}` = *sempre* a terceira linha. `{clipboard:next}` = a **próxima** linha, do que estiver copiado. `{rownext:coluna}` = a próxima linha da **tabela de dados** do perfil (veja [Data Loop](#data-loop)) — essa sobrevive a fechar o app; a do clipboard vale enquanto o TrueReplayer estiver aberto.
 
+### Quando o número vem de uma variável — `@i`
+
+Nos modificadores que pedem um número, esse número pode vir de uma **variável** em vez de ser fixo.
+Escreva `@` seguido do nome:
+
+```
+Set Variable   i = 3
+Send Text      {clipboard:line:@i}      →  a terceira linha
+```
+
+Além das suas variáveis, dois nomes já existem prontos:
+
+| Você escreve | De onde vem o número |
+| --- | --- |
+| `@nome` | A variável com esse nome (a mesma que `{var:nome}` lê) |
+| `@counter` | A volta atual do loop — 1, 2, 3… |
+| `@row` | A linha atual da tabela de dados |
+
+Serve para o caso em que a linha que interessa **muda a cada volta**: num loop, `{clipboard:line:@counter}`
+pega a linha 1 na primeira volta, a 2 na segunda, e assim por diante.
+
+- Vale em **Line #**, **Word #**, **First N** e **Last N**, tanto no `{clipboard}` quanto no
+  `{row:coluna}` e no `{rownext:coluna}`.
+- Na janela **Advanced…**, o botãozinho **@** ao lado do campo troca entre número fixo e variável.
+  Com ele ligado a prévia deixa de mostrar um resultado e diz *"Resolvido quando a macro roda"* —
+  ela não teria como saber o valor, e um número inventado ali seria pior que nenhum.
+- **Se o nome não existir, sai vazio** — de propósito. O contrário seria colar o clipboard inteiro
+  por causa de um nome digitado errado, dentro de uma resposta a cliente.
+- No **Join** o `@` não vale: ali o texto é o separador literal, então `join:@x` junta com `@x`.
+
+> Isto é diferente de escrever `{clipboard:line:{var:i}}` com chaves — essa forma **não** funciona e
+> nunca funcionou: ela cola o clipboard inteiro seguido de uma chave solta. A grafia com `@` existe
+> justamente porque a com chaves mudaria o significado de tokens que já estão salvos nos seus perfis.
+
 O **Delivery** decide como a formatação chega, já que cada app entende uma coisa diferente:
 
 | Modo | Envia |
@@ -896,6 +930,7 @@ Exemplos mínimos. Todos podem entrar dentro de um **Send Text** (ou na tecla de
 | `{winclip:1}` | O último item copiado no Windows (histórico do `Win+V`). |
 | `{clipboard}` | O que está copiado agora (`{clipboard:trim}` tira espaços sobrando). |
 | `{clipboard:next}` | A **próxima linha** do que está copiado — cada uso avança uma linha (veja [Send Text](#send-text)). |
+| `{clipboard:line:@i}` | A linha cujo número está na variável `i` (`@counter` = a volta do loop, `@row` = a linha de dados). |
 
 > **Regra de ouro:** um token que não encontra valor vira **texto vazio** — nunca dá erro. Se algo sair em branco, aperte **`Ctrl+K`** → **Toggle Live Variables** e rode de novo para ver o que está realmente guardado.
 
@@ -1120,6 +1155,29 @@ Um selo de **qualidade do seletor** (S → C) indica quão estável cada seletor
 > No campo de **texto** dessas checagens, um padrão escrito **sem prefixo** vale como **exato** — é o que a dica do editor sempre prometeu, mas antes ele simplesmente nunca casava e a espera estourava o tempo em silêncio. Para casar só um pedaço, use um prefixo: `text*=Salvar` (contém), `text~=salvar` (contém, ignorando maiúsculas) ou `text/^Salvar.*/i` (expressão regular).
 >
 > Essas duas correções vivem na **extensão**, não no app: atualize o TrueReplayer e a extensão pede para ser recarregada (uma aba já aberta continua rodando a versão antiga até você recarregar). Se a versão dela não bater, o app avisa.
+
+### Relatório de execução — qual passo quebrou, e por quê
+
+Uma macro de navegador é a que mais dá problema com o tempo: o site muda, um seletor deixa de casar,
+e a macro passa a não fazer nada sem dizer o motivo. Depois de rodar, abra **`Ctrl+K`** →
+**Run report** e você vê a execução passo a passo.
+
+Cada linha traz o número da linha na grade, o tipo da ação, o que ela mirou e **quanto levou**. E
+duas coisas que só o relatório mostra:
+
+- **Casou por reserva.** Quando você escolhe um elemento, o app guarda seletores de reserva além do
+  principal. Se um passo casou por uma reserva, ele aparece marcado — e **isso não é erro, é aviso**:
+  o seletor que *você* escolheu já não casa mais, e a macro está a uma mudança do site de parar. Um
+  passo que **passou** pode carregar esse aviso, e é a hora certa de re-escolher o elemento.
+- **Por que falhou, em texto.** A falha não vem como "deu erro": vem com o motivo — não achou o
+  elemento, achou mas está invisível, achou mas está desabilitado, achou mas tem algo por cima, o
+  seletor não é CSS válido, a página não carregou a tempo — e, quando cabe, o que fazer a respeito.
+
+<!-- 📸 PRINT: run-report.png — O painel "Run report" aberto (Ctrl+K → Run report) depois de uma execução de navegador com falha. Mostrar: a faixa de aviso no topo ("N passo(s) casaram por um seletor de RESERVA…"), pelo menos um passo verde com a linha "casou por reserva tier B · <seletor>", e um passo em vermelho com o código (ex.: COVERED), a explicação e a dica. Rodapé com "N passos · N s · 1 falharam". -->
+
+> **É só a última execução.** O relatório não é um histórico: cada nova execução substitui o
+> anterior, e fechar o app o descarta. Ele existe para a execução que você acabou de ver falhar.
+> Para um registro que dura, o log da sessão continua sendo o lugar (bandeja → **Open Logs Folder**).
 
 ---
 

@@ -1173,7 +1173,11 @@ duas coisas que só o relatório mostra:
   elemento, achou mas está invisível, achou mas está desabilitado, achou mas tem algo por cima, o
   seletor não é CSS válido, a página não carregou a tempo — e, quando cabe, o que fazer a respeito.
 
-<!-- 📸 PRINT: run-report.png — O painel "Run report" aberto (Ctrl+K → Run report) depois de uma execução de navegador com falha. Mostrar: a faixa de aviso no topo ("N passo(s) casaram por um seletor de RESERVA…"), pelo menos um passo verde com a linha "casou por reserva tier B · <seletor>", e um passo em vermelho com o código (ex.: COVERED), a explicação e a dica. Rodapé com "N passos · N s · 1 falharam". -->
+<!-- 📸 PRINT: run-report.png — O painel após uma execução de navegador BEM-SUCEDIDA: três BrowserClick com seus seletores, tempos por passo e o rodapé "3 passos · 1.0 s". Uma segunda foto de uma execução COM FALHA (faixa de aviso de seletor de reserva + um passo vermelho com código, explicação e dica) ainda seria útil aqui. -->
+<p align="center">
+  <img src="img/run-report.png" width="820" alt="O painel Run report listando três passos de navegador com seus seletores e tempos" /><br>
+  <sub><i>Cada passo com o que mirou e quanto levou. Aqui todos passaram — quando algum falha, a linha fica vermelha e traz o motivo; quando um casa por seletor de reserva, aparece um aviso no topo.</i></sub>
+</p>
 
 > **É só a última execução.** O relatório não é um histórico: cada nova execução substitui o
 > anterior, e fechar o app o descarta. Ele existe para a execução que você acabou de ver falhar.

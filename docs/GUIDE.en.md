@@ -1174,7 +1174,11 @@ two things only the report can tell you:
   top of it, the selector isn't valid CSS, the page didn't finish loading — and, where it applies,
   what to do about it.
 
-<!-- PICT: run-report.png — The "Run report" panel open (Ctrl+K → Run report) after a failing browser run. Show: the warning banner at the top ("N step(s) matched through a FALLBACK selector…"), at least one green step carrying the "matched via fallback tier B · <selector>" line, and one red step with its code (e.g. COVERED), the explanation and the tip. Footer reading "N steps · N s · 1 failed". -->
+<!-- PICT: run-report.png — The panel after a SUCCESSFUL browser run: three BrowserClick steps with their selectors, per-step timings and the footer "3 passos · 1.0 s". A second shot of a FAILING run (fallback-selector warning banner + a red step with code, explanation and tip) would still be useful here. -->
+<p align="center">
+  <img src="img/run-report.png" width="820" alt="The Run report panel listing three browser steps with their selectors and timings" /><br>
+  <sub><i>Every step with what it targeted and how long it took. Here they all passed — when one fails the row turns red and carries the reason, and when one matches through a fallback selector a warning appears at the top.</i></sub>
+</p>
 
 > **Last run only.** The report is not a history: each run replaces the previous one, and closing
 > the app discards it. It exists for the run you just watched fail. For a record that sticks around,

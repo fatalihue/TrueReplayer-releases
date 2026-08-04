@@ -49,7 +49,7 @@ Ele envia a entrada da forma que aplicativos e **jogos** reais esperam (testado 
 
 ### 🎬 Gravar e reproduzir
 - **Gravação com um toque** — pressione **`Ctrl+PageUp`** (ou o botão Recording), faça o que precisa e pressione de novo para parar.
-- **Reprodução perfeita** — reproduza com **`Ctrl+PageDown`**, com controle total sobre **delay, loops** (0 = para sempre), **interval** entre loops e **jitter** (variação ± aleatória para não ficar robótico).
+- **Reprodução perfeita** — reproduza com **`Ctrl+PageDown`**, com controle total sobre **delay**, **loops** e **interval** entre repetições (os dois pertencem ao perfil e viajam com ele) e **jitter** (variação ± aleatória para não ficar robótico).
 - **Filtros de captura** — grave só o que você quer: cliques de mouse, rolagem, teclado — juntos ou separados.
 - **Grade de ações editável** — cada passo é uma linha que você pode reordenar (arrastando ou com `Alt+↑/↓`), editar na hora, duplicar, pular ou editar em lote.
 

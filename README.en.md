@@ -49,7 +49,7 @@ It sends input the way real apps and **games** expect (tested in Roblox and othe
 
 ### 🎬 Record & replay
 - **One-tap recording** — press **`Ctrl+PageUp`** (or the Recording button), do your thing, press again to stop.
-- **Pixel-perfect playback** — replay with **`Ctrl+PageDown`**, with full control over **delay, loops** (0 = forever), **interval** between loops, and **jitter** (random ± variation so it's not robotic).
+- **Pixel-perfect playback** — replay with **`Ctrl+PageDown`**, with full control over **delay**, **loops** and **interval** between repeats (both belong to the profile and travel with it), and **jitter** (random ± variation so it's not robotic).
 - **Capture filters** — record only what you want: mouse clicks, scroll, keyboard — together or separately.
 - **Editable action grid** — every step is a row you can reorder (drag or `Alt+↑/↓`), edit inline, duplicate, skip, or bulk-edit.
 

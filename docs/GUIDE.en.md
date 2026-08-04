@@ -238,9 +238,15 @@ Press **`Ctrl+PageDown`** (or click **Replay**) to run the active profile; press
 | Setting | What it does | Default |
 | --- | --- | --- |
 | **Delay** | A fixed delay (ms) applied before each action, overriding recorded timing. | 100 ms (on) |
-| **Loops** | How many times to repeat the whole macro. **0 = forever.** | 1 |
-| **Interval** | Pause (ms) between loop iterations. | off |
+| **Loops** | How many times to repeat the whole macro, from 1 to 999. **Belongs to the profile.** | 1 |
+| **Interval** | Pause (ms) between one repeat and the next. **Belongs to the profile.** | off |
 | **Jitter** | Random ± % applied to each delay, so playback isn't perfectly regular. | off |
+
+> **Loops and Interval belong to the profile, not to the app.** Each macro carries its own count, and it travels with the profile when you export it, duplicate it, or save it as new. With no profile loaded the two fields fall back to app-level values, so you can still run a one-off recording.
+>
+> **`0 = forever` is gone from here.** The minimum is 1. For a macro that runs until you stop it, use the **While Pressed** or **Toggle** trigger mode (see *Hotkeys and hotstrings*) — there the endlessness is explicit instead of hidden in a zero. The Clicker is a different story: its **Loops** still accepts `0 = forever`.
+
+The loop pill in the action bar reports what the **next run** will actually do, not simply the number in the field: `3×` for the profile's count, `per row` when **Loop over data** is in charge, and `∞` when the trigger mode forces an endless replay. A dashed amber outline means you changed the value and haven't saved — the number holds for this session, but it disappears on a profile switch unless you press `Ctrl+S`.
 
 ---
 
@@ -356,7 +362,7 @@ Make a macro react to what's on screen.
 | **Browser Element** | An element in Chrome is present, visible or enabled. |
 | **Random** | A dice roll lands under N% — for macros that shouldn't look perfectly regular. |
 | **Variable** | A `{var:name}` compares true against a value (equals, contains, greater than, …). |
-| **Process Running** | A named process is alive. |
+| **Process Running** | A named process is alive. The **Process Name** field offers a list of the processes running right now, filterable by executable name or window title — no more alt-tabbing to Task Manager to copy it. Typing a name by hand still works. |
 | **File Exists** | A file or folder exists on disk. |
 | **Time** | The clock is inside a start–end window, on the weekdays you pick. |
 
@@ -414,7 +420,7 @@ It's a single row — no branch, no `EndIf`, nothing inside it.
 | Require that… | True when |
 | --- | --- |
 | **Window Open** | A window with that process/title exists — and, if you tick *Foreground window only*, that it's **in front**. |
-| **Process Running** | A process with that name is running. |
+| **Process Running** | A process with that name is running. The **Process Name** field offers a list of the processes running right now, filterable by executable name or window title — no more alt-tabbing to Task Manager to copy it. Typing a name by hand still works. |
 | **Clipboard** | The clipboard matches the pattern (Contains / Equals / Regex). |
 | **Variable** | A `{var:name}` matches the value (equals, contains, greater than, …). |
 | **File Exists** | A file or folder exists on disk. |
@@ -469,7 +475,7 @@ That's the difference: without the Assert, the bad day is a password typed somew
 
 - **New / Save / Rename / Duplicate / Delete** from the Profiles panel (left).
 - **Pin** a profile to keep it at the top; **drag** it into a **folder** to group it.
-- **Folders** — create, rename, recolor, collapse. A folder can hold a default **window target** that its profiles inherit.
+- **Folders** — create, rename, recolor, collapse. A folder can hold a default **window target** that its profiles inherit. To collapse or open **all** of them at once, use the button in the Profiles panel header (*Collapse all folders* / *Expand all folders*) — it acts on every folder, so it isn't hidden behind a right-click on one particular one.
 - **Profile info** — give a profile an **emoji icon**, **description** and **tags** (right-click → Info). Tags are searchable.
 - **Search** filters the list by name or tag.
 - **Import / Export** — export selected profiles to a `.trprofile` file (actions + metadata + reference images + optional folder/pin layout). Import shows a conflict screen where each clashing profile gets **Rename** (the default — nothing is ever silently overwritten), **Overwrite** or **Skip**, plus a security note if the file contains auto-firing actions. A profile that needs a newer TrueReplayer than yours is greyed out with the reason.
@@ -544,9 +550,11 @@ How it behaves:
   recording is running, while you have unsaved edits in the grid, or while a dialog is open, it
   retries for a short window and, if it still doesn't fit, is **skipped** (and counted in the
   panel). An automation never discards your unsaved work.
-- **Each fire runs the profile once** — even with the toolbar's **Loops** enabled at `0`
-  (= forever). An endless replay started by nobody would own the engine for good, and with the
-  app in the tray there is no Stop button within reach.
+- **A fire honours the profile's Loops, but never runs forever.** If the profile is set to `3×`,
+  the fire runs three times. What automation ignores is the endlessness: a profile whose trigger
+  mode is **While Pressed** or **Toggle** runs its normal count when the daemon is the caller. An
+  endless replay started by nobody would own the engine for good, and with the app in the tray
+  there is no Stop button within reach.
 - **The history survives closing the app** — how many times it fired, when it last did, and how
   many fires were skipped. That is what answers the question only a daemon raises: *did this run
   while I was away?*
@@ -1159,6 +1167,8 @@ A **selector quality** badge (S → C) hints how stable each captured selector i
 >
 > Both fixes live in the **extension**, not the app: update TrueReplayer and it will ask you to reload the extension (an already-open tab keeps running the old version until you do). If the versions don't match, the app tells you.
 
+> **Checking a browser `If` without running the macro.** In an **If → Browser Element**, the **Check now** button asks the same instant question the replay would, against the tab in front right now. The answer is a **branch**, not a verdict: *Condition is TRUE now* or *Condition is FALSE now* — an `If` reading false is working, which is why a false result isn't painted as an error. What **is** a problem says so differently: *Extension not connected* means nobody could ask the page at all, and in that state the replay reads the condition as **not found** instead of stopping.
+
 ### Run report — which step broke, and why
 
 A browser macro is the one most likely to rot: the site changes, a selector stops matching, and the
@@ -1220,7 +1230,7 @@ The editor has three surfaces: it opens on the **gallery**; the **Customise** bu
 The Settings panel (right side) has three tabs; everything **auto-saves** (no Save button). Collapse it to a slim icon rail to reclaim space. (The panel is shown on the right in the [overview](#the-action-grid).)
 
 **Profile tab** (per profile / mode):
-- **Execution** — Delay, Loops, Interval, Jitter (Macro mode).
+- **Execution** — Delay, Loops, Interval, Jitter (Macro mode). **Loops** and **Interval** are written to the active profile (`Ctrl+S`); Delay and Jitter are app-wide.
 - **Game Mode** — Smooth movement + Fast approach (and their knobs).
 - **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, the **Profile Keys** master switch and **Browser Actions** (record Chrome CSS selectors instead of coordinates).
 - **Clicker** — replaces Execution/Game Mode/Recording while in Clicker mode.
@@ -1244,6 +1254,7 @@ The Settings panel (right side) has three tabs; everything **auto-saves** (no Sa
 
 - **Profiles:** `Documents\TrueReplayer\Profiles\*.json`
 - **Where each list stopped:** `Documents\TrueReplayer\run-cursors.json` — the **Data Loop** row cursor and the **Set Variable** *Cycle* position, so they pick up where they left off after you close the app. Deleting the file with the app closed just restarts every list from the top.
+- **Automation history:** `Documents\TrueReplayer\automation-stats.json` — how many times each automation fired, when it last did, and how many fires were skipped. It is what lets the panel keep answering *did this run while I was away?* across a restart, and it is also where the anchor for long intervals lives. Deleting it clears the history and makes every interval start counting again.
 - **App settings:** `appsettings.json` under the app's local data.
 - **Reference images, themes, WebView2 data:** `%LocalAppData%\TrueReplayer\…` — pinned here so it **survives auto-updates**.
 

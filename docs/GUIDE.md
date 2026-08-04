@@ -238,9 +238,15 @@ As configurações de **Execution** (aba Settings → Profile) controlam o tempo
 | Configuração | O que faz | Padrão |
 | --- | --- | --- |
 | **Delay** | Um atraso fixo (ms) aplicado antes de cada ação, substituindo o tempo gravado. | 100 ms (ligado) |
-| **Loops** | Quantas vezes repetir a macro inteira. **0 = infinito.** | 1 |
-| **Interval** | Pausa (ms) entre as iterações do loop. | desligado |
+| **Loops** | Quantas vezes repetir a macro inteira, de 1 a 999. **Pertence ao perfil.** | 1 |
+| **Interval** | Pausa (ms) entre uma repetição e a seguinte. **Pertence ao perfil.** | desligado |
 | **Jitter** | Variação aleatória de ± % aplicada a cada delay, para que a reprodução não fique perfeitamente regular. | desligado |
+
+> **Loops e Interval são do perfil, não do app.** Cada macro carrega a sua própria contagem, e ela vai junto quando você exporta, duplica ou salva o perfil como novo. Sem nenhum perfil carregado os dois campos passam a valer para o app, para você conseguir rodar uma gravação avulsa.
+>
+> **Não existe mais `0 = infinito` aqui.** O mínimo é 1. Para uma macro que roda até você mandar parar, use o modo de disparo **While Pressed** ou **Toggle** (veja *Hotkeys e hotstrings*) — ali o infinito é explícito, em vez de escondido num zero. O Clicker é outra história: o **Loops** dele continua aceitando `0 = infinito`.
+
+A pílula de loop na barra de ações mostra o que a **próxima execução** vai fazer, não simplesmente o número que está no campo: `3×` para a contagem do perfil, `por linha` quando o **Loop over data** manda, e `∞` quando o modo de disparo força repetição infinita. Um contorno tracejado âmbar significa que você mexeu no valor e ainda não salvou — o número vale para esta sessão, mas some numa troca de perfil se você não der `Ctrl+S`.
 
 ---
 
@@ -356,7 +362,7 @@ Faça uma macro reagir ao que está na tela.
 | **Browser Element** | Um elemento no Chrome está presente, visível ou habilitado. |
 | **Random** | Um sorteio cai abaixo de N% — para macros que não devem parecer perfeitamente regulares. |
 | **Variable** | Um `{var:name}` compara verdadeiro contra um valor (igual, contém, maior que, …). |
-| **Process Running** | Um processo com aquele nome está rodando. |
+| **Process Running** | Um processo com aquele nome está rodando. O campo **Process Name** tem uma lista dos processos abertos agora, filtrável pelo nome do executável ou pelo título da janela — você não precisa mais ir no Gerenciador de Tarefas copiar o nome. Digitar à mão continua funcionando. |
 | **File Exists** | Um arquivo ou pasta existe no disco. |
 | **Time** | O relógio está dentro de uma janela de início–fim, nos dias da semana que você escolher. |
 
@@ -414,7 +420,7 @@ Um **If** *pergunta* e segue por um dos dois caminhos: os dois desfechos são le
 | Exija que… | Verdadeiro quando |
 | --- | --- |
 | **Window Open** | Existe uma janela daquele processo/título — e, se você marcar *Foreground window only*, que ela esteja **em primeiro plano**. |
-| **Process Running** | Um processo com aquele nome está rodando. |
+| **Process Running** | Um processo com aquele nome está rodando. O campo **Process Name** tem uma lista dos processos abertos agora, filtrável pelo nome do executável ou pelo título da janela — você não precisa mais ir no Gerenciador de Tarefas copiar o nome. Digitar à mão continua funcionando. |
 | **Clipboard** | O clipboard bate com o padrão (Contains / Equals / Regex). |
 | **Variable** | Um `{var:nome}` bate com o valor (igual, contém, maior que, …). |
 | **File Exists** | Um arquivo ou pasta existe no disco. |
@@ -469,7 +475,7 @@ A diferença é essa: sem o Assert, o dia ruim vira uma senha digitada num lugar
 
 - **New / Save / Rename / Duplicate / Delete** pelo painel Profiles (à esquerda).
 - **Fixe (Pin)** um perfil para mantê-lo no topo; **arraste-o** para dentro de uma **pasta** para agrupá-lo.
-- **Pastas** — crie, renomeie, mude a cor, recolha. Uma pasta pode conter um **alvo de janela** padrão que seus perfis herdam.
+- **Pastas** — crie, renomeie, mude a cor, recolha. Uma pasta pode conter um **alvo de janela** padrão que seus perfis herdam. Para recolher ou abrir **todas** de uma vez, use o botão no cabeçalho do painel Profiles (*Colapsar todas as pastas* / *Expandir todas as pastas*) — ele age sobre todas, então não fica escondido no menu de contexto de uma pasta só.
 - **Informações do perfil** — dê ao perfil um **ícone emoji**, uma **descrição** e **tags** (clique com o botão direito → Info). As tags são pesquisáveis.
 - **Pesquisa** filtra a lista por nome ou tag.
 - **Import / Export** — exporte os perfis selecionados para um arquivo `.trprofile` (ações + metadados + imagens de referência + layout opcional de pasta/pin). A importação mostra uma tela de conflitos onde cada perfil em choque recebe **Rename** (o padrão — nada é sobrescrito em silêncio), **Overwrite** ou **Skip**, além de um aviso de segurança se o arquivo contiver ações de disparo automático. Um perfil que exige um TrueReplayer mais novo que o seu fica esmaecido com o motivo.
@@ -545,9 +551,11 @@ Como se comporta:
   replay ou gravação roda, enquanto há edições não salvas na grade, ou enquanto um diálogo está
   aberto, ele tenta de novo por uma janela curta e, se não couber, é **pulado** (e contado no
   painel). Uma automação nunca descarta seu trabalho não salvo.
-- **Cada disparo roda o perfil uma vez** — mesmo que os **Loops** da barra estejam ligados em `0`
-  (= para sempre). Um replay sem fim disparado sozinho tomaria o motor de vez, e com o app na
-  bandeja não há botão de parar ao alcance.
+- **Um disparo respeita os Loops do perfil, mas nunca roda para sempre.** Se o perfil está em
+  `3×`, o disparo roda três vezes. O que a automação ignora é o infinito: um perfil cujo modo de
+  disparo é **While Pressed** ou **Toggle** roda a contagem normal quando quem chama é o daemon.
+  Um replay sem fim disparado sozinho tomaria o motor de vez, e com o app na bandeja não há botão
+  de parar ao alcance.
 - **O histórico sobrevive a fechar o app** — quantas vezes disparou, quando foi a última, e quantos
   pulos. Serve para responder a pergunta que só um daemon levanta: *rodou enquanto eu não estava?*
 - **Disparos de condição** só acontecem na virada: por padrão a condição precisa voltar a ficar falsa antes
@@ -1160,6 +1168,8 @@ Um selo de **qualidade do seletor** (S → C) indica quão estável cada seletor
 >
 > Essas duas correções vivem na **extensão**, não no app: atualize o TrueReplayer e a extensão pede para ser recarregada (uma aba já aberta continua rodando a versão antiga até você recarregar). Se a versão dela não bater, o app avisa.
 
+> **Conferindo um `If` de navegador sem rodar a macro.** Num **If → Browser Element**, o botão **Check now** faz a mesma pergunta instantânea que a reprodução faria, na aba que está na frente agora. A resposta é um **caminho**, não um veredito: *Condition is TRUE now* ou *Condition is FALSE now* — um `If` que lê falso está funcionando, e é por isso que o resultado falso não vem pintado de erro. O que **é** problema aparece com outro texto: *Extension not connected* significa que ninguém conseguiu perguntar à página, e nesse estado a reprodução lê a condição como **não encontrado** em vez de parar.
+
 ### Relatório de execução — qual passo quebrou, e por quê
 
 Uma macro de navegador é a que mais dá problema com o tempo: o site muda, um seletor deixa de casar,
@@ -1219,7 +1229,7 @@ O editor tem três telas: ele abre na **galeria**; o botão **Customise** abre a
 O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente** (sem botão Save). Recolha o painel numa barra fina de ícones para ganhar espaço. (O painel aparece à direita na [visão geral](#a-grade-de-ações).)
 
 **Aba Profile** (por perfil / modo):
-- **Execution** — Delay, Loops, Interval, Jitter (Macro mode).
+- **Execution** — Delay, Loops, Interval, Jitter (Macro mode). **Loops** e **Interval** são gravados no perfil ativo (`Ctrl+S`); Delay e Jitter valem para o app.
 - **Game Mode** — Smooth movement + Fast approach (e seus ajustes).
 - **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, a chave-mestra **Profile Keys** e **Browser Actions** (gravar seletores CSS do Chrome em vez de coordenadas).
 - **Clicker** — substitui Execution/Game Mode/Recording enquanto no Clicker mode.
@@ -1243,6 +1253,7 @@ O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente
 
 - **Perfis:** `Documents\TrueReplayer\Profiles\*.json`
 - **Onde cada lista parou:** `Documents\TrueReplayer\run-cursors.json` — a posição do cursor de linha do **Data Loop** e a do **Set Variable** em modo *Cycle*, para elas continuarem de onde estavam depois de fechar o app. Apagar o arquivo com o app fechado só faz todas as listas recomeçarem do início.
+- **Histórico das automações:** `Documents\TrueReplayer\automation-stats.json` — quantas vezes cada automação disparou, quando foi a última e quantos pulos. É o que faz o painel continuar respondendo *rodou enquanto eu não estava?* depois de reiniciar, e é também onde mora a âncora dos intervalos longos. Apagar zera o histórico e faz cada intervalo recomeçar a contar.
 - **Configurações do app:** `appsettings.json` sob os dados locais do aplicativo.
 - **Imagens de referência, temas, dados do WebView2:** `%LocalAppData%\TrueReplayer\…` — fixados aqui para que **sobrevivam às atualizações automáticas**.
 

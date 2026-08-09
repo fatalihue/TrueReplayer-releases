@@ -244,7 +244,7 @@ Press **`Ctrl+PageDown`** (or click **Replay**) to run the active profile; press
 
 > **Loops and Interval belong to the profile, not to the app.** Each macro carries its own count, and it travels with the profile when you export it, duplicate it, or save it as new. With no profile loaded the two fields fall back to app-level values, so you can still run a one-off recording.
 >
-> **`0 = forever` is gone from here.** The minimum is 1. For a macro that runs until you stop it, use the **While Pressed** or **Toggle** trigger mode (see *Hotkeys and hotstrings*) — there the endlessness is explicit instead of hidden in a zero. The Clicker is a different story: its **Loops** still accepts `0 = forever`.
+> **`0 = forever` is gone from here.** The minimum is 1. For a macro that runs until you stop it, use the **While Pressed** or **Toggle** trigger mode (see *Hotkeys and hotstrings*) — there the endlessness is explicit instead of hidden in a zero. The Clicker follows the same idea its own way: the **Stop after** limits (see [Clicker mode](#clicker-mode-auto-clicker)) are off by default, and off means forever — no zero to remember there either.
 
 The loop pill in the action bar reports what the **next run** will actually do, not simply the number in the field: `3×` for the profile's count, `per row` when **Loop over data** is in charge, and `∞` when the trigger mode forces an endless replay. A dashed amber outline means you changed the value and haven't saved — the number holds for this session, but it disappears on a profile switch unless you press `Ctrl+S`.
 
@@ -750,38 +750,64 @@ The **Activate Window** action switches which app is in front *mid-run*, so one 
 
 ## Clicker mode (auto-clicker)
 
-Switch to **Clicker** with **`ScrollLock`** (or the Macro/Clicker toggle). The Profile panel swaps to clicker settings:
+Switch to **Clicker** with **`ScrollLock`** (or the Macro/Clicker toggle). The Profile panel swaps to clicker settings, in four groups: **Clicker** (how it clicks), **Target** (where it clicks), **Stop after** (when it stops) and **Tuning** (fine-tuning).
+
+**Clicker**
 
 | Setting | What it does | Default |
 | --- | --- | --- |
 | **Button** | Left / Right / Middle. | Left |
-| **Rate** | Click speed, as a delay (ms) or clicks/second. | 100 ms (10/s) |
-| **Loops** | Number of clicks. **0 = infinite.** | 0 |
-| **Interval** | Pause between loop iterations. | off |
-| **Jitter** | Random ± % on the delay. | off |
+| **Rate** | Click speed — in clicks/second or as a delay (ms). The label shows `≈ N/s`, already accounting for Hold and Gap (see *Tuning* below) — the real rate, not `1000/delay`. | 100 ms (≈10/s) |
+
+**Target** *(mutually exclusive — turning one on turns off the other two)*
+
+| Setting | What it does | Default |
+| --- | --- | --- |
 | **Position** | Randomize the click position slightly. | off |
 | **Area** | Drag a rectangle to click random points inside it. | off |
 | **Fixed** | Always clicks **one** point. With no point set, it locks to the cursor position when the click starts (*At start*); click the chip body to pick the point on screen. | off |
 
-> **Position, Area and Fixed are mutually exclusive** — turning one on turns off the other two.
+**Stop after** *(the two are independent — whichever comes first ends the run)*
 
-Start/stop with **`PageDown`**, pause/resume with **`PageUp`**. While running, the **live dashboard** shows the click count, rate, elapsed time, loop progress and ETA.
+| Setting | What it does | Default |
+| --- | --- | --- |
+| **Clicks** | Stop after N clicks. | off = no limit |
+| **Time** | Stop after N seconds of clicking (paused time doesn't count). | off = no limit |
 
-<!-- PICT: clicker.png — The Clicker panel LIVE while running (press PageDown to start): the big click count, rate, elapsed time, loop progress, ETA and the progress bar — with the Clicker settings (Button · Rate · Loops · Interval · Jitter · Position · Area · Fixed) visible in the right-hand panel. -->
+> **The Clicker runs forever by default.** Neither **Stop after** limit is on by default — off shows `∞`. Turn on **Clicks**, **Time**, or both, to bound the run.
+
+**Tuning**
+
+| Setting | What it does | Default |
+| --- | --- | --- |
+| **Jitter** | Random ± % on each delay — less robotic. | off |
+| **Hold** | How long the button stays pressed (ms). 10 = a normal click; 50–200 for apps that miss short clicks. | 10 ms |
+| **Gap** | Extra time added to every click (ms) — it adds to the rate; it is not a pause between bursts. | off |
+| **Game move** | Moves the cursor along a path instead of teleporting, for games that ignore instant jumps (e.g. Roblox). Only affects **Area** and **Fixed** — in cursor mode (the default) nothing moves. Costs a few ms per click. Independent of the [Game mode](#game-mode) master switch: it works even with that switch off, and does not turn on by itself when it's on. | off |
+
+> **Rate and Hold are honest about the period.** Hold and Gap live *inside* each click's cycle, not stacked on top — asking for 100 ms gives 100 ms cycles, not ~110 ms.
+
+Start/stop with **`PageDown`**, pause/resume with **`PageUp`**. While running, the **live dashboard** shows the click count, rate, elapsed time, **Stop after** progress and ETA.
+
+<!-- PICT: clicker.png — NEEDS RESHOOTING: the panel was reorganized into four sections (Clicker · Target · Stop after · Tuning), "Loops"/"Interval" became "Stop after → Clicks/Time" (off = ∞) and "Gap" (was Interval), and Tuning gained the "Game move" toggle. Capture with the panel LIVE while running (PageDown), showing the big count, rate, elapsed time, progress, ETA and the progress bar, with the four sections visible on the right. -->
 <p align="center">
   <img src="img/clicker.png" width="820" alt="The Clicker dashboard while running, with the settings on the right" /><br>
   <sub><i>Live count, rate, ETA and the progress bar — and the settings (incl. <b>Fixed</b>) on the right.</i></sub>
 </p>
 
+> **`SendInput` does not signal UIPI blocking.** If the target is an elevated window and TrueReplayer isn't, Windows accepts the call normally — the event simply never reaches the window, and nothing in the panel warns about it: the rate stays healthy while nothing happens at the target. If the Clicker looks like it's running but the target isn't reacting, run TrueReplayer as administrator.
+
 ---
 
 ## Game mode
 
-For games (e.g. Roblox) that ignore an instant cursor "teleport", *Game mode* makes the movement look human. It's **on by default**; turn it off for normal apps that don't need it.
+For games (e.g. Roblox) that ignore an instant cursor "teleport", *Game mode* makes the movement look human. **The section header is the master switch** — on by default. Off, the cursor jumps straight to the target (the old behaviour) and the section collapses to a single control, **Click delay**, which still applies either way.
 
-- **Smooth movement** — walks the cursor to the target in small steps (tune **Path step** px, **Step delay**, **Click delay**). Defaults: 20 px / 2 ms / 10 ms.
-- **Fast approach** — for long moves, teleports invisibly to within **Settle distance** (default 80 px) of the target, then walks the final stretch — so far clicks stay quick.
+- **Fast approach** *(only shown with the master on)* — for long moves, teleports invisibly to within a **Distance** (default 80 px) of the target, then walks the final stretch — so far clicks stay near-instant. Turn off if a game misclicks.
+- **Tuning** — **Click delay** (default 10 ms, applied twice per click: after the move, so the app registers the position, and on release) is always visible, master on or off. With the master **on**, **Path step** (default 20 px — raise it to match **Distance** to cut the walk to a hop or two) and **Step delay** (default 2 ms) also appear.
 - **Focus-click** *(per action)* — some tiny targets (a small Roblox text field) only take keyboard focus on a *second* click. Toggle **Focus click** on a click row (right-click) and it clicks twice a few pixels apart. **Use it only on small text fields, never on buttons** (a button would fire twice).
+
+> The [Clicker](#clicker-mode-auto-clicker) has its own movement switch, **Game move** (in *Tuning*), independent of this master — it works even with the main Game Mode off, and does not turn on by itself when the master is on.
 
 ---
 
@@ -1231,9 +1257,9 @@ The Settings panel (right side) has three tabs; everything **auto-saves** (no Sa
 
 **Profile tab** (per profile / mode):
 - **Execution** — Delay, Loops, Interval, Jitter (Macro mode). **Loops** and **Interval** are written to the active profile (`Ctrl+S`); Delay and Jitter are app-wide.
-- **Game Mode** — Smooth movement + Fast approach (and their knobs).
+- **Game Mode** — the section header is the master switch; inside, Fast approach and Tuning (Click delay, Path step, Step delay, Distance).
 - **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, the **Profile Keys** master switch and **Browser Actions** (record Chrome CSS selectors instead of coordinates).
-- **Clicker** — replaces Execution/Game Mode/Recording while in Clicker mode.
+- **Clicker** — replaces Execution/Game Mode/Recording while in Clicker mode; its own four groups (Clicker, Target, Stop after, Tuning) — see [Clicker mode](#clicker-mode-auto-clicker).
 
 **Keys tab** (everything that intercepts a key):
 - **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode, [Capture Slot](#variables-slots--prompts). Defaults: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode `ScrollLock`, Capture Slot `Win+Ctrl+C` (clear the field to disable it).

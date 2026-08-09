@@ -244,7 +244,7 @@ As configurações de **Execution** (aba Settings → Profile) controlam o tempo
 
 > **Loops e Interval são do perfil, não do app.** Cada macro carrega a sua própria contagem, e ela vai junto quando você exporta, duplica ou salva o perfil como novo. Sem nenhum perfil carregado os dois campos passam a valer para o app, para você conseguir rodar uma gravação avulsa.
 >
-> **Não existe mais `0 = infinito` aqui.** O mínimo é 1. Para uma macro que roda até você mandar parar, use o modo de disparo **While Pressed** ou **Toggle** (veja *Hotkeys e hotstrings*) — ali o infinito é explícito, em vez de escondido num zero. O Clicker é outra história: o **Loops** dele continua aceitando `0 = infinito`.
+> **Não existe mais `0 = infinito` aqui.** O mínimo é 1. Para uma macro que roda até você mandar parar, use o modo de disparo **While Pressed** ou **Toggle** (veja *Hotkeys e hotstrings*) — ali o infinito é explícito, em vez de escondido num zero. O Clicker segue a mesma ideia à sua maneira: os limites de **Stop after** (veja [Clicker mode](#clicker-mode-auto-clicker)) vêm desligados por padrão, e desligado significa sem fim — sem um zero escondido para lembrar.
 
 A pílula de loop na barra de ações mostra o que a **próxima execução** vai fazer, não simplesmente o número que está no campo: `3×` para a contagem do perfil, `por linha` quando o **Loop over data** manda, e `∞` quando o modo de disparo força repetição infinita. Um contorno tracejado âmbar significa que você mexeu no valor e ainda não salvou — o número vale para esta sessão, mas some numa troca de perfil se você não der `Ctrl+S`.
 
@@ -750,38 +750,64 @@ A ação **Activate Window** troca qual app está em primeiro plano *no meio da 
 
 ## Clicker mode (auto-clicker)
 
-Mude para **Clicker** com **`ScrollLock`** (ou o botão Macro/Clicker). O painel Profile troca para as configurações do clicker:
+Mude para **Clicker** com **`ScrollLock`** (ou o botão Macro/Clicker). O painel Profile troca para as configurações do clicker, em quatro grupos: **Clicker** (como clica), **Target** (onde clica), **Stop after** (quando para) e **Tuning** (ajuste fino).
+
+**Clicker**
 
 | Configuração | O que faz | Padrão |
 | --- | --- | --- |
 | **Button** | Left / Right / Middle. | Left |
-| **Rate** | Velocidade do clique, como um delay (ms) ou cliques/segundo. | 100 ms (10/s) |
-| **Loops** | Número de cliques. **0 = infinito.** | 0 |
-| **Interval** | Pausa entre as iterações do loop. | desligado |
-| **Jitter** | Variação aleatória de ± % no delay. | desligado |
+| **Rate** | Velocidade do clique — em cliques/segundo ou em delay (ms). O rótulo mostra `≈ N/s`, já contando Hold e Gap (veja *Tuning* abaixo) — a taxa real, não `1000/delay`. | 100 ms (≈10/s) |
+
+**Target** *(mutuamente exclusivos — ligar um desliga os outros dois)*
+
+| Configuração | O que faz | Padrão |
+| --- | --- | --- |
 | **Position** | Aleatoriza ligeiramente a posição do clique ao redor do cursor. | desligado |
 | **Area** | Arraste um retângulo para clicar em pontos aleatórios dentro dele. | desligado |
 | **Fixed** | Clica sempre em **um** ponto. Sem ponto definido, ele trava na posição do cursor quando o clique começa (*At start*); clique no corpo do chip para escolher o ponto na tela. | desligado |
 
-> **Position, Area e Fixed são mutuamente exclusivos** — ligar um desliga os outros dois.
+**Stop after** *(os dois são independentes — o que vier primeiro encerra a execução)*
 
-Inicie/pare com **`PageDown`**, pause/retome com **`PageUp`**. Enquanto roda, o **painel ao vivo** mostra a contagem de cliques, a taxa, o tempo decorrido, o progresso dos loops e o ETA.
+| Configuração | O que faz | Padrão |
+| --- | --- | --- |
+| **Clicks** | Para depois de N cliques. | desligado = sem limite |
+| **Time** | Para depois de N segundos clicando (tempo pausado não conta). | desligado = sem limite |
 
-<!-- 📸 PRINT: clicker.png — O painel do Clicker AO VIVO enquanto roda (aperte PageDown para iniciar): a contagem grande de cliques, taxa, tempo decorrido, progresso dos loops, ETA e a barra de progresso — com as configurações do Clicker (Button · Rate · Loops · Interval · Jitter · Position · Area · Fixed) visíveis no painel à direita. -->
+> **Por padrão o Clicker roda sem fim.** Nenhum dos dois limites de **Stop after** vem ligado — desligado mostra `∞`. Ligue **Clicks**, **Time**, ou os dois, para limitar a execução.
+
+**Tuning**
+
+| Configuração | O que faz | Padrão |
+| --- | --- | --- |
+| **Jitter** | Variação aleatória de ± % em cada atraso — menos robótico. | desligado |
+| **Hold** | Quanto tempo o botão fica pressionado (ms). 10 = clique normal; 50–200 para apps que perdem cliques curtos. | 10 ms |
+| **Gap** | Tempo extra somado a cada clique (ms) — soma à taxa; não é uma pausa entre rajadas. | desligado |
+| **Game move** | Move o cursor por um caminho em vez de teletransportar, para jogos que ignoram saltos instantâneos (ex.: Roblox). Só afeta os modos **Area** e **Fixed** — no modo cursor (padrão) nada se move. Custa alguns ms por clique. Independente do interruptor mestre do [Game mode](#game-mode): funciona mesmo com ele desligado, e não liga sozinho quando ele está ligado. | desligado |
+
+> **Rate e Hold são honestos com o período.** Hold e Gap entram *dentro* do ciclo de cada clique, não somados por cima — pedir 100 ms dá ciclos de 100 ms, não ~110 ms.
+
+Inicie/pare com **`PageDown`**, pause/retome com **`PageUp`**. Enquanto roda, o **painel ao vivo** mostra a contagem de cliques, a taxa, o tempo decorrido, o progresso dos limites de **Stop after** e o ETA.
+
+<!-- 📸 PRINT: clicker.png — PRECISA SER REFEITA: o painel foi reorganizado em quatro seções (Clicker · Target · Stop after · Tuning), "Loops"/"Interval" viraram "Stop after → Clicks/Time" (desligado = ∞) e "Gap" (era Interval), e Tuning ganhou o toggle "Game move". Capturar com o painel AO VIVO rodando (PageDown), mostrando a contagem grande, taxa, tempo decorrido, progresso, ETA e a barra de progresso, com as quatro seções visíveis à direita. -->
 <p align="center">
   <img src="img/clicker.png" width="820" alt="O painel do Clicker enquanto roda, com as configurações à direita" /><br>
   <sub><i>Contagem ao vivo, taxa, ETA e a barra de progresso — e as configurações (incl. <b>Fixed</b>) à direita.</i></sub>
 </p>
 
+> **`SendInput` não sinaliza bloqueio por UIPI.** Se o alvo é uma janela elevada e o TrueReplayer não está, o Windows aceita a chamada normalmente — o evento simplesmente não chega à janela, e nada no painel avisa disso: a taxa continua saudável enquanto nada acontece no alvo. Se o Clicker parece estar rodando mas o alvo não reage, rode o TrueReplayer como administrador.
+
 ---
 
 ## Game mode
 
-Para jogos (ex.: Roblox) que ignoram um "teleporte" instantâneo do cursor, o *Game mode* faz o movimento parecer humano. Vem **ligado por padrão**; desligue-o para aplicativos normais que não precisam dele.
+Para jogos (ex.: Roblox) que ignoram um "teleporte" instantâneo do cursor, o *Game mode* faz o movimento parecer humano. **O cabeçalho da seção é o interruptor mestre** — ligado por padrão. Desligado, o cursor pula direto para o alvo (o comportamento antigo) e a seção recolhe para um único controle, **Click delay**, que continua valendo dos dois jeitos.
 
-- **Smooth movement** — leva o cursor até o alvo em pequenos passos (ajuste **Path step** px, **Step delay**, **Click delay**). Padrões: 20 px / 2 ms / 10 ms.
-- **Fast approach** — para movimentos longos, teleporta invisivelmente até a **Settle distance** (padrão 80 px) do alvo e depois percorre o trecho final devagar — assim os cliques distantes continuam rápidos.
+- **Fast approach** *(só aparece com o mestre ligado)* — para movimentos longos, teleporta invisivelmente até uma **Distance** (padrão 80 px) do alvo e depois percorre o trecho final devagar — assim os cliques distantes continuam quase instantâneos. Desligue se um jogo errar o clique.
+- **Tuning** — **Click delay** (padrão 10 ms, aplicado duas vezes por clique: depois do movimento, para o app registrar a posição, e na soltura do botão) fica sempre visível, com o mestre ligado ou não. Com o mestre **ligado**, aparecem também **Path step** (padrão 20 px — suba até igualar o **Distance** para reduzir o caminho a um ou dois passos) e **Step delay** (padrão 2 ms).
 - **Focus-click** *(por ação)* — alguns alvos minúsculos (um pequeno campo de texto do Roblox) só recebem foco do teclado num *segundo* clique. Ative **Focus click** numa linha de clique (botão direito) e ela clica duas vezes a alguns pixels de distância. **Use-o apenas em campos de texto pequenos, nunca em botões** (um botão dispararia duas vezes).
+
+> O [Clicker](#clicker-mode-auto-clicker) tem o seu próprio interruptor de movimento, **Game move** (em *Tuning*), independente deste mestre — funciona mesmo com o Game Mode principal desligado, e não liga sozinho quando ele está ligado.
 
 ---
 
@@ -1230,9 +1256,9 @@ O painel Settings (lado direito) tem três abas; tudo é **salvo automaticamente
 
 **Aba Profile** (por perfil / modo):
 - **Execution** — Delay, Loops, Interval, Jitter (Macro mode). **Loops** e **Interval** são gravados no perfil ativo (`Ctrl+S`); Delay e Jitter valem para o app.
-- **Game Mode** — Smooth movement + Fast approach (e seus ajustes).
+- **Game Mode** — o cabeçalho da seção é o interruptor mestre; dentro, Fast approach e o Tuning (Click delay, Path step, Step delay, Distance).
 - **Recording** — **Mouse Clicks**, **Mouse Scroll**, **Keyboard**, **Combined Actions**, a chave-mestra **Profile Keys** e **Browser Actions** (gravar seletores CSS do Chrome em vez de coordenadas).
-- **Clicker** — substitui Execution/Game Mode/Recording enquanto no Clicker mode.
+- **Clicker** — substitui Execution/Game Mode/Recording enquanto no Clicker mode; quatro grupos próprios (Clicker, Target, Stop after, Tuning) — veja [Clicker mode](#clicker-mode-auto-clicker).
 
 **Aba Keys** (tudo que intercepta tecla):
 - **Hotkeys** — Recording, Replay, Profile Keys, Foreground, Mode, [Capture Slot](#variáveis-slots-e-prompts). Padrões: Record `Ctrl+PageUp`, Replay `Ctrl+PageDown`, Profile-keys `Pause`, Foreground `Insert`, Mode `ScrollLock`, Capture Slot `Win+Ctrl+C` (apague o campo para desativar).

@@ -1232,12 +1232,12 @@ Abra o **Theme Editor** em Settings → App → Interface → *Customise*.
 <!-- 📸 PRINT: theme.png — O Theme Editor aberto na GALERIA (grade de presets, com a busca), com o preview ao vivo. -->
 <p align="center">
   <img src="img/theme.png" width="820" alt="A galeria de presets do Theme Editor com um preview ao vivo" /><br>
-  <sub><i>Mais de 40 presets, com um preview ao vivo que se atualiza enquanto você edita.</i></sub>
+  <sub><i>29 presets, com um preview ao vivo que se atualiza enquanto você edita.</i></sub>
 </p>
 
 O editor tem três telas: ele abre na **galeria**; o botão **Customise** abre a personalização (dividida em **Colors** e **Interface**); e **Import / Export** abre a tela de compartilhar.
 
-- **Gallery** — mais de 40 presets selecionados agrupados por matiz, com busca; clique para aplicar. O padrão é *Lavender Coal* (escuro).
+- **Gallery** — 29 presets selecionados agrupados por matiz (18 escuros + 11 claros), com busca; clique para aplicar. O padrão é *Lavender Coal* (escuro). Se você usava um preset retirado na 2.16.0, o app migra sozinho para o parente mais próximo.
 - **Customise → Colors** — 29 cores em 6 grupos (Accent, Backgrounds, Text, Borders, Semantic e **Action types** — a cor da pílula de cada tipo de ação), via seletor, hex ou HSL; um verificador de contraste sinaliza texto com baixo contraste.
 - **Customise → Interface** — presets de **Density**; ajustes finos **Font Size**, **Border Radius**, **Row Height**, **Zoom**; a fonte **Monospace**; **Match Windows theme** (troca dark/light junto com o Windows, com *Dark preset* / *Light preset*); e **Enable animations** (desligue as transições para acessibilidade / hardware modesto).
 - **Import / Export** — compartilhe um tema como JSON.

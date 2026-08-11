@@ -91,14 +91,14 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 - **Bring to focus / restore position & size** antes da reprodução para execuções reproduzíveis.
 
 ### 🎨 Deixe do seu jeito
-- **Mais de 40 temas embutidos** mais um **Theme Editor** completo (cores, fontes, altura das linhas, cores por ação; exporte/importe temas como JSON).
+- **29 temas embutidos** mais um **Theme Editor** completo (cores, fontes, altura das linhas, cores por ação; exporte/importe temas como JSON).
 - **Perfis e pastas** com ícones, descrições, tags e cores.
 - **Tooltips bilíngues** — English ou **Português (BR)** (Settings → App → Interface).
 - **Importe / exporte** perfis como arquivos `.trprofile` portáteis (inclui imagens de referência e organização).
 
 <p align="center">
-  <img src="docs/img/theme.png" width="820" alt="O Theme Editor com mais de 40 presets e um preview ao vivo" /><br>
-  <sub><i>O Theme Editor — mais de 40 presets com preview ao vivo, além de controle total de cores &amp; layout.</i></sub>
+  <img src="docs/img/theme.png" width="820" alt="O Theme Editor com 29 presets e um preview ao vivo" /><br>
+  <sub><i>O Theme Editor — 29 presets com preview ao vivo, além de controle total de cores &amp; layout.</i></sub>
 </p>
 
 ---

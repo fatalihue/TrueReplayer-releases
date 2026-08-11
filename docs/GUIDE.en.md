@@ -1233,12 +1233,12 @@ Open the **Theme Editor** from Settings → App → Interface → *Customise*.
 <!-- PICT: theme.png — The Theme Editor open on the GALLERY (preset grid, with the search), with the live preview. -->
 <p align="center">
   <img src="img/theme.png" width="820" alt="The Theme Editor preset gallery with a live preview" /><br>
-  <sub><i>40+ presets, with a live preview that updates as you edit.</i></sub>
+  <sub><i>29 presets, with a live preview that updates as you edit.</i></sub>
 </p>
 
 The editor has three surfaces: it opens on the **gallery**; the **Customise** button opens customization (split into **Colors** and **Interface**); and **Import / Export** opens the sharing screen.
 
-- **Gallery** — 40+ curated presets grouped by hue, with search; click to apply. The default is *Lavender Coal* (dark).
+- **Gallery** — 29 curated presets grouped by hue (18 dark + 11 light), with search; click to apply. The default is *Lavender Coal* (dark). If you were using a preset retired in 2.16.0, the app migrates you to its closest surviving relative.
 - **Customise → Colors** — 29 colors in 6 groups (Accent, Backgrounds, Text, Borders, Semantic and **Action types** — the pill color of each action type), via picker, hex or HSL; a contrast checker flags low-contrast text.
 - **Customise → Interface** — **Density** presets; fine-tune **Font Size**, **Border Radius**, **Row Height**, **Zoom**; the **Monospace** font; **Match Windows theme** (switches dark/light along with Windows, with *Dark preset* / *Light preset*); and **Enable animations** (turn transitions off for accessibility / modest hardware).
 - **Import / Export** — share a theme as JSON.

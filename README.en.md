@@ -91,14 +91,14 @@ A dedicated **Clicker mode** (switch with **`ScrollLock`**) for fast, steady cli
 - **Bring to focus / restore position & size** before replay for reproducible runs.
 
 ### 🎨 Make it yours
-- **40+ built-in themes** plus a full **Theme Editor** (colors, fonts, row height, per-action colors; export/import themes as JSON).
+- **29 built-in themes** plus a full **Theme Editor** (colors, fonts, row height, per-action colors; export/import themes as JSON).
 - **Profiles & folders** with icons, descriptions, tags and colors.
 - **Bilingual tooltips** — English or **Português (BR)** (Settings → App → Interface).
 - **Import / export** profiles as portable `.trprofile` files (includes reference images and organization).
 
 <p align="center">
-  <img src="docs/img/theme.png" width="820" alt="The Theme Editor with 40+ presets and a live preview" /><br>
-  <sub><i>The Theme Editor — 40+ presets with a live preview, plus full color &amp; layout control.</i></sub>
+  <img src="docs/img/theme.png" width="820" alt="The Theme Editor with 29 presets and a live preview" /><br>
+  <sub><i>The Theme Editor — 29 presets with a live preview, plus full color &amp; layout control.</i></sub>
 </p>
 
 ---

@@ -233,11 +233,11 @@ Todos os quatro vêm como **On** por padrão.
 
 Pressione **`Ctrl+PageDown`** (ou clique em **Replay**) para executar o perfil ativo; pressione novamente ou clique em **Stop** para interromper imediatamente (qualquer botão pressionado é solto). Durante a reprodução, o selo **"Replaying"** e o botão **Stop** pulsam para deixar o estado em execução óbvio, e a barra de status mostra o progresso, o tempo decorrido e o contador de loops.
 
-As configurações de **Execution** (aba Settings → Profile) controlam o tempo:
+As configurações de **Execution** (aba Settings → Profile) controlam o tempo. A reprodução agenda cada ação contra um prazo, em vez de encadear esperas: se ficar atrasada, ela ressincroniza em vez de disparar uma salva de ações para recuperar o atraso. Depois de ações que esperam por natureza (**WaitImage**, **WaitPixelColor**, **Pause**, **Run Profile**, **Hold Key**, ações de navegador e um **If** com *Wait for condition*) o relógio também ressincroniza — um delay usado como tempo de acomodação nunca é comprimido.
 
 | Configuração | O que faz | Padrão |
 | --- | --- | --- |
-| **Delay** | Um atraso fixo (ms) aplicado antes de cada ação, substituindo o tempo gravado. | 100 ms (ligado) |
+| **Delay** | Um atraso fixo (ms) aplicado antes de cada ação, substituindo o tempo gravado — contado a partir do **início** da ação anterior, então ele absorve o custo dela (ação de 30 ms com delay de 100 ms → a próxima começa 100 ms depois, não 130). | 100 ms (ligado) |
 | **Loops** | Quantas vezes repetir a macro inteira, de 1 a 999. **Pertence ao perfil.** | 1 |
 | **Interval** | Pausa (ms) entre uma repetição e a seguinte. **Pertence ao perfil.** | desligado |
 | **Jitter** | Variação aleatória de ± % aplicada a cada delay, para que a reprodução não fique perfeitamente regular. | desligado |
@@ -1232,12 +1232,12 @@ Abra o **Theme Editor** em Settings → App → Interface → *Customise*.
 <!-- 📸 PRINT: theme.png — O Theme Editor aberto na GALERIA (grade de presets, com a busca), com o preview ao vivo. -->
 <p align="center">
   <img src="img/theme.png" width="820" alt="A galeria de presets do Theme Editor com um preview ao vivo" /><br>
-  <sub><i>29 presets, com um preview ao vivo que se atualiza enquanto você edita.</i></sub>
+  <sub><i>37 presets, com um preview ao vivo que se atualiza enquanto você edita.</i></sub>
 </p>
 
 O editor tem três telas: ele abre na **galeria**; o botão **Customise** abre a personalização (dividida em **Colors** e **Interface**); e **Import / Export** abre a tela de compartilhar.
 
-- **Gallery** — 29 presets selecionados agrupados por matiz (18 escuros + 11 claros), com busca; clique para aplicar. O padrão é *Lavender Coal* (escuro). Se você usava um preset retirado na 2.16.0, o app migra sozinho para o parente mais próximo.
+- **Gallery** — 37 presets selecionados agrupados por matiz (23 escuros + 14 claros), com busca; clique para aplicar. O padrão é *Lavender Coal* (escuro). Se você usava um preset retirado na 2.16.0, o app migra sozinho para o parente mais próximo.
 - **Customise → Colors** — 29 cores em 6 grupos (Accent, Backgrounds, Text, Borders, Semantic e **Action types** — a cor da pílula de cada tipo de ação), via seletor, hex ou HSL; um verificador de contraste sinaliza texto com baixo contraste.
 - **Customise → Interface** — presets de **Density**; ajustes finos **Font Size**, **Border Radius**, **Row Height**, **Zoom**; a fonte **Monospace**; **Match Windows theme** (troca dark/light junto com o Windows, com *Dark preset* / *Light preset*); e **Enable animations** (desligue as transições para acessibilidade / hardware modesto).
 - **Import / Export** — compartilhe um tema como JSON.

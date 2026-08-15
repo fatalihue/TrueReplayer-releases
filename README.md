@@ -81,7 +81,7 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 </p>
 
 ### 🎮 Game mode
-- **Smooth movement** — move o cursor ao longo de um caminho em vez de teletransportá-lo, para que jogos (ex.: Roblox) que rejeitam saltos únicos aceitem os cliques.
+- **Game mode** — move o cursor ao longo de um caminho em vez de teletransportá-lo, para que jogos (ex.: Roblox) que rejeitam saltos únicos aceitem os cliques.
 - **Fast approach** — teletransporta a maior parte do trajeto e só "ajusta" o último trecho suavemente, mantendo os cliques distantes rápidos.
 - **Focus-click** — um toque duplo opcional para campos de texto minúsculos que precisam de um segundo clique para receber foco.
 
@@ -91,14 +91,14 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 - **Bring to focus / restore position & size** antes da reprodução para execuções reproduzíveis.
 
 ### 🎨 Deixe do seu jeito
-- **29 temas embutidos** mais um **Theme Editor** completo (cores, fontes, altura das linhas, cores por ação; exporte/importe temas como JSON).
+- **37 temas embutidos** mais um **Theme Editor** completo (cores, fontes, altura das linhas, cores por ação; exporte/importe temas como JSON).
 - **Perfis e pastas** com ícones, descrições, tags e cores.
 - **Tooltips bilíngues** — English ou **Português (BR)** (Settings → App → Interface).
 - **Importe / exporte** perfis como arquivos `.trprofile` portáteis (inclui imagens de referência e organização).
 
 <p align="center">
-  <img src="docs/img/theme.png" width="820" alt="O Theme Editor com 29 presets e um preview ao vivo" /><br>
-  <sub><i>O Theme Editor — 29 presets com preview ao vivo, além de controle total de cores &amp; layout.</i></sub>
+  <img src="docs/img/theme.png" width="820" alt="O Theme Editor com 37 presets e um preview ao vivo" /><br>
+  <sub><i>O Theme Editor — 37 presets com preview ao vivo, além de controle total de cores &amp; layout.</i></sub>
 </p>
 
 ---

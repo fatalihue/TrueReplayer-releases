@@ -81,7 +81,7 @@ A dedicated **Clicker mode** (switch with **`ScrollLock`**) for fast, steady cli
 </p>
 
 ### 🎮 Game mode
-- **Smooth movement** — moves the cursor along a path instead of teleporting, so games (e.g. Roblox) that reject single jumps accept the clicks.
+- **Game mode** — moves the cursor along a path instead of teleporting, so games (e.g. Roblox) that reject single jumps accept the clicks.
 - **Fast approach** — teleports most of the way and only "settles" the last stretch smoothly, so far clicks stay fast.
 - **Focus-click** — an opt-in double-tap for tiny text fields that need a second click to take focus.
 
@@ -91,14 +91,14 @@ A dedicated **Clicker mode** (switch with **`ScrollLock`**) for fast, steady cli
 - **Bring to focus / restore position & size** before replay for reproducible runs.
 
 ### 🎨 Make it yours
-- **29 built-in themes** plus a full **Theme Editor** (colors, fonts, row height, per-action colors; export/import themes as JSON).
+- **37 built-in themes** plus a full **Theme Editor** (colors, fonts, row height, per-action colors; export/import themes as JSON).
 - **Profiles & folders** with icons, descriptions, tags and colors.
 - **Bilingual tooltips** — English or **Português (BR)** (Settings → App → Interface).
 - **Import / export** profiles as portable `.trprofile` files (includes reference images and organization).
 
 <p align="center">
-  <img src="docs/img/theme.png" width="820" alt="The Theme Editor with 29 presets and a live preview" /><br>
-  <sub><i>The Theme Editor — 29 presets with a live preview, plus full color &amp; layout control.</i></sub>
+  <img src="docs/img/theme.png" width="820" alt="The Theme Editor with 37 presets and a live preview" /><br>
+  <sub><i>The Theme Editor — 37 presets with a live preview, plus full color &amp; layout control.</i></sub>
 </p>
 
 ---

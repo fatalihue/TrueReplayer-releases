@@ -233,11 +233,11 @@ All four default to **On**.
 
 Press **`Ctrl+PageDown`** (or click **Replay**) to run the active profile; press again or click **Stop** to halt immediately (any held buttons are released). During replay the **"Replaying"** badge and **Stop** button pulse so the running state is obvious, and the status bar shows progress, elapsed time and the loop counter.
 
-**Execution** settings (Settings → Profile tab) control timing:
+**Execution** settings (Settings → Profile tab) control timing. Replay schedules each action against a deadline rather than chaining waits: when it falls behind it resyncs instead of firing off a salvo of actions to catch up. After actions that wait by nature (**WaitImage**, **WaitPixelColor**, **Pause**, **Run Profile**, **Hold Key**, browser actions and an **If** with *Wait for condition*) the clock resyncs too — a delay used as settle time is never compressed.
 
 | Setting | What it does | Default |
 | --- | --- | --- |
-| **Delay** | A fixed delay (ms) applied before each action, overriding recorded timing. | 100 ms (on) |
+| **Delay** | A fixed delay (ms) applied before each action, overriding recorded timing — measured from the **start** of the previous action, so it absorbs that action's cost (a 30 ms action with a 100 ms delay → the next one starts 100 ms later, not 130). | 100 ms (on) |
 | **Loops** | How many times to repeat the whole macro, from 1 to 999. **Belongs to the profile.** | 1 |
 | **Interval** | Pause (ms) between one repeat and the next. **Belongs to the profile.** | off |
 | **Jitter** | Random ± % applied to each delay, so playback isn't perfectly regular. | off |
@@ -1233,12 +1233,12 @@ Open the **Theme Editor** from Settings → App → Interface → *Customise*.
 <!-- PICT: theme.png — The Theme Editor open on the GALLERY (preset grid, with the search), with the live preview. -->
 <p align="center">
   <img src="img/theme.png" width="820" alt="The Theme Editor preset gallery with a live preview" /><br>
-  <sub><i>29 presets, with a live preview that updates as you edit.</i></sub>
+  <sub><i>37 presets, with a live preview that updates as you edit.</i></sub>
 </p>
 
 The editor has three surfaces: it opens on the **gallery**; the **Customise** button opens customization (split into **Colors** and **Interface**); and **Import / Export** opens the sharing screen.
 
-- **Gallery** — 29 curated presets grouped by hue (18 dark + 11 light), with search; click to apply. The default is *Lavender Coal* (dark). If you were using a preset retired in 2.16.0, the app migrates you to its closest surviving relative.
+- **Gallery** — 37 curated presets grouped by hue (23 dark + 14 light), with search; click to apply. The default is *Lavender Coal* (dark). If you were using a preset retired in 2.16.0, the app migrates you to its closest surviving relative.
 - **Customise → Colors** — 29 colors in 6 groups (Accent, Backgrounds, Text, Borders, Semantic and **Action types** — the pill color of each action type), via picker, hex or HSL; a contrast checker flags low-contrast text.
 - **Customise → Interface** — **Density** presets; fine-tune **Font Size**, **Border Radius**, **Row Height**, **Zoom**; the **Monospace** font; **Match Windows theme** (switches dark/light along with Windows, with *Dark preset* / *Light preset*); and **Enable animations** (turn transitions off for accessibility / modest hardware).
 - **Import / Export** — share a theme as JSON.

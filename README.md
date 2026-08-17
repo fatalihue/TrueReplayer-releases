@@ -13,7 +13,7 @@ Um gravador de macros e ferramenta de automação rápido e leve **para Windows*
 ![Built with .NET 8 + React](https://img.shields.io/badge/built%20with-.NET%208%20%C2%B7%20React-6bcb77?style=flat-square)
 [![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](LICENSE)
 
-**Português (BR)** · [English](README.en.md)
+**Português (BR)**
 
 </div>
 
@@ -149,9 +149,9 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 
 A referência completa — cada tipo de ação, condicionais, o clicker, game mode, mira de janela, tokens do Send Text, automação de navegador, temas e configurações — está no guia:
 
-📖 **[docs/GUIDE.md](docs/GUIDE.md)** &nbsp;·&nbsp; 📖 **[Full guide in English](docs/GUIDE.en.md)**
+📖 **[docs/GUIDE.md](docs/GUIDE.md)**
 
-Prefere aprender fazendo? Comece pelas **[Receitas](docs/GUIDE.md#receitas--aprenda-fazendo)** — quatorze tarefas curtas e reais (uma resposta pronta, esperar a tela, preencher um formulário a partir de uma lista), cada uma com poucos passos.
+Prefere aprender fazendo? Comece pelas **[14 receitas](docs/GUIDE.md#comece-por-aqui--14-receitas)** — tarefas curtas e reais (uma resposta pronta, esperar a tela, preencher um formulário a partir de uma lista), cada uma com poucos passos.
 
 ---
 

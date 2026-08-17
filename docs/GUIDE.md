@@ -55,59 +55,73 @@ Da mais fácil para a mais difícil. Faça duas ou três e você já sabe usar o
 
 A maioria das macros úteis tem **uma ou duas ações**. Não ache que precisa gravar algo longo.
 
-**1. Uma resposta pronta em qualquer lugar**
+### 1. Uma resposta pronta em qualquer lugar
+
 Barra → **Send Text** → escreva a mensagem → clique no chip **Enter** (isso envia) → `Ctrl+Enter` → **Save**.
 Botão direito no perfil → **Assign hotstring…** → `.cp`.
 Agora digitar `.cp` em qualquer chat solta a resposta inteira.
 
-**2. Use o que você copiou**
+### 2. Use o que você copiou
+
 No **Send Text**, ponha `{clipboard}` onde entra o valor copiado. Precisa só de um pedaço? `{clipboard:trim}`, `{clipboard:line:3}`, `{clipboard:words:2-4}` — veja [Transformações de texto](#transformações-de-texto).
 Seu clipboard real é restaurado depois.
 
-**3. Carimbe a hora e feche o chamado**
+### 3. Carimbe a hora e feche o chamado
+
 **Send Text** → `Finalizado em {datetime}` + `{enter}`. Depois **Send Keystroke** → `Ctrl+Alt+R`.
 Duas ações, um toque de tecla.
 
-**4. Pergunte um valor na hora**
+### 4. Pergunte um valor na hora
+
 `{input:Número do pedido}` abre uma caixa. `{input:Prioridade|menu:Baixa,Média,Alta}` abre uma lista.
 Pergunta **uma vez por execução** — repetir o mesmo rótulo reusa a resposta.
 
-**5. Funcionar só em um app**
+### 5. Funcionar só em um app
+
 Botão direito no perfil → **Window target…** → **Detect Window** → clique na janela → **Test front window** → ligue **Relative Coordinates** → **Set Target**.
 Sem isso, mover a janela 20 px erra todos os cliques.
 
-**6. Espere a tela, não chute**
+### 6. Espere a tela, não chute
+
 Barra → **Wait for Image** → recorte o botão → **Test match** → confiança em **85%**.
 Nunca 100%: uma tela viva nunca fica idêntica pixel a pixel, e a macro nunca acha.
 
-**7. Clique opcional, só se aparecer**
+### 7. Clique opcional, só se aparecer
+
 Barra → **Conditional** → **Pixel Color Match** → escolha um ponto da cor do botão → na linha **If**, **Wait for condition** = `5000` → ponha o clique entre **If** e **EndIf**.
 
-**8. Guarde um valor entre passos**
+### 8. Guarde um valor entre passos
+
 Barra → **Set Variable** → **Name** `cliente`, **Value** `{clipboard:trim}`. Depois use `{var:cliente}`.
 Variáveis somem no fim de cada execução.
 
-**9. Junte vários valores e cole depois**
+### 9. Junte vários valores e cole depois
+
 Selecione um texto → `Win+Ctrl+C`. Repita: cai em `{clip:1}`, `{clip:2}`, `{clip:3}`…
 Os slots sobrevivem entre execuções.
 
-**10. Um item da lista por toque**
+### 10. Um item da lista por toque
+
 Copie a lista (`Ctrl+C`, de qualquer lugar) e escreva `{clipboard:next}` no **Send Text**.
 Cada toque cola a próxima linha. Copiar outra coisa recomeça sozinho.
 
-**11. Troque 20 passos repetidos por um loop**
+### 11. Troque 20 passos repetidos por um loop
+
 Monte a macro para **um** item → **Data Loop** → cole a tabela → troque os valores fixos por `{row:item}` → ligue **Loop over data** → **On row error** = **Skip row**.
 87 ações viram 5 ações e uma tabela.
 
-**12. Reaproveite um final em várias macros**
+### 12. Reaproveite um final em várias macros
+
 Ponha os passos comuns num perfil `Confirmar`. Nas outras: barra → **Run Profile** → `Confirmar`.
 Conserte num lugar, melhore em vinte.
 
-**13. Clique num site pelo nome**
+### 13. Clique num site pelo nome
+
 Instale a [extensão do Chrome](#automação-de-navegador) → barra → **Browser** → **Browser Click** → prefira o **texto** visível (`text=Enviar`).
 Continua funcionando quando o layout muda.
 
-**14. Rode sem apertar nada**
+### 14. Rode sem apertar nada
+
 Settings → **App** → **Automation** → **Manage ›** → **+ Add automation** → escolha o gatilho → **Save** → **ligue a chave Armed**.
 Salvar não é armar. Essa chave é a que todo mundo esquece.
 
@@ -122,7 +136,9 @@ Salvar não é armar. Essa chave é a que todo mundo esquece.
 
 **Onde os passos entram:** com linhas **selecionadas**, insere **antes** da primeira; **sem seleção**, acrescenta no **fim**.
 
-**Filtros** (Settings → Profile → Recording) — todos ligados por padrão:
+### Filtros de captura
+
+Settings → Profile → Recording. Todos ligados por padrão:
 
 | Opção | Efeito |
 | --- | --- |
@@ -212,8 +228,9 @@ Os três últimos só ficam ativos com **Times to repeat** > 1.
 > **Quando usar jitter.** `Click × 3` com Gap + Position jitter parece humano — é o que serve em jogos, onde repetir o mesmo pixel no mesmo ritmo é o sinal mais óbvio de macro. Para automação comum (um botão, um campo), **deixe desligado**: ali você quer o pixel exato.
 
 <p align="center">
+  <img src="img/send-keystroke.png" width="360" alt="O bloco Repeat de uma linha de Keystroke" />
   <img src="img/click-repeat.png" width="360" alt="O bloco Repeat de uma linha de clique" /><br>
-  <sub><i>Times · Gap · Gap jitter · Position jitter.</i></sub>
+  <sub><i>À esquerda numa tecla, à direita num clique — este último ganha o <b>Position jitter</b>.</i></sub>
 </p>
 
 ---
@@ -324,6 +341,25 @@ Sem **Notes**, a mensagem cai para `'element'` — funciona, mas com três asser
 > **If** = *ramificar* ("se aparecer, clique; se não, siga") — os dois caminhos são normais.
 > **Assert** = *exigir* ("daqui não passa sem isto") — só um caminho é aceitável.
 
+### Exemplo — a macro que digitou a senha na janela errada
+
+Uma macro faz login: clica no campo, digita o usuário, digita a senha, aperta Enter. Funciona todo dia — até o dia em que o app demora a abrir e a janela ainda não está na frente. Aí os cliques e a **senha** caem no que estiver por baixo: um chat, um documento. A macro não deu erro nenhum; fez exatamente o que você mandou, no lugar errado.
+
+1. Selecione a linha que vem **antes** de digitar. O Assert entra antes dela.
+2. Barra → ícone de ramificação → **Insert Assert — must be true** → **Window Open**.
+3. Preencha **Process Name** e/ou **Title** e marque **Foreground window only** — é "estar na frente" que você está exigindo.
+4. **Wait for condition** = `3000`. Em **Notes**, escreva `janela de login em foco`.
+
+| Linha | O que acontece |
+| --- | --- |
+| **Assert** — Window Open · `app.exe` *(foreground)* | espera até 3 s; apareceu → segue; não apareceu → **para aqui** |
+| Send Text `{var:usuario}` | só roda com a janela garantida |
+| Send Text `{clip:senha}` | idem |
+
+Sem o Assert, o dia ruim vira uma senha digitada num lugar público e ninguém fica sabendo. Com ele, vira uma mensagem vermelha e mais nada acontece.
+
+> Se a premissa for só *demorada* (a janela às vezes leva mais), **não troque o Assert por um `If`** — aumente o **Wait for condition**.
+
 ---
 
 ## Perfis e pastas
@@ -334,7 +370,9 @@ Sem **Notes**, a mensagem cai para `'element'` — funciona, mas com três asser
 - **Info** (botão direito) — emoji, descrição e **tags** (pesquisáveis).
 - **Import / Export** — arquivo `.trprofile` com ações, metadados, imagens e layout. Na importação, cada conflito recebe **Rename** (padrão — nada é sobrescrito em silêncio), **Overwrite** ou **Skip**. Um perfil que exige versão mais nova fica esmaecido com o motivo.
 
-**Paleta de comandos (`Ctrl+K`)** — o que não tem botão próprio:
+### A paleta de comandos (`Ctrl+K`)
+
+O que não tem botão próprio:
 
 - **Profiles** — Duplicate, Reset, Import, Export all.
 - **Actions** — *Copy as Table* / *Paste Actions* (mover passos entre perfis), *Convert to Relative / Absolute*, *Combined ↔ Paired*.
@@ -352,6 +390,8 @@ Sem **Notes**, a mensagem cai para `'element'` — funciona, mas com três asser
   <img src="img/hotkey.png" width="320" alt="O diálogo Assign Hotkey com os seis modos de gatilho" /><br>
   <sub><i>Capture a combinação e escolha o modo.</i></sub>
 </p>
+
+### Modos de gatilho
 
 | Modo | Comportamento |
 | --- | --- |
@@ -383,7 +423,7 @@ Dispara um perfil sozinho. **Settings → App → Automation → Manage** (ou ba
   <sub><i>Lista com a chave <b>Armed</b> à esquerda, editor do gatilho à direita.</i></sub>
 </p>
 
-**Como se comporta**
+### Como se comporta
 
 - **Armed** — só automações armadas rodam, e se re-armam ao iniciar o app. Armar é **local desta máquina**: perfis importados ou duplicados chegam **desarmados**.
 - **Uma execução por vez** — enquanto um replay, gravação ou diálogo está ativo, ou a grade tem edições não salvas, o disparo tenta por uma janela curta e depois é **pulado** (e contado). Uma automação nunca atropela trabalho não salvo.
@@ -392,19 +432,19 @@ Dispara um perfil sozinho. **Settings → App → Automation → Manage** (ou ba
 - **Schedule perdido é descartado** — se a máquina estava suspensa às 08:00 e acordou às 18:00, o disparo não te embosca. Perdido por poucos minutos, ele ainda tenta (até 3 min).
 - **Condição só dispara na virada** — precisa voltar a ser falsa antes do próximo (mude para **Continuous** para repetir enquanto verdadeira). **Cooldown** padrão 30 s.
 
-**Antes de confiar numa automação**
+### Antes de confiar numa automação
 
 - **Run now** (topo do editor) — dispara agora **pelo mesmo caminho do gatilho**, e diz *por que não rodou* se for o caso. Só funciona com a automação já salva.
 - **Aviso de "nunca vai disparar"** — condição sem o campo obrigatório trava o **Save**, em vez de salvar e ficar com a luz acesa sem nunca disparar.
 - **Armada mas não vigiando** — a linha diz o motivo: chave-mestra pausada, perfil desativado, ou o vigia parou sozinho.
 
-**Custo de um vigia — o campo `Check every`**
+### Custo de um vigia — o campo `Check every`
 
 Um gatilho de condição checa enquanto armado, e o custo é por checagem. **Image on screen** captura a tela inteira toda vez; **Window open** é quase de graça.
 
 Deixe `0` para o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vale subir quando o que você espera é lento: um app abrindo, um download terminando. Trocar 1 s por 5 s numa vigia de imagem corta o custo em cinco e você não perde nada.
 
-**Gatilho por imagem**
+### Gatilho por imagem na tela
 
 <p align="center">
   <img src="img/automation-image.png" width="440" alt="Gatilho de automação por imagem na tela" /><br>
@@ -419,6 +459,20 @@ Deixe `0` para o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vale sub
 > **O erro nº 1: salvar não é armar.** O **Save** grava o gatilho; quem faz existir é a chave na lista. Se está armada e não roda, use o **Run now** — ele escreve o motivo na tela.
 >
 > **A armadilha silenciosa:** deixar a grade com edição não salva e mandar o app para a bandeja. Nesse estado **nenhuma** automação dispara, e não há nada na tela lembrando. Salve antes de sair.
+
+### Exemplo — a macro das 8 da manhã que roda sozinha
+
+Todo dia útil às 8h alguém precisa abrir o sistema e postar a mensagem de abertura do plantão. Hotkey não resolve: hotkey precisa de um dedo no teclado.
+
+1. Settings → **App** → **Automation** → **Manage ›**.
+2. **Add automation** → escolha o perfil. Só aparecem perfis sem automação — cada um tem no máximo uma.
+3. **Trigger** = **Schedule**. Em **At**, `08:00`. Em **Days**, acenda **Mon** a **Fri** (nenhum dia aceso = todos os dias). **Save**.
+4. **Ligue a chave** na linha do perfil. Confira também a chave-mestra (**Automations enabled**).
+5. Settings → **App** → **Startup** → **Run on Startup** + **Startup Minimized**.
+
+O TrueReplayer passa a subir com o Windows, some para a bandeja e rearma sozinho.
+
+> **Interval × Schedule.** *Interval* conta a partir do último disparo: armar às 9h47 com 5 min dá 9h52, 9h57 — o horário depende de quando você ligou. *Schedule* conta pelo relógio: 08:00 é 08:00. Para "de tempos em tempos", Interval; para "todo dia às 8", Schedule.
 
 ---
 
@@ -557,6 +611,27 @@ Confirme com **`Ctrl+Enter`** — o `Enter` sozinho pula linha. `Esc` cancela.
 | **Plain** | Busca, chat de jogo, campos de código. |
 
 > Se a mensagem chegar mostrando os asteriscos, você mandou Markdown para um app que não entende — troque para **Rich** ou **Plain**. Se a formatação sumiu, o alvo não aceita texto rico.
+
+### Exemplo — a resposta que você repete vinte vezes por dia
+
+Todo dia a mesma resposta de atendimento, mudando só o nome e o horário. Vinte vezes por dia.
+
+1. Barra → **Send Text** (ícone de "T"). A janela se chama **Insert Text**. Escreva o corpo normalmente.
+2. Insira os tokens onde o texto muda, clicando nos chips do painel da direita:
+
+   ```
+   Oi {clipboard:trim}, tudo bem?
+   Recebemos seu chamado e já estamos olhando.
+   Registrado em {datetime}.{delay:500}{enter}
+   ```
+
+3. No rodapé, escolha o **Delivery** (já vem em **Rich**).
+4. **Opcional — guarde como Snippet.** Na parte de baixo do painel da direita, clique no ícone de marcador ao lado de **Snippets**, dê um nome e **Save**. Depois é só clicar no nome para reinserir o texto inteiro.
+5. **`Ctrl+Enter`** confirma. O `Enter` sozinho só pula linha.
+
+**Na hora de usar:** o `{clipboard:trim}` pega o que estiver copiado *naquele momento*. O gesto é sempre selecionar o nome → `Ctrl+C` → disparar a macro.
+
+> **Snippet ≠ ação.** O **Snippet** é atalho para *você escrever*; a ação **Send Text** salva no perfil é o que *roda*. Snippets ficam no app e **não viajam** no export — ao abrir o perfil noutra máquina o texto vai junto (está dentro da ação), mas a lista de snippets aparece vazia.
 
 ---
 
@@ -797,14 +872,14 @@ Barra → ícone de tabela. A tabela é salva **dentro do perfil** e viaja no ex
   <sub><i>A tabela, o modo <b>Loop over data</b> e os tokens de coluna.</i></sub>
 </p>
 
-**Colocando dados**
+### Colocando dados na tabela
 
 - **Paste / bulk edit…** — cole um intervalo do Excel → **Replace table** ou **Append rows**. **First row is the header** usa a primeira linha como nomes de coluna.
 - **Import CSV…** — `.csv` / `.tsv` / `.txt`, delimitador detectado sozinho (inclusive ponto e vírgula, como o Excel brasileiro escreve).
 - **Editar na grade** — clique numa célula; **Add row / column**; o menu **⋯** do cabeçalho insere, move, renomeia e apaga. `Ctrl+Z` desfaz.
 - **Copy table (TSV)** devolve tudo para o clipboard.
 
-**Cabeçalhos → tokens**
+### Cabeçalhos → tokens
 
 | Token | Resolve para |
 | --- | --- |
@@ -816,14 +891,16 @@ Barra → ícone de tabela. A tabela é salva **dentro do perfil** e viaja no ex
 
 Cabeçalhos precisam ter só letras, números ou `_`. Um inválido ganha ⚠; a **varinha** conserta. Célula vazia ou coluna inexistente vira **texto vazio**, nunca erro.
 
-**Executando**
+### Executando sobre os dados
 
 | Modo | Comportamento |
 | --- | --- |
 | **Loop over data ligado** | Uma execução completa **por linha**. Ignora os Loops do perfil e o infinito de While-Pressed/Toggle. **Não inicia** com a tabela vazia. |
 | **Desligado** (cursor) | Cada execução usa a **próxima** linha e avança; no fim volta à primeira. Botão direito → **Reset row position**. |
 
-**On row error** *(só com o loop ligado)* — **Halt** (padrão) para na primeira falha; **Skip row** registra, solta o que ficou pressionado e continua, com um resumo no fim.
+### Pular em erro (só com loop-over-data)
+
+**On row error** — **Halt** (padrão) para na primeira falha; **Skip row** registra, solta o que ficou pressionado e continua, com um resumo no fim.
 
 > **O lugar é guardado em disco.** O cursor de linha — e o do **Set Variable** em modo Cycle — sobrevive a fechar o app. Trabalhe 12 linhas hoje e amanhã continue da 13.
 
@@ -854,6 +931,21 @@ Uma ação **Run Profile** pode marcar **Run once per data row**: o perfil *cham
 >
 > **Perfil não aparece na lista Profile to run?** Ele está **desligado**. Perfis desligados somem da escolha porque seriam pulados de qualquer jeito.
 
+### Exemplo — um mesmo final em vinte macros
+
+Vinte macros de atendimento terminam igual: clicar em **Confirmar**, esperar o aviso sumir, `Esc`, voltar para a lista. Quando o site mudou o botão de lugar, foi uma tarde arrumando macro por macro — e ainda escaparam duas.
+
+1. **Tire o trecho comum para um perfil só dele.** Não precisa regravar: numa das macros, selecione as cinco linhas repetidas → **`Ctrl+K`** → **Copy as Table**. Crie o perfil `Confirmar` e nele **`Ctrl+K`** → **Paste Actions**. Ele não precisa de hotkey — existe para ser chamado.
+2. **Chame em cada macro.** Selecione a linha onde o trecho começava → barra → **Run Profile** → em **Profile to run**, digite `Confirmar` (o campo é o mesmo buscador do painel de perfis; ↑/↓ e `Enter` escolhem). **Repeat** = `1`. **Add**.
+3. **Apague os passos repetidos.**
+
+| Macro | Antes | Depois |
+| --- | --- | --- |
+| `Pedido novo` | 12 passos | 7 + **Run Profile** `Confirmar` |
+| `Troca` | 9 passos | 4 + **Run Profile** `Confirmar` |
+
+Da próxima vez que o botão mudar, você conserta `Confirmar` uma vez e as vinte melhoram juntas.
+
 ---
 
 ## Automação de navegador
@@ -875,7 +967,9 @@ Um selo de **qualidade do seletor** (S → C) indica quão estável ele provavel
 >
 > **Mirando por texto**, o alvo é o **elemento clicável** que carrega o texto — o botão inteiro, não o `<span>` de dentro. No campo de texto, um padrão **sem prefixo** vale como **exato**. Para casar um pedaço: `text*=Salvar` (contém), `text~=salvar` (ignora maiúsculas), `text/^Salvar.*/i` (regex).
 
-**Relatório de execução** — `Ctrl+K` → **Run report** mostra a execução passo a passo, com o que cada um mirou e quanto levou.
+### Relatório de execução — qual passo quebrou, e por quê
+
+`Ctrl+K` → **Run report** mostra a execução passo a passo, com o que cada um mirou e quanto levou.
 
 <p align="center">
   <img src="img/run-report.png" width="820" alt="O painel Run report" /><br>

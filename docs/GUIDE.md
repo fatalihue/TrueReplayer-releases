@@ -235,9 +235,13 @@ Os três últimos só ficam ativos com **Times to repeat** > 1.
 > **Quando usar jitter.** `Click × 3` com Gap + Position jitter parece humano — é o que serve em jogos, onde repetir o mesmo pixel no mesmo ritmo é o sinal mais óbvio de macro. Para automação comum (um botão, um campo), **deixe desligado**: ali você quer o pixel exato.
 
 <p align="center">
-  <img src="img/send-keystroke.png" width="360" alt="O bloco Repeat de uma linha de Keystroke" />
-  <img src="img/click-repeat.png" width="360" alt="O bloco Repeat de uma linha de clique" /><br>
-  <sub><i>À esquerda numa tecla, à direita num clique — este último ganha o <b>Position jitter</b>.</i></sub>
+  <img src="img/send-keystroke.png" width="820" alt="O bloco Repeat de uma linha de Keystroke" /><br>
+  <sub><i>Numa <b>tecla</b>: Times, Gap e Gap jitter.</i></sub>
+</p>
+
+<p align="center">
+  <img src="img/click-repeat.png" width="820" alt="O bloco Repeat de uma linha de clique" /><br>
+  <sub><i>Num <b>clique</b>: os mesmos três, mais o <b>Position jitter</b>, que só existe aqui.</i></sub>
 </p>
 
 ---
@@ -412,7 +416,7 @@ O que não tem botão próprio:
 - **Chave-mestra** — `Pause` liga/desliga **todas** de uma vez.
 
 <p align="center">
-  <img src="img/hotkey.png" width="320" alt="O diálogo Assign Hotkey com os seis modos de gatilho" /><br>
+  <img src="img/hotkey.png" width="820" alt="O diálogo Assign Hotkey com os seis modos de gatilho" /><br>
   <sub><i>Capture a combinação e escolha o modo.</i></sub>
 </p>
 
@@ -472,7 +476,7 @@ Deixe `0` para o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vale sub
 ### Gatilho por imagem na tela
 
 <p align="center">
-  <img src="img/automation-image.png" width="440" alt="Gatilho de automação por imagem na tela" /><br>
+  <img src="img/automation-image.png" width="820" alt="Gatilho de automação por imagem na tela" /><br>
   <sub><i>Região de busca, confiança e <b>Test match</b>.</i></sub>
 </p>
 
@@ -517,7 +521,7 @@ O TrueReplayer passa a subir com o Windows, some para a bandeja e rearma sozinho
 Prende um perfil (ou pasta) a uma janela.
 
 <p align="center">
-  <img src="img/target.png" width="360" alt="O diálogo Target Configuration" /><br>
+  <img src="img/target.png" width="820" alt="O diálogo Target Configuration" /><br>
   <sub><i>Processo / título, coordenadas relativas e opções de restauração.</i></sub>
 </p>
 
@@ -559,7 +563,7 @@ Troca qual app está na frente *no meio da execução*. Diferente do alvo de jan
 **Campos** — **Action**: Activate / Maximize / Minimize / Close. **Process** e/ou **Title** identificam a janela (**Match #** escolhe a N-ésima). **Path / Args** abrem o app se nenhuma janela casar. **Placement** posiciona (só visual, não muda onde os cliques caem). **Timeout / On Timeout** decidem esperar quanto e se **Halt** (padrão) ou **Continue**. **Test** confere agora.
 
 <p align="center">
-  <img src="img/activate-window.png" width="360" alt="O editor da ação Activate Window" /><br>
+  <img src="img/activate-window.png" width="820" alt="O editor da ação Activate Window" /><br>
   <sub><i>O verbo <b>Action</b> e os campos de identificação da janela.</i></sub>
 </p>
 
@@ -832,7 +836,7 @@ A posição é **guardada em disco** — fechar o app não recomeça. Para recom
 ### Copy to Slot
 
 <p align="center">
-  <img src="img/copy-to-slot-clear.png" width="360" alt="Editor do Copy to Slot no modo Clear" /><br>
+  <img src="img/copy-to-slot-clear.png" width="820" alt="Editor do Copy to Slot no modo Clear" /><br>
   <sub><i>O modo <b>Clear</b> esvazia um slot — ou todos, se o nome ficar em branco.</i></sub>
 </p>
 
@@ -851,7 +855,7 @@ Pausa e pergunta. O app **se traz para a frente** sozinho e, depois da resposta,
 ```
 
 <p align="center">
-  <img src="img/ask-input.png" width="360" alt="A caixa Input needed durante uma execução" /><br>
+  <img src="img/ask-input.png" width="820" alt="A caixa Input needed durante uma execução" /><br>
   <sub><i>Com <code>|menu:…</code> ela vira uma lista para clicar.</i></sub>
 </p>
 
@@ -880,7 +884,7 @@ Recolher são três toques, enviar é um só. Os slots continuam guardados — d
 **Quando o dado está sempre no mesmo lugar**, automatize a coleta: use a ação **Copy to Slot** com um nome (`pedido`) dentro da própria macro e leia com `{clip:pedido}`. A hotkey serve para quando *você* escolhe o que copiar; a ação serve para quando a macro sempre acha o valor no mesmo canto — e é a única que funciona *durante* uma execução.
 
 <p align="center">
-  <img src="img/live-variables.png" width="360" alt="O painel Live Variables durante uma execução" /><br>
+  <img src="img/live-variables.png" width="251" alt="O painel Live Variables durante uma execução" /><br>
   <sub><i><code>Ctrl+K</code> → <b>Toggle Live Variables</b>: variáveis, slots e a linha atual, ao vivo.</i></sub>
 </p>
 
@@ -1025,7 +1029,7 @@ Duas coisas que só o relatório mostra:
 - **Import / Export** — compartilhe um tema como JSON.
 
 <p align="center">
-  <img src="img/theme-interface.png" width="360" alt="A aba Interface do Theme Editor" /><br>
+  <img src="img/theme-interface.png" width="820" alt="A aba Interface do Theme Editor" /><br>
   <sub><i>Densidade, fonte, cantos, altura de linha e zoom.</i></sub>
 </p>
 

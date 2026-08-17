@@ -83,8 +83,15 @@ Sem isso, mover a janela 20 px erra todos os cliques.
 
 ### 6. Espere a tela, não chute
 
-Barra → **Wait for Image** → recorte o botão → **Test match** → confiança em **85%**.
+Barra → **Wait for Image** → recorte o botão → **Test match**. Deixe a **Tolerance** no padrão de **80%**.
 Nunca 100%: uma tela viva nunca fica idêntica pixel a pixel, e a macro nunca acha.
+
+<p align="center">
+  <img src="img/wait-image.png" width="820" alt="O editor da ação Wait Image com Test match" /><br>
+  <sub><i>O <b>Test match</b> confere contra a tela agora e já ajusta a região de busca em volta do que achou.</i></sub>
+</p>
+
+Os campos que importam: **Tolerance** (80% padrão — ~95 para estrito, abaixo de 70 para UI comprimida), **Wait until** (*Appears* ou *Disappears*), **Timeout** + **On Timeout** (**Halt** para a macro, **Continue** segue), e **Click on found location**, que clica direto no ponto encontrado e poupa uma ação.
 
 ### 7. Clique opcional, só se aparecer
 
@@ -206,7 +213,7 @@ Colunas: **caixa · Action · Details · Delay · Notes**.
 | **Set Variable** | Guarda um valor lido com `{var:nome}`. |
 | **Copy to Slot** | Copia a seleção atual para um slot, lido com `{clip:nome}`. |
 | **Pause** | Para até uma **hotkey de retomada** ou um **timeout**. Precisa de um dos dois. |
-| **Wait Image** | Espera uma imagem aparecer (confiança padrão ≈ 85%). |
+| **Wait Image** | Espera uma imagem aparecer na tela (**Tolerance** padrão 80%). |
 | **Wait Pixel Color** | Espera o pixel em `(x, y)` bater com uma cor. |
 | **Run Profile** | Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados. |
 | **Activate Window** | **Activate** / **Maximize** / **Minimize** / **Close** noutra janela. Muda o foco do SO, nunca o contexto de coordenadas. |
@@ -288,6 +295,17 @@ Apareceu em 200 ms → segue em 200 ms. Não apareceu em 2 s → pula o bloco.
 
 **Quer um plano B?** Dentro do bloco, logo acima do **EndIf**, tem a linha tracejada **+ Add Else branch**. É ali que o Else nasce — não está no menu do botão direito.
 
+### O editor da linha If
+
+Abra com o lápis ao passar o mouse, ou selecione a linha e aperte `Enter`.
+
+<p align="center">
+  <img src="img/if-editor.png" width="820" alt="O editor de uma linha If do tipo Window Open" /><br>
+  <sub><i><b>Condition</b> (Found / NOT Found), <b>Wait for condition</b>, <b>On Probe Error</b> — e o <b>Test</b>, que confere a condição agora sem rodar a macro.</i></sub>
+</p>
+
+O **Test** é o atalho que evita descobrir o erro só na hora de rodar: ele faz a mesma pergunta que a execução faria e responde na tela — no exemplo, *Found — BloxManager.exe · Blox Manager*.
+
 ### Dois tempos diferentes
 
 | | Onde fica | Como gasta |
@@ -368,7 +386,14 @@ Sem o Assert, o dia ruim vira uma senha digitada num lugar público e ninguém f
 - **Pin** mantém no topo; **arraste** para dentro de uma **pasta**.
 - **Pastas** — cor, renomear, recolher. Podem ter um **alvo de janela** que os perfis herdam. O botão no cabeçalho do painel recolhe/expande **todas**.
 - **Info** (botão direito) — emoji, descrição e **tags** (pesquisáveis).
-- **Import / Export** — arquivo `.trprofile` com ações, metadados, imagens e layout. Na importação, cada conflito recebe **Rename** (padrão — nada é sobrescrito em silêncio), **Overwrite** ou **Skip**. Um perfil que exige versão mais nova fica esmaecido com o motivo.
+- **Import / Export** — arquivo `.trprofile` com ações, metadados, imagens e layout.
+
+<p align="center">
+  <img src="img/import-preview.png" width="820" alt="A tela de importação com os conflitos de nome" /><br>
+  <sub><i>Cada perfil mostra o que traz (ações, imagens, hotkey, alvo) e como resolver o conflito.</i></sub>
+</p>
+
+Na importação **nada é sobrescrito em silêncio**: cada nome repetido recebe **Rename** (o padrão), **Overwrite** ou **Skip** — individualmente, ou de uma vez pela barra *apply to all* no topo. O cabeçalho resume o arquivo (quantos perfis, quantos conflitos, se traz organização de pastas, em que versão foi exportado) e o rodapé diz quantos serão importados de fato. Um perfil que exige um TrueReplayer mais novo que o seu fica esmaecido com o motivo.
 
 ### A paleta de comandos (`Ctrl+K`)
 

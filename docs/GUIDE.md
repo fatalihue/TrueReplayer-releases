@@ -708,6 +708,28 @@ O intervalo de palavras **preserva o espaçamento original** entre elas — espa
 
 > **Se o delimitador não existir no texto, `before`/`after` devolvem vazio** — não devolvem o texto inteiro. É de propósito: a outra resposta colaria tudo onde você pediu um pedaço.
 
+#### Cortar num dois-pontos
+
+O `:` separa os pedaços da cadeia, então por muito tempo ele não pôde ser o delimitador. **A partir da 2.23.0 pode.** No campo **Cortar em** você digita ` : ` normalmente:
+
+```
+cinco seis : sete oito     →  {clipboard:after: :: }  →  sete oito
+```
+
+O token guarda o dois-pontos **em dobro** (`::`), que é só a forma de gravar — o campo mostra e devolve o delimitador como você escreveu. Se estiver montando o token à mão, escreva `::` onde quer um `:`:
+
+| Você quer cortar em | Escreva |
+|---|---|
+| `:` | `{clipboard:after:::}` |
+| ` : ` | `{clipboard:after: :: }` |
+| `R$:` | `{clipboard:after:R$::}` |
+
+Vale para `before`, `after`, `beforelast` e `afterlast`, e nas cadeias de `{clip:}`, `{var:}`, `{winclip:}`, `{row:}` e `{rownext:}`.
+
+> **`join` é a exceção.** Ali o dobrado já significa outra coisa desde a 2.8.0 — `{clipboard:join::upper}` quer dizer "juntar **sem separador nenhum**, depois maiúsculas" —, então o campo **Juntar com** continua removendo o `:`. A dica do campo avisa.
+
+> Um perfil que use dois-pontos no delimitador **exige a 2.23.0** para ser importado. Numa versão anterior o corte cairia no pedaço errado do delimitador sem avisar, então a importação é bloqueada em vez de silenciosamente errar.
+
 ### Quando o texto tem várias linhas
 
 Partindo de:

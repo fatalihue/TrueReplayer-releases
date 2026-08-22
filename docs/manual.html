@@ -351,7 +351,7 @@
     <li><a class="c-plain" href="#p3"><span class="t-part">Parte 3</span><div class="t-name">Perfis e disparos</div><div class="t-desc">Pastas, hotkeys, hotstrings, remaps</div></a></li>
     <li><a class="c-gold" href="#p4"><span class="t-part">Parte 4</span><div class="t-name">Send Text &amp; Tokens</div><div class="t-desc">Texto que se preenche sozinho</div></a></li>
     <li><a class="c-gold" href="#p5"><span class="t-part">Parte 5</span><div class="t-name">Variáveis, slots e prompts</div><div class="t-desc">Valores que a macro guarda e pergunta</div></a></li>
-    <li><a class="c-violet" href="#p6"><span class="t-part">Parte 6</span><div class="t-name">Condicionais &amp; Assert</div><div class="t-desc">Macros que decidem — e que exigem</div></a></li>
+    <li><a class="c-violet" href="#p6"><span class="t-part">Parte 6</span><div class="t-name">Condicionais, Loops &amp; Assert</div><div class="t-desc">Decidir, repetir, exigir — e encerrar</div></a></li>
     <li><a class="c-plain" href="#p7"><span class="t-part">Parte 7</span><div class="t-name">Esperar a tela</div><div class="t-desc">Wait Image, Wait Pixel, Pause</div></a></li>
     <li><a class="c-plain" href="#p8"><span class="t-part">Parte 8</span><div class="t-name">Janelas</div><div class="t-desc">Alvo, coordenadas relativas, Activate</div></a></li>
     <li><a class="c-plain" href="#p9"><span class="t-part">Parte 9</span><div class="t-name">Automação</div><div class="t-desc">Rodar sem apertar nada</div></a></li>
@@ -532,6 +532,9 @@
           <tr><td><strong>Run Profile</strong></td><td>Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados.</td></tr>
           <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — Parte 8.</td></tr>
           <tr><td><strong>If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — Parte 6.</td></tr>
+          <tr><td><strong>While / End Loop · Break / Next</strong></td><td>Bloco que repete enquanto a condição vale, e os saltos de controle — Parte 6.</td></tr>
+          <tr><td><strong>For Each Data Row</strong></td><td>Repete só um trecho, uma vez por linha da tabela — Parte 12.</td></tr>
+          <tr><td><strong>Stop · Return</strong></td><td>Encerram no meio: a execução inteira, ou só o passe atual — Parte 6.</td></tr>
           <tr><td><strong>Browser actions</strong></td><td>Click / Type / Navigate / Wait / Assert / Select no Chrome — Parte 11.</td></tr>
         </tbody>
       </table>
@@ -669,6 +672,23 @@
     </div>
     <p>Cada <span class="tok">{random:a-b}</span> sorteia por conta própria: <code>{random:1-6} {random:1-6}</code> são dois dados, não o mesmo número duas vezes.</p>
 
+    <h4 style="margin-top:26px">Sortear um <em>texto</em>: <span class="tok">{pick:a|b|c}</span></h4>
+    <p>O irmão do <span class="tok">{random}</span> para frases inteiras: digita <strong>uma</strong> das opções, sorteada a cada uso.</p>
+    <div class="xmpl">
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Send Text</div>
+          <div class="pane-body"><span class="hl">{Pick:Olá!|Oi, tudo bem?|Bom dia!}</span> Como posso ajudar?</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Uma execução qualquer</div>
+          <div class="pane-body">Oi, tudo bem? Como posso ajudar?</div>
+        </div>
+      </div>
+      <div class="xmpl-note">Na paleta há um chip <strong>Pick</strong> — clique no chip inserido e edite as opções <strong>uma por linha</strong>, sem digitar o <code>|</code>. Cada ocorrência sorteia por conta própria (dois <code>{pick}</code> no mesmo texto podem sair diferentes), e num texto com formatação as versões simples e rica recebem a <strong>mesma</strong> escolha. É o que tira a cara de robô de uma saudação de atendimento.</div>
+    </div>
+
     <h4 style="margin-top:26px">Teclas e pausas no meio do texto</h4>
     <p>Alguns tokens não viram texto — viram <strong>tecla pressionada</strong>:</p>
     <div class="xmpl">
@@ -764,9 +784,12 @@
           <tr><td><code>title</code></td><td>Primeira Letra De Cada Palavra</td><td><code>Olá Mundo</code></td></tr>
           <tr><td><code>sentence</code></td><td>Primeira letra da frase</td><td><code>Olá mundo</code></td></tr>
           <tr><td><code>trim</code></td><td>Tira espaços das pontas</td><td><code>olá mundo</code></td></tr>
+          <tr><td><code>noaccents</code></td><td>Remove acentos (caixa preservada)</td><td><code>ola mundo</code></td></tr>
+          <tr><td><code>digits</code></td><td>Mantém só dígitos 0–9</td><td><code></code> <span style="color:var(--muted)">(vazio — não há dígitos)</span></td></tr>
         </tbody>
       </table>
     </div>
+    <p><code>digits</code> é o atalho para números de telefone e documentos: <span class="tok">{clipboard:digits}</span> transforma <code>+55 (11) 98888-7777</code> em <code>5511988887777</code>. Ele mantém apenas os dígitos comuns <code>0-9</code> — dígitos "de largura total" como <code>１２３</code> saem fora, de propósito, para a prévia do construtor e a execução nunca discordarem. Na cadeia, os dois entram <strong>depois</strong> dos recortes e <strong>antes</strong> da caixa (recortar → limpar → maiusculizar); no construtor eles são a etapa <strong>Clean up</strong>.</p>
 
     <h4 style="margin-top:26px">Pegando pedaços: linha, palavra, caracteres</h4>
     <p>Imagine este conteúdo copiado — um cadastro de 3 linhas:</p>
@@ -898,7 +921,7 @@ maria@email.com
       <div class="co-icon">🛠️</div>
       <div>
         <p><span class="co-title">Você não precisa montar isso de cabeça.</span></p>
-        <p>O chip <strong>Advanced…</strong> (ou clicar em qualquer chip já inserido) abre o <strong>construtor</strong>: etapas numeradas — Trim, Case, Cortar, Drop count, Linha/palavra, Ordenar, Juntar — com <strong>prévia ao vivo</strong> usando o conteúdo real. Você marca as opções, vê o resultado na hora, e o token sai escrito sozinho. As etapas aplicam nesta ordem fixa; modificador que o app não conhece é ignorado — um erro de digitação não quebra a macro.</p>
+        <p>O chip <strong>Advanced…</strong> (ou clicar em qualquer chip já inserido) abre o <strong>construtor</strong>: etapas numeradas — Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up (acentos/dígitos), Case — com <strong>prévia ao vivo</strong> usando o conteúdo real. Você marca as opções, vê o resultado na hora, e o token sai escrito sozinho. As etapas aplicam nesta ordem fixa; modificador que o app não conhece é ignorado — um erro de digitação não quebra a macro.</p>
       </div>
     </div>
   </div>
@@ -1020,8 +1043,8 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 6 — CONDICIONAIS & ASSERT ═══════════════════════ -->
 <section id="p6" class="p-violet">
   <div class="part-head">
-    <span class="eyebrow">Parte 6 · Condicionais &amp; Assert</span>
-    <h2>Macros que decidem — e que exigem</h2>
+    <span class="eyebrow">Parte 6 · Condicionais, Loops &amp; Assert</span>
+    <h2>Macros que decidem, repetem — e que exigem</h2>
   </div>
 
   <p>Um <strong>condicional</strong> divide a macro em dois caminhos: <em>se</em> algo é verdade, executa um bloco; <em>senão</em>, executa outro (ou pula direto). Na grade, são três linhas especiais: <strong>If</strong> (a pergunta), <strong>Else</strong> (opcional) e <strong>End If</strong> (o fim do bloco).</p>
@@ -1228,6 +1251,61 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
+    <h3><span class="nivel">Nível 3</span> While — o bloco que repete</h3>
+    <p>O If pergunta <em>uma vez</em>. O <strong>While</strong> faz a mesma pergunta <strong>em volta</strong>: enquanto a resposta for sim, o corpo roda de novo. Na barra, o menu <strong>Loop ▾</strong> insere o par <strong>While … End Loop</strong> — com as mesmas condições do If (imagem, pixel, janela, clipboard, variável, processo, arquivo, horário, elemento de página) e o mesmo editor, incluindo o botão <strong>Test</strong>.</p>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — esperar o "Carregando…" ir embora, agindo enquanto isso</div>
+      <div class="gm-row gm-if"><span class="gm-type">While</span><span class="gm-detail">Image Found — carregando.png · Max 20×</span><span class="gm-note">pergunta a cada volta</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Keystroke</span><span class="gm-detail">Esc</span><span class="gm-note">fecha pop-up que atrapalha</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End Loop</span><span class="gm-note">volta para o While</span></div>
+      <div class="gm-row"><span class="gm-type">Click</span><span class="gm-detail">Continuar</span><span class="gm-note">só depois que a imagem sumiu</span></div>
+    </div></div>
+
+    <ul>
+      <li><strong>O Delay da linha While é por volta</strong> — acontece antes de <em>cada</em> checagem. Ele acumula duas funções: dar tempo para a tela assentar antes de olhar, e espaçar as repetições. Três voltas com Delay 350 gastam pelo menos ~1 s, sempre.</li>
+      <li><strong>Max iterations é o freio de emergência</strong> — em branco (0) vale o padrão de <strong>1000</strong>. Bater no teto é uma saída <em>normal</em>: o loop termina, a linha seguinte roda, o log registra o motivo. Sem erro, sem toast.</li>
+      <li><strong>Random não está no menu Loop</strong>, de propósito: um loop guiado por cara ou coroa não tem término estável.</li>
+      <li><strong>Checagem quebrada não gira o loop:</strong> com o On Probe Error padrão (<em>Treat as false</em>), um probe que falha lê "não" — e "não" <em>sai</em> do While. Num <em>While NOT</em>, a leitura invertida vira "sim" e quem segura é o teto.</li>
+    </ul>
+
+    <h4 style="margin-top:24px">Break loop e Next iteration</h4>
+    <p>Dois saltos, no mesmo menu Loop ▾, sob <strong>Loop control</strong>:</p>
+    <ul>
+      <li><strong>Break loop</strong> — sai do loop mais interno <em>agora</em>; a execução continua depois do End Loop dele.</li>
+      <li><strong>Next iteration</strong> — pula o resto do corpo e volta ao topo: o While re-checa a condição; num For Each Data Row (Parte 12), já vai para a <strong>próxima linha</strong>.</li>
+    </ul>
+    <p>Fora de um loop os dois aparecem <strong>cinzas, com a explicação no tooltip</strong> — em vez de sumirem do menu. Combinados com um If, viram o "sai quando X acontecer no meio do corpo".</p>
+
+    <div class="callout co-rule">
+      <div class="co-icon">🔁</div>
+      <div>
+        <p><span class="co-title">While ou Wait? Os dois esperam — de jeitos diferentes.</span></p>
+        <p><strong>Wait Image</strong> espera <em>parado</em>: nada acontece até aparecer (ou estourar). <strong>While</strong> espera <em>fazendo</em>: o corpo roda a cada volta — fechar pop-ups, rolar a página, apertar Esc. Se não há nada para fazer enquanto espera, o Wait continua sendo a ferramenta certa.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
+    <p>Até aqui, uma macro só terminava chegando ao fim da lista. Duas linhas novas (menu <strong>Assert ▾</strong> → <em>End the run</em>) encerram antes:</p>
+    <ul>
+      <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>, o mesmo sinal de quando a lista acaba. As linhas depois dele nunca rodam — inclusive dentro de sub-perfis: um Stop no filho encerra a cadeia toda.</li>
+      <li><strong>Return</strong> — encerra <em>só o passe atual</em>. Com Loops = 3, ou rodando uma vez por linha de dados, os passes restantes continuam; o que morre é o resto <em>deste</em> passe.</li>
+    </ul>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — "se já consegui, acabou"</div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Image Found — sucesso.png</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Stop</span><span class="gm-note">objetivo atingido → fim, com cara de sucesso</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+      <div class="gm-row"><span class="gm-type">Click</span><span class="gm-detail">tentar de novo…</span><span class="gm-note">só roda se NÃO conseguiu ainda</span></div>
+    </div></div>
+
+    <p>A diferença de temperamento importa: <strong>Stop</strong> é decisão da macro ("terminei"); um <strong>Assert</strong> que falha em Abort é acidente ("algo que eu exigia não vale") — e por isso um grita e o outro não.</p>
+  </div>
+
+  <div class="subsec">
     <h3><span class="nivel">Nível 3</span> Assert — exigir que algo seja verdade</h3>
     <p>Um If <em>pergunta</em> e segue por um dos dois caminhos. Um <strong>Assert</strong> <em>exige</em>: se não for verdade, <strong>para na hora e diz qual premissa falhou</strong>. Uma linha só, sem ramificação e sem End If — barra → ícone de ramificação → <strong>Insert Assert</strong>.</p>
     <div class="callout co-rule">
@@ -1238,7 +1316,20 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       </div>
     </div>
     <p>São <strong>seis condições</strong> de propósito — Window Open, Process Running, Clipboard, Variable, File Exists e Time. Imagem e pixel já param sozinhos por timeout (Wait Image / Wait Pixel, Parte 7), e para página existe o Assert Element (Parte 11).</p>
-    <p><strong>Campos:</strong> Require (Met/NOT Met) · Wait for condition (padrão 1500 ms; Time não aceita — relógio não muda de resposta se você insistir) · On failure (<strong>Abort</strong> padrão, ou Continue, que só registra) · <strong>Notes</strong> — o nome que aparece na falha. Preencha sempre: sem ele a mensagem cai para <code>'element'</code>, e com três asserts na macro você não sabe qual parou.</p>
+    <p><strong>Campos:</strong> Require (Met/NOT Met) · Wait for condition (padrão 1500 ms) · On failure (abaixo) · <strong>Notes</strong> — o nome que aparece na falha. Preencha sempre: sem ele a mensagem cai para <code>'element'</code>, e com três asserts na macro você não sabe qual parou.</p>
+
+    <h4 style="margin-top:24px">On failure: três destinos para a falha</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Política</th><th>Quando a exigência falha…</th><th>Use para</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Abort</strong> <span style="color:var(--muted)">(padrão)</span></td><td>Para <strong>com erro</strong>, nomeando a premissa</td><td>"Isso nunca deveria falhar — me avise."</td></tr>
+          <tr><td><strong>Continue</strong></td><td>Só registra no log e segue</td><td>Exigência informativa.</td></tr>
+          <tr><td><strong>Stop quietly</strong></td><td>Encerra <strong>sem erro</strong> — o mesmo término limpo do Stop</td><td>"Se não rolou, encerra em paz." Fim de expediente, fila vazia, item esgotado.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Stop quietly prevalece sobre o Skip row</strong> da tabela de dados — de propósito: se você mandou parar, degradar para "pula a linha e continua" seguiria rodando justamente o que você mandou parar. No relatório a linha fica <em>ok</em> (o probe rodou; "não" é uma resposta), com o detalhe <code>assert failed · stopped run (quiet)</code>.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Exemplo — a macro que digitou a senha na janela errada</div>
@@ -1280,6 +1371,19 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3>Pause</h3>
     <p>Para a execução até uma <strong>hotkey de retomada</strong> ou um <strong>timeout</strong> — precisa de pelo menos um dos dois. É a espera <em>humana</em>: "faça sua parte e me avise" no meio de uma macro.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
+    <p>Imagem e pixel não são as únicas coisas que valem a espera. O menu <strong>Wait ▾</strong> ganhou a seção <strong>"Wait for condition — stop quietly on timeout"</strong> com as seis condições de estado: janela, processo, clipboard, variável, arquivo e horário.</p>
+    <p>Cada item insere, em <strong>um clique</strong>, um Assert já configurado: <strong>10 segundos</strong> de espera e a política <strong>Stop quietly</strong> (Parte 6). Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em> — o editor abre em seguida com tudo preenchido, para ajustar o tempo ou trocar a política.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">⏳</div>
+      <div>
+        <p><span class="co-title">É o Wait para o que não é tela.</span></p>
+        <p><strong>Wait Image/Pixel</strong> esperam algo <em>visível</em>. O preset espera um <em>fato</em>: o arquivo do download existir, o Excel estar rodando, a variável ter chegado ao valor. E o desfecho do estouro é um término limpo — não uma falha vermelha no meio do expediente.</p>
+      </div>
+    </div>
   </div>
 </section>
 
@@ -1466,7 +1570,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h2>Chrome por seletor, não por pixel</h2>
   </div>
 
-  <p>As ações de navegador controlam o Chrome pelo <strong>elemento</strong> (seletor CSS ou texto visível) em vez de coordenadas — continuam funcionando quando o layout muda. Exigem a <strong>extensão TrueReplayer</strong> conectada no Chrome.</p>
+  <p>As ações de navegador controlam o Chrome pelo <strong>elemento</strong> (seletor CSS ou texto visível) em vez de coordenadas — continuam funcionando quando o layout muda. Exigem a <strong>extensão TrueReplayer</strong> conectada no Chrome — a instalação, passo a passo, está no <a href="https://github.com/fatalihue/TrueReplayer-releases/blob/main/docs/extension-setup/README.md">guia da extensão</a>.</p>
 
   <div class="tbl-wrap">
     <table>
@@ -1541,6 +1645,27 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="gm-row"><span class="gm-type">3</span><span class="gm-detail">Troque os valores fixos por {row:product}, {row:price}…</span><span class="gm-note">cada coluna deve mostrar ×1, não "unused"</span></div>
       <div class="gm-row"><span class="gm-type">4</span><span class="gm-detail">Ligue Loop over data · On row error = Skip row · Save</span><span class="gm-note">uma hotkey cadastra a planilha inteira</span></div>
     </div></div>
+  </div>
+
+  <div class="subsec">
+    <h3>For Each Data Row — repetir só um trecho</h3>
+    <p>O <strong>Loop over data</strong> repete o perfil <em>inteiro</em> por linha. Quando só um pedaço deve repetir — o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez — use o bloco <strong>For Each Data Row</strong> (menu <strong>Loop ▾</strong>):</p>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Setup uma vez, miolo por linha, fechamento uma vez</div>
+      <div class="gm-row"><span class="gm-type">Activate Window</span><span class="gm-detail">sistema de cadastro</span><span class="gm-note">roda 1×</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">For Each Data Row</span><span class="gm-note">a grade mostra quantas linhas a tabela tem</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">{row:nome}{tab}{row:email}{enter}</span><span class="gm-note">roda 1× POR LINHA</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End Loop</span></div>
+      <div class="gm-row"><span class="gm-type">Click</span><span class="gm-detail">Fechar</span><span class="gm-note">roda 1×</span></div>
+    </div></div>
+
+    <ul>
+      <li>Dentro do bloco, <span class="tok">{row:coluna}</span> resolve a <strong>linha da vez</strong>; ao sair, o contexto <strong>volta ao que era</strong> — inclusive quando o bloco é interrompido por Stop, Return ou um erro.</li>
+      <li><strong>Tabela vazia = bloco pulado</strong>, sem rodar o corpo nenhuma vez (o relatório registra).</li>
+      <li>Com <strong>On row error = Skip row</strong>, uma linha que falhar dentro do bloco é absorvida <em>ali</em>: a próxima linha roda, e no fim vem o resumo de quantas foram puladas. Um <strong>Next iteration</strong> no corpo também pula direto para a próxima linha.</li>
+      <li>A tabela usada é a <strong>ativa</strong>: num sub-perfil rodando <em>once per data row</em>, é a dele; num RunProfile comum, é a do chamador. Para iterar a tabela do próprio sub, continue usando <strong>Run once per data row</strong> (abaixo).</li>
+    </ul>
   </div>
 
   <div class="subsec">
@@ -1684,6 +1809,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O token saiu escrito na tela</td><td>Erro de digitação no nome (<code>{clipbord}</code>) — token desconhecido vira texto literal</td><td>Insira pelos chips da paleta</td></tr>
         <tr><td>"{winclip} veio vazio"</td><td>Histórico do Windows desligado</td><td>Configurações do Windows → Sistema → Área de transferência</td></tr>
         <tr><td>A macro parou com "Assert failed"</td><td>Fez o que você mandou — o nome entre aspas é o Notes daquela linha</td><td>Se a premissa só demora, aumente o Wait for condition</td></tr>
+        <tr><td>A macro terminou "do nada", sem erro</td><td>Provavelmente fez o que você mandou: um <strong>Stop</strong> autorado, ou um Assert em <strong>Stop quietly</strong> que não valeu</td><td>Abra o Run report — a linha diz <code>run ended by Stop</code> ou <code>stopped run (quiet)</code></td></tr>
+        <tr><td>O While rodou o corpo uma vez e parou</td><td>A condição já era falsa na 2ª checagem — ou o perfil está numa <strong>versão antiga</strong>, que não conhece While e ignora as linhas do bloco</td><td>Test na linha While; confira o aviso de versão no import (perfis com loop exigem 2.25.0)</td></tr>
+        <tr><td>O While não para nunca</td><td>A condição nunca vira "não" (ou é um While NOT com a checagem quebrando)</td><td>O teto segura: Max iterations (padrão 1000). Ajuste a condição — e o log diz quando o teto agiu</td></tr>
+        <tr><td>Break loop / Next iteration cinzas no menu</td><td>O ponto de inserção está fora de qualquer loop</td><td>Selecione uma linha <em>dentro</em> do bloco e insira de novo</td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
         <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
         <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>
@@ -1691,7 +1820,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.24.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.25.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

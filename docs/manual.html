@@ -1375,8 +1375,9 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3>Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
-    <p>Imagem e pixel não são as únicas coisas que valem a espera. O menu <strong>Wait ▾</strong> ganhou a seção <strong>"Wait for condition — stop quietly on timeout"</strong> com as seis condições de estado: janela, processo, clipboard, variável, arquivo e horário.</p>
+    <p>Imagem e pixel não são as únicas coisas que valem a espera. O menu <strong>Wait ▾</strong> ganhou a seção <strong>"Wait for condition — stop quietly on timeout"</strong> com as seis condições de estado, nomeadas com o verbo: <strong>Until Window Open</strong>, <strong>Until Process Running</strong>, <strong>Until Clipboard</strong>, <strong>Until Variable</strong>, <strong>Until File Exists</strong> e <strong>Until Time</strong>.</p>
     <p>Cada item insere, em <strong>um clique</strong>, um Assert já configurado: <strong>10 segundos</strong> de espera e a política <strong>Stop quietly</strong> (Parte 6). Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em> — o editor abre em seguida com tudo preenchido, para ajustar o tempo ou trocar a política.</p>
+    <p>É a <strong>mesma ação</strong> que o menu Assert ▾ insere — a linha na grade diz <em>Assert</em> nos dois casos. O que muda são os dois padrões: pelo Assert ▾ ela nasce exigente (1500 ms, <em>Abort</em>); por aqui, paciente e discreta (10 s, <em>Stop quietly</em>). Escolha pela intenção; depois, qualquer uma vira a outra no editor.</p>
     <div class="callout co-rule">
       <div class="co-icon">⏳</div>
       <div>

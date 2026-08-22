@@ -2,7 +2,7 @@
 
 # TrueReplayer — Manual do Usuário
 
-[← Voltar ao README](../README.md)
+[← Voltar ao README](../README.md) · [✨ Versão web ilustrada](https://fatalihue.github.io/TrueReplayer-releases/manual.html)
 
 </div>
 

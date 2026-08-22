@@ -145,11 +145,12 @@ Um **Clicker mode** dedicado (alterne com **`ScrollLock`**) para cliques rápido
 
 ## Guia completo
 
-O manual completo — 15 partes, do primeiro clique gravado à automação que roda sozinha — está no guia:
+O manual completo — 15 partes, do primeiro clique gravado à automação que roda sozinha — em duas formas:
 
-📖 **[docs/GUIDE.md](docs/GUIDE.md)**
+- ✨ **[Manual web](https://fatalihue.github.io/TrueReplayer-releases/manual.html)** — a versão ilustrada, com diagramas e exemplos passo a passo. Comece por aqui.
+- 📄 **[docs/GUIDE.md](docs/GUIDE.md)** — o mesmo conteúdo em Markdown, para ler dentro do GitHub.
 
-Prefere aprender fazendo? Comece pelas **[receitas completas](docs/GUIDE.md#parte-14--receitas-completas)** — perfis prontos, passo a passo — e volte às partes quando quiser aprofundar.
+Prefere aprender fazendo? Comece pelas **[receitas completas](docs/GUIDE.md#parte-14--receitas-completas)** — perfis prontos, passo a passo.
 
 ---
 

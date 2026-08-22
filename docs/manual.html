@@ -1,0 +1,1726 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="description" content="Manual completo do TrueReplayer: gravação, perfis, tokens, condicionais, automação, clicker, navegador e data loop.">
+<title>Manual do TrueReplayer</title>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
+<style>
+  :root {
+    --paper: #FBF9F5;
+    --surface: #F3EFE7;
+    --surface-2: #ECE6DA;
+    --ink: #26221B;
+    --ink-soft: #57503F;
+    --muted: #837B6A;
+    --border: #E0D8C8;
+    --border-strong: #C9BFA9;
+
+    --gold: #8A6A00;            /* tokens & texto */
+    --gold-bg: #F5EDD4;
+    --gold-border: #DECF9E;
+    --violet: #6339C0;          /* condicionais & lógica */
+    --violet-bg: #EDE7FA;
+    --violet-border: #D3C6F0;
+    --ok: #2C7A44;
+    --ok-bg: #E3F1E4;
+    --bad: #B0402C;
+    --bad-bg: #F8E7E0;
+    --warn-bg: #FBF3DC;
+    --warn-border: #E2CE8F;
+
+    --code-bg: #F1ECE1;
+    --shadow: 0 1px 2px rgba(38,34,27,.06), 0 8px 24px -12px rgba(38,34,27,.12);
+  }
+  @media (prefers-color-scheme: dark) {
+    :root:not([data-theme="light"]) {
+      --paper: #17181C;
+      --surface: #1F2127;
+      --surface-2: #262931;
+      --ink: #E9E6DF;
+      --ink-soft: #C4BFB2;
+      --muted: #8E897C;
+      --border: #2E3139;
+      --border-strong: #43474F;
+
+      --gold: #E3B341;
+      --gold-bg: #2B2517;
+      --gold-border: #4A3E1D;
+      --violet: #B49CF2;
+      --violet-bg: #262038;
+      --violet-border: #453A63;
+      --ok: #7BC98F;
+      --ok-bg: #1D2B20;
+      --bad: #E58A70;
+      --bad-bg: #322019;
+      --warn-bg: #2B2517;
+      --warn-border: #57481F;
+
+      --code-bg: #21232A;
+      --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+    }
+  }
+  :root[data-theme="dark"] {
+    --paper: #17181C;
+    --surface: #1F2127;
+    --surface-2: #262931;
+    --ink: #E9E6DF;
+    --ink-soft: #C4BFB2;
+    --muted: #8E897C;
+    --border: #2E3139;
+    --border-strong: #43474F;
+
+    --gold: #E3B341;
+    --gold-bg: #2B2517;
+    --gold-border: #4A3E1D;
+    --violet: #B49CF2;
+    --violet-bg: #262038;
+    --violet-border: #453A63;
+    --ok: #7BC98F;
+    --ok-bg: #1D2B20;
+    --bad: #E58A70;
+    --bad-bg: #322019;
+    --warn-bg: #2B2517;
+    --warn-border: #57481F;
+
+    --code-bg: #21232A;
+    --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+  }
+
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    * { transition: none !important; }
+  }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: 'Figtree', 'Segoe UI', system-ui, sans-serif;
+    font-size: 16.5px;
+    line-height: 1.62;
+    -webkit-font-smoothing: antialiased;
+  }
+  .wrap { max-width: 880px; margin: 0 auto; padding: 0 24px 96px; }
+
+  h1, h2, h3, h4 {
+    font-family: 'Bricolage Grotesque', 'Figtree', sans-serif;
+    line-height: 1.15;
+    text-wrap: balance;
+    margin: 0;
+  }
+  h1 { font-size: clamp(2.1rem, 5.5vw, 3.1rem); font-weight: 800; letter-spacing: -.01em; }
+  h2 { font-size: 1.65rem; font-weight: 700; margin-top: .35em; }
+  h3 { font-size: 1.18rem; font-weight: 700; }
+  h4 { font-size: 1rem; font-weight: 700; }
+  p { margin: .85em 0; max-width: 70ch; }
+  li { margin: .3em 0; }
+  ul, ol { padding-left: 1.35em; max-width: 68ch; }
+  a { color: inherit; }
+  strong { font-weight: 700; }
+
+  code, .tok, .kbd {
+    font-family: 'Spline Sans Mono', 'Consolas', monospace;
+    font-size: .86em;
+  }
+  code {
+    background: var(--code-bg);
+    border: 1px solid var(--border);
+    border-radius: 5px;
+    padding: .08em .38em;
+    white-space: nowrap;
+  }
+  .tok {
+    background: var(--gold-bg);
+    border: 1px solid var(--gold-border);
+    color: var(--gold);
+    border-radius: 5px;
+    padding: .08em .4em;
+    font-weight: 500;
+    white-space: nowrap;
+  }
+  .kbd {
+    background: var(--surface);
+    border: 1px solid var(--border-strong);
+    border-bottom-width: 2px;
+    border-radius: 5px;
+    padding: .05em .4em;
+    font-size: .8em;
+  }
+
+  /* ── Header ─────────────────────────────────────────── */
+  header { padding: 64px 0 8px; }
+  .app-tag {
+    display: inline-flex; align-items: center; gap: 8px;
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: .78rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 18px;
+  }
+  .app-tag::before {
+    content: ''; width: 9px; height: 9px; border-radius: 3px;
+    background: linear-gradient(135deg, var(--gold), var(--violet));
+  }
+  .lede { font-size: 1.12rem; color: var(--ink-soft); max-width: 62ch; margin-top: 16px; }
+
+  .toc {
+    display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 10px; margin: 30px 0 8px; padding: 0; list-style: none; max-width: none;
+  }
+  .toc a {
+    display: block; text-decoration: none;
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 14px;
+    transition: border-color .15s;
+  }
+  .toc a:hover, .toc a:focus-visible { border-color: var(--border-strong); }
+  .toc .t-part { font-family: 'Spline Sans Mono', monospace; font-size: .72rem; letter-spacing: .1em; text-transform: uppercase; }
+  .toc .t-name { font-weight: 700; margin-top: 2px; }
+  .toc .t-desc { font-size: .84rem; color: var(--muted); margin-top: 2px; }
+  .toc .c-gold .t-part { color: var(--gold); }
+  .toc .c-violet .t-part { color: var(--violet); }
+  .toc .c-mix .t-part { background: linear-gradient(90deg, var(--gold), var(--violet)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .toc .c-plain .t-part { color: var(--ink-soft); }
+
+  /* ── Sections ───────────────────────────────────────── */
+  section { margin-top: 72px; }
+  .part-head { border-top: 2px solid var(--border-strong); padding-top: 26px; }
+  .eyebrow {
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: .76rem; letter-spacing: .14em; text-transform: uppercase;
+    display: inline-flex; align-items: center; gap: 8px;
+  }
+  .eyebrow::before { content: ''; width: 22px; height: 3px; border-radius: 2px; background: currentColor; }
+  .p-gold .eyebrow { color: var(--gold); }
+  .p-violet .eyebrow { color: var(--violet); }
+  .p-mix .eyebrow { color: var(--ink-soft); }
+
+  .nivel {
+    display: inline-block;
+    font-family: 'Spline Sans Mono', monospace;
+    font-size: .72rem; font-weight: 600; letter-spacing: .06em;
+    border-radius: 99px; padding: .2em .75em;
+    border: 1px solid var(--border-strong);
+    background: var(--surface); color: var(--ink-soft);
+    vertical-align: middle;
+  }
+  .subsec { margin-top: 44px; }
+  .subsec > h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  /* ── Exemplo antes→depois ───────────────────────────── */
+  .xmpl {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 16px; margin: 18px 0;
+    box-shadow: var(--shadow);
+  }
+  .xmpl-title { font-weight: 700; font-size: .92rem; margin-bottom: 10px; }
+  .xmpl-row { display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; align-items: stretch; }
+  @media (max-width: 620px) { .xmpl-row { grid-template-columns: 1fr; } .xmpl-arrow { transform: rotate(90deg); justify-self: center; } }
+  .pane {
+    background: var(--paper); border: 1px solid var(--border);
+    border-radius: 8px; padding: 10px 12px; min-width: 0;
+  }
+  .pane-label {
+    font-family: 'Spline Sans Mono', monospace; font-size: .68rem;
+    letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    margin-bottom: 6px;
+  }
+  .pane-body {
+    font-family: 'Spline Sans Mono', monospace; font-size: .84rem;
+    white-space: pre-wrap; overflow-wrap: anywhere; line-height: 1.5;
+  }
+  .pane-body .hl { color: var(--gold); font-weight: 600; }
+  .pane-body .dim { color: var(--muted); }
+  .xmpl-arrow { align-self: center; color: var(--muted); flex-shrink: 0; }
+  .xmpl-note { font-size: .86rem; color: var(--muted); margin-top: 10px; max-width: none; }
+
+  /* ── Cadeia (pipeline de modificadores) ─────────────── */
+  .chain { margin: 18px 0; }
+  .chain-step {
+    display: grid; grid-template-columns: 150px 1fr; gap: 12px;
+    align-items: baseline; padding: 9px 0;
+  }
+  .chain-step + .chain-step { border-top: 1px dashed var(--border); }
+  @media (max-width: 560px) { .chain-step { grid-template-columns: 1fr; gap: 2px; } }
+  .chain-mod { font-family: 'Spline Sans Mono', monospace; font-size: .84rem; color: var(--gold); font-weight: 600; text-align: right; }
+  @media (max-width: 560px) { .chain-mod { text-align: left; } }
+  .chain-val { font-family: 'Spline Sans Mono', monospace; font-size: .84rem; overflow-wrap: anywhere; }
+  .chain-note { color: var(--muted); font-family: 'Figtree', sans-serif; font-size: .82rem; }
+
+  /* ── Tabelas ────────────────────────────────────────── */
+  .tbl-wrap { overflow-x: auto; margin: 18px 0; border: 1px solid var(--border); border-radius: 10px; }
+  table { border-collapse: collapse; width: 100%; font-size: .88rem; }
+  th, td { text-align: left; padding: 8px 12px; border-bottom: 1px solid var(--border); vertical-align: top; }
+  tr:last-child td { border-bottom: none; }
+  th {
+    background: var(--surface); font-family: 'Spline Sans Mono', monospace;
+    font-size: .7rem; letter-spacing: .1em; text-transform: uppercase; color: var(--muted);
+    position: sticky; top: 0;
+  }
+  td code { white-space: nowrap; }
+  .num { font-variant-numeric: tabular-nums; }
+
+  /* ── Callouts ───────────────────────────────────────── */
+  .callout {
+    border-radius: 10px; padding: 14px 16px; margin: 20px 0;
+    border: 1px solid var(--border); background: var(--surface);
+    display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start;
+  }
+  .callout p { margin: .3em 0; font-size: .93rem; }
+  .callout p:first-child { margin-top: 0; }
+  .co-icon { font-size: 1.05rem; line-height: 1.4; }
+  .co-warn { background: var(--warn-bg); border-color: var(--warn-border); }
+  .co-rule { background: var(--surface); }
+  .co-title { font-weight: 700; }
+
+  /* ── Grade de ações (mock) ──────────────────────────── */
+  .gridmock-wrap { overflow-x: auto; margin: 18px 0; }
+  .gridmock {
+    min-width: 460px;
+    border: 1px solid var(--border); border-radius: 10px;
+    background: var(--paper); overflow: hidden;
+    font-family: 'Spline Sans Mono', monospace; font-size: .82rem;
+    box-shadow: var(--shadow);
+  }
+  .gm-head {
+    background: var(--surface); color: var(--muted);
+    font-size: .68rem; letter-spacing: .1em; text-transform: uppercase;
+    padding: 7px 14px; border-bottom: 1px solid var(--border);
+    font-family: 'Spline Sans Mono', monospace;
+  }
+  .gm-row { display: flex; gap: 10px; padding: 6px 14px; border-bottom: 1px solid var(--border); align-items: baseline; }
+  .gm-row:last-child { border-bottom: none; }
+  .gm-row .gm-type { flex-shrink: 0; font-weight: 600; }
+  .gm-row .gm-detail { color: var(--ink-soft); overflow-wrap: anywhere; }
+  .gm-if { background: var(--violet-bg); }
+  .gm-if .gm-type { color: var(--violet); }
+  .gm-body { border-left: 3px solid var(--violet-border); }
+  .gm-body.d2 { border-left-width: 3px; box-shadow: inset 3px 0 0 var(--violet-border), inset 22px 0 0 var(--paper), inset 25px 0 0 var(--violet-border); }
+  .gm-body .gm-type { color: var(--ink-soft); }
+  .gm-note { color: var(--muted); font-family: 'Figtree', sans-serif; font-size: .8rem; margin-left: auto; text-align: right; flex-shrink: 0; }
+  .ind-1 { padding-left: 34px; }
+  .ind-2 { padding-left: 58px; }
+
+  /* ── Cards ──────────────────────────────────────────── */
+  .cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 12px; margin: 20px 0; }
+  .card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 12px; padding: 14px 16px;
+  }
+  .card h4 { color: var(--violet); font-family: 'Spline Sans Mono', monospace; font-size: .88rem; font-weight: 600; }
+  .card p { font-size: .88rem; margin: .5em 0 0; color: var(--ink-soft); }
+  .card .card-ex { font-size: .8rem; color: var(--muted); margin-top: .55em; }
+  .cards.cards-gold h4 { color: var(--gold); }
+
+  /* ── Figuras / SVG ──────────────────────────────────── */
+  figure { margin: 26px 0; }
+  figure svg { max-width: 100%; height: auto; display: block; }
+  figcaption { font-size: .84rem; color: var(--muted); margin-top: 10px; max-width: 70ch; }
+  .fig-scroll { overflow-x: auto; }
+
+  /* ── Bloco de código multi-linha ────────────────────── */
+  pre {
+    background: var(--code-bg); border: 1px solid var(--border);
+    border-radius: 10px; padding: 12px 16px; overflow-x: auto;
+    font-family: 'Spline Sans Mono', monospace; font-size: .85rem; line-height: 1.55;
+    margin: 16px 0;
+  }
+  pre code { background: none; border: none; padding: 0; white-space: pre; }
+
+  .footer-note {
+    margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border);
+    font-size: .84rem; color: var(--muted);
+  }
+  :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
+</style>
+
+<div class="wrap">
+
+<header>
+  <div class="app-tag">TrueReplayer · Manual do usuário</div>
+  <h1>Manual do TrueReplayer</h1>
+  <p class="lede">Tudo o que o app faz, do primeiro clique gravado à automação que roda sozinha: gravação, perfis, tokens, condicionais, clicker, navegador, data loop. Cada parte começa fácil e aprofunda — leia em ordem ou pule direto para o que precisa.</p>
+
+  <ul class="toc">
+    <li><a class="c-plain" href="#p1"><span class="t-part">Parte 1</span><div class="t-name">Comece aqui</div><div class="t-desc">Gravar, reproduzir, o essencial</div></a></li>
+    <li><a class="c-plain" href="#p2"><span class="t-part">Parte 2</span><div class="t-name">A grade de ações</div><div class="t-desc">Editar passos e a referência completa</div></a></li>
+    <li><a class="c-plain" href="#p3"><span class="t-part">Parte 3</span><div class="t-name">Perfis e disparos</div><div class="t-desc">Pastas, hotkeys, hotstrings, remaps</div></a></li>
+    <li><a class="c-gold" href="#p4"><span class="t-part">Parte 4</span><div class="t-name">Send Text &amp; Tokens</div><div class="t-desc">Texto que se preenche sozinho</div></a></li>
+    <li><a class="c-gold" href="#p5"><span class="t-part">Parte 5</span><div class="t-name">Variáveis, slots e prompts</div><div class="t-desc">Valores que a macro guarda e pergunta</div></a></li>
+    <li><a class="c-violet" href="#p6"><span class="t-part">Parte 6</span><div class="t-name">Condicionais &amp; Assert</div><div class="t-desc">Macros que decidem — e que exigem</div></a></li>
+    <li><a class="c-plain" href="#p7"><span class="t-part">Parte 7</span><div class="t-name">Esperar a tela</div><div class="t-desc">Wait Image, Wait Pixel, Pause</div></a></li>
+    <li><a class="c-plain" href="#p8"><span class="t-part">Parte 8</span><div class="t-name">Janelas</div><div class="t-desc">Alvo, coordenadas relativas, Activate</div></a></li>
+    <li><a class="c-plain" href="#p9"><span class="t-part">Parte 9</span><div class="t-name">Automação</div><div class="t-desc">Rodar sem apertar nada</div></a></li>
+    <li><a class="c-plain" href="#p10"><span class="t-part">Parte 10</span><div class="t-name">Clicker &amp; Game Mode</div><div class="t-desc">Auto-clicker e cliques que jogos aceitam</div></a></li>
+    <li><a class="c-plain" href="#p11"><span class="t-part">Parte 11</span><div class="t-name">Navegador</div><div class="t-desc">Chrome por seletor, não por pixel</div></a></li>
+    <li><a class="c-plain" href="#p12"><span class="t-part">Parte 12</span><div class="t-name">Data Loop</div><div class="t-desc">Uma tabela, uma execução por linha</div></a></li>
+    <li><a class="c-plain" href="#p13"><span class="t-part">Parte 13</span><div class="t-name">Aparência e dados</div><div class="t-desc">Temas, configurações, onde tudo fica</div></a></li>
+    <li><a class="c-mix" href="#p14"><span class="t-part">Parte 14</span><div class="t-name">Receitas completas</div><div class="t-desc">Perfis prontos, passo a passo</div></a></li>
+    <li><a class="c-mix" href="#p15"><span class="t-part">Parte 15</span><div class="t-name">Solução de problemas</div><div class="t-desc">Sintoma → causa → conserto</div></a></li>
+  </ul>
+</header>
+
+<!-- ═══════════════════════ PARTE 1 — COMECE AQUI ═══════════════════════ -->
+<section id="p1" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 1 · Comece aqui</span>
+    <h2>Gravar, reproduzir, e o essencial no meio</h2>
+  </div>
+
+  <p>O TrueReplayer grava o que você faz — cliques, teclas, texto — e repete quando você mandar. Quatro palavras resolvem quase todo o vocabulário do app:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Termo</th><th>O que é</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Perfil</strong></td><td>Uma macro: a lista de ações + suas configurações. Um arquivo <code>.json</code>.</td></tr>
+        <tr><td><strong>Ação</strong></td><td>Um passo (um clique, uma tecla, um If…). Uma linha na grade.</td></tr>
+        <tr><td><strong>Pasta</strong></td><td>Grupo colorido de perfis. Um perfil fica em no máximo uma.</td></tr>
+        <tr><td><strong>Macro / Clicker</strong></td><td>Dois modos: <em>Macro</em> grava e reproduz listas de ações; <em>Clicker</em> é um auto-clicker. Alterne com <span class="kbd">ScrollLock</span>.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 170" role="img" aria-label="O ciclo do app: gravar captura suas ações, elas viram linhas editáveis na grade, e reproduzir executa a lista — com uma seta de volta, porque ajustar e rodar de novo é o fluxo normal." style="min-width: 560px;">
+      <defs>
+        <marker id="arrA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke-width="1.4" color="var(--ink-soft)">
+        <rect x="14" y="48" width="200" height="66" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="280" y="48" width="200" height="66" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="546" y="48" width="200" height="66" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <g stroke="currentColor">
+          <line x1="214" y1="81" x2="272" y2="81" marker-end="url(#arrA)"/>
+          <line x1="480" y1="81" x2="538" y2="81" marker-end="url(#arrA)"/>
+          <path d="M 646 114 C 646 152, 380 152, 380 122" marker-end="url(#arrA)"/>
+        </g>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="12">
+        <text x="114" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Gravar</text>
+        <text x="114" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PageUp</text>
+        <text x="380" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Grade de ações</text>
+        <text x="380" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">edite cada linha</text>
+        <text x="646" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Reproduzir</text>
+        <text x="646" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PageDown</text>
+        <text x="243" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">vira linhas</text>
+        <text x="509" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">executa</text>
+        <text x="513" y="160" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="'Figtree', sans-serif">ajuste e rode de novo — o fluxo normal</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>Você raramente grava perfeito de primeira — e não precisa: o que foi gravado vira linhas editáveis, e afinar na grade é mais rápido que regravar.</figcaption>
+  </figure>
+
+  <div class="callout co-rule">
+    <div class="co-icon">💡</div>
+    <div>
+      <p><span class="co-title">A maioria das macros úteis tem uma ou duas ações.</span></p>
+      <p>Um Send Text com a resposta pronta. Um clique que se repete. Não ache que precisa gravar algo longo para valer a pena — as macros que você vai usar vinte vezes por dia são as curtas.</p>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Gravando</h3>
+    <ol>
+      <li>Tenha um perfil ativo (crie um em <strong>New</strong>, no painel Profiles).</li>
+      <li><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span> (ou o botão <strong>Recording</strong>) começa a gravar.</li>
+      <li>Faça as ações normalmente.</li>
+      <li><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span> de novo para parar.</li>
+    </ol>
+    <p><strong>Onde os passos entram:</strong> com linhas <em>selecionadas</em> na grade, a gravação insere <strong>antes</strong> da primeira selecionada; <em>sem seleção</em>, acrescenta no <strong>fim</strong>. (Se um passo gravado "foi parar no lugar errado", quase sempre é isso.)</p>
+
+    <h4 style="margin-top:22px">Filtros de captura</h4>
+    <p>Em Settings → Profile → Recording você escolhe o que a gravação escuta. Tudo ligado por padrão:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Opção</th><th>Efeito</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Mouse Clicks</strong></td><td>Cliques esquerdo/direito/meio e duplos.</td></tr>
+          <tr><td><strong>Mouse Scroll</strong></td><td>Roda do mouse.</td></tr>
+          <tr><td><strong>Keyboard</strong></td><td>Teclas e modificadores.</td></tr>
+          <tr><td><strong>Combined Actions</strong></td><td><strong>Ligado</strong> → <code>Ctrl+C</code> vira uma linha só. <strong>Desligado</strong> → linhas KeyDown/KeyUp separadas — necessário para gravar arrastar ou segurar tecla.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Reproduzindo</h3>
+    <p><span class="kbd">Ctrl</span>+<span class="kbd">PageDown</span> (ou <strong>Replay</strong>) executa. O mesmo atalho (ou <strong>Stop</strong>) interrompe na hora — soltando qualquer tecla que a macro estivesse segurando.</p>
+    <p>A reprodução agenda cada ação contra um <strong>prazo</strong>, não empilha esperas: se algo atrasar, ela ressincroniza em vez de disparar uma rajada de ações acumuladas. Depois de ações que esperam por natureza (Wait Image, Pause, Run Profile, ações de navegador, If com espera), o relógio também ressincroniza — um delay colocado como acomodação nunca é comprimido.</p>
+
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Configuração</th><th>O que faz</th><th>Padrão</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Delay</strong></td><td>Atraso fixo antes de cada ação, contado do <strong>início</strong> da anterior (ação de 30 ms + delay 100 ms → a próxima começa em 100 ms, não em 130).</td><td class="num">100 ms</td></tr>
+          <tr><td><strong>Loops</strong></td><td>Repetições da macro inteira, 1 a 999. <strong>Pertence ao perfil</strong> e viaja no export.</td><td class="num">1</td></tr>
+          <tr><td><strong>Interval</strong></td><td>Pausa entre uma repetição e a seguinte. Também é do perfil.</td><td>desligado</td></tr>
+          <tr><td><strong>Jitter</strong></td><td>Variação aleatória de ± % em cada delay.</td><td>desligado</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Não existe "0 = infinito".</span></p>
+        <p>O mínimo de Loops é 1. Para rodar até você mandar parar, use os modos de disparo <strong>While Pressed</strong> ou <strong>Toggle</strong> na hotkey (Parte 3).</p>
+      </div>
+    </div>
+    <p>A pílula de loop na barra mostra o que a <strong>próxima execução</strong> fará: <code>3×</code>, <code>por linha</code> (Data Loop) ou <code>∞</code>. Contorno tracejado âmbar = você mexeu nas configurações e ainda não salvou.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 2 — GRADE DE AÇÕES ═══════════════════════ -->
+<section id="p2" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 2 · A grade de ações</span>
+    <h2>Onde a macro é editada, linha a linha</h2>
+  </div>
+
+  <p>A grade tem as colunas <strong>caixa · Action · Details · Delay · Notes</strong>. Cada linha é uma ação; a caixa desmarcada <em>pula</em> a linha sem apagá-la.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tarefa</th><th>Como</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Selecionar</strong></td><td>Clique · <span class="kbd">Ctrl</span>+clique alterna · <span class="kbd">Shift</span>+clique estende o intervalo.</td></tr>
+        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula: Delay, Notes, coordenadas, Key. <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela.</td></tr>
+        <tr><td><strong>Reordenar</strong></td><td>Arraste, ou <span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">Alt</span>+<span class="kbd">↓</span>.</td></tr>
+        <tr><td><strong>Pular uma linha</strong></td><td>Desmarque a caixa — fica na lista, não roda.</td></tr>
+        <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Set delay, Set X/Y, Set notes, Move, Skip, Delete.</td></tr>
+        <tr><td><strong>Formulário completo</strong></td><td>Botão direito → <strong>Edit</strong> abre o painel lateral com todos os campos da ação.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsec">
+    <h3>O menu da linha</h3>
+    <p>Botão direito numa linha: <strong>Edit · Pick from screen · Duplicate · More · Delete</strong>.</p>
+    <ul>
+      <li><strong>Pick from screen</strong> <em>(linhas de clique, incluindo Double Click)</em> — abre o seletor de posição na tela; ao escolher o ponto, o formulário da ação abre com X/Y já preenchidos como rascunho. Ajuste o que quiser e <strong>Save</strong> grava; <strong>Cancel</strong> descarta — nada muda até você salvar.</li>
+      <li><strong>More</strong> guarda o resto, começando por <strong>Copy Coordinates</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Referência de ações</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Left / Right / Middle Click</strong></td><td>Um clique em (x, y) — ou N cliques com intervalo, Gap jitter e Position jitter.</td></tr>
+          <tr><td><strong>Double Click</strong></td><td>Dois cliques abaixo do limiar do sistema, para o app ler como duplo de verdade. Aceita × N.</td></tr>
+          <tr><td><strong>Keystroke</strong></td><td>Uma tecla ou combinação — ou N vezes com intervalo e Gap jitter.</td></tr>
+          <tr><td><strong>Hold Key</strong></td><td>Segura uma tecla por N ms (padrão 1000). Modificadores são descartados.</td></tr>
+          <tr><td><strong>Key Down / Key Up</strong></td><td>Pressionar ou soltar isolado — para arrastar ou segurar tecla.</td></tr>
+          <tr><td><strong>Scroll Up / Down</strong></td><td>Um passo da roda, na posição do cursor.</td></tr>
+          <tr><td><strong>Send Text</strong></td><td>Injeta texto com tokens — Parte 4.</td></tr>
+          <tr><td><strong>Set Variable</strong></td><td>Guarda um valor, lido com <span class="tok">{var:nome}</span> — Parte 5.</td></tr>
+          <tr><td><strong>Copy to Slot</strong></td><td>Copia a seleção atual para um slot, lido com <span class="tok">{clip:nome}</span> — Parte 5.</td></tr>
+          <tr><td><strong>Pause</strong></td><td>Para até uma hotkey de retomada ou um timeout — Parte 7.</td></tr>
+          <tr><td><strong>Wait Image / Wait Pixel Color</strong></td><td>Esperam a tela ficar pronta — Parte 7.</td></tr>
+          <tr><td><strong>Run Profile</strong></td><td>Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados.</td></tr>
+          <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — Parte 8.</td></tr>
+          <tr><td><strong>If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — Parte 6.</td></tr>
+          <tr><td><strong>Browser actions</strong></td><td>Click / Type / Navigate / Wait / Assert / Select no Chrome — Parte 11.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Repetição em cliques e teclas</h3>
+    <p>Keystroke e os cliques repetem na própria linha, sem precisar de loop:</p>
+    <ul>
+      <li><strong>Times to repeat</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
+      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima (padrão 30 ms; <strong>600 ms</strong> no Double Click, porque um duplo precisa de folga acima da velocidade do Windows para contar como duplo <em>distinto</em>).</li>
+      <li><strong>Gap jitter</strong> — ± % aleatório em cada intervalo.</li>
+      <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo.</li>
+    </ul>
+    <div class="callout co-rule">
+      <div class="co-icon">🎲</div>
+      <div>
+        <p><span class="co-title">Quando usar jitter.</span></p>
+        <p><code>Click × 3</code> com Gap + Position jitter parece humano — é o que serve em jogos, onde repetir o mesmo pixel no mesmo ritmo é o sinal mais óbvio de macro. Para automação comum (um botão, um campo), <strong>deixe desligado</strong>: ali você quer o pixel exato.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 3 — PERFIS E DISPAROS ═══════════════════════ -->
+<section id="p3" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 3 · Perfis e disparos</span>
+    <h2>Organizar as macros e escolher como cada uma dispara</h2>
+  </div>
+
+  <div class="subsec">
+    <h3>Perfis e pastas</h3>
+    <ul>
+      <li><strong>New / Save / Rename / Duplicate / Delete</strong> no painel Profiles. <strong>Pin</strong> mantém no topo.</li>
+      <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (Parte 8).</li>
+      <li><strong>Info</strong> (botão direito) — emoji, descrição e <strong>tags</strong> pesquisáveis.</li>
+      <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. Na importação <strong>nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip. Um perfil que exige um TrueReplayer mais novo que o seu aparece esmaecido, com o motivo.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Hotkeys e hotstrings</h3>
+    <ul>
+      <li><strong>Hotkey</strong> — botão direito no perfil → <strong>Assign hotkey</strong> → pressione a combinação. Dispara em qualquer app.</li>
+      <li><strong>Hotstring</strong> — uma sequência digitada (ex.: <code>.cp</code>) que roda o perfil ao terminar de ser escrita.</li>
+      <li><strong>Chave-mestra</strong> — <span class="kbd">Pause</span> liga/desliga todas de uma vez.</li>
+      <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os modos — ideais para jogo. A roda também, sempre em On Press.</li>
+    </ul>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modo de gatilho</th><th>Comportamento</th></tr></thead>
+        <tbody>
+          <tr><td><strong>On Press</strong></td><td>Uma vez, ao pressionar.</td></tr>
+          <tr><td><strong>On Release</strong></td><td>Uma vez, ao soltar.</td></tr>
+          <tr><td><strong>While Pressed</strong></td><td>Repete enquanto a tecla estiver segurada; para ao soltar.</td></tr>
+          <tr><td><strong>Toggle</strong></td><td>Primeiro toque inicia, segundo para.</td></tr>
+          <tr><td><strong>Double-tap</strong></td><td>Dois toques rápidos (~0,4 s). Toque único não faz nada.</td></tr>
+          <tr><td><strong>Hold</strong></td><td>Uma vez após segurar ~0,6 s. Não para ao soltar.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Os modos valem só para hotkeys — hotstrings sempre disparam ao serem digitadas.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Remaps de tecla</h3>
+    <p>Settings → Keys → <strong>Key Remaps</strong>: uma camada 1:1 sempre ativa, independente de perfis. <code>CapsLock → Esc</code> vale no sistema inteiro enquanto o app roda; mapear uma tecla "para nada" a desativa. Remaps pausam durante a gravação, e uma tecla usada como origem não pode ser hotkey de perfil — o remap vence.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>A paleta de comandos — <span class="kbd">Ctrl</span>+<span class="kbd">K</span></h3>
+    <p>O que não tem botão próprio mora aqui: <strong>Copy as Table / Paste Actions</strong> (mover passos entre perfis), <strong>Convert to Relative / Absolute</strong>, <strong>Toggle Live Variables</strong>, <strong>Run report</strong>, Import/Export all, Theme Editor.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 4 — SEND TEXT & TOKENS ═══════════════════════ -->
+<section id="p4" class="p-gold">
+  <div class="part-head">
+    <span class="eyebrow">Parte 4 · Send Text &amp; Tokens</span>
+    <h2>Texto que se preenche sozinho</h2>
+  </div>
+
+  <p>A ação <strong>Send Text</strong> injeta texto por colagem — layouts e acentos sobrevivem. E dentro do texto entram <strong>tokens</strong>: palavras entre chaves, como <span class="tok">{date}</span> ou <span class="tok">{clipboard}</span>, que na hora de <em>executar</em> são trocadas pelo valor real daquele momento.</p>
+
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 190" role="img" aria-label="O texto escrito com um token passa pela execução, que lê o valor real na hora e digita o texto final já preenchido." style="min-width: 560px;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke="currentColor" stroke-width="1.4" color="var(--ink-soft)">
+        <rect x="10" y="52" width="230" height="72" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="300" y="52" width="160" height="72" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="520" y="52" width="230" height="72" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <line x1="240" y1="88" x2="292" y2="88" marker-end="url(#arr)"/>
+        <line x1="460" y1="88" x2="512" y2="88" marker-end="url(#arr)"/>
+        <line x1="380" y1="160" x2="380" y2="132" marker-end="url(#arr)"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="12">
+        <text x="22" y="44" fill="var(--muted)" font-size="10" letter-spacing="1.5">VOCÊ ESCREVE</text>
+        <text x="125" y="82" text-anchor="middle" fill="var(--ink)">Olá! Hoje é</text>
+        <text x="125" y="102" text-anchor="middle" fill="var(--gold)" font-weight="600">{date}</text>
+        <text x="312" y="44" fill="var(--muted)" font-size="10" letter-spacing="1.5">AO EXECUTAR</text>
+        <text x="380" y="82" text-anchor="middle" fill="var(--ink)">o app troca</text>
+        <text x="380" y="100" text-anchor="middle" fill="var(--ink)">o token</text>
+        <text x="532" y="44" fill="var(--muted)" font-size="10" letter-spacing="1.5">O APP DIGITA</text>
+        <text x="635" y="94" text-anchor="middle" fill="var(--ink)">Olá! Hoje é 21/08/2026</text>
+        <text x="380" y="180" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="'Figtree', sans-serif">valor lido na hora (data, clipboard, variável…)</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>O token nunca é digitado — o que sai é o valor dele <em>no momento da execução</em>. Rode amanhã e a data será a de amanhã.</figcaption>
+  </figure>
+
+  <p>Você não precisa decorar nada: o editor <strong>Insert Text</strong> mostra uma paleta de <strong>chips</strong> (Clipboard · Values · Keys &amp; timing · Run state) — clicar insere o token pronto. Confirme com <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span>; o <span class="kbd">Enter</span> sozinho só pula linha.</p>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 1</span> Tokens prontos para usar</h3>
+
+    <h4 style="margin-top:22px">Data, hora e número aleatório</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Vira</th><th>Exemplo de saída</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">{date}</span></td><td>Data de hoje</td><td class="num"><code>21/08/2026</code></td></tr>
+          <tr><td><span class="tok">{time}</span></td><td>Hora atual</td><td class="num"><code>14:35:07</code></td></tr>
+          <tr><td><span class="tok">{datetime}</span></td><td>Data e hora</td><td class="num"><code>21/08/2026 - 14:35:07</code></td></tr>
+          <tr><td><span class="tok">{random:1-10}</span></td><td>Número aleatório entre 1 e 10 (incluindo as pontas)</td><td class="num"><code>7</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Cada <span class="tok">{random:a-b}</span> sorteia por conta própria: <code>{random:1-6} {random:1-6}</code> são dois dados, não o mesmo número duas vezes.</p>
+
+    <h4 style="margin-top:26px">Teclas e pausas no meio do texto</h4>
+    <p>Alguns tokens não viram texto — viram <strong>tecla pressionada</strong>:</p>
+    <div class="xmpl">
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Send Text</div>
+          <div class="pane-body">Olá, tudo bem?<span class="hl">{enter}</span>Segue o código:<span class="hl">{tab}</span>ABC-123</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">O que acontece</div>
+          <div class="pane-body">digita a 1ª linha, <span class="dim">pressiona Enter</span>, digita "Segue o código:", <span class="dim">pressiona Tab</span>, digita "ABC-123"</div>
+        </div>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Tecla</th><th>Token</th><th>Tecla</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">{enter}</span></td><td>Enter</td><td><span class="tok">{home}</span> / <span class="tok">{end}</span></td><td>Home / End</td></tr>
+          <tr><td><span class="tok">{tab}</span></td><td>Tab</td><td><span class="tok">{pageup}</span> / <span class="tok">{pagedown}</span></td><td>Page Up / Down</td></tr>
+          <tr><td><span class="tok">{space}</span></td><td>Espaço</td><td><span class="tok">{up}</span> <span class="tok">{down}</span></td><td>Setas ↑ ↓</td></tr>
+          <tr><td><span class="tok">{backspace}</span> / <span class="tok">{delete}</span></td><td>Backspace / Delete</td><td><span class="tok">{left}</span> <span class="tok">{right}</span></td><td>Setas ← →</td></tr>
+          <tr><td><span class="tok">{escape}</span> (ou <span class="tok">{esc}</span>)</td><td>Esc</td><td><span class="tok">{delay:500}</span></td><td>Pausa de 500 ms na digitação</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <ul>
+      <li><strong>Repetir uma tecla:</strong> <span class="tok">{enter:3}</span> pressiona Enter 3 vezes. <span class="tok">{backspace:10}</span> apaga 10 caracteres.</li>
+      <li><strong>Pausar:</strong> <span class="tok">{delay:1000}</span> espera 1 segundo antes de continuar — útil quando o site demora para reagir.</li>
+    </ul>
+
+    <h4 style="margin-top:26px">A área de transferência: <span class="tok">{clipboard}</span></h4>
+    <p>O token mais usado. Vira <strong>o que estiver copiado (Ctrl+C)</strong> no momento da execução — a ponte perfeita: copie algo em um lugar, aperte o atalho, e a macro usa esse conteúdo na resposta. Seu clipboard real é restaurado depois.</p>
+    <div class="xmpl">
+      <div class="xmpl-title">Exemplo — responder com o que você copiou</div>
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Copiado (Ctrl+C)</div>
+          <div class="pane-body">PED-48812</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Send Text: <code>Localizei o pedido {clipboard}, um momento!</code></div>
+          <div class="pane-body">Localizei o pedido PED-48812, um momento!</div>
+        </div>
+      </div>
+      <div class="xmpl-note">Segurança embutida: se o texto copiado contiver <code>{enter}</code> escrito, ele é digitado como texto normal — conteúdo colado nunca "vira tecla" sem querer.</div>
+    </div>
+
+    <h4 style="margin-top:26px">Formatação: o seletor Delivery</h4>
+    <p>No rodapé do editor você escolhe <em>como</em> a formatação chega ao destino:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modo</th><th>Use em</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Rich</strong> (padrão)</td><td>E-mail, documentos, editores web.</td></tr>
+          <tr><td><strong>Markdown</strong></td><td>WhatsApp e afins (<code>*negrito*</code>).</td></tr>
+          <tr><td><strong>Discord</strong></td><td>Discord (<code>**negrito**</code>, <code>~~riscado~~</code>).</td></tr>
+          <tr><td><strong>Plain</strong></td><td>Busca, chat de jogo, campos de código.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-rule">
+      <div class="co-icon">✳️</div>
+      <div>
+        <p><span class="co-title">A mensagem chegou mostrando asteriscos?</span> Você mandou Markdown para um app que não entende — troque para Rich ou Plain. Se a formatação <em>sumiu</em>, o alvo não aceita texto rico.</p>
+        <p><span class="co-title">Snippet ≠ ação.</span> Snippets são textos reutilizáveis salvos por nome, para <em>você escrever</em> mais rápido — ficam no app, não no perfil, e não viajam no export. O que roda é a ação Send Text salva na grade.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
+    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span>.</p>
+
+    <div class="xmpl">
+      <div class="xmpl-title"><span class="tok">{clipboard:trim:upper}</span> — limpar e caprichar</div>
+      <div class="chain">
+        <div class="chain-step"><div class="chain-mod">{clipboard}</div><div class="chain-val">"&nbsp;&nbsp;maria souza&nbsp;" <span class="chain-note">— com espaços sobrando das pontas</span></div></div>
+        <div class="chain-step"><div class="chain-mod">trim</div><div class="chain-val">"maria souza" <span class="chain-note">— espaços das pontas removidos</span></div></div>
+        <div class="chain-step"><div class="chain-mod">upper</div><div class="chain-val">"MARIA SOUZA" <span class="chain-note">— tudo maiúsculo</span></div></div>
+      </div>
+    </div>
+
+    <h4>Caixa e limpeza</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modificador</th><th>O que faz</th><th>"olá mundo" vira</th></tr></thead>
+        <tbody>
+          <tr><td><code>upper</code></td><td>TUDO MAIÚSCULO</td><td><code>OLÁ MUNDO</code></td></tr>
+          <tr><td><code>lower</code></td><td>tudo minúsculo</td><td><code>olá mundo</code></td></tr>
+          <tr><td><code>title</code></td><td>Primeira Letra De Cada Palavra</td><td><code>Olá Mundo</code></td></tr>
+          <tr><td><code>sentence</code></td><td>Primeira letra da frase</td><td><code>Olá mundo</code></td></tr>
+          <tr><td><code>trim</code></td><td>Tira espaços das pontas</td><td><code>olá mundo</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin-top:26px">Pegando pedaços: linha, palavra, caracteres</h4>
+    <p>Imagine este conteúdo copiado — um cadastro de 3 linhas:</p>
+    <div class="xmpl">
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Área de transferência</div>
+          <div class="pane-body">Maria Souza
+maria@email.com
+(11) 98888-7777</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Cada token pega um pedaço</div>
+          <div class="pane-body"><span class="hl">{clipboard:line:2}</span> → maria@email.com
+<span class="hl">{clipboard:word:1}</span> → Maria
+<span class="hl">{clipboard:line:3:last:4}</span> → 7777</div>
+        </div>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modificador</th><th>O que faz</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td><code>line:N</code></td><td>Só a linha N</td><td><code>line:2</code> → 2ª linha</td></tr>
+          <tr><td><code>word:N</code></td><td>Só a palavra N</td><td><code>word:1</code> → 1ª palavra</td></tr>
+          <tr><td><code>words:a-b</code></td><td>Da palavra <em>a</em> até a <em>b</em> (mantém o espaçamento original)</td><td><code>words:1-2</code> → "Maria Souza"</td></tr>
+          <tr><td><code>first:N</code> / <code>last:N</code></td><td>Primeiros / últimos N caracteres</td><td><code>last:4</code> → "7777"</td></tr>
+          <tr><td><code>range:a-b</code></td><td>Da linha <em>a</em> até a <em>b</em></td><td><code>range:1-2</code> → 2 primeiras linhas</td></tr>
+          <tr><td><code>lines:3,1</code></td><td>Escolhe e reordena linhas</td><td><code>lines:3,1</code> → telefone, depois nome</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Em <code>words</code> e <code>range</code>, as pontas podem ficar abertas: <code>words:6-</code> é "da 6ª palavra em diante"; <code>range:-5</code> é "até a linha 5". E se você pedir algo que não existe (<code>line:99</code> num texto de 3 linhas), o resultado é <strong>vazio</strong> — nunca o texto inteiro por engano.</p>
+
+    <h4 style="margin-top:26px">Cortando por um marcador: <code>before</code> e <code>after</code></h4>
+    <div class="xmpl">
+      <div class="xmpl-title">Um anúncio de troca, uma linha só</div>
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Área de transferência</div>
+          <div class="pane-body">Nome do Produto - Caixa de Sapato Rara</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Cortando no " - "</div>
+          <div class="pane-body"><span class="hl">{clipboard:before: - }</span> → Nome do Produto
+<span class="hl">{clipboard:after: - }</span> → Caixa de Sapato Rara</div>
+        </div>
+      </div>
+      <div class="xmpl-note">O marcador em si (<code>&nbsp;-&nbsp;</code>) é descartado. A comparação ignora maiúsculas/minúsculas. <code>beforelast:</code>/<code>afterlast:</code> cortam na <strong>última</strong> ocorrência — <code>{clipboard:afterlast:/}</code> num caminho devolve o nome do arquivo.</div>
+    </div>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Espaços contam — a armadilha nº 1 dos cortes.</span></p>
+        <p><code>after:-</code> e <code>after:&nbsp;-&nbsp;</code> são cortes <em>diferentes</em>. Se o texto é <code>Produto - 1x Caixa</code> e você corta só no <code>-</code>, o resultado começa com um espaço: <code>&nbsp;1x Caixa</code>. Quase sempre você quer o marcador <strong>com os espaços em volta</strong>: <code>after:&nbsp;-&nbsp;</code>.</p>
+        <p>E se o marcador <strong>não existir</strong> no texto, o resultado é <strong>vazio</strong> — de propósito, para a macro nunca colar um clipboard inteiro onde você esperava um pedacinho.</p>
+      </div>
+    </div>
+
+    <h4 style="margin-top:26px">Cortar num dois-pontos</h4>
+    <p>O <code>:</code> separa a cadeia, então para usá-lo como marcador ele é gravado <strong>em dobro</strong> (<code>::</code>). No campo <strong>Cortar em</strong> do construtor você digita <code>&nbsp;:&nbsp;</code> normalmente — a dobra é só a forma de gravar. Montando à mão:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Você quer cortar em</th><th>Escreva</th></tr></thead>
+        <tbody>
+          <tr><td><code>:</code></td><td><code>{clipboard:after:::}</code></td></tr>
+          <tr><td><code>&nbsp;:&nbsp;</code></td><td><code>{clipboard:after: :: }</code></td></tr>
+          <tr><td><code>R$:</code></td><td><code>{clipboard:after:R$::}</code></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Vale para os quatro cortes e para <code>dropnum</code>. <strong>Exceção: o <code>join</code></strong> — ali o dobrado já significa "juntar sem separador nenhum", então o campo Juntar com continua removendo o <code>:</code>.</p>
+
+    <h4 style="margin-top:26px">Removendo quantidade do começo: <code>dropnum</code></h4>
+    <p>Texto que vem "às vezes com, às vezes sem" um contador na frente: <code>1x Caixa de Sapato</code> num dia, <code>Caixa de Sapato</code> no outro. O <code>dropnum:X</code> resolve: <strong>se</strong> o texto começa com números seguidos de X, remove os dois; <strong>senão, não mexe em nada</strong>.</p>
+    <div class="xmpl">
+      <div class="xmpl-title"><span class="tok">{clipboard:after: - :dropnum:x }</span> — corte + limpeza de quantidade</div>
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Entrada A</div>
+          <div class="pane-body">Nome do Produto - 1x Caixa de Sapato</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Saída</div>
+          <div class="pane-body">Caixa de Sapato</div>
+        </div>
+      </div>
+      <div class="xmpl-row" style="margin-top:10px">
+        <div class="pane">
+          <div class="pane-label">Entrada B (sem o "1x")</div>
+          <div class="pane-body">Nome do Produto - Caixa de Sapato</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Saída — igual, sem estrago</div>
+          <div class="pane-body">Caixa de Sapato</div>
+        </div>
+      </div>
+      <div class="xmpl-note">Repare no sufixo <code>x&nbsp;</code> — "x" <em>seguido de espaço</em>. Sem esse espaço final, sobraria <code>&nbsp;Caixa de Sapato</code> começando em espaço. E o corte anterior precisa ser <code>after:&nbsp;-&nbsp;</code> (com espaços), senão o texto chega ao dropnum começando com espaço e ele — corretamente — não remove nada.</div>
+    </div>
+
+    <h4 style="margin-top:26px">Trabalhando com listas (várias linhas)</h4>
+    <div class="xmpl">
+      <div class="xmpl-title"><span class="tok">{clipboard:sort:dedupe:join:, }</span> — de lista bagunçada a frase limpa</div>
+      <div class="chain">
+        <div class="chain-step"><div class="chain-mod">{clipboard}</div><div class="chain-val">banana⏎maçã⏎banana⏎abacaxi <span class="chain-note">— 4 linhas, uma repetida</span></div></div>
+        <div class="chain-step"><div class="chain-mod">sort</div><div class="chain-val">abacaxi⏎banana⏎banana⏎maçã <span class="chain-note">— ordem alfabética</span></div></div>
+        <div class="chain-step"><div class="chain-mod">dedupe</div><div class="chain-val">abacaxi⏎banana⏎maçã <span class="chain-note">— repetidas removidas</span></div></div>
+        <div class="chain-step"><div class="chain-mod">join:, </div><div class="chain-val">abacaxi, banana, maçã <span class="chain-note">— viram uma linha só, separadas por ", "</span></div></div>
+      </div>
+    </div>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modificador</th><th>O que faz com as linhas</th></tr></thead>
+        <tbody>
+          <tr><td><code>sort</code></td><td>Ordena de A a Z (ignora maiúsc./minúsc.)</td></tr>
+          <tr><td><code>dedupe</code></td><td>Remove linhas repetidas (mantém a primeira)</td></tr>
+          <tr><td><code>reverse</code></td><td>Inverte a ordem das linhas</td></tr>
+          <tr><td><code>join:X</code></td><td>Junta todas as linhas em uma, separadas por X (<code>join:</code> sem nada = coladas)</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="callout co-rule">
+      <div class="co-icon">🛠️</div>
+      <div>
+        <p><span class="co-title">Você não precisa montar isso de cabeça.</span></p>
+        <p>O chip <strong>Advanced…</strong> (ou clicar em qualquer chip já inserido) abre o <strong>construtor</strong>: etapas numeradas — Trim, Case, Cortar, Drop count, Linha/palavra, Ordenar, Juntar — com <strong>prévia ao vivo</strong> usando o conteúdo real. Você marca as opções, vê o resultado na hora, e o token sai escrito sozinho. As etapas aplicam nesta ordem fixa; modificador que o app não conhece é ignorado — um erro de digitação não quebra a macro.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 5 — VARIÁVEIS, SLOTS E PROMPTS ═══════════════════════ -->
+<section id="p5" class="p-gold">
+  <div class="part-head">
+    <span class="eyebrow">Parte 5 · Variáveis, slots e prompts</span>
+    <h2>Valores que a macro guarda — e que pergunta</h2>
+  </div>
+
+  <p>Três ferramentas para lidar com valores que mudam, cada uma com uma duração:</p>
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Ferramenta</th><th>Quanto dura</th><th>Como ler</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Set Variable</strong></td><td>Até o fim da execução atual</td><td><span class="tok">{var:nome}</span></td></tr>
+        <tr><td><strong>Copy to Slot</strong> / hotkey <strong>Capture Slot</strong></td><td>Entre execuções, enquanto o app estiver aberto</td><td><span class="tok">{clip:nome}</span> ou <span class="tok">{clip:1}</span>…<span class="tok">{clip:9}</span></td></tr>
+        <tr><td><span class="tok">{input:Rótulo}</span></td><td>A execução atual (pergunta uma vez)</td><td>o próprio token</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsec">
+    <h3>Set Variable</h3>
+    <p>Dê um <strong>Name</strong> e um <strong>Value</strong>. O valor é montado <em>na hora de guardar</em> — aceita <span class="tok">{clipboard}</span>, <span class="tok">{row:col}</span>, <span class="tok">{date}</span> ou outro <span class="tok">{var:}</span> — o que congela o momento:</p>
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Grade de ações</div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">cliente = {clipboard:line:1:trim}</span><span class="gm-note">guarda a 1ª linha copiada</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">Olá {var:cliente}, recebemos seu pedido!</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">Obrigado, {var:cliente}!</span><span class="gm-note">mesmo valor, mesmo se o clipboard mudou</span></div>
+    </div></div>
+    <ul>
+      <li><strong>Nomes:</strong> letras, números e <code>_</code> — sem espaço e sem acento. <code>{var:nome_cliente}</code> funciona; <code>{var:Ação}</code> não resolve.</li>
+      <li>Guardar um valor <strong>vazio apaga</strong> a variável. Variáveis somem no fim de cada execução.</li>
+      <li><span class="tok">{var:nome}</span> aceita modificadores: <span class="tok">{var:cliente:upper}</span>.</li>
+      <li><strong>Modo Cycle:</strong> o valor vira uma lista (um item por linha) e cada execução guarda o <strong>próximo</strong>, voltando ao início no fim. A posição é <strong>guardada em disco</strong> — fechar o app não recomeça. Para zerar: botão direito na linha → <strong>Reset cycle position</strong>.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Slots: Copy to Slot e a hotkey Capture Slot</h3>
+    <p>Slots são "clipboards extras" com nome, que <strong>sobrevivem entre execuções</strong> — capture agora, use depois. Dois jeitos de encher um:</p>
+    <ul>
+      <li><strong>A hotkey</strong> (<span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span>) — para quando <em>você</em> escolhe o que copiar. Selecione um texto e aperte: cai em <span class="tok">{clip:1}</span>; de novo, <span class="tok">{clip:2}</span>… até 9, e volta ao 1. Um aviso mostra onde caiu. <strong>Não funciona durante uma execução.</strong></li>
+      <li><strong>A ação Copy to Slot</strong> — para quando a <em>macro</em> acha o valor sempre no mesmo lugar. Modo <strong>Capture</strong> (padrão) copia o que estiver <strong>selecionado</strong> para o slot nomeado — garanta a seleção antes (um <code>Ctrl+A</code> na linha anterior, por exemplo). Modo <strong>Clear</strong> esvazia o slot — com o nome em branco, limpa <strong>todos</strong> e devolve a hotkey ao slot 1.</li>
+    </ul>
+    <div class="callout co-rule">
+      <div class="co-icon">📋</div>
+      <div>
+        <p><span class="co-title">Slot vazio?</span> As duas formas copiam mandando Ctrl+C para o app em foco, então <strong>o texto precisa estar selecionado</strong>. Se nada for copiado, o slot mantém o valor antigo — uma captura falhada nunca apaga uma boa.</p>
+      </div>
+    </div>
+    <div class="xmpl">
+      <div class="xmpl-title">Exemplo — juntando três informações espalhadas</div>
+      <div class="xmpl-row">
+        <div class="pane">
+          <div class="pane-label">Você recolhe (3× Win+Ctrl+C)</div>
+          <div class="pane-body">nome do cliente   → {clip:1}
+nº do pedido      → {clip:2}
+código de entrega → {clip:3}</div>
+        </div>
+        <svg class="xmpl-arrow" width="28" height="28" viewBox="0 0 28 28" aria-hidden="true"><path d="M4 14h17m0 0-6-6m6 6-6 6" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        <div class="pane">
+          <div class="pane-label">Um Send Text entrega tudo</div>
+          <div class="pane-body">Olá <span class="hl">{clip:1}</span>, seu pedido <span class="hl">{clip:2}</span> foi enviado!
+Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</span></div>
+        </div>
+      </div>
+      <div class="xmpl-note">Recolher são três toques, enviar é um só — e dá para recolher agora e rodar depois: os slots continuam guardados.</div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Perguntar na hora: <span class="tok">{input:Rótulo}</span></h3>
+    <p>Quando a macro chega num <span class="tok">{input:...}</span>, ela <strong>pausa e abre uma janelinha</strong>. O app se traz para a frente sozinho e, depois da resposta, <strong>devolve o foco</strong> para a janela de antes — o texto cai no app certo.</p>
+    <ul>
+      <li><span class="tok">{input:Número do pedido}</span> — campo livre (o rótulo pode ter espaços).</li>
+      <li><span class="tok">{input:Prioridade|menu:Baixa,Média,Alta}</span> — em vez de digitar, você <strong>escolhe numa lista</strong>.</li>
+      <li>Pergunta <strong>uma vez por rótulo, por execução</strong> — e a resposta vira variável: <span class="tok">{var:prioridade}</span> reutiliza depois.</li>
+      <li><span class="kbd">Esc</span>/<strong>Cancel</strong> param a macro. Sem resposta em 60 s, a execução aborta — uma automação sem ninguém olhando não fica travada.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Outras fontes de texto</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>De onde vem o texto</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">{winclip:1}</span></td><td>O <strong>histórico do Windows</strong> (Win+V): 1 = a última coisa copiada, 2 = a anterior… Precisa do histórico ativado nas configurações do Windows.</td></tr>
+          <tr><td><span class="tok">{clipboard:next}</span></td><td>Auto-avança: cada uso cola a <strong>próxima linha</strong> do clipboard. Linhas em branco são puladas; no fim vira vazio (não volta ao começo); copiar outra coisa recomeça sozinho. Combina: <code>{clipboard:next:trim:upper}</code> transforma <em>aquela</em> linha.</td></tr>
+          <tr><td><span class="tok">{counter}</span></td><td>A volta atual do loop (1, 2, 3…).</td></tr>
+          <tr><td><span class="tok">{row:coluna}</span> / <span class="tok">{rownext:coluna}</span></td><td>A tabela do Data Loop — Parte 12.</td></tr>
+          <tr><td><span class="tok">{row}</span></td><td>O número da linha <strong>da ação na grade</strong> — não é a tabela.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-rule">
+      <div class="co-icon">🔍</div>
+      <div>
+        <p><span class="co-title">Regra de ouro: token sem valor vira texto vazio, nunca erro.</span></p>
+        <p>Se algo saiu em branco: <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Toggle Live Variables</strong> e rode de novo — o painel mostra variáveis, slots e a linha atual, ao vivo.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Truques de quem já domina</h3>
+    <ul>
+      <li><strong>Número vindo de variável:</strong> onde a transformação pede um número, escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada pela variável <code>i</code>. Reservados: <code>@counter</code> (a volta do loop — num loop, <code>{clipboard:line:@counter}</code> pega a linha 1 na primeira volta, a 2 na segunda…) e <code>@row</code> (a linha do Data Loop). Vale em Line #, Word #, First N e Last N; no construtor, o botãozinho <strong>@</strong> alterna entre número fixo e variável.</li>
+      <li><strong>Nome que não existe sai vazio</strong>, de propósito — o contrário colaria o clipboard inteiro por causa de um erro de digitação.</li>
+      <li><code>{clipboard:line:{var:i}}</code> com chaves <strong>não funciona</strong> e nunca funcionou — a grafia com <code>@</code> existe justamente por isso.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 6 — CONDICIONAIS & ASSERT ═══════════════════════ -->
+<section id="p6" class="p-violet">
+  <div class="part-head">
+    <span class="eyebrow">Parte 6 · Condicionais &amp; Assert</span>
+    <h2>Macros que decidem — e que exigem</h2>
+  </div>
+
+  <p>Um <strong>condicional</strong> divide a macro em dois caminhos: <em>se</em> algo é verdade, executa um bloco; <em>senão</em>, executa outro (ou pula direto). Na grade, são três linhas especiais: <strong>If</strong> (a pergunta), <strong>Else</strong> (opcional) e <strong>End If</strong> (o fim do bloco).</p>
+
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 250" role="img" aria-label="A linha If avalia a condição: verdadeira executa o bloco de cima, falsa pula para o Else; os dois caminhos se encontram no End If e a macro continua." style="min-width: 560px;">
+      <defs>
+        <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+        </marker>
+      </defs>
+      <g fill="none" stroke-width="1.4">
+        <rect x="20" y="95" width="150" height="56" rx="10" fill="var(--violet-bg)" stroke="var(--violet)"/>
+        <rect x="300" y="28" width="190" height="52" rx="10" fill="var(--ok-bg)" stroke="var(--ok)"/>
+        <rect x="300" y="168" width="190" height="52" rx="10" fill="var(--bad-bg)" stroke="var(--bad)"/>
+        <rect x="590" y="95" width="150" height="56" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <g stroke="var(--ok)" color="var(--ok)">
+          <path d="M 170 112 C 230 112, 240 54, 292 54" marker-end="url(#arr2)"/>
+        </g>
+        <g stroke="var(--bad)" color="var(--bad)">
+          <path d="M 170 134 C 230 134, 240 194, 292 194" marker-end="url(#arr2)"/>
+        </g>
+        <g stroke="var(--ink-soft)" color="var(--ink-soft)">
+          <path d="M 490 54 C 550 54, 540 112, 582 112" marker-end="url(#arr2)"/>
+          <path d="M 490 194 C 550 194, 540 134, 582 134" marker-end="url(#arr2)"/>
+        </g>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="12">
+        <text x="95" y="118" text-anchor="middle" fill="var(--violet)" font-weight="600">If</text>
+        <text x="95" y="136" text-anchor="middle" fill="var(--ink)" font-size="11">a condição vale?</text>
+        <text x="222" y="86" fill="var(--ok)" font-size="11" font-weight="600">sim</text>
+        <text x="222" y="172" fill="var(--bad)" font-size="11" font-weight="600">não</text>
+        <text x="395" y="50" text-anchor="middle" fill="var(--ink)" font-size="11">ações entre o If</text>
+        <text x="395" y="66" text-anchor="middle" fill="var(--ink)" font-size="11">e o Else</text>
+        <text x="395" y="190" text-anchor="middle" fill="var(--ink)" font-size="11">ações entre o Else</text>
+        <text x="395" y="206" text-anchor="middle" fill="var(--ink)" font-size="11">e o End If</text>
+        <text x="665" y="118" text-anchor="middle" fill="var(--ink)" font-weight="600" font-size="11">End If</text>
+        <text x="665" y="136" text-anchor="middle" fill="var(--muted)" font-size="11">a macro continua</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>Só um dos dois blocos roda em cada execução. Sem Else, o "não" simplesmente pula para depois do End If.</figcaption>
+  </figure>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 1</span> Seu primeiro If</h3>
+    <p>Na barra, clique no botão <strong>Conditional</strong> (ícone de ramificação) → <strong>Insert Conditional</strong> e escolha o tipo. <em>Image Found</em> e <em>Pixel Color Match</em> abrem a captura para você marcar a imagem ou o pixel; os outros inserem o par If/End If direto. O bloco entra <strong>antes</strong> da linha selecionada.</p>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — fechar um pop-up só quando ele aparecer</div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Image Found — botao_fechar.png</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Click</span><span class="gm-detail">no X do pop-up</span><span class="gm-note">só roda se a imagem apareceu</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+      <div class="gm-row"><span class="gm-type">Click</span><span class="gm-detail">continua o fluxo normal</span><span class="gm-note">roda sempre</span></div>
+    </div></div>
+
+    <p><strong>Para editar a linha If:</strong> passe o mouse e clique no lápis, ou selecione e aperte <span class="kbd">Enter</span>. O editor tem o botão <strong>Test</strong> — ele faz a mesma pergunta que a execução faria e responde na hora, sem rodar a macro. Use sempre: é o que evita descobrir o erro só na execução.</p>
+    <p><strong>Para ganhar um Else:</strong> dentro do bloco, logo acima do End If, existe a linha tracejada <strong>+ Add Else branch</strong>. É ali que o Else nasce — ele não está no menu do botão direito.</p>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Confiança de imagem: nunca use 100%.</span></p>
+        <p>Uma tela viva nunca fica idêntica pixel a pixel — em 100% a macro nunca acha. Fique na faixa de 80–90% (o padrão é 80%).</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 2</span> Os tipos de condição</h3>
+    <p>Todos funcionam do mesmo jeito — o que muda é <em>o que</em> o If verifica:</p>
+    <div class="cards">
+      <div class="card"><h4>If Image Found</h4><p>Uma imagem de referência está visível na tela?</p><div class="card-ex">Ex.: o ícone de "salvo" apareceu?</div></div>
+      <div class="card"><h4>If Pixel Color Match</h4><p>O pixel na posição X,Y tem determinada cor (com tolerância)?</p><div class="card-ex">Ex.: o botão liga/desliga está verde? Então pule o clique.</div></div>
+      <div class="card"><h4>If Window Open</h4><p>Existe uma janela daquele processo/título? Pode exigir que esteja em primeiro plano.</p><div class="card-ex">Ex.: o Bloco de Notas está aberto?</div></div>
+      <div class="card"><h4>If Clipboard</h4><p>O texto copiado contém / é igual a / bate com um padrão (regex)?</p><div class="card-ex">Ex.: regex ^\d{11}$ — o que copiei é um CPF?</div></div>
+      <div class="card"><h4>If Variable</h4><p>Compara uma variável com um valor (veja abaixo).</p><div class="card-ex">Ex.: tentativas &gt; 3? Vá para o plano B.</div></div>
+      <div class="card"><h4>If Random</h4><p>Verdadeiro com N% de chance, sorteado na hora.</p><div class="card-ex">Ex.: 30% das vezes, pausa extra — a macro deixa de parecer um metrônomo.</div></div>
+      <div class="card"><h4>If Process Running</h4><p>Um processo está em execução (com ou sem janela)?</p><div class="card-ex">Ex.: chrome.exe está rodando?</div></div>
+      <div class="card"><h4>If File Exists</h4><p>Um arquivo ou pasta existe? O caminho aceita tokens.</p><div class="card-ex">Ex.: o download de hoje já terminou?</div></div>
+      <div class="card"><h4>If Time</h4><p>O relógio está na janela início–fim, nos dias escolhidos? Janelas que viram a noite (22:00–02:00) funcionam.</p><div class="card-ex">Ex.: é horário comercial?</div></div>
+      <div class="card"><h4>If Browser Element</h4><p>Um elemento da página está presente / visível / habilitado (via extensão do Chrome).</p><div class="card-ex">Ex.: o botão Enviar saiu do cinza?</div></div>
+    </div>
+    <p>Nas condições de <strong>estado</strong> (Clipboard, Variable, Random, Time) as opções aparecem como <em>Met / NOT Met</em>; nas de <strong>objeto</strong> (Image, Pixel, Window, Process, File, Browser), como <em>Found / NOT Found</em>. Mesma ideia.</p>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 2</span> A dupla Set Variable + If Variable</h3>
+    <p>A combinação mais poderosa: uma ação <strong>guarda</strong> um estado, o If <strong>decide</strong> por ele.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Operador</th><th>Verdadeiro quando…</th><th>Detalhe</th></tr></thead>
+        <tbody>
+          <tr><td>igual (<code>=</code>)</td><td>variável = valor</td><td>ignora maiúsculas/minúsculas</td></tr>
+          <tr><td>diferente (<code>≠</code>)</td><td>variável ≠ valor</td><td>idem</td></tr>
+          <tr><td>contém</td><td>o valor aparece dentro da variável</td><td>idem</td></tr>
+          <tr><td>maior (<code>&gt;</code>)</td><td>variável &gt; valor</td><td rowspan="2">compara como <strong>número</strong> quando os dois lados são números; senão, ordem alfabética</td></tr>
+          <tr><td>menor (<code>&lt;</code>)</td><td>variável &lt; valor</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O campo de comparação <strong>aceita tokens</strong>: dá para comparar com <span class="tok">{clipboard}</span>, <span class="tok">{date}</span> ou outra <span class="tok">{var:...}</span>. Variável nunca definida conta como texto vazio.</p>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — rota de atendimento pela resposta do usuário</div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">motivo = {input:Motivo|menu:Troca,Devolução}</span><span class="gm-note">pergunta e guarda</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Troca</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Vamos iniciar sua troca! …</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Vamos processar a devolução. …</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+    </div></div>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 3</span> Ferramentas finas do If</h3>
+    <ul>
+      <li><strong>Negate</strong> — inverte a pergunta: "If <em>NOT</em> Image Found" = "se a imagem <em>não</em> está na tela".</li>
+      <li><strong>On Probe Error</strong> — se a <em>própria checagem</em> falhar (ex.: janela de referência sumiu), o padrão <strong>Treat as false</strong> segue pelo Else; <strong>Halt</strong> para a execução.</li>
+      <li><strong>Dois tempos que não se confundem:</strong> o <strong>Delay</strong> da linha If é espera fixa <em>antes</em> da checagem — gasta tudo mesmo que já estivesse pronto. O <strong>Wait for condition</strong> gasta <em>só o necessário</em>, até o limite. Preenchendo os dois, eles somam.</li>
+    </ul>
+
+    <h4 style="margin-top:24px">Wait for condition: "espere até valer"</h4>
+    <p>Por padrão o If verifica <strong>uma única vez</strong>. Com um tempo em <strong>Wait for condition</strong>, ele fica reverificando por até N milissegundos — vira um "espere aparecer, mas não para sempre":</p>
+    <figure>
+      <div class="fig-scroll">
+      <svg viewBox="0 0 760 150" role="img" aria-label="Com timeout, o If verifica repetidas vezes ao longo da janela; se a condição vira verdadeira dentro dela, segue o ramo sim na hora; se a janela termina sem sucesso, segue o ramo não." style="min-width: 560px;">
+        <defs>
+          <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/>
+          </marker>
+        </defs>
+        <g stroke="var(--border-strong)" stroke-width="1.4" color="var(--ink-soft)">
+          <line x1="30" y1="75" x2="600" y2="75" stroke="var(--ink-soft)" marker-end="url(#arr3)"/>
+        </g>
+        <g fill="none" stroke="var(--bad)" stroke-width="1.6">
+          <circle cx="90" cy="75" r="7" fill="var(--paper)"/>
+          <line x1="86" y1="71" x2="94" y2="79"/><line x1="94" y1="71" x2="86" y2="79"/>
+          <circle cx="190" cy="75" r="7" fill="var(--paper)"/>
+          <line x1="186" y1="71" x2="194" y2="79"/><line x1="194" y1="71" x2="186" y2="79"/>
+          <circle cx="290" cy="75" r="7" fill="var(--paper)"/>
+          <line x1="286" y1="71" x2="294" y2="79"/><line x1="294" y1="71" x2="286" y2="79"/>
+        </g>
+        <g fill="none" stroke="var(--ok)" stroke-width="1.8">
+          <circle cx="390" cy="75" r="9" fill="var(--ok-bg)"/>
+          <path d="M 385 75 l 4 4 l 7 -8" stroke-linecap="round" stroke-linejoin="round"/>
+        </g>
+        <line x1="510" y1="55" x2="510" y2="95" stroke="var(--muted)" stroke-width="1.4" stroke-dasharray="4 3"/>
+        <g font-family="'Spline Sans Mono', monospace" font-size="11">
+          <text x="30" y="45" fill="var(--muted)">If chega aqui</text>
+          <text x="90" y="110" text-anchor="middle" fill="var(--bad)">não</text>
+          <text x="190" y="110" text-anchor="middle" fill="var(--bad)">não</text>
+          <text x="290" y="110" text-anchor="middle" fill="var(--bad)">não</text>
+          <text x="390" y="112" text-anchor="middle" fill="var(--ok)" font-weight="600">valeu! → ramo "sim"</text>
+          <text x="510" y="45" text-anchor="middle" fill="var(--muted)">fim do tempo</text>
+          <text x="518" y="112" fill="var(--muted)">se chegasse aqui sem sucesso → ramo "não"</text>
+        </g>
+      </svg>
+      </div>
+      <figcaption>Assim que a condição vale, o If segue o ramo "sim" na hora — ele não espera a janela inteira. A janela só se esgota quando a condição nunca valeu.</figcaption>
+    </figure>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 3</span> Aninhando: um If dentro do outro</h3>
+    <p>Blocos podem ficar dentro de blocos, <strong>sem limite de profundidade</strong> — cada nível ganha a sua cor na grade. Para criar: <strong>selecione uma linha que está dentro do bloco</strong> e use Insert Conditional.</p>
+
+    <div class="callout co-rule">
+      <div class="co-icon">🪜</div>
+      <div>
+        <p><span class="co-title">Não existe "Else If" — e não faz falta.</span></p>
+        <p>Para testar várias opções em sequência, monte uma <strong>escada</strong>: cada novo If entra <em>dentro do Else</em> do anterior.</p>
+      </div>
+    </div>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Escada de decisões — um caminho para cada resposta</div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Troca</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">fluxo de troca…</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Devolução</span></div>
+      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">fluxo de devolução…</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">encaminhando para um atendente…</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">End If</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+    </div></div>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Aninhar nem sempre é o certo.</span></p>
+        <p>Dois blocos <strong>irmãos</strong> (um depois do outro) verificam as duas coisas <em>sempre</em>. Um bloco <strong>dentro</strong> do outro só verifica a segunda quando a primeira valeu. Se o segundo If é um caminho de <em>recuperação</em> ("não achou a tela? volta para a busca"), ele precisa ficar como irmão — aninhado, nunca rodaria justamente quando é necessário.</p>
+      </div>
+    </div>
+
+    <h4 style="margin-top:24px">Editando o conteúdo de um bloco</h4>
+    <ul>
+      <li>Uma operação só pega o <strong>bloco inteiro</strong> quando a seleção inclui um marcador (If / Else / EndIf) — marcadores nunca ficam órfãos.</li>
+      <li><strong>Arraste</strong> ações do corpo para dentro ou fora, livremente. <span class="kbd">Alt</span>+<span class="kbd">↑</span>/<span class="kbd">↓</span>: seleção só de corpo move sozinha; tocando um marcador, leva o bloco.</li>
+      <li><strong>Delete</strong> no corpo mantém o bloco; delete no <strong>If</strong> apaga o bloco inteiro. <strong>Duplicar</strong> um If copia o bloco inteiro.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3><span class="nivel">Nível 3</span> Assert — exigir que algo seja verdade</h3>
+    <p>Um If <em>pergunta</em> e segue por um dos dois caminhos. Um <strong>Assert</strong> <em>exige</em>: se não for verdade, <strong>para na hora e diz qual premissa falhou</strong>. Uma linha só, sem ramificação e sem End If — barra → ícone de ramificação → <strong>Insert Assert</strong>.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">🧭</div>
+      <div>
+        <p><span class="co-title">Wait, If ou Assert?</span></p>
+        <p><strong>Wait</strong> = <em>sincronizar</em> ("espere a tela ficar pronta"). <strong>If</strong> = <em>ramificar</em> ("se aparecer, clique; senão, siga") — os dois caminhos são normais. <strong>Assert</strong> = <em>exigir</em> ("daqui não passa sem isto") — só um caminho é aceitável.</p>
+      </div>
+    </div>
+    <p>São <strong>seis condições</strong> de propósito — Window Open, Process Running, Clipboard, Variable, File Exists e Time. Imagem e pixel já param sozinhos por timeout (Wait Image / Wait Pixel, Parte 7), e para página existe o Assert Element (Parte 11).</p>
+    <p><strong>Campos:</strong> Require (Met/NOT Met) · Wait for condition (padrão 1500 ms; Time não aceita — relógio não muda de resposta se você insistir) · On failure (<strong>Abort</strong> padrão, ou Continue, que só registra) · <strong>Notes</strong> — o nome que aparece na falha. Preencha sempre: sem ele a mensagem cai para <code>'element'</code>, e com três asserts na macro você não sabe qual parou.</p>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — a macro que digitou a senha na janela errada</div>
+      <div class="gm-row gm-if"><span class="gm-type">Assert</span><span class="gm-detail">Window Open — app.exe (foreground) · wait 3000 · "janela de login em foco"</span><span class="gm-note">não está na frente → para aqui</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">{var:usuario}</span><span class="gm-note">só roda com a janela garantida</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">{clip:senha}</span></div>
+    </div></div>
+    <p>Sem o Assert, o dia em que o app demora a abrir vira uma senha digitada no chat que estava por baixo — sem nenhum erro na tela. Com ele, vira uma mensagem vermelha e nada mais acontece: <code>Assert failed: 'janela de login em foco' — window app.exe was not in the foreground</code>.</p>
+    <p>Se a premissa for só <em>demorada</em>, não troque o Assert por If — aumente o Wait for condition.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 7 — ESPERAR A TELA ═══════════════════════ -->
+<section id="p7" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 7 · Esperar a tela</span>
+    <h2>Espere a tela, não chute o tempo</h2>
+  </div>
+
+  <p>Uma pausa fixa de 3 segundos erra dos dois lados: perde tempo quando a tela já estava pronta, e falha no dia em que demorou 4. As ações de espera resolvem os dois problemas de uma vez.</p>
+
+  <div class="subsec">
+    <h3>Wait Image</h3>
+    <p>Barra → <strong>Wait for Image</strong> → recorte o pedaço da tela que você espera (um botão, um ícone) → <strong>Test match</strong>. O Test confere contra a tela agora, mostra a % de acerto e já ajusta a região de busca em volta do que achou.</p>
+    <ul>
+      <li><strong>Tolerance</strong> — padrão <strong>80%</strong>. ~95 para estrito; abaixo de 70 para UI comprimida. <strong>Nunca 100%</strong> — uma tela viva nunca fica idêntica pixel a pixel.</li>
+      <li><strong>Wait until</strong> — <em>Appears</em> ou <em>Disappears</em> (esperar um "Carregando…" sumir vale tanto quanto esperar um botão surgir).</li>
+      <li><strong>Timeout + On Timeout</strong> — quanto esperar e o que fazer se estourar: <strong>Halt</strong> para a macro, <strong>Continue</strong> segue.</li>
+      <li><strong>Click on found location</strong> — clica direto no ponto encontrado, poupando uma ação de clique.</li>
+      <li><strong>Search region</strong> — limitar a busca a um pedaço da tela é mais rápido e dá menos falso positivo.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Wait Pixel Color</h3>
+    <p>Espera o pixel em (x, y) bater com uma cor, dentro de uma tolerância. Mais leve que imagem — perfeito para indicadores de estado: o LED que fica verde, a barra que enche, o botão que sai do cinza.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Pause</h3>
+    <p>Para a execução até uma <strong>hotkey de retomada</strong> ou um <strong>timeout</strong> — precisa de pelo menos um dos dois. É a espera <em>humana</em>: "faça sua parte e me avise" no meio de uma macro.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 8 — JANELAS ═══════════════════════ -->
+<section id="p8" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 8 · Janelas</span>
+    <h2>Alvo de janela, coordenadas relativas e troca de foco</h2>
+  </div>
+
+  <p>Um clique gravado guarda um ponto <strong>da tela</strong>. Alguém arrasta a janela dez pixels e a macro que ontem acertava passa a errar tudo. O <strong>alvo de janela</strong> resolve isso prendendo o perfil a uma janela — e as <strong>coordenadas relativas</strong> fazem os cliques seguirem a janela aonde ela for.</p>
+
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 240" role="img" aria-label="Comparação: com coordenadas absolutas, a janela move e o clique fica para trás, errando; com coordenadas relativas, o clique é medido a partir do canto da janela e acompanha o movimento." style="min-width: 560px;">
+      <g fill="none" stroke-width="1.4">
+        <!-- Painel absoluto -->
+        <rect x="14" y="34" width="350" height="170" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="34" y="58" width="130" height="80" rx="6" fill="var(--paper)" stroke="var(--border-strong)" stroke-dasharray="4 3"/>
+        <rect x="180" y="98" width="130" height="80" rx="6" fill="var(--paper)" stroke="var(--ink-soft)"/>
+        <g stroke="var(--bad)">
+          <circle cx="112" cy="96" r="8" fill="var(--bad-bg)"/>
+          <line x1="107" y1="91" x2="117" y2="101"/>
+          <line x1="117" y1="91" x2="107" y2="101"/>
+        </g>
+        <!-- Painel relativo -->
+        <rect x="396" y="34" width="350" height="170" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+        <rect x="416" y="58" width="130" height="80" rx="6" fill="var(--paper)" stroke="var(--border-strong)" stroke-dasharray="4 3"/>
+        <rect x="562" y="98" width="130" height="80" rx="6" fill="var(--paper)" stroke="var(--ink-soft)"/>
+        <g stroke="var(--ok)">
+          <path d="M 562 98 l 26 22" stroke-dasharray="3 3"/>
+          <circle cx="640" cy="136" r="8" fill="var(--ok-bg)"/>
+          <path d="M 635 136 l 4 4 l 7 -8" stroke-linecap="round" stroke-linejoin="round" stroke-width="1.8"/>
+        </g>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="11">
+        <text x="26" y="24" fill="var(--bad)" font-size="10" letter-spacing="1.5">COORDENADA ABSOLUTA (DA TELA)</text>
+        <text x="99" y="52" fill="var(--muted)" font-size="10">janela antes</text>
+        <text x="245" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">janela movida</text>
+        <text x="112" y="122" text-anchor="middle" fill="var(--bad)" font-size="10">o clique ficou aqui</text>
+        <text x="189" y="196" fill="var(--bad)" font-size="10">→ erra o botão</text>
+        <text x="408" y="24" fill="var(--ok)" font-size="10" letter-spacing="1.5">COORDENADA RELATIVA (DA JANELA)</text>
+        <text x="481" y="52" fill="var(--muted)" font-size="10">janela antes</text>
+        <text x="627" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">janela movida</text>
+        <text x="640" y="160" text-anchor="middle" fill="var(--ok)" font-size="10">o clique acompanha</text>
+        <text x="571" y="196" fill="var(--ok)" font-size="10">→ acerta sempre</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>Relativa = o ponto é medido a partir do canto <em>da janela</em>, não da tela. A janela se move, o clique vai junto. Vale também para regiões do Wait Image e coordenadas do Wait Pixel.</figcaption>
+  </figure>
+
+  <div class="subsec">
+    <h3>Configurando — o fluxo de 4 passos</h3>
+    <ol>
+      <li>Botão direito no perfil → <strong>Window target…</strong> → <strong>Detect Window</strong> → clique na janela do app.</li>
+      <li><strong>Test front window</strong> — tem que dar <em>✓ Matches</em>. Título que muda a cada atendimento? Use <strong>Contains</strong> com só o pedaço fixo (ou Regex, se o fixo estiver no começo <em>e</em> no fim).</li>
+      <li>Ligue <strong>Relative Coordinates</strong>. Se a macro já estava gravada, aparece <em>N actions captured in absolute coords</em> — clique em <strong>Apply target &amp; convert</strong>.</li>
+      <li><strong>Set Target</strong>. Nada é gravado até esse clique.</li>
+    </ol>
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">No passo 3, não clique em Skip.</span></p>
+        <p>Ele deixa os números antigos e o app passa a lê-los como se já fossem relativos — é aí que a macro começa a clicar no canto errado. Deixe o app converter.</p>
+      </div>
+    </div>
+    <ul>
+      <li>Com alvo definido, a <strong>hotkey só dispara com aquela janela na frente</strong> (a chave <strong>Bring to Focus</strong> traz a janela para frente antes de rodar, e devolve a hotkey a qualquer janela).</li>
+      <li><strong>Restore Position / Size</strong> devolve a janela a uma geometria salva — grave com <strong>Update Window Size &amp; Position</strong> antes de ligar. Relativa faz a macro <em>seguir</em> a janela; Restore <em>devolve</em> a janela ao lugar. Juntas, segurança em dobro.</li>
+      <li>Se o perfil usa coordenadas relativas e a janela não for achada, a execução <strong>para com erro</strong> — em vez de clicar em qualquer lugar.</li>
+      <li>Uma <strong>pasta</strong> pode ter alvo próprio, que os perfis dela herdam.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
+    <h3>Activate Window — trocar de app no meio da execução</h3>
+    <p>O alvo de janela prende o perfil inteiro a uma janela. A ação <strong>Activate Window</strong> é outra coisa: um <em>passo</em> que muda qual app está na frente — <strong>Activate / Maximize / Minimize / Close</strong> — no meio da macro.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">🎯</div>
+      <div>
+        <p><span class="co-title">Ela muda só o foco — nunca o contexto de coordenadas.</span></p>
+        <p>Os cliques continuam resolvendo contra o alvo do perfil. Por isso os dois desenhos que funcionam: <strong>multi-janela simples</strong> = perfil <em>sem</em> alvo, cliques absolutos, um Activate Window antes dos passos de cada app; <strong>multi-janela de precisão</strong> = um perfil orquestrador sem alvo alternando <em>Activate Window X → Run Profile "passos-de-X"</em>, onde cada sub-perfil tem o próprio alvo e coordenadas relativas.</p>
+      </div>
+    </div>
+    <p><strong>Campos:</strong> Process e/ou Title identificam a janela (<strong>Match #</strong> escolhe a N-ésima); <strong>Path / Args</strong> abrem o app se nenhuma janela casar; <strong>Placement</strong> posiciona; <strong>Timeout / On Timeout</strong> (Halt padrão / Continue); <strong>Test</strong> confere agora.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 9 — AUTOMAÇÃO ═══════════════════════ -->
+<section id="p9" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 9 · Automação</span>
+    <h2>Rodar sem apertar nada</h2>
+  </div>
+
+  <p>Uma automação dispara um perfil sozinha. Settings → App → <strong>Automation</strong> → <strong>Manage ›</strong> (ou bandeja → Automations…). Cada perfil tem no máximo um gatilho:</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Tipo</th><th>Dispara</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Interval</strong></td><td>A cada N segundos, contando <strong>do último disparo real</strong> — sobrevive a fechar o app. Armar às 9h47 com 5 min dá 9h52, 9h57…</td></tr>
+        <tr><td><strong>Schedule</strong></td><td>Num horário <code>HH:mm</code>, nos dias escolhidos (nenhum dia aceso = todos). Conta pelo relógio: 08:00 é 08:00.</td></tr>
+        <tr><td><strong>Condition</strong></td><td>Quando a condição <strong>fica verdadeira</strong>: janela abre, processo inicia, arquivo aparece, pixel bate, imagem aparece, clipboard muda.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="subsec">
+    <h3>Como se comporta</h3>
+    <ul>
+      <li><strong>Armed é local desta máquina</strong> — perfis importados ou duplicados chegam desarmados. Automações armadas se re-armam ao iniciar o app.</li>
+      <li><strong>Uma execução por vez</strong> — durante um replay, gravação, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). Uma automação nunca atropela trabalho não salvo.</li>
+      <li><strong>Respeita os Loops, nunca roda para sempre</strong> — o infinito de While Pressed / Toggle é ignorado quando quem chama é o gatilho.</li>
+      <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta).</li>
+      <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo (mude para <strong>Continuous</strong> para repetir enquanto verdadeira). Cooldown padrão 30 s.</li>
+      <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: trocar 1 s por 5 s corta o custo em cinco, e para "um download terminando" você não perde nada.</li>
+    </ul>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">O erro nº 1: salvar não é armar.</span></p>
+        <p>O Save grava o gatilho; quem o faz existir é a <strong>chave Armed</strong> na lista. Está armada e não roda? Use o <strong>Run now</strong> — ele dispara pelo mesmo caminho do gatilho e <em>escreve o motivo na tela</em> quando não rodou.</p>
+        <p><span class="co-title">A armadilha silenciosa:</span> deixar a grade com edição não salva e mandar o app para a bandeja. Nesse estado <strong>nenhuma</strong> automação dispara — e não há nada na tela lembrando. Salve antes de sair.</p>
+      </div>
+    </div>
+
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — a mensagem das 8h que se posta sozinha</div>
+      <div class="gm-row"><span class="gm-type">Trigger</span><span class="gm-detail">Schedule · 08:00 · Mon–Fri</span><span class="gm-note">Save, e LIGUE a chave Armed</span></div>
+      <div class="gm-row"><span class="gm-type">Settings</span><span class="gm-detail">Startup: Run on Startup + Startup Minimized</span><span class="gm-note">o app sobe com o Windows e rearma</span></div>
+    </div></div>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 10 — CLICKER & GAME MODE ═══════════════════════ -->
+<section id="p10" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 10 · Clicker &amp; Game Mode</span>
+    <h2>O auto-clicker, e os cliques que jogos aceitam</h2>
+  </div>
+
+  <div class="subsec">
+    <h3>Clicker mode</h3>
+    <p><span class="kbd">ScrollLock</span> alterna entre Macro e Clicker. <span class="kbd">PageDown</span> inicia/para, <span class="kbd">PageUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Grupo</th><th>O que controla</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Clicker</strong></td><td><strong>Button</strong> (Left/Right/Middle) e <strong>Rate</strong> (cliques/s ou ms). O rótulo mostra <code>≈ N/s</code> já contando Hold e Gap — a taxa <em>real</em>.</td></tr>
+          <tr><td><strong>Target</strong></td><td>Um desliga os outros: <strong>Position</strong> (em volta do cursor) · <strong>Area</strong> (pontos aleatórios num retângulo) · <strong>Fixed</strong> (sempre o mesmo ponto).</td></tr>
+          <tr><td><strong>Stop after</strong></td><td><strong>Clicks</strong> e <strong>Time</strong>, independentes — o primeiro que chegar encerra. <strong>Ambos vêm desligados: por padrão o Clicker roda sem fim (∞).</strong></td></tr>
+          <tr><td><strong>Tuning</strong></td><td><strong>Jitter</strong> (± % em cada atraso) · <strong>Hold</strong> (10 ms normal; 50–200 para apps que perdem cliques curtos) · <strong>Gap</strong> (tempo extra por clique) · <strong>Game move</strong> (move por um caminho em vez de teletransportar — só afeta Area e Fixed).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Parece rodando, mas o alvo não reage?</span></p>
+        <p>O Windows não avisa quando bloqueia clique sintético em janela elevada — a taxa continua saudável enquanto nada acontece. Se o alvo roda como administrador, rode o TrueReplayer como administrador também.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Game Mode</h3>
+    <p>Para jogos que ignoram um teleporte instantâneo do cursor, o movimento vira um caminho percorrido. <strong>O cabeçalho da seção é o interruptor mestre</strong> — ligado por padrão.</p>
+    <ul>
+      <li><strong>Fast approach</strong> — em movimentos longos, teleporta até uma distância do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
+      <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms).</li>
+      <li><strong>Focus-click</strong> <em>(por ação, no botão direito da linha)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong> — um botão dispararia duas vezes.</li>
+    </ul>
+    <p>O Clicker tem o próprio <strong>Game move</strong>, independente deste interruptor.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 11 — NAVEGADOR ═══════════════════════ -->
+<section id="p11" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 11 · Navegador</span>
+    <h2>Chrome por seletor, não por pixel</h2>
+  </div>
+
+  <p>As ações de navegador controlam o Chrome pelo <strong>elemento</strong> (seletor CSS ou texto visível) em vez de coordenadas — continuam funcionando quando o layout muda. Exigem a <strong>extensão TrueReplayer</strong> conectada no Chrome.</p>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
+      <tbody>
+        <tr><td><strong>Browser Click / Right Click</strong></td><td>Clica por seletor ou pelo <strong>texto</strong> visível.</td></tr>
+        <tr><td><strong>Browser Type</strong></td><td>Digita num campo, com os mesmos tokens do Send Text.</td></tr>
+        <tr><td><strong>Navigate</strong></td><td>Abre uma URL; opcionalmente espera a URL casar ou um elemento aparecer.</td></tr>
+        <tr><td><strong>Wait Element</strong></td><td>Espera um elemento aparecer (ou sumir).</td></tr>
+        <tr><td><strong>Assert Element</strong></td><td>Confere o estado e <strong>para</strong> se não estiver como esperado. É guarda, não espera.</td></tr>
+        <tr><td><strong>Select Option</strong></td><td>Escolhe num <code>&lt;select&gt;</code> por texto, valor ou índice.</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <ul>
+    <li><strong>Mirando por texto</strong>, o alvo é o elemento <em>clicável</em> que carrega o texto — o botão inteiro, não o span de dentro. Sem prefixo, <code>text=Enviar</code> é <strong>exato</strong>; para um pedaço: <code>text*=Salvar</code> (contém), <code>text~=salvar</code> (ignora maiúsculas), <code>text/^Salvar.*/i</code> (regex).</li>
+    <li>Um selo de <strong>qualidade do seletor</strong> (S → C) indica quão estável ele tende a ser.</li>
+    <li><strong>Em qual aba a macro age:</strong> na que estava na frente <em>quando a execução começou</em>, até o fim. Trocar de aba no meio não leva a macro junto; um Navigate re-fixa na página que abriu; aba fechada → a macro para dizendo isso (<code>TAB_GONE</code>) em vez de agir noutro lugar.</li>
+  </ul>
+
+  <div class="subsec">
+    <h3>Run report — qual passo quebrou, e por quê</h3>
+    <p><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Run report</strong>: a última execução passo a passo, com o que cada um mirou e quanto levou. Duas coisas que só ele mostra:</p>
+    <ul>
+      <li><strong>"Casou por reserva"</strong> — o seletor que <em>você</em> escolheu já não casa e a macro acertou pelo plano B. O passo <em>passou</em>, mas está a uma mudança do site de parar: re-escolha o elemento.</li>
+      <li><strong>Por que falhou, em texto</strong> — não achou; achou mas invisível; achou mas desabilitado; tem algo por cima; seletor inválido; página não carregou.</li>
+    </ul>
+    <p>É só a última execução — cada nova substitui a anterior. Para registro duradouro: bandeja → <strong>Open Logs Folder</strong>.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 12 — DATA LOOP ═══════════════════════ -->
+<section id="p12" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 12 · Data Loop</span>
+    <h2>Uma tabela, uma execução por linha</h2>
+  </div>
+
+  <p>Monte a macro para <strong>um</strong> item; o Data Loop repete para todos. Cada cabeçalho da tabela vira um token <span class="tok">{row:coluna}</span>, e a tabela é salva <strong>dentro do perfil</strong> — viaja no export.</p>
+
+  <div class="subsec">
+    <h3>Colocando dados na tabela</h3>
+    <p>Barra → ícone de tabela. Três caminhos: <strong>Paste / bulk edit…</strong> (cole do Excel; <em>First row is the header</em> usa a primeira linha como nomes), <strong>Import CSV…</strong> (delimitador detectado sozinho, inclusive o ponto e vírgula do Excel brasileiro) ou editar direto na grade. Cabeçalhos usam só letras, números e <code>_</code> — um inválido ganha ⚠, e a varinha conserta.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Os três tokens de linha — a diferença que importa</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Token</th><th>Resolve para</th><th>Use quando</th></tr></thead>
+        <tbody>
+          <tr><td><span class="tok">{row:coluna}</span></td><td>O valor da linha <strong>atual</strong> — a mesma linha para todas as ações da execução.</td><td>Cada execução preenche <strong>um registro</strong> (várias colunas, mesma linha). O par natural do Loop over data.</td></tr>
+          <tr><td><span class="tok">{rownext:coluna}</span></td><td>A <strong>próxima</strong> linha a cada uso. Reinicia a cada execução; passou da última, sai vazio.</td><td>Despejar a <strong>lista inteira</strong> numa passada: três Send Text com <code>{rownext:nome}</code> digitam as linhas 1, 2 e 3.</td></tr>
+          <tr><td><span class="tok">{row}</span></td><td>O número da linha <strong>da ação na grade</strong>.</td><td>— não tem relação com a tabela.</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Executando sobre os dados</h3>
+    <ul>
+      <li><strong>Loop over data ligado</strong> — uma execução completa <strong>por linha</strong>. Ignora os Loops do perfil; não inicia com a tabela vazia. Com ele aparece o <strong>On row error</strong>: <strong>Halt</strong> (padrão) para na primeira falha; <strong>Skip row</strong> registra, solta o que ficou pressionado e continua, com resumo no fim.</li>
+      <li><strong>Desligado (modo cursor)</strong> — cada execução usa a <strong>próxima</strong> linha e avança; no fim volta à primeira. É o "um por toque".</li>
+      <li><strong>O lugar é guardado em disco</strong> — o cursor de linha (e o do Set Variable em Cycle) sobrevive a fechar o app. Trabalhe 12 linhas hoje, continue da 13 amanhã. Zerar: botão direito → <strong>Reset row position</strong>.</li>
+    </ul>
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Exemplo — cadastrar 40 produtos num formulário</div>
+      <div class="gm-row"><span class="gm-type">1</span><span class="gm-detail">Monte e teste a macro para UM produto, digitando de verdade</span><span class="gm-note">esse é o molde</span></div>
+      <div class="gm-row"><span class="gm-type">2</span><span class="gm-detail">Data Loop → Paste do Excel, com "First row is the header"</span></div>
+      <div class="gm-row"><span class="gm-type">3</span><span class="gm-detail">Troque os valores fixos por {row:product}, {row:price}…</span><span class="gm-note">cada coluna deve mostrar ×1, não "unused"</span></div>
+      <div class="gm-row"><span class="gm-type">4</span><span class="gm-detail">Ligue Loop over data · On row error = Skip row · Save</span><span class="gm-note">uma hotkey cadastra a planilha inteira</span></div>
+    </div></div>
+  </div>
+
+  <div class="subsec">
+    <h3>Run Profile — sub-perfis e lotes</h3>
+    <ul>
+      <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte. (Mova os passos com <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → Copy as Table / Paste Actions.)</li>
+      <li><strong>Run once per data row</strong> — o perfil <em>chamado</em> roda uma vez por linha da tabela <em>dele</em>: a macro pai faz o setup uma vez e processa um lote no meio da execução.</li>
+      <li><strong>O sub-perfil não manda na própria repetição</strong> — os Loops e o Interval dele são ignorados; vale só o <strong>Repeat</strong> do diálogo Run Profile. Um perfil não chama a si mesmo, e a cadeia para em 5 níveis. Perfil que não aparece na lista está <strong>desligado</strong>.</li>
+    </ul>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 13 — APARÊNCIA E DADOS ═══════════════════════ -->
+<section id="p13" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 13 · Aparência e dados</span>
+    <h2>Temas, configurações e onde tudo fica</h2>
+  </div>
+
+  <div class="subsec">
+    <h3>Temas</h3>
+    <p>Settings → App → Interface → <strong>Customise</strong>: galeria com <strong>37 presets</strong> (23 escuros + 14 claros, padrão <em>Lavender Coal</em>), com prévia ao vivo. Em Customise você ajusta as 29 cores (com verificador de contraste), densidade, fonte, cantos, altura de linha e zoom — e importa/exporta um tema como JSON.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Hotkeys padrão do app</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Atalho</th><th>Faz</th><th>Atalho</th><th>Faz</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span></td><td>Gravar / parar gravação</td><td><span class="kbd">ScrollLock</span></td><td>Alternar Macro ↔ Clicker</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PageDown</span></td><td>Reproduzir / parar</td><td><span class="kbd">Insert</span></td><td>Trazer o app para frente</td></tr>
+          <tr><td><span class="kbd">Pause</span></td><td>Chave-mestra das hotkeys de perfil</td><td><span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span></td><td>Capture Slot</td></tr>
+          <tr><td><span class="kbd">PageDown</span> / <span class="kbd">PageUp</span></td><td>Clicker: iniciar / pausar</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span></td><td>Paleta de comandos</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Tudo remapeável em Settings → Keys; apagar o campo desativa o atalho. As dicas da interface podem ficar em <strong>Português (BR)</strong> (Settings → App → Interface) — nomes de ações e menus seguem em inglês.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Onde seus dados ficam</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>O quê</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Perfis</strong></td><td><code>Documents\TrueReplayer\Profiles\*.json</code></td></tr>
+          <tr><td><strong>Onde cada lista parou</strong></td><td><code>Documents\TrueReplayer\run-cursors.json</code> — cursores do Data Loop e do Cycle. Apagar (com o app fechado) faz todas recomeçarem.</td></tr>
+          <tr><td><strong>Histórico das automações</strong></td><td><code>Documents\TrueReplayer\automation-stats.json</code></td></tr>
+          <tr><td><strong>Configurações</strong></td><td><code>appsettings.json</code></td></tr>
+          <tr><td><strong>Imagens, temas, WebView2</strong></td><td><code>%LocalAppData%\TrueReplayer\…</code> — fixados aqui para sobreviverem às atualizações.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O rodapé das Settings mostra a versão e um <strong>Check for Updates</strong> manual — as atualizações baixam sozinhas em segundo plano.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 14 — RECEITAS ═══════════════════════ -->
+<section id="p14" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 14 · Receitas completas</span>
+    <h2>Perfis prontos, passo a passo</h2>
+  </div>
+
+  <div class="subsec">
+    <h3>Receita 1 — Resposta pronta em qualquer chat</h3>
+    <p>A mais usada de todas, e são dois passos: um <strong>Send Text</strong> com a mensagem (feche com <span class="tok">{enter}</span> para já enviar) → botão direito no perfil → <strong>Assign hotstring…</strong> → <code>.cp</code>. Digitar <code>.cp</code> em qualquer chat solta a resposta inteira.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Receita 2 — Saudação certa para a hora do dia</h3>
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Perfil: Saudação inteligente</div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Time — 05:00 até 11:59</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Bom dia, {clipboard:trim:title}! Como posso ajudar?</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Boa tarde, {clipboard:trim:title}! Como posso ajudar?</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+    </div></div>
+    <p>Copie o nome do cliente, aperte o atalho — <code>&nbsp;&nbsp;joão pedro&nbsp;</code> vira "Bom dia, João Pedro! Como posso ajudar?".</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Receita 3 — Responder um anúncio de troca</h3>
+    <p>O anúncio copiado é sempre <code>Vendedor - 2x Item Raro</code>, com a quantidade aparecendo só às vezes. A macro extrai o item limpo e confere se é o que você procura:</p>
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Perfil: Responder anúncio</div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">item = {clipboard:after: - :dropnum:x }</span><span class="gm-note">corta e limpa o "2x"</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Variable — item contém "Raro"</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Tenho interesse no {var:item}! Ainda está disponível?</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Valeu, mas procuro outro item no momento!</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+    </div></div>
+  </div>
+
+  <div class="subsec">
+    <h3>Receita 4 — Tentar de novo, com limite</h3>
+    <p>Num perfil com repetição (Loops), <span class="tok">{counter}</span> conta as voltas — e um <strong>Assert</strong> cria o limite: enquanto a premissa "tentativa &lt; 6" vale, a macro segue; na 6ª volta o Assert falha e a execução para, nomeando o motivo.</p>
+    <div class="gridmock-wrap"><div class="gridmock">
+      <div class="gm-head">Perfil: Confirmar com paciência (Loops = 10)</div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">tentativa = {counter}</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Assert</span><span class="gm-detail">Variable — tentativa &lt; 6 · Notes: "limite de tentativas"</span><span class="gm-note">6ª volta → para com aviso</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Image Found — botao_confirmar.png (wait 3000 ms)</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Click</span><span class="gm-detail">no botão Confirmar</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+    </div></div>
+    <p>Quando parar, a mensagem diz exatamente o quê: <code>Assert failed: 'limite de tentativas'</code>. Repare que o Assert fica <strong>fora</strong> do If da imagem — o limite precisa ser verificado em toda volta, não só quando a imagem aparece.</p>
+  </div>
+
+  <div class="subsec">
+    <h3>Receita 5 — Funcionar só no app certo</h3>
+    <p>Botão direito no perfil → <strong>Window target…</strong> → Detect Window → Test front window → ligue <strong>Relative Coordinates</strong> (deixe converter!) → Set Target. A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for — o fluxo completo está na Parte 8.</p>
+  </div>
+</section>
+
+<!-- ═══════════════════════ PARTE 15 — SOLUÇÃO DE PROBLEMAS ═══════════════════════ -->
+<section id="p15" class="p-mix">
+  <div class="part-head">
+    <span class="eyebrow">Parte 15 · Solução de problemas</span>
+    <h2>Sintoma → causa → conserto</h2>
+  </div>
+
+  <div class="tbl-wrap">
+    <table>
+      <thead><tr><th>Sintoma</th><th>Causa provável</th><th>Conserto</th></tr></thead>
+      <tbody>
+        <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
+        <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert to Relative (Parte 8)</td></tr>
+        <tr><td>Cliques disparam duas vezes</td><td>Focus-click ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
+        <tr><td>Um jogo ignora os cliques</td><td>Movimento teleportado</td><td>Game mode ligado; se ainda errar, desligue o Fast approach</td></tr>
+        <tr><td>A automação nunca dispara</td><td>Salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>
+        <tr><td>O sub-perfil ignora os próprios Loops</td><td>É de propósito</td><td>Vale só o Repeat do diálogo Run Profile</td></tr>
+        <tr><td>Um passo gravado foi para o lugar errado</td><td>A gravação insere antes da primeira linha <em>selecionada</em></td><td>Limpe a seleção para acrescentar no fim</td></tr>
+        <tr><td>Um token não digitou nada</td><td>Resolveu para vazio — variável nunca definida, coluna inexistente, lista do <span class="tok">{clipboard:next}</span> acabou</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → Toggle Live Variables e rode de novo</td></tr>
+        <tr><td>"O corte veio vazio"</td><td>O marcador de <code>before</code>/<code>after</code> não existe no texto (vazio é proposital)</td><td>Confira o marcador exato — inclusive os espaços</td></tr>
+        <tr><td>"O dropnum não removeu o 1x"</td><td>O texto chega ao dropnum começando com espaço, ou o sufixo está sem o espaço final</td><td>Use <code>after:&nbsp;-&nbsp;</code> (com espaços) e sufixo <code>x&nbsp;</code></td></tr>
+        <tr><td>"{var:...} veio vazio"</td><td>Nome com espaço/acento, ou nunca definida nesta execução</td><td>Nomes só com letras, números e <code>_</code></td></tr>
+        <tr><td>O If de imagem nunca dá sim</td><td>Confiança em 100%</td><td>Baixe para 80–90%</td></tr>
+        <tr><td>O token saiu escrito na tela</td><td>Erro de digitação no nome (<code>{clipbord}</code>) — token desconhecido vira texto literal</td><td>Insira pelos chips da paleta</td></tr>
+        <tr><td>"{winclip} veio vazio"</td><td>Histórico do Windows desligado</td><td>Configurações do Windows → Sistema → Área de transferência</td></tr>
+        <tr><td>A macro parou com "Assert failed"</td><td>Fez o que você mandou — o nome entre aspas é o Notes daquela linha</td><td>Se a premissa só demora, aumente o Wait for condition</td></tr>
+        <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
+        <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
+        <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <p class="footer-note">Manual do TrueReplayer · versão 2.24.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+</section>
+
+</div>
+
+
+<style>
+  @media print {
+    :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+      --paper: #FFFFFF; --surface: #F5F2EC; --surface-2: #EFEADF;
+      --ink: #1A1713; --ink-soft: #443E33; --muted: #6B6456;
+      --border: #DAD2C2; --border-strong: #B9AF98;
+      --gold: #6E5400; --gold-bg: #F6EFD9; --gold-border: #D8C892;
+      --violet: #4E2AA5; --violet-bg: #EEE9FA; --violet-border: #CDBFEE;
+      --ok: #1F6335; --ok-bg: #E6F2E7; --bad: #8E3220; --bad-bg: #F9E9E3;
+      --warn-bg: #FCF5E2; --warn-border: #DFCB8C; --code-bg: #F2EEE4;
+      --shadow: none;
+    }
+    body { font-size: 11pt; background: #FFFFFF; }
+    .wrap { max-width: none; padding: 0; }
+    .toc { display: none; }
+    header { padding-top: 0; }
+    section { margin-top: 34px; }
+    .part-head { break-before: page; }
+    #p1 .part-head { break-before: auto; }
+    .xmpl, .callout, figure, .gridmock, .card, .tbl-wrap, .chain-step { break-inside: avoid; }
+    h2, h3, h4 { break-after: avoid; }
+    th { position: static; }
+    .gridmock, .tbl-wrap, .fig-scroll { overflow: visible; }
+  }
+</style>
+</body>
+</html>

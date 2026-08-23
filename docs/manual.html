@@ -1047,7 +1047,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h2>Macros que decidem, repetem — e que exigem</h2>
   </div>
 
-  <p>Um <strong>condicional</strong> divide a macro em dois caminhos: <em>se</em> algo é verdade, executa um bloco; <em>senão</em>, executa outro (ou pula direto). Na grade, são três linhas especiais: <strong>If</strong> (a pergunta), <strong>Else</strong> (opcional) e <strong>End If</strong> (o fim do bloco).</p>
+  <p>Um <strong>condicional</strong> divide a macro em dois caminhos: <em>se</em> algo é verdade, executa um bloco; <em>senão</em>, executa outro (ou pula direto). Na grade, são linhas especiais: <strong>If</strong> (a pergunta), <strong>Else If</strong> (mais perguntas no mesmo bloco, opcionais — Nível 3), <strong>Else</strong> (opcional) e <strong>End If</strong> (o fim do bloco).</p>
 
   <figure>
     <div class="fig-scroll">
@@ -1822,6 +1822,9 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O While rodou o corpo uma vez e parou</td><td>A condição já era falsa na 2ª checagem — ou o perfil está numa <strong>versão antiga</strong>, que não conhece While e ignora as linhas do bloco</td><td>Test na linha While; confira o aviso de versão no import (perfis com loop exigem 2.25.0)</td></tr>
         <tr><td>O While não para nunca</td><td>A condição nunca vira "não" (ou é um While NOT com a checagem quebrando)</td><td>O teto segura: Max iterations (padrão 1000). Ajuste a condição — e o log diz quando o teto agiu</td></tr>
         <tr><td>Break loop / Next iteration cinzas no menu</td><td>O ponto de inserção está fora de qualquer loop</td><td>Selecione uma linha <em>dentro</em> do bloco e insira de novo</td></tr>
+        <tr><td>O Else If sumiu quando o perfil recarregou</td><td>Estava <em>depois</em> do Else (inalcançável) ou fora de um bloco If — o validador remove braços órfãos ao carregar</td><td>Insira pela linha tracejada <strong>+ Add Else If</strong>, que sempre coloca antes do Else</td></tr>
+        <tr><td>O botão + Add Else não aparece</td><td>O bloco já tem um Else — é um só por bloco, sempre o último</td><td>Braços extras entram com <strong>+ Add Else If</strong>, antes do Else</td></tr>
+        <tr><td>Marquei um Else If como pulado e o bloco continuou rodando</td><td>É o esperado: cinza num <em>braço</em> desliga só aquela alternativa; a checagem segue no braço seguinte</td><td>Para desligar o bloco inteiro, marque o <strong>If</strong></td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
         <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
         <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>

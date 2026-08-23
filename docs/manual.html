@@ -531,7 +531,7 @@
           <tr><td><strong>Wait Image / Wait Pixel Color</strong></td><td>Esperam a tela ficar pronta — Parte 7.</td></tr>
           <tr><td><strong>Run Profile</strong></td><td>Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados.</td></tr>
           <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — Parte 8.</td></tr>
-          <tr><td><strong>If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — Parte 6.</td></tr>
+          <tr><td><strong>If / Else If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — Parte 6.</td></tr>
           <tr><td><strong>While / End Loop · Break / Next</strong></td><td>Bloco que repete enquanto a condição vale, e os saltos de controle — Parte 6.</td></tr>
           <tr><td><strong>For Each Data Row</strong></td><td>Repete só um trecho, uma vez por linha da tabela — Parte 12.</td></tr>
           <tr><td><strong>Stop · Return</strong></td><td>Encerram no meio: a execução inteira, ou só o passe atual — Parte 6.</td></tr>
@@ -1103,7 +1103,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div></div>
 
     <p><strong>Para editar a linha If:</strong> passe o mouse e clique no lápis, ou selecione e aperte <span class="kbd">Enter</span>. O editor tem o botão <strong>Test</strong> — ele faz a mesma pergunta que a execução faria e responde na hora, sem rodar a macro. Use sempre: é o que evita descobrir o erro só na execução.</p>
-    <p><strong>Para ganhar um Else:</strong> dentro do bloco, logo acima do End If, existe a linha tracejada <strong>+ Add Else branch</strong>. É ali que o Else nasce — ele não está no menu do botão direito.</p>
+    <p><strong>Para ganhar mais caminhos:</strong> dentro do bloco existe uma linha tracejada com dois botões — <strong>+ Add Else If</strong> (mais uma pergunta, quantas quiser) e <strong>+ Add Else</strong> (o caminho de quando nenhuma valeu, um só por bloco). É ali que eles nascem — não estão no menu do botão direito. Detalhes na escada do Nível 3.</p>
 
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
@@ -1210,14 +1210,14 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> Aninhando: um If dentro do outro</h3>
+    <h3><span class="nivel">Nível 3</span> Vários caminhos: Else If e aninhamento</h3>
     <p>Blocos podem ficar dentro de blocos, <strong>sem limite de profundidade</strong> — cada nível ganha a sua cor na grade. Para criar: <strong>selecione uma linha que está dentro do bloco</strong> e use Insert Conditional.</p>
 
     <div class="callout co-rule">
       <div class="co-icon">🪜</div>
       <div>
-        <p><span class="co-title">Não existe "Else If" — e não faz falta.</span></p>
-        <p>Para testar várias opções em sequência, monte uma <strong>escada</strong>: cada novo If entra <em>dentro do Else</em> do anterior.</p>
+        <p><span class="co-title">Vários caminhos? Use <em>Else If</em> — sem aninhar nada.</span></p>
+        <p>Dentro do bloco, na linha tracejada, o botão <strong>+ Add Else If</strong> acrescenta mais uma pergunta ao <em>mesmo</em> bloco. As perguntas são checadas <strong>de cima para baixo</strong> e <strong>a primeira que der verdade vence</strong> — as de baixo nem chegam a ser checadas. O <strong>Else</strong> no fim continua opcional: é o caminho de quando nenhuma valeu.</p>
       </div>
     </div>
 
@@ -1225,14 +1225,22 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="gm-head">Escada de decisões — um caminho para cada resposta</div>
       <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Troca</span></div>
       <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">fluxo de troca…</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">Else If</span><span class="gm-detail">Variable — motivo = Devolução</span><span class="gm-note">só é checada se a de cima deu falso</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">fluxo de devolução…</span></div>
       <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
-      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Devolução</span></div>
-      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">fluxo de devolução…</span></div>
-      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">Else</span></div>
-      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">encaminhando para um atendente…</span></div>
-      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">End If</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">encaminhando para um atendente…</span></div>
       <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
     </div></div>
+
+    <p>Cada <strong>Else If</strong> tem condição própria e o mesmo editor do If — as mesmas famílias (imagem, pixel, janela, clipboard, variável, processo, arquivo, horário, elemento de página, sorteio), com <strong>Test</strong>, <strong>Negate</strong>, <strong>Delay</strong> e <strong>Wait for condition</strong>. Um único <strong>End If</strong> fecha o bloco inteiro, não importa quantos braços ele tenha. Um bloco aceita quantos Else If você quiser, mas <strong>um só Else</strong>, e ele é sempre o último — por isso o <em>+ Add Else If</em> sempre insere <strong>antes</strong> do Else.</p>
+
+    <div class="callout co-rule">
+      <div class="co-icon">💡</div>
+      <div>
+        <p><span class="co-title">Marcar um braço como pulado desliga só aquele braço.</span></p>
+        <p>Cinza no <strong>If</strong> apaga o bloco inteiro da execução. Cinza num <strong>Else If</strong> apaga só aquela alternativa — a checagem continua no braço seguinte, como se aquela pergunta tivesse dado falso.</p>
+      </div>
+    </div>
 
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
@@ -1244,7 +1252,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
     <h4 style="margin-top:24px">Editando o conteúdo de um bloco</h4>
     <ul>
-      <li>Uma operação só pega o <strong>bloco inteiro</strong> quando a seleção inclui um marcador (If / Else / EndIf) — marcadores nunca ficam órfãos.</li>
+      <li>Uma operação só pega o <strong>bloco inteiro</strong> quando a seleção inclui um marcador (If / Else If / Else / EndIf) — marcadores nunca ficam órfãos.</li>
       <li><strong>Arraste</strong> ações do corpo para dentro ou fora, livremente. <span class="kbd">Alt</span>+<span class="kbd">↑</span>/<span class="kbd">↓</span>: seleção só de corpo move sozinha; tocando um marcador, leva o bloco.</li>
       <li><strong>Delete</strong> no corpo mantém o bloco; delete no <strong>If</strong> apaga o bloco inteiro. <strong>Duplicar</strong> um If copia o bloco inteiro.</li>
     </ul>
@@ -1821,7 +1829,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.25.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.26.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

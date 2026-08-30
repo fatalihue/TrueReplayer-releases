@@ -507,7 +507,7 @@
     <h3>O menu da linha</h3>
     <p>Botão direito numa linha: <strong>Edit · Pick from screen · Duplicate · More · Delete</strong>.</p>
     <ul>
-      <li><strong>Pick from screen</strong> <em>(linhas de clique, incluindo Double Click)</em> — abre o seletor de posição na tela; ao escolher o ponto, o formulário da ação abre com X/Y já preenchidos como rascunho. Ajuste o que quiser e <strong>Save</strong> grava; <strong>Cancel</strong> descarta — nada muda até você salvar.</li>
+      <li><strong>Pick from screen</strong> <em>(linhas de clique, incluindo Double e Triple Click)</em> — abre o seletor de posição na tela; ao escolher o ponto, o formulário da ação abre com X/Y já preenchidos como rascunho. Ajuste o que quiser e <strong>Save</strong> grava; <strong>Cancel</strong> descarta — nada muda até você salvar. Numa linha marcada como <strong>At cursor</strong> a opção não aparece: aquela linha não guarda ponto nenhum para preencher.</li>
       <li><strong>More</strong> guarda o resto, começando por <strong>Copy Coordinates</strong>.</li>
     </ul>
   </div>
@@ -520,6 +520,7 @@
         <tbody>
           <tr><td><strong>Left / Right / Middle Click</strong></td><td>Um clique em (x, y) — ou N cliques com intervalo, Gap jitter e Position jitter.</td></tr>
           <tr><td><strong>Double Click</strong></td><td>Dois cliques abaixo do limiar do sistema, para o app ler como duplo de verdade. Aceita × N.</td></tr>
+          <tr><td><strong>Triple Click</strong></td><td>Três cliques encadeados do mesmo jeito — o app lê como triplo de verdade (selecionar um parágrafo). Duas ações Double Click seguidas <em>não</em> fazem isso. Aceita × N.</td></tr>
           <tr><td><strong>Keystroke</strong></td><td>Uma tecla ou combinação — ou N vezes com intervalo e Gap jitter.</td></tr>
           <tr><td><strong>Hold Key</strong></td><td>Segura uma tecla por N ms (padrão 1000). Modificadores são descartados.</td></tr>
           <tr><td><strong>Key Down / Key Up</strong></td><td>Pressionar ou soltar isolado — para arrastar ou segurar tecla.</td></tr>
@@ -546,15 +547,41 @@
     <p>Keystroke e os cliques repetem na própria linha, sem precisar de loop:</p>
     <ul>
       <li><strong>Times to repeat</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
-      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima (padrão 30 ms; <strong>600 ms</strong> no Double Click, porque um duplo precisa de folga acima da velocidade do Windows para contar como duplo <em>distinto</em>).</li>
+      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima (padrão 30 ms; <strong>600 ms</strong> no Double e no Triple Click, porque um multi-clique precisa de folga acima da velocidade do Windows para o seguinte contar como <em>distinto</em> em vez de virar um borrão só).</li>
       <li><strong>Gap jitter</strong> — ± % aleatório em cada intervalo.</li>
-      <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo.</li>
+      <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo. Fica desabilitado quando a linha está em <strong>At cursor</strong>: o desvio moveria o próprio cursor que a ação lê, e cada repetição partiria deslocada pela anterior.</li>
     </ul>
     <div class="callout co-rule">
       <div class="co-icon">🎲</div>
       <div>
         <p><span class="co-title">Quando usar jitter.</span></p>
         <p><code>Click × 3</code> com Gap + Position jitter parece humano — é o que serve em jogos, onde repetir o mesmo pixel no mesmo ritmo é o sinal mais óbvio de macro. Para automação comum (um botão, um campo), <strong>deixe desligado</strong>: ali você quer o pixel exato.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3>Clicar onde o mouse estiver</h3>
+    <p>Todo clique guarda uma coordenada. Quando o alvo só é conhecido na hora de rodar, o campo
+      <strong>Position</strong> do formulário troca isso:</p>
+    <ul>
+      <li><strong>This point</strong> — o de sempre: clica no X/Y gravado.</li>
+      <li><strong>At cursor</strong> — ignora o X/Y e clica <strong>onde o cursor estiver naquele instante</strong>. Os campos X/Y somem, porque não há número a mostrar.</li>
+    </ul>
+    <p>Serve quando o passo anterior já deixou o mouse no lugar certo, ou quando é você quem posiciona
+      antes de disparar. Vale para Left, Right, Middle, Double e Triple Click.</p>
+    <ul>
+      <li>A posição é lida <strong>uma vez por repetição</strong>, nunca a cada meia-ação — senão um esbarrão no mouse entre o pressionar e o soltar viraria um arrasto.</li>
+      <li>Esse clique <strong>não depende do alvo de janela</strong>: com coordenadas relativas ligadas (Parte 8) ele funciona mesmo se a janela não for encontrada, porque não há coordenada a traduzir.</li>
+      <li>O ponto gravado <strong>não é apagado</strong> — voltar para <em>This point</em> devolve a coordenada original.</li>
+    </ul>
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">O cursor precisa estar onde você acha que está.</span></p>
+        <p>Um clique <em>At cursor</em> obedece ao mouse no milissegundo em que a linha roda. Se a macro
+          leva alguns segundos até ali e você mexeu o mouse nesse meio-tempo, ele clica no lugar novo.
+          Para um alvo fixo, use <strong>This point</strong>.</p>
       </div>
     </div>
   </div>
@@ -1860,12 +1887,15 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>Marquei um Else If como pulado e o bloco continuou rodando</td><td>É o esperado: cinza num <em>braço</em> desliga só aquela alternativa; a checagem segue no braço seguinte</td><td>Para desligar o bloco inteiro, marque o <strong>If</strong></td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
         <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
+        <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (Parte 2)</td></tr>
+        <tr><td>O Triple Click só selecionou uma palavra</td><td>O app-alvo não encadeia três cliques, ou o intervalo do sistema é curto demais</td><td>Confirme com um triplo-clique à mão no mesmo lugar; se à mão também não seleciona, o app não suporta</td></tr>
+        <tr><td>Um perfil com Triple Click ou At cursor foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.31.0</strong> e não tem esses recursos</td><td>Atualize o TrueReplayer daquela máquina — a recusa é proposital, rodar mesmo assim clicaria no lugar errado</td></tr>
         <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.30.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.31.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

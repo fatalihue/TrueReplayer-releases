@@ -1367,8 +1367,18 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Wait until</strong> — <em>Appears</em> ou <em>Disappears</em> (esperar um "Carregando…" sumir vale tanto quanto esperar um botão surgir).</li>
       <li><strong>Timeout + On Timeout</strong> — quanto esperar e o que fazer se estourar: <strong>Halt</strong> para a macro, <strong>Continue</strong> segue.</li>
       <li><strong>Click on found location</strong> — clica direto no ponto encontrado, poupando uma ação de clique.</li>
-      <li><strong>Search region</strong> — limitar a busca a um pedaço da tela é mais rápido e dá menos falso positivo.</li>
+      <li><strong>Search region</strong> — o pedaço da tela onde procurar. Sem região, a busca é na tela inteira, e isso custa caro nos dois sentidos (veja abaixo).</li>
     </ul>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Defina a região de busca. É o ajuste que mais paga.</span></p>
+        <p>Procurar na tela inteira custa cerca de <strong>440 ms por verificação</strong>; dentro de uma região de 400×300, cerca de <strong>4 ms</strong>. Como a verificação se repete enquanto a macro espera, sem região ela consome CPU justamente quando deveria estar parada — disputando processador com o programa que ela está controlando.</p>
+        <p>E o motivo mais forte não é velocidade: em tela cheia a busca pode casar com algo <strong>parecido em outro canto</strong> — outra aba, outro monitor. Com "Click on found location" ligado, esse acerto errado vira um clique no lugar errado, no meio da macro.</p>
+        <p>O <strong>Test match</strong> já define a região sozinho em volta do que encontrou. Se o campo mostra "Full screen" em destaque, é isso que ele está avisando.</p>
+      </div>
+    </div>
   </div>
 
   <div class="subsec">
@@ -1602,6 +1612,27 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </ul>
 
   <div class="subsec">
+    <h3>Quando a extensão cai</h3>
+    <p>A conexão com o Chrome pode cair no meio de uma sessão — a extensão foi desativada, o Chrome fechou, o navegador reciclou o processo dela. O app mostra isso em dois momentos, porque as consequências são bem diferentes conforme o tipo de linha.</p>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Ação de navegador falha alto. Condição de navegador falha calada.</span></p>
+        <p>Um <strong>Browser Click</strong> sem extensão dá erro e você vê. Já um <strong>If Browser Element</strong> lê "não encontrado" — exatamente o que leria se o elemento realmente não estivesse na página. A macro então pega o caminho do <em>senão</em> e segue, sem erro nenhum, com o relatório todo verde.</p>
+        <p>É por isso que vale conferir a conexão antes de culpar a macro quando ela "decidiu errado".</p>
+      </div>
+    </div>
+
+    <ul>
+      <li><strong>Antes de rodar</strong> — ao iniciar uma execução que tem linhas de navegador com a extensão desconectada, o app avisa quantas linhas não vão funcionar. Vale para todo jeito de iniciar: botão, atalho global, automação e perfil chamado por outro.</li>
+      <li><strong>Durante</strong> — a barra de status mostra um ícone discreto enquanto a extensão está conectada, e troca para <strong>"Extension disconnected"</strong> se ela cair. Recarregar uma aba ou o Chrome reciclar a extensão <em>não</em> aciona o aviso: ele só aparece depois de alguns segundos de queda contínua, para não virar pisca-pisca.</li>
+      <li>O indicador só aparece com <strong>Browser Actions</strong> ligado em Settings — se você não usa navegador, ele não ocupa espaço.</li>
+      <li>Se o aviso for de <strong>versão</strong> da extensão (e não de conexão), recarregue-a em <code>chrome://extensions</code>. Fechar e reabrir o Chrome não basta para uma extensão descompactada.</li>
+    </ul>
+  </div>
+
+  <div class="subsec">
     <h3>Run report — qual passo quebrou, e por quê</h3>
     <p><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Run report</strong>: a última execução passo a passo, com o que cada um mirou e quanto levou. Duas coisas que só ele mostra:</p>
     <ul>
@@ -1815,6 +1846,8 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>"O dropnum não removeu o 1x"</td><td>O texto chega ao dropnum começando com espaço, ou o sufixo está sem o espaço final</td><td>Use <code>after:&nbsp;-&nbsp;</code> (com espaços) e sufixo <code>x&nbsp;</code></td></tr>
         <tr><td>"{var:...} veio vazio"</td><td>Nome com espaço/acento, ou nunca definida nesta execução</td><td>Nomes só com letras, números e <code>_</code></td></tr>
         <tr><td>O If de imagem nunca dá sim</td><td>Confiança em 100%</td><td>Baixe para 80–90%</td></tr>
+        <tr><td>O Wait Image deixa o PC pesado enquanto espera</td><td>Sem região de busca, cada verificação varre a tela inteira (~440 ms, contra ~4 ms numa região)</td><td>Defina a <strong>Search region</strong> — o Test match já sugere uma</td></tr>
+        <tr><td>Um If de navegador "decidiu errado", sem erro nenhum</td><td>Extensão desconectada: a condição lê "não encontrado", igual a um elemento realmente ausente, e a macro segue pelo senão</td><td>Confira o indicador na barra de status; ação de navegador falharia alto, condição não (Parte 11)</td></tr>
         <tr><td>O token saiu escrito na tela</td><td>Erro de digitação no nome (<code>{clipbord}</code>) — token desconhecido vira texto literal</td><td>Insira pelos chips da paleta</td></tr>
         <tr><td>"{winclip} veio vazio"</td><td>Histórico do Windows desligado</td><td>Configurações do Windows → Sistema → Área de transferência</td></tr>
         <tr><td>A macro parou com "Assert failed"</td><td>Fez o que você mandou — o nome entre aspas é o Notes daquela linha</td><td>Se a premissa só demora, aumente o Wait for condition</td></tr>
@@ -1832,7 +1865,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.26.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.30.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

@@ -767,7 +767,7 @@
     </div>
 
     <h4 style="margin-top:26px">Formatação: o seletor Delivery</h4>
-    <p>No rodapé do editor você escolhe <em>como</em> a formatação chega ao destino:</p>
+    <p>Na <strong>barra de formatação</strong>, à direita dos botões de negrito e itálico, você escolhe <em>como</em> a formatação chega ao destino:</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Modo</th><th>Use em</th></tr></thead>
@@ -779,11 +779,26 @@
         </tbody>
       </table>
     </div>
+    <p>Em <strong>Plain</strong> os botões de formatação ficam apagados: a formatação continua <em>salva</em> na ação e volta se você trocar para Rich — ela apenas não é enviada.</p>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">A formatação só sobrevive num bloco contínuo.</span> No modo <strong>Rich</strong>, o app só consegue anexar a formatação quando o texto resolvido forma <strong>um bloco só</strong>. Uma tecla ou pausa no <em>meio</em> — <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> com texto dos <strong>dois</strong> lados — parte esse bloco, e a mensagem chega <strong>sem formatação nenhuma</strong>. Na ponta (começo ou fim) não atrapalha.</p>
+        <p>Três saídas: mova a tecla para a <strong>ponta</strong> do texto; quebre em <strong>duas</strong> ações Send Text; ou use <strong>Markdown</strong> ou <strong>Discord</strong>, que mandam as marcas como texto literal e não passam por essa regra.</p>
+        <p>Você não precisa descobrir isso na hora do envio: quando o texto cai nesse caso, o editor mostra o aviso e o selo da linha na grade fica com a tinta de dúvida. O aviso é um <em>palpite</em> sobre o texto que você escreveu — um token que resolve vazio pode juntar dois blocos em um, ou o contrário —, por isso ele levanta a dúvida em vez de trocar o rótulo.</p>
+      </div>
+    </div>
+
+    <h4 style="margin-top:26px">A aba Preview</h4>
+    <p>A terceira aba da trilha lateral — <strong>Insert · Emoji · Preview</strong> — resolve a mensagem <em>agora</em> e mostra como ela deve chegar. O que não dá para resolver fora de uma execução aparece marcado, com o motivo: <span class="tok">{counter}</span> só existe dentro de um loop, <span class="tok">{input:…}</span> vai perguntar na hora, <span class="tok">{clipboard}</span> depende do que estiver copiado. É onde se confere um token com argumento antes de descobrir no alvo que ele chegou literal.</p>
+
     <div class="callout co-rule">
       <div class="co-icon">✳️</div>
       <div>
         <p><span class="co-title">A mensagem chegou mostrando asteriscos?</span> Você mandou Markdown para um app que não entende — troque para Rich ou Plain. Se a formatação <em>sumiu</em>, o alvo não aceita texto rico.</p>
-        <p><span class="co-title">Snippet ≠ ação.</span> Snippets são textos reutilizáveis salvos por nome, para <em>você escrever</em> mais rápido — ficam no app, não no perfil, e não viajam no export. O que roda é a ação Send Text salva na grade.</p>
+        <p><span class="co-title">Snippet ≠ ação.</span> Snippets são textos reutilizáveis salvos por nome, para <em>você escrever</em> mais rápido — ficam no app e valem para todos os perfis. O que roda é a ação Send Text salva na grade, não o snippet.</p>
+        <p><span class="co-title">Levando os snippets para outra máquina.</span> Eles não viajam dentro do perfil, porque não pertencem a nenhum: têm <strong>export e import próprios</strong>, no topo da lista de snippets. O import <em>soma</em> à lista que já existe em vez de substituí-la — então importar o mesmo arquivo duas vezes deixa cada snippet repetido, com o mesmo nome. Apague a cópia extra pela própria lista.</p>
       </div>
     </div>
   </div>
@@ -1887,6 +1902,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>Marquei um Else If como pulado e o bloco continuou rodando</td><td>É o esperado: cinza num <em>braço</em> desliga só aquela alternativa; a checagem segue no braço seguinte</td><td>Para desligar o bloco inteiro, marque o <strong>If</strong></td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
         <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
+        <tr><td>O negrito sumiu, e só nessa mensagem</td><td>Há um <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> no <em>meio</em> do texto — em Rich a formatação só vai quando o texto forma um bloco só</td><td>Mova a tecla para a ponta, quebre em duas ações Send Text, ou use Markdown/Discord (Parte 4)</td></tr>
         <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (Parte 2)</td></tr>
         <tr><td>O Triple Click só selecionou uma palavra</td><td>O app-alvo não encadeia três cliques, ou o intervalo do sistema é curto demais</td><td>Confirme com um triplo-clique à mão no mesmo lugar; se à mão também não seleciona, o app não suporta</td></tr>
         <tr><td>Um perfil com Triple Click ou At cursor foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.31.0</strong> e não tem esses recursos</td><td>Atualize o TrueReplayer daquela máquina — a recusa é proposital, rodar mesmo assim clicaria no lugar errado</td></tr>
@@ -1895,7 +1911,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.31.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.32.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

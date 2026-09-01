@@ -749,7 +749,7 @@
     </ul>
 
     <h4 style="margin-top:26px">A área de transferência: <span class="tok">{clipboard}</span></h4>
-    <p>O token mais usado. Vira <strong>o que estiver copiado (Ctrl+C)</strong> no momento da execução — a ponte perfeita: copie algo em um lugar, aperte o atalho, e a macro usa esse conteúdo na resposta. Seu clipboard real é restaurado depois.</p>
+    <p>O token mais usado. Vira <strong>o que estiver copiado (Ctrl+C)</strong> no momento da execução — a ponte perfeita: copie algo em um lugar, aperte o atalho, e a macro usa esse conteúdo na resposta. Seu clipboard real é restaurado depois. No modo <strong>Type</strong> ele nem chega a ser alterado — o app só lê.</p>
     <div class="xmpl">
       <div class="xmpl-title">Exemplo — responder com o que você copiou</div>
       <div class="xmpl-row">
@@ -764,6 +764,30 @@
         </div>
       </div>
       <div class="xmpl-note">Segurança embutida: se o texto copiado contiver <code>{enter}</code> escrito, ele é digitado como texto normal — conteúdo colado nunca "vira tecla" sem querer.</div>
+    </div>
+
+    <h4 style="margin-top:26px">Como o texto chega: Paste ou Type</h4>
+    <p>Antes do seletor de formatação, na mesma barra, há duas opções que decidem <em>por onde</em> o texto passa. É um eixo <strong>separado</strong> do Delivery: cada um dos dois combina com qualquer um dos quatro formatos.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modo</th><th>Como funciona</th><th>Use em</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Paste</strong> (padrão)</td><td>O texto vai para a área de transferência e o app manda <code>Ctrl+V</code>. Instantâneo em qualquer tamanho. O que você tinha copiado é restaurado depois.</td><td>E-mail, navegador, documentos — praticamente tudo.</td></tr>
+          <tr><td><strong>Type</strong></td><td>O texto é <em>digitado</em>, tecla por tecla. Não escreve nada na área de transferência — só <em>lê</em>, para resolver <span class="tok">{clipboard}</span>.</td><td>Alvos que <strong>ignoram Ctrl+V</strong>: chat de jogo, alguns terminais, campos que bloqueiam colar.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Em <strong>Type</strong> aparece ao lado um campo <strong>ms</strong>: a pausa entre um caractere e o próximo, que também é o tempo que cada tecla fica pressionada. Deixe em <strong>0</strong> — é o normal, e o app manda o trecho inteiro de uma vez. Só suba se o alvo estiver perdendo letras: comece em <strong>5</strong>. A 10 ms, uma mensagem de 500 caracteres leva 10 segundos.</p>
+    <p><span class="tok">{enter}</span>, <span class="tok">{tab}</span> e <span class="tok">{delay:N}</span> funcionam igual nos dois modos — eles sempre foram teclas de verdade, nunca texto colado.</p>
+
+    <div class="callout co-warn">
+      <div class="co-icon">&#9888;&#65039;</div>
+      <div>
+        <p><span class="co-title">Type não envia formatação.</span> Digitar manda teclas, e tecla não carrega negrito. No modo <strong>Type</strong> com Delivery em <strong>Rich</strong> a mensagem chega <strong>sem formatação nenhuma</strong> — os botões de negrito e itálico ficam apagados para avisar, e a linha na grade mostra o selo <span class="tok">type</span> com a tinta de alerta.</p>
+        <p>A formatação <em>não se perde</em>: continua salva na ação e volta assim que você escolher <strong>Paste</strong>. E se você precisa digitar <em>e</em> manter a formatação, use <strong>Markdown</strong> ou <strong>Discord</strong>: as marcas deles (<code>*negrito*</code>) são caracteres comuns e são digitadas exatamente como estão.</p>
+        <p><span class="co-title">Cada quebra de linha vira um Enter de verdade.</span> Uma mensagem de três linhas <em>colada</em> num chat é <strong>uma</strong> mensagem; <em>digitada</em>, são <strong>três</strong>. Se o destino envia com Enter, escreva uma ação por mensagem.</p>
+        <p><span class="co-title">Perfil com Type não abre em versão antiga.</span> Quem estiver abaixo da <strong>2.33.0</strong> vê a linha recusada na importação — de propósito: aquela versão ignoraria o ajuste e <em>colaria</em>, ou seja, não entregaria nada justamente no alvo que não aceita colar.</p>
+      </div>
     </div>
 
     <h4 style="margin-top:26px">Formatação: o seletor Delivery</h4>
@@ -1901,6 +1925,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O botão + Add Else não aparece</td><td>O bloco já tem um Else — é um só por bloco, sempre o último</td><td>Braços extras entram com <strong>+ Add Else If</strong>, antes do Else</td></tr>
         <tr><td>Marquei um Else If como pulado e o bloco continuou rodando</td><td>É o esperado: cinza num <em>braço</em> desliga só aquela alternativa; a checagem segue no braço seguinte</td><td>Para desligar o bloco inteiro, marque o <strong>If</strong></td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
+        <tr><td>O jogo / terminal não recebeu nada, mas a macro rodou sem erro</td><td>O alvo ignora <code>Ctrl+V</code>. A ação estava em <strong>Paste</strong></td><td>Abra a ação e troque para <strong>Type</strong>. Se ainda faltar letra, suba o <strong>ms</strong> para 5 (Parte 4)</td></tr>
         <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
         <tr><td>O negrito sumiu, e só nessa mensagem</td><td>Há um <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> no <em>meio</em> do texto — em Rich a formatação só vai quando o texto forma um bloco só</td><td>Mova a tecla para a ponta, quebre em duas ações Send Text, ou use Markdown/Discord (Parte 4)</td></tr>
         <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (Parte 2)</td></tr>
@@ -1911,7 +1936,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.32.0 · agosto de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.33.0 · setembro de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

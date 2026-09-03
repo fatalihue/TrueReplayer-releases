@@ -1453,6 +1453,23 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
+    <h3>A lupa — acertar o pixel certo, não o vizinho</h3>
+    <p>Toda vez que o app pede um ponto, uma área ou um recorte — o conta-gotas do Wait Pixel, o <strong>Pick position</strong>, a área do Click Area, a região e a captura do Wait Image — a tela escurece e uma <strong>lupa</strong> segue o cursor, mostrando os pixels ampliados e sem borrar. A célula destacada no centro é <em>exatamente</em> o pixel que será gravado.</p>
+    <ul>
+      <li><strong>Roda do mouse = zoom.</strong> São cinco níveis e ela abre no mais afastado, para você achar a região primeiro; role para cima ao chegar perto.</li>
+      <li><strong>Segure Shift para o modo lento.</strong> O mouse passa a andar cinco vezes menos, o que é a diferença entre pegar a borda do botão e pegar o fundo atrás dele. A lupa mostra <strong>SLOW</strong> enquanto a tecla está pressionada.</li>
+      <li><strong>No conta-gotas, a etiqueta traz HEX, RGB e uma amostra da cor</strong> — dá para conferir o valor antes de clicar, em vez de descobrir depois que pegou o pixel errado.</li>
+    </ul>
+    <div class="callout co-rule">
+      <div class="co-icon">🎯</div>
+      <div>
+        <p><span class="co-title">Um pixel de erro é uma macro que nunca dispara.</span></p>
+        <p>Indicadores costumam ter borda com gradiente: o pixel visualmente "verde" pode estar a um passo de um cinza de contorno. Se um Wait Pixel espera para sempre com a tela claramente certa, refaça a coleta com zoom e Shift — e, se a cor tiver mesmo variação, suba a <strong>tolerância</strong> em vez de caçar o pixel perfeito.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
     <h3>Pause</h3>
     <p>Para a execução até uma <strong>hotkey de retomada</strong> ou um <strong>timeout</strong> — precisa de pelo menos um dos dois. É a espera <em>humana</em>: "faça sua parte e me avise" no meio de uma macro.</p>
   </div>
@@ -1585,10 +1602,30 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Uma execução por vez</strong> — durante um replay, gravação, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). Uma automação nunca atropela trabalho não salvo.</li>
       <li><strong>Respeita os Loops, nunca roda para sempre</strong> — o infinito de While Pressed / Toggle é ignorado quando quem chama é o gatilho.</li>
       <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta).</li>
-      <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo (mude para <strong>Continuous</strong> para repetir enquanto verdadeira). Cooldown padrão 30 s.</li>
+      <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo (mude para <strong>Continuous</strong> para repetir enquanto verdadeira). Cooldown padrão <strong>30 s</strong> — mas <strong>5 s no Clipboard changed</strong>, que muda com muito mais frequência. <code>0</code> no campo significa "use o padrão do tipo", não "sem cooldown".</li>
       <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: trocar 1 s por 5 s corta o custo em cinco, e para "um download terminando" você não perde nada.</li>
+      <li><strong>Um vigia pode se aposentar sozinho</strong> — se a imagem de referência sumiu do disco, ou a condição nunca poderá bater (uma cor inválida, um regex de título que não compila), o vigia para de olhar. Ele continua marcado como <strong>Armed</strong> na bandeja e na barra lateral, então o app <strong>avisa por um balão na bandeja</strong> quando isso acontece — sem ele, a única tela que mostrava a diferença era o painel de Automation, que ninguém deixa aberto.</li>
+      <li><strong>Reset counters</strong> — os contadores de disparo e de pulo são totais de sempre, então uma tarde de testes deixa números que nunca mais significam "como isto está indo agora". O botão zera os contadores <em>daquela</em> automação e <strong>não</strong> mexe no próximo horário nem no intervalo que está sendo contado.</li>
     </ul>
+  </div>
 
+  <div class="subsec">
+    <h3>Active hours — só dentro de uma faixa do dia</h3>
+    <p>Interval e Condition aceitam uma <strong>janela de horário</strong>: "a cada dez minutos, mas só entre 09:00 e 18:00". Fora dela o vigia não dispara.</p>
+    <ul>
+      <li><strong>Se o fim vier antes do começo, a janela cruza a meia-noite</strong> — <code>22:00</code> a <code>06:00</code> é a madrugada inteira, e funciona.</li>
+      <li><strong>O que fica de fora é pulado, não guardado.</strong> Um Interval de 10 min com janela 09:00–18:00 não acumula as dezenas de batidas da noite para despejá-las às nove da manhã: a hora de abrir é uma batida como qualquer outra.</li>
+      <li><strong>Campo vazio = sem janela</strong>, ou seja, o dia inteiro. Basta um dos dois lados em branco para a faixa deixar de valer — a janela só existe com os dois preenchidos.</li>
+      <li><strong>Apagar um lado não destrói o outro.</strong> Se você apagar o início para redigitá-lo, o fim continua ali esperando: o app guarda a metade preenchida em vez de inventar um <code>00:00</code> ou <code>23:59</code> no lugar do que sumiu.</li>
+      <li>Não vale para <strong>Schedule</strong>, que já é um horário.</li>
+    </ul>
+    <div class="callout co-rule">
+      <div class="co-icon">📌</div>
+      <div><p>Um perfil com Active hours <strong>exige TrueReplayer 2.35.0</strong> na máquina que o importar. Instalações mais antigas recusam o import — de propósito: elas leriam o campo como um horário simples e a automação rodaria o dia inteiro.</p></div>
+    </div>
+  </div>
+
+  <div class="subsec">
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
       <div>
@@ -1933,12 +1970,14 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (Parte 2)</td></tr>
         <tr><td>O Triple Click só selecionou uma palavra</td><td>O app-alvo não encadeia três cliques, ou o intervalo do sistema é curto demais</td><td>Confirme com um triplo-clique à mão no mesmo lugar; se à mão também não seleciona, o app não suporta</td></tr>
         <tr><td>Um perfil com Triple Click ou At cursor foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.31.0</strong> e não tem esses recursos</td><td>Atualize o TrueReplayer daquela máquina — a recusa é proposital, rodar mesmo assim clicaria no lugar errado</td></tr>
+        <tr><td>Um perfil com <strong>Active hours</strong> na automação foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.35.0</strong>, que não conhece a janela de horário</td><td>Atualize aquela máquina. A recusa evita o pior desfecho silencioso: a versão antiga leria a faixa como um horário simples e deixaria a automação rodando <em>o dia inteiro</em></td></tr>
+        <tr><td>A automação está Armed, mas parou de disparar e nada explica</td><td>O vigia se aposentou — imagem de referência apagada, ou condição que nunca pode bater</td><td>A partir da 2.35.0 um balão na bandeja avisa quando isso acontece. Abra Automation e use <strong>Run now</strong>: ele escreve o motivo na tela</td></tr>
         <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>
       </tbody>
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.34.0 · setembro de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <p class="footer-note">Manual do TrueReplayer · versão 2.36.0 · setembro de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
 </section>
 
 </div>

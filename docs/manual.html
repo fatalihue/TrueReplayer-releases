@@ -551,7 +551,11 @@
     font-family: 'Spline Sans Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
     color: var(--muted); margin: 34px 0 -20px;
   }
-  .toc a { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; transition: border-color .15s, transform .15s, box-shadow .15s; }
+  /* todos os cartões do mesmo tamanho: as linhas da grade se igualam e o <a> preenche a célula */
+  .toc { grid-auto-rows: 1fr; }
+  .toc li { margin: 0; }
+  .toc a { height: 100%; display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; transition: border-color .15s, transform .15s, box-shadow .15s; }
+  @media (max-width: 560px) { .toc { grid-auto-rows: auto; } }
   .toc a:hover, .toc a:focus-visible { transform: translateY(-1px); box-shadow: var(--shadow); }
   .t-ico {
     width: 34px; height: 34px; border-radius: 9px; background: var(--surface-2);

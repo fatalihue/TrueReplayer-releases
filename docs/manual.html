@@ -5,8 +5,10 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <meta name="description" content="Manual completo do TrueReplayer: gravação, perfis, tokens, condicionais, automação, clicker, navegador e data loop.">
 <title>Manual do TrueReplayer</title>
-</head>
-<body>
+<meta name="color-scheme" content="light dark">
+<meta name="theme-color" content="#FBF9F5" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#17181C" media="(prefers-color-scheme: dark)">
+<script>try{var t=localStorage.getItem('tr-manual-theme');if(t==='light'||t==='dark')document.documentElement.setAttribute('data-theme',t)}catch(e){}</script>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bricolage+Grotesque:opsz,wght@12..96,600;12..96,700;12..96,800&family=Figtree:wght@400;500;600;700&family=Spline+Sans+Mono:wght@400;500;600&display=swap">
 <style>
@@ -35,6 +37,11 @@
 
     --code-bg: #F1ECE1;
     --shadow: 0 1px 2px rgba(38,34,27,.06), 0 8px 24px -12px rgba(38,34,27,.12);
+    --row-alt: rgba(38,34,27,.03);
+    --row-hover: rgba(138,106,0,.07);
+    --glass: rgba(251,249,245,.86);
+    --topbar-h: 56px;
+    color-scheme: light;
   }
   @media (prefers-color-scheme: dark) {
     :root:not([data-theme="light"]) {
@@ -62,6 +69,10 @@
 
       --code-bg: #21232A;
       --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+      --row-alt: rgba(255,255,255,.035);
+      --row-hover: rgba(227,179,65,.08);
+      --glass: rgba(23,24,28,.82);
+      color-scheme: dark;
     }
   }
   :root[data-theme="dark"] {
@@ -89,13 +100,17 @@
 
     --code-bg: #21232A;
     --shadow: 0 1px 2px rgba(0,0,0,.4), 0 8px 24px -12px rgba(0,0,0,.5);
+      --row-alt: rgba(255,255,255,.035);
+      --row-hover: rgba(227,179,65,.08);
+      --glass: rgba(23,24,28,.82);
+      color-scheme: dark;
   }
 
   * { box-sizing: border-box; }
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) {
     html { scroll-behavior: auto; }
-    * { transition: none !important; }
+    * { transition: none !important; animation: none !important; }
   }
   body {
     margin: 0;
@@ -154,7 +169,6 @@
   }
 
   /* ── Header ─────────────────────────────────────────── */
-  header { padding: 64px 0 8px; }
   .app-tag {
     display: inline-flex; align-items: center; gap: 8px;
     font-family: 'Spline Sans Mono', monospace;
@@ -194,8 +208,7 @@
     font-size: .76rem; letter-spacing: .14em; text-transform: uppercase;
     display: inline-flex; align-items: center; gap: 8px;
   }
-  .eyebrow::before { content: ''; width: 22px; height: 3px; border-radius: 2px; background: currentColor; }
-  .p-gold .eyebrow { color: var(--gold); }
+    .p-gold .eyebrow { color: var(--gold); }
   .p-violet .eyebrow { color: var(--violet); }
   .p-mix .eyebrow { color: var(--ink-soft); }
 
@@ -335,40 +348,448 @@
     margin-top: 80px; padding-top: 20px; border-top: 1px solid var(--border);
     font-size: .84rem; color: var(--muted);
   }
+
+  /* ── Casca: barra superior, sumário lateral, layout ─── */
+  html { scroll-padding-top: calc(var(--topbar-h) + 18px); }
+  body { padding-top: var(--topbar-h); }
+  .progress {
+    position: fixed; top: 0; left: 0; height: 3px; width: 0; z-index: 60;
+    background: linear-gradient(90deg, var(--gold), var(--violet));
+    transition: width .08s linear;
+  }
+  .topbar {
+    position: fixed; top: 0; left: 0; right: 0; height: var(--topbar-h); z-index: 50;
+    background: var(--paper);
+    background: var(--glass);
+    -webkit-backdrop-filter: blur(12px); backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
+  .topbar-in {
+    max-width: 1280px; margin: 0 auto; height: 100%; padding: 0 20px;
+    display: flex; align-items: center; gap: 10px;
+  }
+  .brand {
+    display: inline-flex; align-items: center; gap: 10px; text-decoration: none;
+    font-family: 'Bricolage Grotesque', 'Figtree', sans-serif; font-weight: 700; font-size: 1.02rem; color: var(--ink);
+    white-space: nowrap;
+  }
+  .brand-mark {
+    width: 26px; height: 26px; border-radius: 8px; flex-shrink: 0;
+    background: linear-gradient(135deg, var(--gold), var(--violet));
+    display: grid; place-items: center; color: #fff;
+    font-family: 'Spline Sans Mono', monospace; font-size: .8rem; font-weight: 700;
+  }
+  .brand small { font-weight: 500; color: var(--muted); font-family: 'Figtree', sans-serif; font-size: .9rem; }
+  .tb-spacer { flex: 1; }
+  .tb-btn {
+    appearance: none; border: 1px solid var(--border); background: var(--surface); color: var(--ink-soft);
+    border-radius: 9px; height: 34px; min-width: 34px; padding: 0 10px;
+    display: inline-flex; align-items: center; justify-content: center; gap: 7px;
+    cursor: pointer; font: inherit; font-size: .84rem; text-decoration: none; white-space: nowrap;
+    transition: border-color .15s, background .15s;
+  }
+  .tb-btn:hover { border-color: var(--border-strong); background: var(--surface-2); color: var(--ink); }
+  .tb-btn .ico { width: 17px; height: 17px; }
+  .tb-btn .kbd { margin-left: 2px; }
+  .ver-pill {
+    font-family: 'Spline Sans Mono', monospace; font-size: .74rem; letter-spacing: .04em; color: var(--muted);
+    border: 1px dashed var(--border-strong); border-radius: 99px; padding: .25em .7em; white-space: nowrap;
+  }
+  .ver-pill:empty { display: none; }
+  .ico {
+    width: 18px; height: 18px; fill: none; stroke: currentColor; stroke-width: 1.8;
+    stroke-linecap: round; stroke-linejoin: round; flex-shrink: 0;
+  }
+  .menu-btn { display: none; }
+
+  .layout { display: grid; grid-template-columns: 272px minmax(0, 1fr); max-width: 1280px; margin: 0 auto; }
+  .sidenav {
+    position: sticky; top: var(--topbar-h); height: calc(100vh - var(--topbar-h));
+    overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin;
+    padding: 18px 10px 28px 20px; border-right: 1px solid var(--border);
+    font-size: .9rem;
+  }
+  .sn-head { display: flex; align-items: center; justify-content: space-between; margin-bottom: 12px; }
+  .sn-title {
+    font-family: 'Spline Sans Mono', monospace; font-size: .72rem; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--muted);
+  }
+  .sn-close { display: none; height: 30px; min-width: 30px; padding: 0; }
+  .sn-search { position: relative; margin-bottom: 14px; }
+  .sn-search > .ico { position: absolute; left: 10px; top: 50%; transform: translateY(-50%); width: 15px; height: 15px; color: var(--muted); }
+  .sn-search input {
+    width: 100%; height: 36px; border: 1px solid var(--border); border-radius: 9px;
+    background: var(--surface); color: var(--ink); padding: 0 34px 0 32px;
+    font: inherit; font-size: .88rem;
+  }
+  .sn-search input::placeholder { color: var(--muted); }
+  .sn-search input:focus { outline: 2px solid var(--gold); outline-offset: 1px; border-color: var(--border-strong); }
+  .sn-search input::-webkit-search-cancel-button { -webkit-appearance: none; }
+  .sn-search .kbd { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); pointer-events: none; }
+  .sn-search input:focus ~ .kbd { display: none; }
+  .sn-tree, .sn-subs, .sn-results { list-style: none; margin: 0; padding: 0; max-width: none; }
+  .sn-part { margin: 2px 0; }
+  .sn-row { display: flex; align-items: center; gap: 2px; }
+  .sn-row > a {
+    flex: 1; min-width: 0; display: grid; grid-template-columns: 16px 1fr auto; align-items: center; gap: 9px;
+    padding: 7px 8px; border-radius: 8px; text-decoration: none; color: var(--ink-soft);
+    font-weight: 600; line-height: 1.25;
+  }
+  .sn-row > a:hover { background: var(--surface); color: var(--ink); }
+  .sn-part.is-active > .sn-row > a { background: var(--surface-2); color: var(--ink); }
+  .sn-row .ico { width: 16px; height: 16px; color: var(--muted); }
+  .sn-part.is-active > .sn-row .ico { color: var(--gold); }
+  .sn-part.c-violet.is-active > .sn-row .ico { color: var(--violet); }
+  .sn-num { font-family: 'Spline Sans Mono', monospace; font-size: .7rem; color: var(--muted); }
+  .sn-toggle {
+    appearance: none; border: 0; background: none; color: var(--muted); width: 24px; height: 24px;
+    border-radius: 6px; display: grid; place-items: center; cursor: pointer; padding: 0; flex-shrink: 0;
+  }
+  .sn-toggle .ico { width: 14px; height: 14px; transition: transform .15s; }
+  .sn-toggle:hover { background: var(--surface-2); color: var(--ink); }
+  .sn-part.is-open .sn-toggle .ico, .sn-part.is-active .sn-toggle .ico { transform: rotate(90deg); }
+  .sn-subs { display: none; margin: 2px 0 6px 16px; padding-left: 10px; border-left: 1px solid var(--border); }
+  .sn-part.is-active .sn-subs, .sn-part.is-open .sn-subs { display: block; }
+  .sn-subs a {
+    display: block; padding: 5px 8px; border-radius: 6px; text-decoration: none;
+    color: var(--ink-soft); font-size: .84rem; line-height: 1.3;
+  }
+  .sn-subs a:hover { background: var(--surface); color: var(--ink); }
+  .sn-subs li.is-active > a { color: var(--gold); font-weight: 600; background: var(--gold-bg); }
+  .c-violet .sn-subs li.is-active > a { color: var(--violet); background: var(--violet-bg); }
+
+  .sn-results { display: none; }
+  .sidenav.is-searching .sn-tree { display: none; }
+  .sidenav.is-searching .sn-results { display: block; }
+  .sn-results li + li { margin-top: 2px; }
+  .sn-results li a { display: block; padding: 8px 9px; border-radius: 8px; text-decoration: none; color: var(--ink); }
+  .sn-results li a:hover, .sn-results li.is-hot a { background: var(--surface); }
+  .sn-results .r-part {
+    display: block; font-family: 'Spline Sans Mono', monospace; font-size: .66rem; letter-spacing: .08em;
+    text-transform: uppercase; color: var(--muted); margin-bottom: 2px;
+  }
+  .sn-results .r-title { display: block; font-weight: 600; font-size: .86rem; line-height: 1.3; }
+  .sn-results .r-snip { display: block; font-size: .78rem; color: var(--ink-soft); margin-top: 3px; line-height: 1.4; }
+  .sn-results mark { background: var(--gold-bg); color: var(--gold); border-radius: 3px; padding: 0 .1em; }
+  .sn-empty { color: var(--muted); font-size: .84rem; padding: 8px 9px; }
+  .sn-foot {
+    margin-top: 18px; padding-top: 12px; border-top: 1px solid var(--border);
+    font-size: .78rem; color: var(--muted); display: flex; flex-wrap: wrap; gap: 6px 12px;
+  }
+  .sn-foot a { color: inherit; }
+  .sn-foot [data-version]:empty { display: none; }
+
+  .backdrop { display: none; }
+  @media (max-width: 1080px) {
+    .layout { display: block; }
+    .menu-btn { display: inline-flex; }
+    .sn-close { display: inline-flex; }
+    .tb-btn .lbl { display: none; }
+    .tb-btn .kbd { display: none; }
+    .ver-pill { display: none; }
+    .sidenav {
+      position: fixed; top: 0; left: 0; bottom: 0; height: auto; width: min(330px, 88vw); z-index: 70;
+      background: var(--paper); transform: translateX(-102%); transition: transform .22s ease;
+      box-shadow: var(--shadow); padding: 14px 14px 28px 16px;
+    }
+    body.nav-open .sidenav { transform: none; }
+    .backdrop {
+      display: block; position: fixed; inset: 0; background: rgba(0,0,0,.35); z-index: 65;
+      opacity: 0; pointer-events: none; transition: opacity .2s;
+    }
+    body.nav-open .backdrop { opacity: 1; pointer-events: auto; }
+    body.nav-open { overflow: hidden; }
+  }
+  @media (max-width: 640px) {
+    /* um <code> ou token longo com nowrap alargava o viewport do celular além da tela */
+    code, td code, .tok { white-space: normal; overflow-wrap: anywhere; }
+  }
+  @media (max-width: 560px) {
+    .brand small { display: none; }
+    .topbar-in { padding: 0 14px; gap: 8px; }
+  }
+
+  .to-top {
+    position: fixed; right: 18px; bottom: 18px; z-index: 40; width: 42px; height: 42px; border-radius: 12px;
+    border: 1px solid var(--border-strong); background: var(--surface); color: var(--ink-soft);
+    display: grid; place-items: center; cursor: pointer; box-shadow: var(--shadow);
+    opacity: 0; transform: translateY(8px); pointer-events: none; transition: opacity .2s, transform .2s;
+  }
+  .to-top.is-visible { opacity: 1; transform: none; pointer-events: auto; }
+  .to-top:hover { background: var(--surface-2); color: var(--ink); }
+  .toast {
+    position: fixed; left: 50%; bottom: 24px; transform: translate(-50%, 12px);
+    background: var(--ink); color: var(--paper); padding: 8px 14px; border-radius: 9px;
+    font-size: .86rem; opacity: 0; pointer-events: none; transition: opacity .2s, transform .2s; z-index: 80;
+    white-space: nowrap;
+  }
+  .toast.is-visible { opacity: 1; transform: translate(-50%, 0); }
+
+  /* ── Hero ───────────────────────────────────────────── */
+  header.hero { position: relative; isolation: isolate; padding: 52px 0 8px; }
+  .hero::before {
+    content: ''; position: absolute; z-index: -1; pointer-events: none;
+    top: -30px; right: 0; width: 460px; height: 340px; max-width: 80%;
+    background:
+      radial-gradient(closest-side at 35% 45%, var(--gold-bg), transparent 72%),
+      radial-gradient(closest-side at 72% 38%, var(--violet-bg), transparent 72%);
+    filter: blur(6px); opacity: .95;
+  }
+  .hero-meta { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 20px; }
+  .pill {
+    display: inline-flex; align-items: center; gap: 6px; font-size: .84rem; font-weight: 500;
+    padding: .34em .8em; border-radius: 99px; border: 1px solid var(--border);
+    background: var(--surface); color: var(--ink-soft); text-decoration: none; white-space: nowrap;
+    transition: border-color .15s, color .15s;
+  }
+  a.pill:hover { border-color: var(--border-strong); color: var(--ink); }
+  .pill .ico { width: 14px; height: 14px; }
+  .pill-ver { font-family: 'Spline Sans Mono', monospace; font-size: .78rem; }
+  .pill-ver:empty { display: none; }
+  .hero-hint { font-size: .86rem; color: var(--muted); margin: 14px 0 0; }
+  .toc-label {
+    font-family: 'Spline Sans Mono', monospace; font-size: .72rem; letter-spacing: .12em; text-transform: uppercase;
+    color: var(--muted); margin: 34px 0 -20px;
+  }
+  .toc a { display: grid; grid-template-columns: auto 1fr; gap: 12px; align-items: start; transition: border-color .15s, transform .15s, box-shadow .15s; }
+  .toc a:hover, .toc a:focus-visible { transform: translateY(-1px); box-shadow: var(--shadow); }
+  .t-ico {
+    width: 34px; height: 34px; border-radius: 9px; background: var(--surface-2);
+    display: grid; place-items: center; color: var(--ink-soft); flex-shrink: 0;
+  }
+  .t-ico svg { width: 17px; height: 17px; fill: none; stroke: currentColor; stroke-width: 1.8; stroke-linecap: round; stroke-linejoin: round; }
+  .toc .c-gold .t-ico { color: var(--gold); background: var(--gold-bg); }
+  .toc .c-violet .t-ico { color: var(--violet); background: var(--violet-bg); }
+  .toc .c-mix .t-ico { color: #fff; background: linear-gradient(135deg, var(--gold), var(--violet)); }
+  .t-body { min-width: 0; }
+  .toc .t-part, .toc .t-name, .toc .t-desc { display: block; }
+
+  /* ── Cabeçalho de parte ─────────────────────────────── */
+  .part-head { display: flex; align-items: flex-end; justify-content: space-between; gap: 16px; }
+  .part-head-text { min-width: 0; }
+  .part-num {
+    font-family: 'Bricolage Grotesque', 'Figtree', sans-serif; font-weight: 800; line-height: .85;
+    font-size: clamp(2.6rem, 6vw, 4.2rem); letter-spacing: -.03em; user-select: none; flex-shrink: 0;
+    color: var(--surface-2); -webkit-text-stroke: 1px var(--border-strong);
+  }
+  .p-gold .part-num { color: var(--gold-bg); -webkit-text-stroke-color: var(--gold-border); }
+  .p-violet .part-num { color: var(--violet-bg); -webkit-text-stroke-color: var(--violet-border); }
+  .eyebrow .ico { width: 16px; height: 16px; }
+  .p-gold .nivel { color: var(--gold); background: var(--gold-bg); border-color: var(--gold-border); }
+  .p-violet .nivel { color: var(--violet); background: var(--violet-bg); border-color: var(--violet-border); }
+
+  /* ── Âncoras de título, links cruzados, destino ─────── */
+  .anchor {
+    display: inline-flex; align-items: center; justify-content: center; width: 24px; height: 24px;
+    margin-left: 4px; border-radius: 6px; color: var(--muted); opacity: 0; text-decoration: none;
+    vertical-align: middle; transition: opacity .15s, background .15s; flex-shrink: 0;
+  }
+  .anchor .ico { width: 14px; height: 14px; }
+  h2:hover .anchor, h3:hover .anchor, .anchor:focus-visible { opacity: 1; }
+  .anchor:hover { background: var(--surface-2); color: var(--ink); }
+  @media (hover: none) { .anchor { opacity: .55; } }
+  section, .subsec > h3[id], h4 { scroll-margin-top: calc(var(--topbar-h) + 18px); }
+  .subsec > h3:target { animation: flash 1.6s ease-out; border-radius: 6px; }
+  @keyframes flash {
+    0% { background: var(--gold-bg); box-shadow: 0 0 0 8px var(--gold-bg); }
+    100% { background: transparent; box-shadow: 0 0 0 8px transparent; }
+  }
+  a.xref {
+    color: inherit; text-decoration: underline; text-decoration-color: var(--border-strong);
+    text-decoration-thickness: 1px; text-underline-offset: 3px; border-radius: 3px; transition: color .12s;
+  }
+  a.xref:hover { color: var(--gold); text-decoration-color: var(--gold); }
+  .wrap a[href^="http"]:not(.pill)::after {
+    content: ''; display: inline-block; width: .68em; height: .68em; margin-left: .18em; vertical-align: -.02em;
+    background: currentColor;
+    -webkit-mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E") center/contain no-repeat;
+            mask: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.6' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M7 17 17 7M9 7h8v8'/%3E%3C/svg%3E") center/contain no-repeat;
+  }
+
+  /* ── Tabelas, callouts, grade ───────────────────────── */
+  th { border-bottom: 1px solid var(--border-strong); }
+  tbody tr:nth-child(even) td { background: var(--row-alt); }
+  tbody tr:hover td { background: var(--row-hover); }
+  .callout { border-left: 3px solid var(--border-strong); }
+  .co-warn { border-left-color: var(--gold); }
+  .p-violet .co-rule { border-left-color: var(--violet-border); }
+  .gridmock { counter-reset: gm; }
+  .gridmock:not(.gm-steps) .gm-row { counter-increment: gm; }
+  .gridmock:not(.gm-steps) .gm-row::before {
+    content: '✓'; order: -2; width: 13px; height: 13px; flex-shrink: 0; align-self: center;
+    border: 1.5px solid var(--border-strong); border-radius: 4px;
+    font: 700 9px/10px 'Figtree', 'Segoe UI', sans-serif; text-align: center; color: var(--ok);
+  }
+  .gridmock:not(.gm-steps) .gm-row::after {
+    content: counter(gm); order: -1; min-width: 1.3em; text-align: right; flex-shrink: 0;
+    color: var(--muted); font-size: .72rem;
+  }
+  .gm-type { background: var(--surface-2); border-radius: 5px; padding: 1px 7px; }
+  .gm-if .gm-type { background: var(--violet-border); color: var(--violet); }
+  .gm-steps .gm-type { background: var(--gold-bg); color: var(--gold); border: 1px solid var(--gold-border); }
+
+  /* ── Screenshot anotado ─────────────────────────────── */
+  .shot-frame {
+    position: relative; border-radius: 12px; overflow: hidden; border: 1px solid var(--border-strong);
+    box-shadow: var(--shadow); background: #17181C; line-height: 0;
+  }
+  .shot-frame img { width: 100%; height: auto; display: block; }
+  .shot-tag {
+    position: absolute; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 99px;
+    background: var(--gold); color: #fff; text-align: center;
+    font: 700 .72rem/22px 'Spline Sans Mono', monospace;
+    box-shadow: 0 0 0 3px rgba(255,255,255,.85), 0 2px 10px rgba(0,0,0,.45);
+  }
+  figcaption b.n {
+    display: inline-block; min-width: 1.5em; text-align: center; border-radius: 99px;
+    background: var(--gold-bg); color: var(--gold); font-family: 'Spline Sans Mono', monospace; font-size: .74rem; padding: 0 .3em;
+  }
+
+  /* ── Rodapé ─────────────────────────────────────────── */
+  .site-foot { margin-top: 80px; }
+  .site-foot .footer-note { margin-top: 0; }
+  .site-foot-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+
+  @media print {
+    .progress, .topbar, .sidenav, .backdrop, .to-top, .toast, .anchor, .part-num, .hero-meta, .hero-hint, .toc-label, .site-foot-links { display: none !important; }
+    body { padding-top: 0; }
+    .layout { display: block; }
+    .hero::before { display: none; }
+  }
   :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; border-radius: 4px; }
 </style>
+<style>
+  @media print {
+    :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
+      --paper: #FFFFFF; --surface: #F5F2EC; --surface-2: #EFEADF;
+      --ink: #1A1713; --ink-soft: #443E33; --muted: #6B6456;
+      --border: #DAD2C2; --border-strong: #B9AF98;
+      --gold: #6E5400; --gold-bg: #F6EFD9; --gold-border: #D8C892;
+      --violet: #4E2AA5; --violet-bg: #EEE9FA; --violet-border: #CDBFEE;
+      --ok: #1F6335; --ok-bg: #E6F2E7; --bad: #8E3220; --bad-bg: #F9E9E3;
+      --warn-bg: #FCF5E2; --warn-border: #DFCB8C; --code-bg: #F2EEE4;
+      --shadow: none;
+    }
+    body { font-size: 11pt; background: #FFFFFF; }
+    .wrap { max-width: none; padding: 0; }
+    .toc { display: none; }
+    header { padding-top: 0; }
+    section { margin-top: 34px; }
+    .part-head { break-before: page; }
+    #p1 .part-head { break-before: auto; }
+    .xmpl, .callout, figure, .gridmock, .card, .tbl-wrap, .chain-step { break-inside: avoid; }
+    h2, h3, h4 { break-after: avoid; }
+    th { position: static; }
+    .gridmock, .tbl-wrap, .fig-scroll { overflow: visible; }
+  }
+</style>
+</head>
+<body>
+
+<svg width="0" height="0" style="position:absolute" aria-hidden="true" focusable="false">
+  <symbol id="i-p1" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5" fill="currentColor" stroke="none"/></symbol>
+  <symbol id="i-p2" viewBox="0 0 24 24"><path d="M10 6h11M10 12h11M10 18h11"/><path d="m3 6 1.6 1.6L7.5 4.7M3 12l1.6 1.6 2.9-2.9M3 18l1.6 1.6 2.9-2.9"/></symbol>
+  <symbol id="i-p3" viewBox="0 0 24 24"><path d="M3 7a2 2 0 0 1 2-2h4l2 2h8a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"/></symbol>
+  <symbol id="i-p4" viewBox="0 0 24 24"><path d="M8 4c-2 0-3 1-3 3v3c0 1-1 2-2 2 1 0 2 1 2 2v3c0 2 1 3 3 3"/><path d="M16 4c2 0 3 1 3 3v3c0 1 1 2 2 2-1 0-2 1-2 2v3c0 2-1 3-3 3"/></symbol>
+  <symbol id="i-p5" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="5" rx="1.5"/><path d="M5 9v9a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V9M10 13h4"/></symbol>
+  <symbol id="i-p6" viewBox="0 0 24 24"><path d="M6 3v12"/><circle cx="18" cy="6" r="3"/><circle cx="6" cy="18" r="3"/><path d="M18 9a9 9 0 0 1-9 9"/></symbol>
+  <symbol id="i-p7" viewBox="0 0 24 24"><circle cx="12" cy="13" r="8"/><path d="M12 9v4l2.5 2M9 2h6"/></symbol>
+  <symbol id="i-p8" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 9h18M6 6.5h.01M8.6 6.5h.01"/></symbol>
+  <symbol id="i-p9" viewBox="0 0 24 24"><path d="M13 2 4 14h7l-1 8 9-12h-7z"/></symbol>
+  <symbol id="i-p10" viewBox="0 0 24 24"><path d="m9 9 5 12 1.8-5.2L21 14 9 9z"/><path d="M7.2 2.2 8 5.1M5.1 8 2.2 7.2M14 4.1 12 6M6 12l-1.9 2"/></symbol>
+  <symbol id="i-p11" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 0 1 0 18M12 3a14 14 0 0 0 0 18"/></symbol>
+  <symbol id="i-p12" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="16" rx="2"/><path d="M3 10h18M3 15h18M10 4v16"/></symbol>
+  <symbol id="i-p13" viewBox="0 0 24 24"><path d="M4 6h9M17 6h3M4 12h2M10 12h10M4 18h11M19 18h1"/><circle cx="15" cy="6" r="2"/><circle cx="8" cy="12" r="2"/><circle cx="17" cy="18" r="2"/></symbol>
+  <symbol id="i-p14" viewBox="0 0 24 24"><path d="M12 6c-1.5-1.5-4-2-8-2v14c4 0 6.5.5 8 2 1.5-1.5 4-2 8-2V4c-4 0-6.5.5-8 2z"/><path d="M12 6v14"/></symbol>
+  <symbol id="i-p15" viewBox="0 0 24 24"><circle cx="12" cy="12" r="9"/><circle cx="12" cy="12" r="3.5"/><path d="m5.6 5.6 3.9 3.9M14.5 14.5l3.9 3.9M5.6 18.4l3.9-3.9M14.5 9.5l3.9-3.9"/></symbol>
+  <symbol id="i-menu" viewBox="0 0 24 24"><path d="M4 7h16M4 12h16M4 17h16"/></symbol>
+  <symbol id="i-search" viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></symbol>
+  <symbol id="i-sun" viewBox="0 0 24 24"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></symbol>
+  <symbol id="i-moon" viewBox="0 0 24 24"><path d="M20 14.5A8.5 8.5 0 0 1 9.5 4a8.5 8.5 0 1 0 10.5 10.5z"/></symbol>
+  <symbol id="i-auto" viewBox="0 0 24 24"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M8 20h8M12 16v4"/></symbol>
+  <symbol id="i-link" viewBox="0 0 24 24"><path d="M10 14a4 4 0 0 0 5.7 0l3-3a4 4 0 0 0-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 0 0-5.7 0l-3 3a4 4 0 0 0 5.7 5.7l1-1"/></symbol>
+  <symbol id="i-up" viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></symbol>
+  <symbol id="i-x" viewBox="0 0 24 24"><path d="M6 6l12 12M18 6 6 18"/></symbol>
+  <symbol id="i-chev" viewBox="0 0 24 24"><path d="m9 6 6 6-6 6"/></symbol>
+  <symbol id="i-ext" viewBox="0 0 24 24"><path d="M7 17 17 7M9 7h8v8"/></symbol>
+  <symbol id="i-down" viewBox="0 0 24 24"><path d="M12 4v12M6 11l6 6 6-6M4 20h16"/></symbol>
+</svg>
+<div class="progress" id="progress" aria-hidden="true"></div>
+<div class="topbar">
+  <div class="topbar-in">
+    <button class="tb-btn menu-btn" id="menuBtn" type="button" aria-label="Abrir o sumário" aria-controls="sidenav" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-menu"/></svg></button>
+    <a class="brand" href="#top"><span class="brand-mark" aria-hidden="true">T</span>TrueReplayer <small>· Manual</small></a>
+    <span class="ver-pill" data-version></span>
+    <span class="tb-spacer"></span>
+    <button class="tb-btn" id="searchBtn" type="button" aria-label="Buscar no manual"><svg class="ico" aria-hidden="true"><use href="#i-search"/></svg><span class="lbl">Buscar</span><span class="kbd" aria-hidden="true">/</span></button>
+    <a class="tb-btn" href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener" aria-label="Baixar o TrueReplayer (abre o GitHub)"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg><span class="lbl">Baixar o app</span></a>
+    <button class="tb-btn" id="themeBtn" type="button" aria-label="Tema: automático" title="Alternar tema"><svg class="ico" aria-hidden="true"><use href="#i-auto"/></svg></button>
+  </div>
+</div>
+
+<div class="layout">
+<nav class="sidenav" id="sidenav" aria-label="Sumário">
+  <div class="sn-head">
+    <span class="sn-title">Sumário</span>
+    <button class="tb-btn sn-close" id="navClose" type="button" aria-label="Fechar o sumário"><svg class="ico" aria-hidden="true"><use href="#i-x"/></svg></button>
+  </div>
+  <div class="sn-search">
+    <svg class="ico" aria-hidden="true"><use href="#i-search"/></svg>
+    <input id="navSearch" type="search" placeholder="Buscar no manual…" autocomplete="off" spellcheck="false" aria-label="Buscar no manual">
+    <span class="kbd" aria-hidden="true">/</span>
+  </div>
+  <ol class="sn-tree" id="navTree"></ol>
+  <ol class="sn-results" id="navResults" aria-live="polite"></ol>
+  <div class="sn-foot">
+    <span data-version></span>
+    <a href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener">Baixar</a>
+    <a href="https://github.com/fatalihue/TrueReplayer-releases/blob/main/docs/extension-setup/README.md" target="_blank" rel="noopener">Extensão do Chrome</a>
+  </div>
+</nav>
 
 <div class="wrap">
 
-<header>
+<header class="hero" id="top">
   <div class="app-tag">TrueReplayer · Manual do usuário</div>
   <h1>Manual do TrueReplayer</h1>
   <p class="lede">Tudo o que o app faz, do primeiro clique gravado à automação que roda sozinha: gravação, perfis, tokens, condicionais, clicker, navegador, data loop. Cada parte começa fácil e aprofunda — leia em ordem ou pule direto para o que precisa.</p>
+  <div class="hero-meta">
+    <span class="pill pill-ver" data-version></span>
+    <a class="pill" href="#p1"><svg class="ico" aria-hidden="true"><use href="#i-p1"/></svg>Comece aqui</a>
+    <a class="pill" href="#p4"><svg class="ico" aria-hidden="true"><use href="#i-p4"/></svg>Tokens</a>
+    <a class="pill" href="#p14"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Receitas prontas</a>
+    <a class="pill" href="#p15"><svg class="ico" aria-hidden="true"><use href="#i-p15"/></svg>Solução de problemas</a>
+  </div>
+  <p class="hero-hint">O sumário lateral acompanha a leitura. <span class="kbd">/</span> ou <span class="kbd">Ctrl</span>+<span class="kbd">K</span> abre a busca — igual à paleta do app. Passe o mouse num título para copiar o link daquela seção.</p>
 
+  <p class="toc-label">As 15 partes</p>
   <ul class="toc">
-    <li><a class="c-plain" href="#p1"><span class="t-part">Parte 1</span><div class="t-name">Comece aqui</div><div class="t-desc">Gravar, reproduzir, o essencial</div></a></li>
-    <li><a class="c-plain" href="#p2"><span class="t-part">Parte 2</span><div class="t-name">A grade de ações</div><div class="t-desc">Editar passos e a referência completa</div></a></li>
-    <li><a class="c-plain" href="#p3"><span class="t-part">Parte 3</span><div class="t-name">Perfis e disparos</div><div class="t-desc">Pastas, hotkeys, hotstrings, remaps</div></a></li>
-    <li><a class="c-gold" href="#p4"><span class="t-part">Parte 4</span><div class="t-name">Send Text &amp; Tokens</div><div class="t-desc">Texto que se preenche sozinho</div></a></li>
-    <li><a class="c-gold" href="#p5"><span class="t-part">Parte 5</span><div class="t-name">Variáveis, slots e prompts</div><div class="t-desc">Valores que a macro guarda e pergunta</div></a></li>
-    <li><a class="c-violet" href="#p6"><span class="t-part">Parte 6</span><div class="t-name">Condicionais, Loops &amp; Assert</div><div class="t-desc">Decidir, repetir, exigir — e encerrar</div></a></li>
-    <li><a class="c-plain" href="#p7"><span class="t-part">Parte 7</span><div class="t-name">Esperar a tela</div><div class="t-desc">Wait Image, Wait Pixel, Pause</div></a></li>
-    <li><a class="c-plain" href="#p8"><span class="t-part">Parte 8</span><div class="t-name">Janelas</div><div class="t-desc">Alvo, coordenadas relativas, Activate</div></a></li>
-    <li><a class="c-plain" href="#p9"><span class="t-part">Parte 9</span><div class="t-name">Automação</div><div class="t-desc">Rodar sem apertar nada</div></a></li>
-    <li><a class="c-plain" href="#p10"><span class="t-part">Parte 10</span><div class="t-name">Clicker &amp; Game Mode</div><div class="t-desc">Auto-clicker e cliques que jogos aceitam</div></a></li>
-    <li><a class="c-plain" href="#p11"><span class="t-part">Parte 11</span><div class="t-name">Navegador</div><div class="t-desc">Chrome por seletor, não por pixel</div></a></li>
-    <li><a class="c-plain" href="#p12"><span class="t-part">Parte 12</span><div class="t-name">Data Loop</div><div class="t-desc">Uma tabela, uma execução por linha</div></a></li>
-    <li><a class="c-plain" href="#p13"><span class="t-part">Parte 13</span><div class="t-name">Aparência e dados</div><div class="t-desc">Temas, configurações, onde tudo fica</div></a></li>
-    <li><a class="c-mix" href="#p14"><span class="t-part">Parte 14</span><div class="t-name">Receitas completas</div><div class="t-desc">Perfis prontos, passo a passo</div></a></li>
-    <li><a class="c-mix" href="#p15"><span class="t-part">Parte 15</span><div class="t-name">Solução de problemas</div><div class="t-desc">Sintoma → causa → conserto</div></a></li>
+    <li><a class="c-plain" href="#p1"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p1"/></svg></span><span class="t-body"><span class="t-part">Parte 1</span><span class="t-name">Comece aqui</span><span class="t-desc">Gravar, reproduzir, o essencial</span></span></a></li>
+    <li><a class="c-plain" href="#p2"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p2"/></svg></span><span class="t-body"><span class="t-part">Parte 2</span><span class="t-name">A grade de ações</span><span class="t-desc">Editar passos e a referência completa</span></span></a></li>
+    <li><a class="c-plain" href="#p3"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p3"/></svg></span><span class="t-body"><span class="t-part">Parte 3</span><span class="t-name">Perfis e disparos</span><span class="t-desc">Pastas, hotkeys, hotstrings, remaps</span></span></a></li>
+    <li><a class="c-gold" href="#p4"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p4"/></svg></span><span class="t-body"><span class="t-part">Parte 4</span><span class="t-name">Send Text &amp; Tokens</span><span class="t-desc">Texto que se preenche sozinho</span></span></a></li>
+    <li><a class="c-gold" href="#p5"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p5"/></svg></span><span class="t-body"><span class="t-part">Parte 5</span><span class="t-name">Variáveis, slots e prompts</span><span class="t-desc">Valores que a macro guarda e pergunta</span></span></a></li>
+    <li><a class="c-violet" href="#p6"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p6"/></svg></span><span class="t-body"><span class="t-part">Parte 6</span><span class="t-name">Condicionais, Loops &amp; Assert</span><span class="t-desc">Decidir, repetir, exigir — e encerrar</span></span></a></li>
+    <li><a class="c-plain" href="#p7"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p7"/></svg></span><span class="t-body"><span class="t-part">Parte 7</span><span class="t-name">Esperar a tela</span><span class="t-desc">Wait Image, Wait Pixel, Pause</span></span></a></li>
+    <li><a class="c-plain" href="#p8"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p8"/></svg></span><span class="t-body"><span class="t-part">Parte 8</span><span class="t-name">Janelas</span><span class="t-desc">Alvo, coordenadas relativas, Activate</span></span></a></li>
+    <li><a class="c-plain" href="#p9"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p9"/></svg></span><span class="t-body"><span class="t-part">Parte 9</span><span class="t-name">Automação</span><span class="t-desc">Rodar sem apertar nada</span></span></a></li>
+    <li><a class="c-plain" href="#p10"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p10"/></svg></span><span class="t-body"><span class="t-part">Parte 10</span><span class="t-name">Clicker &amp; Game Mode</span><span class="t-desc">Auto-clicker e cliques que jogos aceitam</span></span></a></li>
+    <li><a class="c-plain" href="#p11"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p11"/></svg></span><span class="t-body"><span class="t-part">Parte 11</span><span class="t-name">Navegador</span><span class="t-desc">Chrome por seletor, não por pixel</span></span></a></li>
+    <li><a class="c-plain" href="#p12"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p12"/></svg></span><span class="t-body"><span class="t-part">Parte 12</span><span class="t-name">Data Loop</span><span class="t-desc">Uma tabela, uma execução por linha</span></span></a></li>
+    <li><a class="c-plain" href="#p13"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p13"/></svg></span><span class="t-body"><span class="t-part">Parte 13</span><span class="t-name">Aparência e dados</span><span class="t-desc">Temas, configurações, onde tudo fica</span></span></a></li>
+    <li><a class="c-mix" href="#p14"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p14"/></svg></span><span class="t-body"><span class="t-part">Parte 14</span><span class="t-name">Receitas completas</span><span class="t-desc">Perfis prontos, passo a passo</span></span></a></li>
+    <li><a class="c-mix" href="#p15"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p15"/></svg></span><span class="t-body"><span class="t-part">Parte 15</span><span class="t-name">Solução de problemas</span><span class="t-desc">Sintoma → causa → conserto</span></span></a></li>
   </ul>
 </header>
 
 <!-- ═══════════════════════ PARTE 1 — COMECE AQUI ═══════════════════════ -->
 <section id="p1" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 1 · Comece aqui</span>
-    <h2>Gravar, reproduzir, e o essencial no meio</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p1"/></svg>Parte 1 · Comece aqui</span>
+      <h2>Gravar, reproduzir, e o essencial no meio</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">01</span>
   </div>
 
   <p>O TrueReplayer grava o que você faz — cliques, teclas, texto — e repete quando você mandar. Quatro palavras resolvem quase todo o vocabulário do app:</p>
@@ -384,6 +805,17 @@
       </tbody>
     </table>
   </div>
+
+  <figure class="shot">
+    <div class="shot-frame">
+      <img src="img/main.png" alt="A janela principal do TrueReplayer: painel de perfis à esquerda, grade de ações no centro, configurações do perfil à direita e a barra Macro/Clicker, Recording e Replay embaixo." width="1166" height="773" decoding="async">
+      <span class="shot-tag" style="left:9.5%;top:8.4%" aria-hidden="true">1</span>
+      <span class="shot-tag" style="left:31.5%;top:8.8%" aria-hidden="true">2</span>
+      <span class="shot-tag" style="left:91.5%;top:12.2%" aria-hidden="true">3</span>
+      <span class="shot-tag" style="left:35.5%;top:93.8%" aria-hidden="true">4</span>
+    </div>
+    <figcaption><b class="n">1</b> Profiles — pastas e perfis, cada um com sua hotkey · <b class="n">2</b> a grade de ações, uma linha por passo · <b class="n">3</b> as configurações do perfil ativo: Delay, Loops, gravação · <b class="n">4</b> a barra: Macro ou Clicker, Recording, Replay.</figcaption>
+  </figure>
 
   <figure>
     <div class="fig-scroll">
@@ -428,7 +860,7 @@
   </div>
 
   <div class="subsec">
-    <h3>Gravando</h3>
+    <h3 id="p1-gravando">Gravando</h3>
     <ol>
       <li>Tenha um perfil ativo (crie um em <strong>New</strong>, no painel Profiles).</li>
       <li><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span> (ou o botão <strong>Recording</strong>) começa a gravar.</li>
@@ -453,7 +885,7 @@
   </div>
 
   <div class="subsec">
-    <h3>Reproduzindo</h3>
+    <h3 id="p1-reproduzindo">Reproduzindo</h3>
     <p><span class="kbd">Ctrl</span>+<span class="kbd">PageDown</span> (ou <strong>Replay</strong>) executa. O mesmo atalho (ou <strong>Stop</strong>) interrompe na hora — soltando qualquer tecla que a macro estivesse segurando.</p>
     <p>A reprodução agenda cada ação contra um <strong>prazo</strong>, não empilha esperas: se algo atrasar, ela ressincroniza em vez de disparar uma rajada de ações acumuladas. Depois de ações que esperam por natureza (Wait Image, Pause, Run Profile, ações de navegador, If com espera), o relógio também ressincroniza — um delay colocado como acomodação nunca é comprimido.</p>
 
@@ -473,7 +905,7 @@
       <div class="co-icon">⚠️</div>
       <div>
         <p><span class="co-title">Não existe "0 = infinito".</span></p>
-        <p>O mínimo de Loops é 1. Para rodar até você mandar parar, use os modos de disparo <strong>While Pressed</strong> ou <strong>Toggle</strong> na hotkey (Parte 3).</p>
+        <p>O mínimo de Loops é 1. Para rodar até você mandar parar, use os modos de disparo <strong>While Pressed</strong> ou <strong>Toggle</strong> na hotkey (<a class="xref" href="#p3">Parte 3</a>).</p>
       </div>
     </div>
     <p>A pílula de loop na barra mostra o que a <strong>próxima execução</strong> fará: <code>3×</code>, <code>por linha</code> (Data Loop) ou <code>∞</code>. Contorno tracejado âmbar = você mexeu nas configurações e ainda não salvou.</p>
@@ -483,8 +915,11 @@
 <!-- ═══════════════════════ PARTE 2 — GRADE DE AÇÕES ═══════════════════════ -->
 <section id="p2" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 2 · A grade de ações</span>
-    <h2>Onde a macro é editada, linha a linha</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p2"/></svg>Parte 2 · A grade de ações</span>
+      <h2>Onde a macro é editada, linha a linha</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">02</span>
   </div>
 
   <p>A grade tem as colunas <strong>caixa · Action · Details · Delay · Notes</strong>. Cada linha é uma ação; a caixa desmarcada <em>pula</em> a linha sem apagá-la.</p>
@@ -504,7 +939,7 @@
   </div>
 
   <div class="subsec">
-    <h3>O menu da linha</h3>
+    <h3 id="p2-o-menu-da-linha">O menu da linha</h3>
     <p>Botão direito numa linha: <strong>Edit · Pick from screen · Duplicate · More · Delete</strong>.</p>
     <ul>
       <li><strong>Pick from screen</strong> <em>(linhas de clique, incluindo Double e Triple Click)</em> — abre o seletor de posição na tela; ao escolher o ponto, o formulário da ação abre com X/Y já preenchidos como rascunho. Ajuste o que quiser e <strong>Save</strong> grava; <strong>Cancel</strong> descarta — nada muda até você salvar. Numa linha marcada como <strong>At cursor</strong> a opção não aparece: aquela linha não guarda ponto nenhum para preencher.</li>
@@ -513,7 +948,7 @@
   </div>
 
   <div class="subsec">
-    <h3>Referência de ações</h3>
+    <h3 id="p2-referencia-de-acoes">Referência de ações</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
@@ -525,25 +960,25 @@
           <tr><td><strong>Hold Key</strong></td><td>Segura uma tecla por N ms (padrão 1000). Modificadores são descartados.</td></tr>
           <tr><td><strong>Key Down / Key Up</strong></td><td>Pressionar ou soltar isolado — para arrastar ou segurar tecla.</td></tr>
           <tr><td><strong>Scroll Up / Down</strong></td><td>Um passo da roda, na posição do cursor.</td></tr>
-          <tr><td><strong>Send Text</strong></td><td>Injeta texto com tokens — Parte 4.</td></tr>
-          <tr><td><strong>Set Variable</strong></td><td>Guarda um valor, lido com <span class="tok">{var:nome}</span> — Parte 5.</td></tr>
-          <tr><td><strong>Copy to Slot</strong></td><td>Copia a seleção atual para um slot, lido com <span class="tok">{clip:nome}</span> — Parte 5.</td></tr>
-          <tr><td><strong>Pause</strong></td><td>Para até uma hotkey de retomada ou um timeout — Parte 7.</td></tr>
-          <tr><td><strong>Wait Image / Wait Pixel Color</strong></td><td>Esperam a tela ficar pronta — Parte 7.</td></tr>
+          <tr><td><strong>Send Text</strong></td><td>Injeta texto com tokens — <a class="xref" href="#p4">Parte 4</a>.</td></tr>
+          <tr><td><strong>Set Variable</strong></td><td>Guarda um valor, lido com <span class="tok">{var:nome}</span> — <a class="xref" href="#p5">Parte 5</a>.</td></tr>
+          <tr><td><strong>Copy to Slot</strong></td><td>Copia a seleção atual para um slot, lido com <span class="tok">{clip:nome}</span> — <a class="xref" href="#p5">Parte 5</a>.</td></tr>
+          <tr><td><strong>Pause</strong></td><td>Para até uma hotkey de retomada ou um timeout — <a class="xref" href="#p7">Parte 7</a>.</td></tr>
+          <tr><td><strong>Wait Image / Wait Pixel Color</strong></td><td>Esperam a tela ficar pronta — <a class="xref" href="#p7">Parte 7</a>.</td></tr>
           <tr><td><strong>Run Profile</strong></td><td>Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados.</td></tr>
-          <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — Parte 8.</td></tr>
-          <tr><td><strong>If / Else If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — Parte 6.</td></tr>
-          <tr><td><strong>While / End Loop · Break / Next</strong></td><td>Bloco que repete enquanto a condição vale, e os saltos de controle — Parte 6.</td></tr>
-          <tr><td><strong>For Each Data Row</strong></td><td>Repete só um trecho, uma vez por linha da tabela — Parte 12.</td></tr>
-          <tr><td><strong>Stop · Return</strong></td><td>Encerram no meio: a execução inteira, ou só o passe atual — Parte 6.</td></tr>
-          <tr><td><strong>Browser actions</strong></td><td>Click / Type / Navigate / Wait / Assert / Select no Chrome — Parte 11.</td></tr>
+          <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — <a class="xref" href="#p8">Parte 8</a>.</td></tr>
+          <tr><td><strong>If / Else If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
+          <tr><td><strong>While / End Loop · Break / Next</strong></td><td>Bloco que repete enquanto a condição vale, e os saltos de controle — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
+          <tr><td><strong>For Each Data Row</strong></td><td>Repete só um trecho, uma vez por linha da tabela — <a class="xref" href="#p12">Parte 12</a>.</td></tr>
+          <tr><td><strong>Stop · Return</strong></td><td>Encerram no meio: a execução inteira, ou só o passe atual — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
+          <tr><td><strong>Browser actions</strong></td><td>Click / Type / Navigate / Wait / Assert / Select no Chrome — <a class="xref" href="#p11">Parte 11</a>.</td></tr>
         </tbody>
       </table>
     </div>
   </div>
 
   <div class="subsec">
-    <h3>Repetição em cliques e teclas</h3>
+    <h3 id="p2-repeticao-em-cliques-e-teclas">Repetição em cliques e teclas</h3>
     <p>Keystroke e os cliques repetem na própria linha, sem precisar de loop:</p>
     <ul>
       <li><strong>Times to repeat</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
@@ -561,7 +996,7 @@
   </div>
 
   <div class="subsec">
-    <h3>Clicar onde o mouse estiver</h3>
+    <h3 id="p2-clicar-onde-o-mouse-estiver">Clicar onde o mouse estiver</h3>
     <p>Todo clique guarda uma coordenada. Quando o alvo só é conhecido na hora de rodar, o campo
       <strong>Position</strong> do formulário troca isso:</p>
     <ul>
@@ -572,7 +1007,7 @@
       antes de disparar. Vale para Left, Right, Middle, Double e Triple Click.</p>
     <ul>
       <li>A posição é lida <strong>uma vez por repetição</strong>, nunca a cada meia-ação — senão um esbarrão no mouse entre o pressionar e o soltar viraria um arrasto.</li>
-      <li>Esse clique <strong>não depende do alvo de janela</strong>: com coordenadas relativas ligadas (Parte 8) ele funciona mesmo se a janela não for encontrada, porque não há coordenada a traduzir.</li>
+      <li>Esse clique <strong>não depende do alvo de janela</strong>: com coordenadas relativas ligadas (<a class="xref" href="#p8">Parte 8</a>) ele funciona mesmo se a janela não for encontrada, porque não há coordenada a traduzir.</li>
       <li>O ponto gravado <strong>não é apagado</strong> — voltar para <em>This point</em> devolve a coordenada original.</li>
     </ul>
     <div class="callout co-warn">
@@ -590,22 +1025,25 @@
 <!-- ═══════════════════════ PARTE 3 — PERFIS E DISPAROS ═══════════════════════ -->
 <section id="p3" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 3 · Perfis e disparos</span>
-    <h2>Organizar as macros e escolher como cada uma dispara</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p3"/></svg>Parte 3 · Perfis e disparos</span>
+      <h2>Organizar as macros e escolher como cada uma dispara</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">03</span>
   </div>
 
   <div class="subsec">
-    <h3>Perfis e pastas</h3>
+    <h3 id="p3-perfis-e-pastas">Perfis e pastas</h3>
     <ul>
       <li><strong>New / Save / Rename / Duplicate / Delete</strong> no painel Profiles. <strong>Pin</strong> mantém no topo.</li>
-      <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (Parte 8).</li>
+      <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (<a class="xref" href="#p8">Parte 8</a>).</li>
       <li><strong>Info</strong> (botão direito) — emoji, descrição e <strong>tags</strong> pesquisáveis.</li>
       <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. Na importação <strong>nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip. Um perfil que exige um TrueReplayer mais novo que o seu aparece esmaecido, com o motivo.</li>
     </ul>
   </div>
 
   <div class="subsec">
-    <h3>Hotkeys e hotstrings</h3>
+    <h3 id="p3-hotkeys-e-hotstrings">Hotkeys e hotstrings</h3>
     <ul>
       <li><strong>Hotkey</strong> — botão direito no perfil → <strong>Assign hotkey</strong> → pressione a combinação. Dispara em qualquer app.</li>
       <li><strong>Hotstring</strong> — uma sequência digitada (ex.: <code>.cp</code>) que roda o perfil ao terminar de ser escrita.</li>
@@ -625,16 +1063,75 @@
         </tbody>
       </table>
     </div>
+    <figure>
+      <div class="fig-scroll">
+      <svg viewBox="0 0 760 330" role="img" aria-label="Os seis modos de gatilho numa linha do tempo: On Press roda uma vez ao pressionar; On Release, uma vez ao soltar; While Pressed repete enquanto a tecla está segurada e para ao soltar; Toggle inicia no primeiro toque e para no segundo; Double-tap exige dois toques rápidos e ignora um toque único; Hold dispara depois de segurar cerca de 0,6 segundo e não para ao soltar." style="min-width: 560px;">
+        <g font-family="'Spline Sans Mono', monospace" font-size="10.5">
+          <rect x="190" y="14" width="26" height="12" rx="3" fill="var(--gold-bg)" stroke="var(--gold-border)"/>
+          <text x="224" y="24" fill="var(--muted)">tecla pressionada</text>
+          <rect x="350" y="14" width="26" height="12" rx="3" fill="var(--violet-bg)" stroke="var(--violet)"/>
+          <text x="384" y="24" fill="var(--muted)">o perfil rodando</text>
+        </g>
+        <g stroke="var(--border)" stroke-width="1">
+          <line x1="190" y1="70" x2="730" y2="70"/><line x1="190" y1="115" x2="730" y2="115"/><line x1="190" y1="160" x2="730" y2="160"/>
+          <line x1="190" y1="205" x2="730" y2="205"/><line x1="190" y1="250" x2="730" y2="250"/><line x1="190" y1="295" x2="730" y2="295"/>
+        </g>
+        <g font-family="'Spline Sans Mono', monospace" font-size="12" font-weight="600" fill="var(--ink)" text-anchor="end">
+          <text x="166" y="66">On Press</text>
+          <text x="166" y="111">On Release</text>
+          <text x="166" y="156">While Pressed</text>
+          <text x="166" y="201">Toggle</text>
+          <text x="166" y="246">Double-tap</text>
+          <text x="166" y="291">Hold</text>
+        </g>
+        <!-- tecla -->
+        <g fill="var(--gold-bg)" stroke="var(--gold-border)" stroke-width="1.2">
+          <rect x="230" y="46" width="100" height="14" rx="4"/>
+          <rect x="230" y="91" width="100" height="14" rx="4"/>
+          <rect x="230" y="136" width="240" height="14" rx="4"/>
+          <rect x="230" y="181" width="14" height="14" rx="4"/><rect x="470" y="181" width="14" height="14" rx="4"/>
+          <rect x="230" y="226" width="12" height="14" rx="4"/><rect x="256" y="226" width="12" height="14" rx="4"/><rect x="420" y="226" width="12" height="14" rx="4"/>
+          <rect x="230" y="271" width="170" height="14" rx="4"/>
+        </g>
+        <!-- execução -->
+        <g fill="var(--violet-bg)" stroke="var(--violet)" stroke-width="1.2">
+          <rect x="230" y="64" width="70" height="12" rx="4"/>
+          <rect x="330" y="109" width="70" height="12" rx="4"/>
+          <rect x="230" y="154" width="56" height="12" rx="4"/><rect x="292" y="154" width="56" height="12" rx="4"/><rect x="354" y="154" width="56" height="12" rx="4"/><rect x="416" y="154" width="54" height="12" rx="4"/>
+          <rect x="230" y="199" width="240" height="12" rx="4"/>
+          <rect x="268" y="244" width="70" height="12" rx="4"/>
+          <rect x="300" y="289" width="70" height="12" rx="4"/>
+        </g>
+        <g stroke="var(--violet)" stroke-width="1.2" stroke-dasharray="2 3">
+          <line x1="290" y1="201" x2="290" y2="209"/><line x1="350" y1="201" x2="350" y2="209"/><line x1="410" y1="201" x2="410" y2="209"/>
+        </g>
+        <line x1="300" y1="266" x2="300" y2="304" stroke="var(--muted)" stroke-width="1.2" stroke-dasharray="3 3"/>
+        <g stroke="var(--bad)" stroke-width="1.6"><line x1="466" y1="156" x2="474" y2="164"/><line x1="474" y1="156" x2="466" y2="164"/></g>
+        <g font-family="'Figtree', sans-serif" font-size="10.5" fill="var(--muted)">
+          <text x="346" y="58">uma vez, ao pressionar</text>
+          <text x="416" y="103">uma vez, ao soltar</text>
+          <text x="486" y="148">repete enquanto segura ·</text><text x="486" y="161" fill="var(--bad)">para ao soltar</text>
+          <text x="500" y="193">1º toque inicia · 2º toque para</text>
+          <text x="500" y="206">no meio, repete sem parar</text>
+          <text x="284" y="222">dois toques em ~0,4 s</text>
+          <text x="448" y="238">toque único: nada</text>
+          <text x="308" y="265">~0,6 s</text>
+          <text x="416" y="283">dispara ao completar o tempo ·</text><text x="416" y="296">soltar depois não para</text>
+        </g>
+      </svg>
+      </div>
+      <figcaption>A mesma tecla, seis comportamentos. <strong>While Pressed</strong> e <strong>Toggle</strong> são os únicos que repetem — é por eles que se roda "até eu mandar parar", já que Loops não tem infinito.</figcaption>
+    </figure>
     <p>Os modos valem só para hotkeys — hotstrings sempre disparam ao serem digitadas.</p>
   </div>
 
   <div class="subsec">
-    <h3>Remaps de tecla</h3>
+    <h3 id="p3-remaps-de-tecla">Remaps de tecla</h3>
     <p>Settings → Keys → <strong>Key Remaps</strong>: uma camada 1:1 sempre ativa, independente de perfis. <code>CapsLock → Esc</code> vale no sistema inteiro enquanto o app roda; mapear uma tecla "para nada" a desativa. Remaps pausam durante a gravação, e uma tecla usada como origem não pode ser hotkey de perfil — o remap vence.</p>
   </div>
 
   <div class="subsec">
-    <h3>A paleta de comandos — <span class="kbd">Ctrl</span>+<span class="kbd">K</span></h3>
+    <h3 id="p3-a-paleta-de-comandos-ctrl-k">A paleta de comandos — <span class="kbd">Ctrl</span>+<span class="kbd">K</span></h3>
     <p>O que não tem botão próprio mora aqui: <strong>Copy as Table / Paste Actions</strong> (mover passos entre perfis), <strong>Convert to Relative / Absolute</strong>, <strong>Toggle Live Variables</strong>, <strong>Run report</strong>, Import/Export all, Theme Editor.</p>
   </div>
 </section>
@@ -642,8 +1139,11 @@
 <!-- ═══════════════════════ PARTE 4 — SEND TEXT & TOKENS ═══════════════════════ -->
 <section id="p4" class="p-gold">
   <div class="part-head">
-    <span class="eyebrow">Parte 4 · Send Text &amp; Tokens</span>
-    <h2>Texto que se preenche sozinho</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p4"/></svg>Parte 4 · Send Text &amp; Tokens</span>
+      <h2>Texto que se preenche sozinho</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">04</span>
   </div>
 
   <p>A ação <strong>Send Text</strong> injeta texto por colagem — layouts e acentos sobrevivem. E dentro do texto entram <strong>tokens</strong>: palavras entre chaves, como <span class="tok">{date}</span> ou <span class="tok">{clipboard}</span>, que na hora de <em>executar</em> são trocadas pelo valor real daquele momento.</p>
@@ -683,7 +1183,7 @@
   <p>Você não precisa decorar nada: o editor <strong>Insert Text</strong> mostra uma paleta de <strong>chips</strong> (Clipboard · Values · Keys &amp; timing · Run state) — clicar insere o token pronto. Confirme com <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span>; o <span class="kbd">Enter</span> sozinho só pula linha.</p>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 1</span> Tokens prontos para usar</h3>
+    <h3 id="p4-tokens-prontos-para-usar"><span class="nivel">Nível 1</span> Tokens prontos para usar</h3>
 
     <h4 style="margin-top:22px">Data, hora e número aleatório</h4>
     <div class="tbl-wrap">
@@ -828,7 +1328,7 @@
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
+    <h3 id="p4-modificadores-transformando-o-texto"><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
     <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span>.</p>
 
     <div class="xmpl">
@@ -996,8 +1496,11 @@ maria@email.com
 <!-- ═══════════════════════ PARTE 5 — VARIÁVEIS, SLOTS E PROMPTS ═══════════════════════ -->
 <section id="p5" class="p-gold">
   <div class="part-head">
-    <span class="eyebrow">Parte 5 · Variáveis, slots e prompts</span>
-    <h2>Valores que a macro guarda — e que pergunta</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p5"/></svg>Parte 5 · Variáveis, slots e prompts</span>
+      <h2>Valores que a macro guarda — e que pergunta</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">05</span>
   </div>
 
   <p>Três ferramentas para lidar com valores que mudam, cada uma com uma duração:</p>
@@ -1012,8 +1515,70 @@ maria@email.com
     </table>
   </div>
 
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 236" role="img" aria-label="Linha do tempo com três execuções dentro de uma sessão do app. Uma variável guardada com Set Variable dura só até o fim da execução em que foi guardada. Um slot capturado dura enquanto o app estiver aberto, atravessando as execuções seguintes. O token input pergunta uma vez no começo de cada execução." style="min-width: 560px;">
+      <rect x="160" y="14" width="570" height="20" rx="6" fill="var(--surface)" stroke="var(--border-strong)"/>
+      <text x="445" y="28" text-anchor="middle" font-family="'Spline Sans Mono', monospace" font-size="10" letter-spacing="1.5" fill="var(--muted)">APP ABERTO</text>
+      <g fill="var(--paper)" stroke="var(--border-strong)" stroke-width="1.2">
+        <rect x="172" y="46" width="160" height="20" rx="5"/>
+        <rect x="362" y="46" width="160" height="20" rx="5"/>
+        <rect x="552" y="46" width="160" height="20" rx="5"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="10.5" fill="var(--ink-soft)" text-anchor="middle">
+        <text x="252" y="60">Execução 1</text><text x="442" y="60">Execução 2</text><text x="632" y="60">Execução 3</text>
+      </g>
+      <g stroke="var(--border)" stroke-dasharray="3 3">
+        <line x1="172" y1="70" x2="172" y2="226"/><line x1="332" y1="70" x2="332" y2="226"/>
+        <line x1="362" y1="70" x2="362" y2="226"/><line x1="522" y1="70" x2="522" y2="226"/>
+        <line x1="552" y1="70" x2="552" y2="226"/><line x1="712" y1="70" x2="712" y2="226"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="12" font-weight="600" fill="var(--gold)" text-anchor="end">
+        <text x="140" y="104">{var:nome}</text>
+        <text x="140" y="154">{clip:nome}</text>
+        <text x="140" y="204">{input:…}</text>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10" fill="var(--muted)" text-anchor="end">
+        <text x="140" y="118">Set Variable</text>
+        <text x="140" y="168">slot</text>
+        <text x="140" y="218">pergunta</text>
+      </g>
+      <!-- var: nasce no Set Variable, morre no fim da execução -->
+      <g>
+        <rect x="212" y="94" width="120" height="12" rx="4" fill="var(--gold-bg)" stroke="var(--gold-border)"/>
+        <circle cx="212" cy="100" r="4.5" fill="var(--gold)"/>
+        <rect x="402" y="94" width="120" height="12" rx="4" fill="var(--gold-bg)" stroke="var(--gold-border)"/>
+        <circle cx="402" cy="100" r="4.5" fill="var(--gold)"/>
+        <rect x="592" y="94" width="120" height="12" rx="4" fill="var(--gold-bg)" stroke="var(--gold-border)"/>
+        <circle cx="592" cy="100" r="4.5" fill="var(--gold)"/>
+        <g stroke="var(--bad)" stroke-width="1.6"><line x1="328" y1="96" x2="336" y2="104"/><line x1="336" y1="96" x2="328" y2="104"/><line x1="518" y1="96" x2="526" y2="104"/><line x1="526" y1="96" x2="518" y2="104"/><line x1="708" y1="96" x2="716" y2="104"/><line x1="716" y1="96" x2="708" y2="104"/></g>
+      </g>
+      <!-- slot: capturado entre execuções, dura até o app fechar -->
+      <g>
+        <rect x="347" y="144" width="383" height="12" rx="4" fill="var(--gold-bg)" stroke="var(--gold-border)"/>
+        <circle cx="347" cy="150" r="4.5" fill="var(--gold)"/>
+      </g>
+      <!-- input: uma pergunta por execução -->
+      <g fill="var(--paper)" stroke="var(--gold)" stroke-width="1.4">
+        <circle cx="196" cy="200" r="8"/><circle cx="386" cy="200" r="8"/><circle cx="576" cy="200" r="8"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="11" font-weight="700" fill="var(--gold)" text-anchor="middle">
+        <text x="196" y="204">?</text><text x="386" y="204">?</text><text x="576" y="204">?</text>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10" fill="var(--muted)">
+        <text x="222" y="86">guardada aqui</text>
+        <text x="350" y="86" fill="var(--bad)">some no fim de cada execução</text>
+        <text x="356" y="136">Win+Ctrl+C entre duas execuções</text>
+        <text x="560" y="170">dura enquanto o app estiver aberto</text>
+        <text x="172" y="228">pergunta uma vez por execução — e a resposta vira {var:}</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>Três durações, três ferramentas. A variável morre com a execução; o slot atravessa execuções (e pode ser enchido de fora, pela hotkey); o <span class="tok">{input:…}</span> pergunta de novo a cada execução.</figcaption>
+  </figure>
+
   <div class="subsec">
-    <h3>Set Variable</h3>
+    <h3 id="p5-set-variable">Set Variable</h3>
     <p>Dê um <strong>Name</strong> e um <strong>Value</strong>. O valor é montado <em>na hora de guardar</em> — aceita <span class="tok">{clipboard}</span>, <span class="tok">{row:col}</span>, <span class="tok">{date}</span> ou outro <span class="tok">{var:}</span> — o que congela o momento:</p>
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Grade de ações</div>
@@ -1030,7 +1595,7 @@ maria@email.com
   </div>
 
   <div class="subsec">
-    <h3>Slots: Copy to Slot e a hotkey Capture Slot</h3>
+    <h3 id="p5-slots-copy-to-slot-e-a-hotkey-capture-slot">Slots: Copy to Slot e a hotkey Capture Slot</h3>
     <p>Slots são "clipboards extras" com nome, que <strong>sobrevivem entre execuções</strong> — capture agora, use depois. Dois jeitos de encher um:</p>
     <ul>
       <li><strong>A hotkey</strong> (<span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span>) — para quando <em>você</em> escolhe o que copiar. Selecione um texto e aperte: cai em <span class="tok">{clip:1}</span>; de novo, <span class="tok">{clip:2}</span>… até 9, e volta ao 1. Um aviso mostra onde caiu. <strong>Não funciona durante uma execução.</strong></li>
@@ -1063,7 +1628,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Perguntar na hora: <span class="tok">{input:Rótulo}</span></h3>
+    <h3 id="p5-perguntar-na-hora-input-rotulo">Perguntar na hora: <span class="tok">{input:Rótulo}</span></h3>
     <p>Quando a macro chega num <span class="tok">{input:...}</span>, ela <strong>pausa e abre uma janelinha</strong>. O app se traz para a frente sozinho e, depois da resposta, <strong>devolve o foco</strong> para a janela de antes — o texto cai no app certo.</p>
     <ul>
       <li><span class="tok">{input:Número do pedido}</span> — campo livre (o rótulo pode ter espaços).</li>
@@ -1074,7 +1639,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Outras fontes de texto</h3>
+    <h3 id="p5-outras-fontes-de-texto">Outras fontes de texto</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Token</th><th>De onde vem o texto</th></tr></thead>
@@ -1082,7 +1647,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <tr><td><span class="tok">{winclip:1}</span></td><td>O <strong>histórico do Windows</strong> (Win+V): 1 = a última coisa copiada, 2 = a anterior… Precisa do histórico ativado nas configurações do Windows.</td></tr>
           <tr><td><span class="tok">{clipboard:next}</span></td><td>Auto-avança: cada uso cola a <strong>próxima linha</strong> do clipboard. Linhas em branco são puladas; no fim vira vazio (não volta ao começo); copiar outra coisa recomeça sozinho. Combina: <code>{clipboard:next:trim:upper}</code> transforma <em>aquela</em> linha.</td></tr>
           <tr><td><span class="tok">{counter}</span></td><td>A volta atual do loop (1, 2, 3…).</td></tr>
-          <tr><td><span class="tok">{row:coluna}</span> / <span class="tok">{rownext:coluna}</span></td><td>A tabela do Data Loop — Parte 12.</td></tr>
+          <tr><td><span class="tok">{row:coluna}</span> / <span class="tok">{rownext:coluna}</span></td><td>A tabela do Data Loop — <a class="xref" href="#p12">Parte 12</a>.</td></tr>
           <tr><td><span class="tok">{row}</span></td><td>O número da linha <strong>da ação na grade</strong> — não é a tabela.</td></tr>
         </tbody>
       </table>
@@ -1097,7 +1662,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Truques de quem já domina</h3>
+    <h3 id="p5-truques-de-quem-ja-domina">Truques de quem já domina</h3>
     <ul>
       <li><strong>Número vindo de variável:</strong> onde a transformação pede um número, escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada pela variável <code>i</code>. Reservados: <code>@counter</code> (a volta do loop — num loop, <code>{clipboard:line:@counter}</code> pega a linha 1 na primeira volta, a 2 na segunda…) e <code>@row</code> (a linha do Data Loop). Vale em Line #, Word #, First N e Last N; no construtor, o botãozinho <strong>@</strong> alterna entre número fixo e variável.</li>
       <li><strong>Nome que não existe sai vazio</strong>, de propósito — o contrário colaria o clipboard inteiro por causa de um erro de digitação.</li>
@@ -1109,8 +1674,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 6 — CONDICIONAIS & ASSERT ═══════════════════════ -->
 <section id="p6" class="p-violet">
   <div class="part-head">
-    <span class="eyebrow">Parte 6 · Condicionais, Loops &amp; Assert</span>
-    <h2>Macros que decidem, repetem — e que exigem</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p6"/></svg>Parte 6 · Condicionais, Loops &amp; Assert</span>
+      <h2>Macros que decidem, repetem — e que exigem</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">06</span>
   </div>
 
   <p>Um <strong>condicional</strong> divide a macro em dois caminhos: <em>se</em> algo é verdade, executa um bloco; <em>senão</em>, executa outro (ou pula direto). Na grade, são linhas especiais: <strong>If</strong> (a pergunta), <strong>Else If</strong> (mais perguntas no mesmo bloco, opcionais — Nível 3), <strong>Else</strong> (opcional) e <strong>End If</strong> (o fim do bloco).</p>
@@ -1157,7 +1725,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </figure>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 1</span> Seu primeiro If</h3>
+    <h3 id="p6-seu-primeiro-if"><span class="nivel">Nível 1</span> Seu primeiro If</h3>
     <p>Na barra, clique no botão <strong>Conditional</strong> (ícone de ramificação) → <strong>Insert Conditional</strong> e escolha o tipo. <em>Image Found</em> e <em>Pixel Color Match</em> abrem a captura para você marcar a imagem ou o pixel; os outros inserem o par If/End If direto. O bloco entra <strong>antes</strong> da linha selecionada.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
@@ -1181,7 +1749,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 2</span> Os tipos de condição</h3>
+    <h3 id="p6-os-tipos-de-condicao"><span class="nivel">Nível 2</span> Os tipos de condição</h3>
     <p>Todos funcionam do mesmo jeito — o que muda é <em>o que</em> o If verifica:</p>
     <div class="cards">
       <div class="card"><h4>If Image Found</h4><p>Uma imagem de referência está visível na tela?</p><div class="card-ex">Ex.: o ícone de "salvo" apareceu?</div></div>
@@ -1199,7 +1767,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 2</span> A dupla Set Variable + If Variable</h3>
+    <h3 id="p6-a-dupla-set-variable-if-variable"><span class="nivel">Nível 2</span> A dupla Set Variable + If Variable</h3>
     <p>A combinação mais poderosa: uma ação <strong>guarda</strong> um estado, o If <strong>decide</strong> por ele.</p>
     <div class="tbl-wrap">
       <table>
@@ -1227,7 +1795,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> Ferramentas finas do If</h3>
+    <h3 id="p6-ferramentas-finas-do-if"><span class="nivel">Nível 3</span> Ferramentas finas do If</h3>
     <ul>
       <li><strong>Negate</strong> — inverte a pergunta: "If <em>NOT</em> Image Found" = "se a imagem <em>não</em> está na tela".</li>
       <li><strong>On Probe Error</strong> — se a <em>própria checagem</em> falhar (ex.: janela de referência sumiu), o padrão <strong>Treat as false</strong> segue pelo Else; <strong>Halt</strong> para a execução.</li>
@@ -1276,7 +1844,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> Vários caminhos: Else If e aninhamento</h3>
+    <h3 id="p6-varios-caminhos-else-if-e-aninhamento"><span class="nivel">Nível 3</span> Vários caminhos: Else If e aninhamento</h3>
     <p>Blocos podem ficar dentro de blocos, <strong>sem limite de profundidade</strong> — cada nível ganha a sua cor na grade. Para criar: <strong>selecione uma linha que está dentro do bloco</strong> e use Insert Conditional.</p>
 
     <div class="callout co-rule">
@@ -1325,7 +1893,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> While — o bloco que repete</h3>
+    <h3 id="p6-while-o-bloco-que-repete"><span class="nivel">Nível 3</span> While — o bloco que repete</h3>
     <p>O If pergunta <em>uma vez</em>. O <strong>While</strong> faz a mesma pergunta <strong>em volta</strong>: enquanto a resposta for sim, o corpo roda de novo. Na barra, o menu <strong>Loop ▾</strong> insere o par <strong>While … End Loop</strong> — com as mesmas condições do If (imagem, pixel, janela, clipboard, variável, processo, arquivo, horário, elemento de página) e o mesmo editor, incluindo o botão <strong>Test</strong>.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
@@ -1347,7 +1915,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <p>Dois saltos, no mesmo menu Loop ▾, sob <strong>Loop control</strong>:</p>
     <ul>
       <li><strong>Break loop</strong> — sai do loop mais interno <em>agora</em>; a execução continua depois do End Loop dele.</li>
-      <li><strong>Next iteration</strong> — pula o resto do corpo e volta ao topo: o While re-checa a condição; num For Each Data Row (Parte 12), já vai para a <strong>próxima linha</strong>.</li>
+      <li><strong>Next iteration</strong> — pula o resto do corpo e volta ao topo: o While re-checa a condição; num For Each Data Row (<a class="xref" href="#p12">Parte 12</a>), já vai para a <strong>próxima linha</strong>.</li>
     </ul>
     <p>Fora de um loop os dois aparecem <strong>cinzas, com a explicação no tooltip</strong> — em vez de sumirem do menu. Combinados com um If, viram o "sai quando X acontecer no meio do corpo".</p>
 
@@ -1361,7 +1929,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
+    <h3 id="p6-stop-e-return-encerrar-no-meio"><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
     <p>Até aqui, uma macro só terminava chegando ao fim da lista. Duas linhas novas (menu <strong>Assert ▾</strong> → <em>End the run</em>) encerram antes:</p>
     <ul>
       <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>, o mesmo sinal de quando a lista acaba. As linhas depois dele nunca rodam — inclusive dentro de sub-perfis: um Stop no filho encerra a cadeia toda.</li>
@@ -1380,7 +1948,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3><span class="nivel">Nível 3</span> Assert — exigir que algo seja verdade</h3>
+    <h3 id="p6-assert-exigir-que-algo-seja-verdade"><span class="nivel">Nível 3</span> Assert — exigir que algo seja verdade</h3>
     <p>Um If <em>pergunta</em> e segue por um dos dois caminhos. Um <strong>Assert</strong> <em>exige</em>: se não for verdade, <strong>para na hora e diz qual premissa falhou</strong>. Uma linha só, sem ramificação e sem End If — barra → ícone de ramificação → <strong>Insert Assert</strong>.</p>
     <div class="callout co-rule">
       <div class="co-icon">🧭</div>
@@ -1389,7 +1957,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <p><strong>Wait</strong> = <em>sincronizar</em> ("espere a tela ficar pronta"). <strong>If</strong> = <em>ramificar</em> ("se aparecer, clique; senão, siga") — os dois caminhos são normais. <strong>Assert</strong> = <em>exigir</em> ("daqui não passa sem isto") — só um caminho é aceitável.</p>
       </div>
     </div>
-    <p>São <strong>seis condições</strong> de propósito — Window Open, Process Running, Clipboard, Variable, File Exists e Time. Imagem e pixel já param sozinhos por timeout (Wait Image / Wait Pixel, Parte 7), e para página existe o Assert Element (Parte 11).</p>
+    <p>São <strong>seis condições</strong> de propósito — Window Open, Process Running, Clipboard, Variable, File Exists e Time. Imagem e pixel já param sozinhos por timeout (Wait Image / Wait Pixel, <a class="xref" href="#p7">Parte 7</a>), e para página existe o Assert Element (<a class="xref" href="#p11">Parte 11</a>).</p>
     <p><strong>Campos:</strong> Require (Met/NOT Met) · Wait for condition (padrão 1500 ms) · On failure (abaixo) · <strong>Notes</strong> — o nome que aparece na falha. Preencha sempre: sem ele a mensagem cai para <code>'element'</code>, e com três asserts na macro você não sabe qual parou.</p>
 
     <h4 style="margin-top:24px">On failure: três destinos para a falha</h4>
@@ -1419,14 +1987,17 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 7 — ESPERAR A TELA ═══════════════════════ -->
 <section id="p7" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 7 · Esperar a tela</span>
-    <h2>Espere a tela, não chute o tempo</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p7"/></svg>Parte 7 · Esperar a tela</span>
+      <h2>Espere a tela, não chute o tempo</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">07</span>
   </div>
 
   <p>Uma pausa fixa de 3 segundos erra dos dois lados: perde tempo quando a tela já estava pronta, e falha no dia em que demorou 4. As ações de espera resolvem os dois problemas de uma vez.</p>
 
   <div class="subsec">
-    <h3>Wait Image</h3>
+    <h3 id="p7-wait-image">Wait Image</h3>
     <p>Barra → <strong>Wait for Image</strong> → recorte o pedaço da tela que você espera (um botão, um ícone) → <strong>Test match</strong>. O Test confere contra a tela agora, mostra a % de acerto e já ajusta a região de busca em volta do que achou.</p>
     <ul>
       <li><strong>Tolerance</strong> — padrão <strong>80%</strong>. ~95 para estrito; abaixo de 70 para UI comprimida. <strong>Nunca 100%</strong> — uma tela viva nunca fica idêntica pixel a pixel.</li>
@@ -1447,13 +2018,54 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div>
   </div>
 
+    <figure>
+      <div class="fig-scroll">
+      <svg viewBox="0 0 760 236" role="img" aria-label="Comparação: sem região de busca, o Wait Image varre a tela inteira a cada verificação, o que custa cerca de 440 milissegundos e pode casar com algo parecido em outro canto. Com uma região de busca em volta do alvo, cada verificação custa cerca de 4 milissegundos e o parecido de outro canto é ignorado." style="min-width: 560px;">
+        <defs>
+          <marker id="arrRg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+        </defs>
+        <g fill="none" stroke-width="1.4">
+          <!-- tela inteira -->
+          <rect x="14" y="34" width="350" height="170" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+          <rect x="22" y="42" width="334" height="154" rx="6" fill="none" stroke="var(--bad)" stroke-dasharray="5 4"/>
+          <rect x="120" y="128" width="84" height="26" rx="5" fill="var(--paper)" stroke="var(--ok)"/>
+          <rect x="250" y="66" width="84" height="26" rx="5" fill="var(--paper)" stroke="var(--bad)" stroke-dasharray="3 3"/>
+          <!-- com região -->
+          <rect x="396" y="34" width="350" height="170" rx="10" fill="var(--surface)" stroke="var(--border-strong)"/>
+          <rect x="482" y="112" width="140" height="60" rx="6" fill="var(--gold-bg)" stroke="var(--gold)" stroke-dasharray="5 4"/>
+          <rect x="502" y="128" width="84" height="26" rx="5" fill="var(--paper)" stroke="var(--ok)"/>
+          <rect x="632" y="66" width="84" height="26" rx="5" fill="var(--paper)" stroke="var(--border-strong)" stroke-dasharray="3 3"/>
+        </g>
+        <g font-family="'Spline Sans Mono', monospace" font-size="11">
+          <text x="26" y="24" fill="var(--bad)" font-size="10" letter-spacing="1.5">SEM REGIÃO — TELA INTEIRA</text>
+          <text x="408" y="24" fill="var(--ok)" font-size="10" letter-spacing="1.5">COM REGIÃO DE BUSCA</text>
+          <text x="162" y="145" text-anchor="middle" fill="var(--ok)" font-weight="600">Confirmar</text>
+          <text x="292" y="83" text-anchor="middle" fill="var(--bad)">Confirma?</text>
+          <text x="544" y="145" text-anchor="middle" fill="var(--ok)" font-weight="600">Confirmar</text>
+          <text x="674" y="83" text-anchor="middle" fill="var(--muted)">Confirma?</text>
+        </g>
+        <g font-family="'Figtree', sans-serif" font-size="10">
+          <text x="30" y="188" fill="var(--bad)">varre tudo · ~440 ms por verificação</text>
+          <text x="292" y="110" text-anchor="middle" fill="var(--bad)">parecido noutro canto:</text>
+          <text x="292" y="122" text-anchor="middle" fill="var(--bad)">pode casar aqui</text>
+          <text x="412" y="188" fill="var(--ok)">só olha aqui · ~4 ms por verificação</text>
+          <text x="674" y="110" text-anchor="middle" fill="var(--muted)">fora da região: ignorado</text>
+          <text x="552" y="106" text-anchor="middle" fill="var(--gold)" font-weight="600">Search region</text>
+        </g>
+        <g font-family="'Figtree', sans-serif" font-size="10.5" fill="var(--muted)" text-anchor="middle">
+          <text x="380" y="226">o Test match já sugere a região em volta do que encontrou</text>
+        </g>
+      </svg>
+      </div>
+      <figcaption>Cem vezes mais barato e, mais importante, sem acerto falso: fora da região, o "parecido" de outro canto nem entra na conta.</figcaption>
+    </figure>
   <div class="subsec">
-    <h3>Wait Pixel Color</h3>
+    <h3 id="p7-wait-pixel-color">Wait Pixel Color</h3>
     <p>Espera o pixel em (x, y) bater com uma cor, dentro de uma tolerância. Mais leve que imagem — perfeito para indicadores de estado: o LED que fica verde, a barra que enche, o botão que sai do cinza.</p>
   </div>
 
   <div class="subsec">
-    <h3>A lupa — acertar o pixel certo, não o vizinho</h3>
+    <h3 id="p7-a-lupa-acertar-o-pixel-certo-nao-o-vizinho">A lupa — acertar o pixel certo, não o vizinho</h3>
     <p>Toda vez que o app pede um ponto, uma área ou um recorte — o conta-gotas do Wait Pixel, o <strong>Pick position</strong>, a área do Click Area, a região e a captura do Wait Image — a tela escurece e uma <strong>lupa</strong> segue o cursor, mostrando os pixels ampliados e sem borrar. A célula destacada no centro é <em>exatamente</em> o pixel que será gravado.</p>
     <ul>
       <li><strong>Roda do mouse = zoom.</strong> São cinco níveis e ela abre no mais afastado, para você achar a região primeiro; role para cima ao chegar perto.</li>
@@ -1470,14 +2082,14 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Pause</h3>
+    <h3 id="p7-pause">Pause</h3>
     <p>Para a execução até uma <strong>hotkey de retomada</strong> ou um <strong>timeout</strong> — precisa de pelo menos um dos dois. É a espera <em>humana</em>: "faça sua parte e me avise" no meio de uma macro.</p>
   </div>
 
   <div class="subsec">
-    <h3>Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
+    <h3 id="p7-esperar-por-um-estado-os-presets-do-wait">Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
     <p>Imagem e pixel não são as únicas coisas que valem a espera. O menu <strong>Wait ▾</strong> ganhou a seção <strong>"Wait for condition — stop quietly on timeout"</strong> com as seis condições de estado, nomeadas com o verbo: <strong>Until Window Open</strong>, <strong>Until Process Running</strong>, <strong>Until Clipboard</strong>, <strong>Until Variable</strong>, <strong>Until File Exists</strong> e <strong>Until Time</strong>.</p>
-    <p>Cada item insere, em <strong>um clique</strong>, um Assert já configurado: <strong>10 segundos</strong> de espera e a política <strong>Stop quietly</strong> (Parte 6). Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em> — o editor abre em seguida com tudo preenchido, para ajustar o tempo ou trocar a política.</p>
+    <p>Cada item insere, em <strong>um clique</strong>, um Assert já configurado: <strong>10 segundos</strong> de espera e a política <strong>Stop quietly</strong> (<a class="xref" href="#p6">Parte 6</a>). Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em> — o editor abre em seguida com tudo preenchido, para ajustar o tempo ou trocar a política.</p>
     <p>É a <strong>mesma ação</strong> que o menu Assert ▾ insere — a linha na grade diz <em>Assert</em> nos dois casos. O que muda são os dois padrões: pelo Assert ▾ ela nasce exigente (1500 ms, <em>Abort</em>); por aqui, paciente e discreta (10 s, <em>Stop quietly</em>). Escolha pela intenção; depois, qualquer uma vira a outra no editor.</p>
     <div class="callout co-rule">
       <div class="co-icon">⏳</div>
@@ -1492,8 +2104,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 8 — JANELAS ═══════════════════════ -->
 <section id="p8" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 8 · Janelas</span>
-    <h2>Alvo de janela, coordenadas relativas e troca de foco</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p8"/></svg>Parte 8 · Janelas</span>
+      <h2>Alvo de janela, coordenadas relativas e troca de foco</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">08</span>
   </div>
 
   <p>Um clique gravado guarda um ponto <strong>da tela</strong>. Alguém arrasta a janela dez pixels e a macro que ontem acertava passa a errar tudo. O <strong>alvo de janela</strong> resolve isso prendendo o perfil a uma janela — e as <strong>coordenadas relativas</strong> fazem os cliques seguirem a janela aonde ela for.</p>
@@ -1539,7 +2154,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </figure>
 
   <div class="subsec">
-    <h3>Configurando — o fluxo de 4 passos</h3>
+    <h3 id="p8-configurando-o-fluxo-de-4-passos">Configurando — o fluxo de 4 passos</h3>
     <ol>
       <li>Botão direito no perfil → <strong>Window target…</strong> → <strong>Detect Window</strong> → clique na janela do app.</li>
       <li><strong>Test front window</strong> — tem que dar <em>✓ Matches</em>. Título que muda a cada atendimento? Use <strong>Contains</strong> com só o pedaço fixo (ou Regex, se o fixo estiver no começo <em>e</em> no fim).</li>
@@ -1562,7 +2177,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Activate Window — trocar de app no meio da execução</h3>
+    <h3 id="p8-activate-window-trocar-de-app-no-meio-da-execucao">Activate Window — trocar de app no meio da execução</h3>
     <p>O alvo de janela prende o perfil inteiro a uma janela. A ação <strong>Activate Window</strong> é outra coisa: um <em>passo</em> que muda qual app está na frente — <strong>Activate / Maximize / Minimize / Close</strong> — no meio da macro.</p>
     <div class="callout co-rule">
       <div class="co-icon">🎯</div>
@@ -1578,8 +2193,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 9 — AUTOMAÇÃO ═══════════════════════ -->
 <section id="p9" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 9 · Automação</span>
-    <h2>Rodar sem apertar nada</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p9"/></svg>Parte 9 · Automação</span>
+      <h2>Rodar sem apertar nada</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">09</span>
   </div>
 
   <p>Uma automação dispara um perfil sozinha. Settings → App → <strong>Automation</strong> → <strong>Manage ›</strong> (ou bandeja → Automations…). Cada perfil tem no máximo um gatilho:</p>
@@ -1596,7 +2214,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Como se comporta</h3>
+    <h3 id="p9-como-se-comporta">Como se comporta</h3>
     <ul>
       <li><strong>Armed é local desta máquina</strong> — perfis importados ou duplicados chegam desarmados. Automações armadas se re-armam ao iniciar o app.</li>
       <li><strong>Uma execução por vez</strong> — durante um replay, gravação, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). Uma automação nunca atropela trabalho não salvo.</li>
@@ -1609,8 +2227,62 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </ul>
   </div>
 
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 250" role="img" aria-label="Duas linhas do tempo com a mesma condição alternando entre falsa e verdadeira. No modo padrão, o gatilho dispara só no instante em que a condição vira verdadeira; enquanto ela continua verdadeira, não dispara de novo, e precisa voltar a ser falsa antes do próximo disparo. No modo Continuous, o gatilho repete a cada cooldown enquanto a condição continuar verdadeira." style="min-width: 560px;">
+      <g font-family="'Spline Sans Mono', monospace" font-size="12" font-weight="600" fill="var(--ink)">
+        <text x="14" y="52">Na virada</text>
+        <text x="14" y="160">Continuous</text>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10" fill="var(--muted)">
+        <text x="14" y="66">(padrão)</text>
+        <text x="14" y="174">(repete enquanto vale)</text>
+      </g>
+      <!-- eixo e legenda sim/não -->
+      <g font-family="'Spline Sans Mono', monospace" font-size="10" fill="var(--muted)" text-anchor="end">
+        <text x="150" y="60">sim</text><text x="150" y="90">não</text>
+        <text x="150" y="168">sim</text><text x="150" y="198">não</text>
+      </g>
+      <!-- onda 1 -->
+      <polyline points="160,86 240,86 240,56 400,56 400,86 480,86 480,56 640,56 640,86 730,86" fill="none" stroke="var(--ink-soft)" stroke-width="1.6" stroke-linejoin="round"/>
+      <!-- onda 2 -->
+      <polyline points="160,194 240,194 240,164 400,164 400,194 480,194 480,164 640,164 640,194 730,194" fill="none" stroke="var(--ink-soft)" stroke-width="1.6" stroke-linejoin="round"/>
+      <!-- disparos modo padrão -->
+      <g fill="var(--violet)">
+        <path d="M 236 44 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 476 44 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10">
+        <text x="252" y="36" fill="var(--violet)" font-weight="600">dispara</text>
+        <text x="492" y="36" fill="var(--violet)" font-weight="600">dispara de novo</text>
+        <text x="320" y="48" text-anchor="middle" fill="var(--muted)">continua verdadeira → não repete</text>
+        <text x="440" y="104" text-anchor="middle" fill="var(--muted)">voltou a ser falsa</text>
+        <text x="685" y="104" text-anchor="middle" fill="var(--muted)">falsa de novo</text>
+      </g>
+      <!-- disparos continuous: a cada cooldown enquanto verdadeira -->
+      <g fill="var(--violet)">
+        <path d="M 236 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 296 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 356 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 476 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 536 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+        <path d="M 596 152 l 8 -12 l -3 9 h 6 l -8 12 l 3 -9 z"/>
+      </g>
+      <g stroke="var(--gold)" stroke-width="1.2" fill="none">
+        <path d="M 244 206 v 6 h 56 v -6"/>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10">
+        <text x="272" y="226" text-anchor="middle" fill="var(--gold)" font-weight="600">cooldown</text>
+        <text x="440" y="212" text-anchor="middle" fill="var(--muted)">falsa: nada</text>
+        <text x="380" y="132" text-anchor="middle" fill="var(--muted)">enquanto verdadeira, repete a cada cooldown</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption>Por padrão o gatilho é de <em>virada</em>: uma janela que fica aberta o dia inteiro dispara uma vez, não o dia inteiro. <strong>Continuous</strong> troca isso por "repete a cada cooldown enquanto valer" — 30 s por padrão, 5 s no Clipboard changed.</figcaption>
+  </figure>
+
   <div class="subsec">
-    <h3>Active hours — só dentro de uma faixa do dia</h3>
+    <h3 id="p9-active-hours-so-dentro-de-uma-faixa-do-dia">Active hours — só dentro de uma faixa do dia</h3>
     <p>Interval e Condition aceitam uma <strong>janela de horário</strong>: "a cada dez minutos, mas só entre 09:00 e 18:00". Fora dela o vigia não dispara.</p>
     <ul>
       <li><strong>Se o fim vier antes do começo, a janela cruza a meia-noite</strong> — <code>22:00</code> a <code>06:00</code> é a madrugada inteira, e funciona.</li>
@@ -1635,7 +2307,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       </div>
     </div>
 
-    <div class="gridmock-wrap"><div class="gridmock">
+    <div class="gridmock-wrap"><div class="gridmock gm-steps">
       <div class="gm-head">Exemplo — a mensagem das 8h que se posta sozinha</div>
       <div class="gm-row"><span class="gm-type">Trigger</span><span class="gm-detail">Schedule · 08:00 · Mon–Fri</span><span class="gm-note">Save, e LIGUE a chave Armed</span></div>
       <div class="gm-row"><span class="gm-type">Settings</span><span class="gm-detail">Startup: Run on Startup + Startup Minimized</span><span class="gm-note">o app sobe com o Windows e rearma</span></div>
@@ -1646,12 +2318,15 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 10 — CLICKER & GAME MODE ═══════════════════════ -->
 <section id="p10" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 10 · Clicker &amp; Game Mode</span>
-    <h2>O auto-clicker, e os cliques que jogos aceitam</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p10"/></svg>Parte 10 · Clicker &amp; Game Mode</span>
+      <h2>O auto-clicker, e os cliques que jogos aceitam</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">10</span>
   </div>
 
   <div class="subsec">
-    <h3>Clicker mode</h3>
+    <h3 id="p10-clicker-mode">Clicker mode</h3>
     <p><span class="kbd">ScrollLock</span> alterna entre Macro e Clicker. <span class="kbd">PageDown</span> inicia/para, <span class="kbd">PageUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo.</p>
     <div class="tbl-wrap">
       <table>
@@ -1674,7 +2349,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Game Mode</h3>
+    <h3 id="p10-game-mode">Game Mode</h3>
     <p>Para jogos que ignoram um teleporte instantâneo do cursor, o movimento vira um caminho percorrido. <strong>O cabeçalho da seção é o interruptor mestre</strong> — ligado por padrão.</p>
     <ul>
       <li><strong>Fast approach</strong> — em movimentos longos, teleporta até uma distância do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
@@ -1688,8 +2363,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 11 — NAVEGADOR ═══════════════════════ -->
 <section id="p11" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 11 · Navegador</span>
-    <h2>Chrome por seletor, não por pixel</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p11"/></svg>Parte 11 · Navegador</span>
+      <h2>Chrome por seletor, não por pixel</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">11</span>
   </div>
 
   <p>As ações de navegador controlam o Chrome pelo <strong>elemento</strong> (seletor CSS ou texto visível) em vez de coordenadas — continuam funcionando quando o layout muda. Exigem a <strong>extensão TrueReplayer</strong> conectada no Chrome — a instalação, passo a passo, está no <a href="https://github.com/fatalihue/TrueReplayer-releases/blob/main/docs/extension-setup/README.md">guia da extensão</a>.</p>
@@ -1715,7 +2393,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </ul>
 
   <div class="subsec">
-    <h3>Quando a extensão cai</h3>
+    <h3 id="p11-quando-a-extensao-cai">Quando a extensão cai</h3>
     <p>A conexão com o Chrome pode cair no meio de uma sessão — a extensão foi desativada, o Chrome fechou, o navegador reciclou o processo dela. O app mostra isso em dois momentos, porque as consequências são bem diferentes conforme o tipo de linha.</p>
 
     <div class="callout co-warn">
@@ -1736,7 +2414,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Run report — qual passo quebrou, e por quê</h3>
+    <h3 id="p11-run-report-qual-passo-quebrou-e-por-que">Run report — qual passo quebrou, e por quê</h3>
     <p><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Run report</strong>: a última execução passo a passo, com o que cada um mirou e quanto levou. Duas coisas que só ele mostra:</p>
     <ul>
       <li><strong>"Casou por reserva"</strong> — o seletor que <em>você</em> escolheu já não casa e a macro acertou pelo plano B. O passo <em>passou</em>, mas está a uma mudança do site de parar: re-escolha o elemento.</li>
@@ -1750,19 +2428,22 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 12 — DATA LOOP ═══════════════════════ -->
 <section id="p12" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 12 · Data Loop</span>
-    <h2>Uma tabela, uma execução por linha</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p12"/></svg>Parte 12 · Data Loop</span>
+      <h2>Uma tabela, uma execução por linha</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">12</span>
   </div>
 
   <p>Monte a macro para <strong>um</strong> item; o Data Loop repete para todos. Cada cabeçalho da tabela vira um token <span class="tok">{row:coluna}</span>, e a tabela é salva <strong>dentro do perfil</strong> — viaja no export.</p>
 
   <div class="subsec">
-    <h3>Colocando dados na tabela</h3>
+    <h3 id="p12-colocando-dados-na-tabela">Colocando dados na tabela</h3>
     <p>Barra → ícone de tabela. Três caminhos: <strong>Paste / bulk edit…</strong> (cole do Excel; <em>First row is the header</em> usa a primeira linha como nomes), <strong>Import CSV…</strong> (delimitador detectado sozinho, inclusive o ponto e vírgula do Excel brasileiro) ou editar direto na grade. Cabeçalhos usam só letras, números e <code>_</code> — um inválido ganha ⚠, e a varinha conserta.</p>
   </div>
 
   <div class="subsec">
-    <h3>Os três tokens de linha — a diferença que importa</h3>
+    <h3 id="p12-os-tres-tokens-de-linha-a-diferenca-que-importa">Os três tokens de linha — a diferença que importa</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Token</th><th>Resolve para</th><th>Use quando</th></tr></thead>
@@ -1775,15 +2456,79 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div>
   </div>
 
+  <figure>
+    <div class="fig-scroll">
+    <svg viewBox="0 0 760 236" role="img" aria-label="Uma tabela com três linhas, Ana, Bia e Caio. À esquerda, com Loop over data ligado, cada execução usa uma linha inteira: a execução 1 lê Ana em todas as ações, a execução 2 lê Bia, a execução 3 lê Caio. À direita, dentro de uma única execução, três Send Text com rownext leem Ana, Bia e Caio em sequência." style="min-width: 560px;">
+      <defs>
+        <marker id="arrDt" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse"><path d="M 0 0 L 10 5 L 0 10 z" fill="currentColor"/></marker>
+      </defs>
+      <!-- tabela -->
+      <g>
+        <rect x="14" y="48" width="180" height="118" rx="8" fill="var(--paper)" stroke="var(--border-strong)" stroke-width="1.4"/>
+        <rect x="14" y="48" width="180" height="26" rx="8" fill="var(--surface)"/>
+        <rect x="14" y="62" width="180" height="12" fill="var(--surface)"/>
+        <line x1="14" y1="74" x2="194" y2="74" stroke="var(--border-strong)"/>
+        <line x1="14" y1="105" x2="194" y2="105" stroke="var(--border)"/>
+        <line x1="14" y1="136" x2="194" y2="136" stroke="var(--border)"/>
+        <line x1="84" y1="48" x2="84" y2="166" stroke="var(--border)"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="10" letter-spacing="1" fill="var(--muted)">
+        <text x="26" y="65">NOME</text><text x="96" y="65">EMAIL</text>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="11" fill="var(--ink)">
+        <text x="26" y="94">Ana</text><text x="96" y="94" fill="var(--ink-soft)">ana@…</text>
+        <text x="26" y="125">Bia</text><text x="96" y="125" fill="var(--ink-soft)">bia@…</text>
+        <text x="26" y="156">Caio</text><text x="96" y="156" fill="var(--ink-soft)">caio@…</text>
+      </g>
+      <text x="104" y="36" text-anchor="middle" font-family="'Spline Sans Mono', monospace" font-size="10" letter-spacing="1.5" fill="var(--muted)">A TABELA</text>
+      <!-- painel {row} -->
+      <text x="240" y="36" font-family="'Spline Sans Mono', monospace" font-size="10" letter-spacing="1.5" fill="var(--gold)">{row:nome} · LOOP OVER DATA</text>
+      <g fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.2">
+        <rect x="240" y="48" width="220" height="30" rx="6"/>
+        <rect x="240" y="92" width="220" height="30" rx="6"/>
+        <rect x="240" y="136" width="220" height="30" rx="6"/>
+      </g>
+      <g font-family="'Spline Sans Mono', monospace" font-size="10.5">
+        <text x="250" y="67" fill="var(--muted)">Execução 1</text><text x="330" y="67" fill="var(--ink)">toda ação lê</text><text x="446" y="67" text-anchor="end" fill="var(--gold)" font-weight="600">Ana</text>
+        <text x="250" y="111" fill="var(--muted)">Execução 2</text><text x="330" y="111" fill="var(--ink)">toda ação lê</text><text x="446" y="111" text-anchor="end" fill="var(--gold)" font-weight="600">Bia</text>
+        <text x="250" y="155" fill="var(--muted)">Execução 3</text><text x="330" y="155" fill="var(--ink)">toda ação lê</text><text x="446" y="155" text-anchor="end" fill="var(--gold)" font-weight="600">Caio</text>
+      </g>
+      <g fill="none" stroke="var(--muted)" stroke-width="1.2" color="var(--muted)">
+        <path d="M 194 90 C 215 90, 215 63, 232 63" marker-end="url(#arrDt)"/>
+        <path d="M 194 121 C 215 121, 215 107, 232 107" marker-end="url(#arrDt)"/>
+        <path d="M 194 152 C 215 152, 215 151, 232 151" marker-end="url(#arrDt)"/>
+      </g>
+      <!-- painel {rownext} -->
+      <text x="500" y="36" font-family="'Spline Sans Mono', monospace" font-size="10" letter-spacing="1.5" fill="var(--gold)">{rownext:nome} · UMA EXECUÇÃO</text>
+      <rect x="500" y="48" width="246" height="118" rx="8" fill="var(--surface)" stroke="var(--border-strong)" stroke-width="1.2"/>
+      <text x="512" y="66" font-family="'Spline Sans Mono', monospace" font-size="10.5" fill="var(--muted)">Execução 1</text>
+      <g font-family="'Spline Sans Mono', monospace" font-size="10.5" fill="var(--ink)">
+        <text x="512" y="92">Send Text {rownext:nome}</text><text x="734" y="92" text-anchor="end" fill="var(--gold)" font-weight="600">Ana</text>
+        <text x="512" y="118">Send Text {rownext:nome}</text><text x="734" y="118" text-anchor="end" fill="var(--gold)" font-weight="600">Bia</text>
+        <text x="512" y="144">Send Text {rownext:nome}</text><text x="734" y="144" text-anchor="end" fill="var(--gold)" font-weight="600">Caio</text>
+      </g>
+      <g stroke="var(--border)"><line x1="510" y1="100" x2="736" y2="100"/><line x1="510" y1="126" x2="736" y2="126"/></g>
+      <g fill="none" stroke="var(--muted)" stroke-width="1.2" color="var(--muted)">
+        <path d="M 460 63 C 480 63, 480 100, 492 100" marker-end="url(#arrDt)"/>
+      </g>
+      <g font-family="'Figtree', sans-serif" font-size="10.5" fill="var(--muted)">
+        <text x="14" y="200">Desligado (modo cursor): cada toque de hotkey é UMA execução, com a próxima linha — e a linha da vez fica marcada na tabela.</text>
+        <text x="14" y="216">Passou da última linha, {rownext} sai vazio; a cada execução ele recomeça da primeira.</text>
+      </g>
+    </svg>
+    </div>
+    <figcaption><span class="tok">{row}</span> é "a linha desta execução"; <span class="tok">{rownext}</span> é "a próxima linha a cada uso". O primeiro preenche um registro por vez; o segundo despeja a lista inteira de uma passada.</figcaption>
+  </figure>
+
   <div class="subsec">
-    <h3>Executando sobre os dados</h3>
+    <h3 id="p12-executando-sobre-os-dados">Executando sobre os dados</h3>
     <ul>
       <li><strong>Loop over data ligado</strong> — uma execução completa <strong>por linha</strong>. Ignora os Loops do perfil; não inicia com a tabela vazia. Com ele aparece o <strong>On row error</strong>: <strong>Halt</strong> (padrão) para na primeira falha; <strong>Skip row</strong> registra, solta o que ficou pressionado e continua, com resumo no fim.</li>
       <li><strong>Desligado (modo cursor)</strong> — cada execução usa a <strong>próxima</strong> linha e avança; no fim volta à primeira. É o "um por toque". A linha que a próxima execução vai usar fica <strong>marcada no grid</strong>, então dá para conferir antes de disparar.</li>
       <li><strong>O lugar é guardado em disco</strong> — o cursor de linha (e o do Set Variable em Cycle) sobrevive a fechar o app. Trabalhe 12 linhas hoje, continue da 13 amanhã. Para mover: <strong>clique no número da linha</strong> e o cursor passa a ser aquela; botão direito → <strong>Reset row position</strong> volta para a primeira.</li>
       <li><strong>O avanço acontece quando a execução COMEÇA</strong>, não quando ela termina — então uma execução que você parou no meio, ou que morreu no primeiro erro, <em>já consumiu</em> a linha dela. É de propósito: um toque de hotkey gasta uma linha, aconteça o que acontecer, sem o app ter de adivinhar o que conta como "deu certo" — e repetir uma linha seria pior, porque quem recebe vê duas vezes. Quando não for o que você queria, o marcador mostra onde o cursor parou e um clique põe de volta.</li>
     </ul>
-    <div class="gridmock-wrap"><div class="gridmock">
+    <div class="gridmock-wrap"><div class="gridmock gm-steps">
       <div class="gm-head">Exemplo — cadastrar 40 produtos num formulário</div>
       <div class="gm-row"><span class="gm-type">1</span><span class="gm-detail">Monte e teste a macro para UM produto, digitando de verdade</span><span class="gm-note">esse é o molde</span></div>
       <div class="gm-row"><span class="gm-type">2</span><span class="gm-detail">Data Loop → Paste do Excel, com "First row is the header"</span></div>
@@ -1793,7 +2538,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>For Each Data Row — repetir só um trecho</h3>
+    <h3 id="p12-for-each-data-row-repetir-so-um-trecho">For Each Data Row — repetir só um trecho</h3>
     <p>O <strong>Loop over data</strong> repete o perfil <em>inteiro</em> por linha. Quando só um pedaço deve repetir — o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez — use o bloco <strong>For Each Data Row</strong> (menu <strong>Loop ▾</strong>):</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
@@ -1814,7 +2559,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Run Profile — sub-perfis e lotes</h3>
+    <h3 id="p12-run-profile-sub-perfis-e-lotes">Run Profile — sub-perfis e lotes</h3>
     <ul>
       <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte. (Mova os passos com <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → Copy as Table / Paste Actions.)</li>
       <li><strong>Run once per data row</strong> — o perfil <em>chamado</em> roda uma vez por linha da tabela <em>dele</em>: a macro pai faz o setup uma vez e processa um lote no meio da execução.</li>
@@ -1826,17 +2571,20 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 13 — APARÊNCIA E DADOS ═══════════════════════ -->
 <section id="p13" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 13 · Aparência e dados</span>
-    <h2>Temas, configurações e onde tudo fica</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p13"/></svg>Parte 13 · Aparência e dados</span>
+      <h2>Temas, configurações e onde tudo fica</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">13</span>
   </div>
 
   <div class="subsec">
-    <h3>Temas</h3>
+    <h3 id="p13-temas">Temas</h3>
     <p>Settings → App → Interface → <strong>Customise</strong>: galeria com <strong>37 presets</strong> (23 escuros + 14 claros, padrão <em>Lavender Coal</em>), com prévia ao vivo. Em Customise você ajusta as 29 cores (com verificador de contraste), densidade, fonte, cantos, altura de linha e zoom — e importa/exporta um tema como JSON.</p>
   </div>
 
   <div class="subsec">
-    <h3>Hotkeys padrão do app</h3>
+    <h3 id="p13-hotkeys-padrao-do-app">Hotkeys padrão do app</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Atalho</th><th>Faz</th><th>Atalho</th><th>Faz</th></tr></thead>
@@ -1852,7 +2600,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Onde seus dados ficam</h3>
+    <h3 id="p13-onde-seus-dados-ficam">Onde seus dados ficam</h3>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>O quê</th><th>Onde</th></tr></thead>
@@ -1872,17 +2620,20 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 <!-- ═══════════════════════ PARTE 14 — RECEITAS ═══════════════════════ -->
 <section id="p14" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 14 · Receitas completas</span>
-    <h2>Perfis prontos, passo a passo</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Parte 14 · Receitas completas</span>
+      <h2>Perfis prontos, passo a passo</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">14</span>
   </div>
 
   <div class="subsec">
-    <h3>Receita 1 — Resposta pronta em qualquer chat</h3>
+    <h3 id="p14-receita-1-resposta-pronta-em-qualquer-chat">Receita 1 — Resposta pronta em qualquer chat</h3>
     <p>A mais usada de todas, e são dois passos: um <strong>Send Text</strong> com a mensagem (feche com <span class="tok">{enter}</span> para já enviar) → botão direito no perfil → <strong>Assign hotstring…</strong> → <code>.cp</code>. Digitar <code>.cp</code> em qualquer chat solta a resposta inteira.</p>
   </div>
 
   <div class="subsec">
-    <h3>Receita 2 — Saudação certa para a hora do dia</h3>
+    <h3 id="p14-receita-2-saudacao-certa-para-a-hora-do-dia">Receita 2 — Saudação certa para a hora do dia</h3>
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Perfil: Saudação inteligente</div>
       <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Time — 05:00 até 11:59</span></div>
@@ -1895,7 +2646,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Receita 3 — Responder um anúncio de troca</h3>
+    <h3 id="p14-receita-3-responder-um-anuncio-de-troca">Receita 3 — Responder um anúncio de troca</h3>
     <p>O anúncio copiado é sempre <code>Vendedor - 2x Item Raro</code>, com a quantidade aparecendo só às vezes. A macro extrai o item limpo e confere se é o que você procura:</p>
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Perfil: Responder anúncio</div>
@@ -1909,7 +2660,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Receita 4 — Tentar de novo, com limite</h3>
+    <h3 id="p14-receita-4-tentar-de-novo-com-limite">Receita 4 — Tentar de novo, com limite</h3>
     <p>Num perfil com repetição (Loops), <span class="tok">{counter}</span> conta as voltas — e um <strong>Assert</strong> cria o limite: enquanto a premissa "tentativa &lt; 6" vale, a macro segue; na 6ª volta o Assert falha e a execução para, nomeando o motivo.</p>
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Perfil: Confirmar com paciência (Loops = 10)</div>
@@ -1923,16 +2674,19 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3>Receita 5 — Funcionar só no app certo</h3>
-    <p>Botão direito no perfil → <strong>Window target…</strong> → Detect Window → Test front window → ligue <strong>Relative Coordinates</strong> (deixe converter!) → Set Target. A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for — o fluxo completo está na Parte 8.</p>
+    <h3 id="p14-receita-5-funcionar-so-no-app-certo">Receita 5 — Funcionar só no app certo</h3>
+    <p>Botão direito no perfil → <strong>Window target…</strong> → Detect Window → Test front window → ligue <strong>Relative Coordinates</strong> (deixe converter!) → Set Target. A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for — o fluxo completo está na <a class="xref" href="#p8">Parte 8</a>.</p>
   </div>
 </section>
 
 <!-- ═══════════════════════ PARTE 15 — SOLUÇÃO DE PROBLEMAS ═══════════════════════ -->
 <section id="p15" class="p-mix">
   <div class="part-head">
-    <span class="eyebrow">Parte 15 · Solução de problemas</span>
-    <h2>Sintoma → causa → conserto</h2>
+    <div class="part-head-text">
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p15"/></svg>Parte 15 · Solução de problemas</span>
+      <h2>Sintoma → causa → conserto</h2>
+    </div>
+    <span class="part-num" aria-hidden="true">15</span>
   </div>
 
   <div class="tbl-wrap">
@@ -1940,7 +2694,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <thead><tr><th>Sintoma</th><th>Causa provável</th><th>Conserto</th></tr></thead>
       <tbody>
         <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
-        <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert to Relative (Parte 8)</td></tr>
+        <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert to Relative (<a class="xref" href="#p8">Parte 8</a>)</td></tr>
         <tr><td>Cliques disparam duas vezes</td><td>Focus-click ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
         <tr><td>Um jogo ignora os cliques</td><td>Movimento teleportado</td><td>Game mode ligado; se ainda errar, desligue o Fast approach</td></tr>
         <tr><td>A automação nunca dispara</td><td>Salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>
@@ -1952,7 +2706,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>"{var:...} veio vazio"</td><td>Nome com espaço/acento, ou nunca definida nesta execução</td><td>Nomes só com letras, números e <code>_</code></td></tr>
         <tr><td>O If de imagem nunca dá sim</td><td>Confiança em 100%</td><td>Baixe para 80–90%</td></tr>
         <tr><td>O Wait Image deixa o PC pesado enquanto espera</td><td>Sem região de busca, cada verificação varre a tela inteira (~440 ms, contra ~4 ms numa região)</td><td>Defina a <strong>Search region</strong> — o Test match já sugere uma</td></tr>
-        <tr><td>Um If de navegador "decidiu errado", sem erro nenhum</td><td>Extensão desconectada: a condição lê "não encontrado", igual a um elemento realmente ausente, e a macro segue pelo senão</td><td>Confira o indicador na barra de status; ação de navegador falharia alto, condição não (Parte 11)</td></tr>
+        <tr><td>Um If de navegador "decidiu errado", sem erro nenhum</td><td>Extensão desconectada: a condição lê "não encontrado", igual a um elemento realmente ausente, e a macro segue pelo senão</td><td>Confira o indicador na barra de status; ação de navegador falharia alto, condição não (<a class="xref" href="#p11">Parte 11</a>)</td></tr>
         <tr><td>O token saiu escrito na tela</td><td>Erro de digitação no nome (<code>{clipbord}</code>) — token desconhecido vira texto literal</td><td>Insira pelos chips da paleta</td></tr>
         <tr><td>"{winclip} veio vazio"</td><td>Histórico do Windows desligado</td><td>Configurações do Windows → Sistema → Área de transferência</td></tr>
         <tr><td>A macro parou com "Assert failed"</td><td>Fez o que você mandou — o nome entre aspas é o Notes daquela linha</td><td>Se a premissa só demora, aumente o Wait for condition</td></tr>
@@ -1964,10 +2718,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O botão + Add Else não aparece</td><td>O bloco já tem um Else — é um só por bloco, sempre o último</td><td>Braços extras entram com <strong>+ Add Else If</strong>, antes do Else</td></tr>
         <tr><td>Marquei um Else If como pulado e o bloco continuou rodando</td><td>É o esperado: cinza num <em>braço</em> desliga só aquela alternativa; a checagem segue no braço seguinte</td><td>Para desligar o bloco inteiro, marque o <strong>If</strong></td></tr>
         <tr><td>A lista não recomeçou do início</td><td>Cursores são guardados em disco, de propósito</td><td>Botão direito → Reset row position / Reset cycle position</td></tr>
-        <tr><td>O jogo / terminal não recebeu nada, mas a macro rodou sem erro</td><td>O alvo ignora <code>Ctrl+V</code>. A ação estava em <strong>Paste</strong></td><td>Abra a ação e troque para <strong>Type</strong>. Se ainda faltar letra, suba o <strong>ms</strong> para 5 (Parte 4)</td></tr>
-        <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (Parte 4)</td></tr>
-        <tr><td>O negrito sumiu, e só nessa mensagem</td><td>Há um <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> no <em>meio</em> do texto — em Rich a formatação só vai quando o texto forma um bloco só</td><td>Mova a tecla para a ponta, quebre em duas ações Send Text, ou use Markdown/Discord (Parte 4)</td></tr>
-        <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (Parte 2)</td></tr>
+        <tr><td>O jogo / terminal não recebeu nada, mas a macro rodou sem erro</td><td>O alvo ignora <code>Ctrl+V</code>. A ação estava em <strong>Paste</strong></td><td>Abra a ação e troque para <strong>Type</strong>. Se ainda faltar letra, suba o <strong>ms</strong> para 5 (<a class="xref" href="#p4">Parte 4</a>)</td></tr>
+        <tr><td>A mensagem chegou com asteriscos</td><td>Delivery em Markdown num app que não entende</td><td>Troque para Rich ou Plain (<a class="xref" href="#p4">Parte 4</a>)</td></tr>
+        <tr><td>O negrito sumiu, e só nessa mensagem</td><td>Há um <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> no <em>meio</em> do texto — em Rich a formatação só vai quando o texto forma um bloco só</td><td>Mova a tecla para a ponta, quebre em duas ações Send Text, ou use Markdown/Discord (<a class="xref" href="#p4">Parte 4</a>)</td></tr>
+        <tr><td>O clique <em>At cursor</em> caiu no lugar errado</td><td>O mouse estava noutro ponto no instante em que a linha rodou — ele obedece ao cursor, não ao que você via ao gravar</td><td>Para um alvo fixo, troque Position para <strong>This point</strong> (<a class="xref" href="#p2">Parte 2</a>)</td></tr>
         <tr><td>O Triple Click só selecionou uma palavra</td><td>O app-alvo não encadeia três cliques, ou o intervalo do sistema é curto demais</td><td>Confirme com um triplo-clique à mão no mesmo lugar; se à mão também não seleciona, o app não suporta</td></tr>
         <tr><td>Um perfil com Triple Click ou At cursor foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.31.0</strong> e não tem esses recursos</td><td>Atualize o TrueReplayer daquela máquina — a recusa é proposital, rodar mesmo assim clicaria no lugar errado</td></tr>
         <tr><td>Um perfil com <strong>Active hours</strong> na automação foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.35.0</strong>, que não conhece a janela de horário</td><td>Atualize aquela máquina. A recusa evita o pior desfecho silencioso: a versão antiga leria a faixa como um horário simples e deixaria a automação rodando <em>o dia inteiro</em></td></tr>
@@ -1977,36 +2731,251 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
-  <p class="footer-note">Manual do TrueReplayer · versão 2.36.0 · setembro de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+  <footer class="site-foot">
+    <p class="footer-note">Manual do TrueReplayer · versão 2.36.0 · setembro de 2026. Os nomes de ações, menus e campos aparecem em inglês, como na interface (Send Text, Set Variable, Insert Conditional…); as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Browser Type; teclas como <span class="tok">{enter}</span> e <span class="tok">{delay:N}</span> valem para a digitação no Windows.</p>
+    <div class="site-foot-links">
+      <a class="pill" href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Voltar ao topo</a>
+      <a class="pill" href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Baixar a versão mais recente</a>
+      <a class="pill" href="https://github.com/fatalihue/TrueReplayer-releases/blob/main/docs/extension-setup/README.md" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-p11"/></svg>Guia da extensão do Chrome</a>
+    </div>
+  </footer>
 </section>
 
 </div>
+</div><!-- /layout -->
+<div class="backdrop" id="backdrop" aria-hidden="true"></div>
+<button class="to-top" id="toTop" type="button" aria-label="Voltar ao topo"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg></button>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+<script>
+(function () {
+  'use strict';
+  var $ = function (s, r) { return (r || document).querySelector(s); };
+  var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
+  var root = document.documentElement;
+  var body = document.body;
+  var TOP = 56;
 
+  function esc(s) { return String(s).replace(/[&<>"]/g, function (c) { return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c]; }); }
+  function norm(s) { return String(s).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase(); }
 
-<style>
-  @media print {
-    :root, :root[data-theme="dark"], :root:not([data-theme="light"]) {
-      --paper: #FFFFFF; --surface: #F5F2EC; --surface-2: #EFEADF;
-      --ink: #1A1713; --ink-soft: #443E33; --muted: #6B6456;
-      --border: #DAD2C2; --border-strong: #B9AF98;
-      --gold: #6E5400; --gold-bg: #F6EFD9; --gold-border: #D8C892;
-      --violet: #4E2AA5; --violet-bg: #EEE9FA; --violet-border: #CDBFEE;
-      --ok: #1F6335; --ok-bg: #E6F2E7; --bad: #8E3220; --bad-bg: #F9E9E3;
-      --warn-bg: #FCF5E2; --warn-border: #DFCB8C; --code-bg: #F2EEE4;
-      --shadow: none;
-    }
-    body { font-size: 11pt; background: #FFFFFF; }
-    .wrap { max-width: none; padding: 0; }
-    .toc { display: none; }
-    header { padding-top: 0; }
-    section { margin-top: 34px; }
-    .part-head { break-before: page; }
-    #p1 .part-head { break-before: auto; }
-    .xmpl, .callout, figure, .gridmock, .card, .tbl-wrap, .chain-step { break-inside: avoid; }
-    h2, h3, h4 { break-after: avoid; }
-    th { position: static; }
-    .gridmock, .tbl-wrap, .fig-scroll { overflow: visible; }
+  /* ── Toast ─────────────────────────────────────────── */
+  var toastEl = $('#toast'), toastT;
+  function toast(msg) {
+    if (!toastEl) return;
+    toastEl.textContent = msg; toastEl.classList.add('is-visible');
+    clearTimeout(toastT); toastT = setTimeout(function () { toastEl.classList.remove('is-visible'); }, 1600);
   }
-</style>
+
+  /* ── Tema: automático → claro → escuro ─────────────── */
+  var THEME_KEY = 'tr-manual-theme';
+  var themeBtn = $('#themeBtn');
+  var themeIcon = { auto: '#i-auto', light: '#i-sun', dark: '#i-moon' };
+  var themeLabel = { auto: 'Tema: automático (segue o sistema)', light: 'Tema: claro', dark: 'Tema: escuro' };
+  function getTheme() { try { var t = localStorage.getItem(THEME_KEY); return t === 'light' || t === 'dark' ? t : 'auto'; } catch (e) { return 'auto'; } }
+  function applyTheme(t) {
+    if (t === 'auto') root.removeAttribute('data-theme'); else root.setAttribute('data-theme', t);
+    if (themeBtn) {
+      themeBtn.querySelector('use').setAttribute('href', themeIcon[t]);
+      themeBtn.setAttribute('aria-label', themeLabel[t]); themeBtn.title = themeLabel[t];
+    }
+  }
+  applyTheme(getTheme());
+  if (themeBtn) themeBtn.addEventListener('click', function () {
+    var order = ['auto', 'light', 'dark'];
+    var next = order[(order.indexOf(getTheme()) + 1) % order.length];
+    try { localStorage.setItem(THEME_KEY, next); } catch (e) {}
+    applyTheme(next); toast(themeLabel[next]);
+  });
+
+  /* ── Versão: a única fonte é o rodapé ──────────────── */
+  var foot = $('.footer-note');
+  var vm = foot && foot.textContent.match(/vers[ãa]o\s+(\d+\.\d+\.\d+)/);
+  if (vm) $$('[data-version]').forEach(function (el) { el.textContent = 'v' + vm[1]; });
+
+  /* ── Estrutura: partes e subseções ─────────────────── */
+  function cleanTitle(h) {
+    var c = h.cloneNode(true);
+    $$('.nivel, .anchor', c).forEach(function (n) { n.parentNode.removeChild(n); });
+    return c.textContent.replace(/\s+/g, ' ').trim();
+  }
+  var parts = $$('section[id^="p"]').map(function (sec) {
+    var eyebrow = $('.eyebrow', sec);
+    var label = eyebrow ? eyebrow.textContent.trim() : sec.id;
+    var name = label.indexOf('·') >= 0 ? label.split('·').slice(1).join('·').trim() : label;
+    return {
+      id: sec.id, num: sec.id.slice(1), name: name, el: sec,
+      tone: sec.classList.contains('p-violet') ? 'c-violet' : sec.classList.contains('p-gold') ? 'c-gold' : 'c-plain',
+      subs: $$('.subsec > h3[id]', sec).map(function (h) { return { id: h.id, title: cleanTitle(h), el: h }; })
+    };
+  });
+
+  /* ── Âncoras nos títulos ───────────────────────────── */
+  function addAnchor(h, id) {
+    var a = document.createElement('a');
+    a.className = 'anchor'; a.href = '#' + id; a.setAttribute('aria-label', 'Copiar o link desta seção');
+    a.innerHTML = '<svg class="ico" aria-hidden="true"><use href="#i-link"/></svg>';
+    a.addEventListener('click', function () {
+      var url = location.origin + location.pathname + '#' + id;
+      if (navigator.clipboard && navigator.clipboard.writeText) navigator.clipboard.writeText(url).then(function () { toast('Link copiado'); }, function () {});
+    });
+    h.appendChild(a);
+  }
+  parts.forEach(function (p) {
+    var h2 = $('.part-head h2', p.el); if (h2) addAnchor(h2, p.id);
+    p.subs.forEach(function (s) { addAnchor(s.el, s.id); });
+  });
+
+  /* ── Sumário lateral ───────────────────────────────── */
+  var sidenav = $('#sidenav'), tree = $('#navTree'), results = $('#navResults'), input = $('#navSearch');
+  if (tree) tree.innerHTML = parts.map(function (p) {
+    var subs = p.subs.length ? '<ol class="sn-subs">' + p.subs.map(function (s) {
+      return '<li data-id="' + s.id + '"><a href="#' + s.id + '">' + esc(s.title) + '</a></li>';
+    }).join('') + '</ol>' : '';
+    var toggle = p.subs.length ? '<button class="sn-toggle" type="button" aria-label="Mostrar as seções da parte ' + p.num + '" aria-expanded="false"><svg class="ico" aria-hidden="true"><use href="#i-chev"/></svg></button>' : '';
+    return '<li class="sn-part ' + p.tone + '" data-id="' + p.id + '"><div class="sn-row"><a href="#' + p.id + '"><svg class="ico" aria-hidden="true"><use href="#i-' + p.id + '"/></svg><span class="sn-name">' + esc(p.name) + '</span><span class="sn-num">' + p.num + '</span></a>' + toggle + '</div>' + subs + '</li>';
+  }).join('');
+  if (tree) tree.addEventListener('click', function (e) {
+    var btn = e.target.closest('.sn-toggle'); if (!btn) return;
+    var li = btn.closest('.sn-part'); var open = li.classList.toggle('is-open');
+    btn.setAttribute('aria-expanded', String(open));
+  });
+
+  /* ── Gaveta (telas estreitas) ──────────────────────── */
+  var menuBtn = $('#menuBtn'), backdrop = $('#backdrop'), navClose = $('#navClose');
+  var narrow = window.matchMedia('(max-width: 1080px)');
+  function openNav(o) {
+    body.classList.toggle('nav-open', o);
+    if (menuBtn) menuBtn.setAttribute('aria-expanded', String(o));
+    if (!o && menuBtn && document.activeElement && sidenav.contains(document.activeElement)) menuBtn.focus();
+  }
+  if (menuBtn) menuBtn.addEventListener('click', function () { openNav(!body.classList.contains('nav-open')); });
+  if (backdrop) backdrop.addEventListener('click', function () { openNav(false); });
+  if (navClose) navClose.addEventListener('click', function () { openNav(false); });
+  if (sidenav) sidenav.addEventListener('click', function (e) {
+    var a = e.target.closest('a[href^="#"]'); if (!a) return;
+    if (results && results.contains(a)) { input.value = ''; runSearch(''); }
+    if (narrow.matches) openNav(false);
+  });
+
+  /* ── Busca ─────────────────────────────────────────── */
+  var index = [];
+  parts.forEach(function (p) {
+    var intro = [];
+    for (var i = 0; i < p.el.children.length; i++) {
+      var ch = p.el.children[i];
+      if (ch.classList.contains('subsec')) break;
+      if (!ch.classList.contains('part-head')) intro.push(ch.innerText || ch.textContent);
+    }
+    var h2 = $('.part-head h2', p.el);
+    index.push({ id: p.id, part: p, title: h2 ? cleanTitle(h2) : p.name, text: intro.join(' ') });
+    $$('.subsec', p.el).forEach(function (ss) {
+      var h = $('h3[id]', ss); if (!h) return;
+      index.push({ id: h.id, part: p, title: cleanTitle(h), text: ss.innerText || ss.textContent });
+    });
+  });
+  index.forEach(function (e) { e.text = e.text.replace(/\s+/g, ' ').trim(); e.ntext = norm(e.text); e.ntitle = norm(e.title); });
+
+  var ACC = { a: '[aáàâãä]', e: '[eéèêë]', i: '[iíìîï]', o: '[oóòôõö]', u: '[uúùûü]', c: '[cç]', n: '[nñ]' };
+  function accentRe(term) {
+    var out = '';
+    for (var i = 0; i < term.length; i++) { var ch = term[i]; out += ACC[ch] || ch.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+    return out;
+  }
+  function hl(text, terms) {
+    var out = text;
+    terms.forEach(function (t) { out = out.replace(new RegExp(accentRe(t), 'gi'), function (m) { return '\u0001' + m + '\u0002'; }); });
+    return esc(out).replace(/\u0001/g, '<mark>').replace(/\u0002/g, '</mark>');
+  }
+  function countOcc(hay, needle) { var n = 0, i = 0; while ((i = hay.indexOf(needle, i)) >= 0) { n++; i += needle.length; if (n > 20) break; } return n; }
+  function snippet(e, pos, terms) {
+    if (pos < 0) return '';
+    var start = Math.max(0, pos - 60), end = Math.min(e.text.length, pos + 90);
+    var s = e.text.slice(start, end);
+    if (start > 0) s = '…' + s.replace(/^\S*\s/, '');
+    if (end < e.text.length) s = s.replace(/\s\S*$/, '') + '…';
+    return hl(s, terms);
+  }
+  function runSearch(q) {
+    var nq = norm(q.trim());
+    var on = nq.length >= 2;
+    sidenav.classList.toggle('is-searching', on);
+    if (!on) { results.innerHTML = ''; return; }
+    var terms = nq.split(/\s+/).filter(Boolean);
+    var hits = [];
+    index.forEach(function (e) {
+      var score = 0, first = -1;
+      for (var i = 0; i < terms.length; i++) {
+        var t = terms[i], ti = e.ntitle.indexOf(t), bi = e.ntext.indexOf(t);
+        if (ti < 0 && bi < 0) { score = 0; break; }
+        if (ti >= 0) score += 6;
+        if (bi >= 0) { score += 1 + Math.min(4, countOcc(e.ntext, t)); if (first < 0 || bi < first) first = bi; }
+      }
+      if (score) hits.push({ e: e, score: score, pos: first });
+    });
+    hits.sort(function (a, b) { return b.score - a.score; });
+    var top = hits.slice(0, 12);
+    if (!top.length) { results.innerHTML = '<li class="sn-empty">Nada encontrado para “' + esc(q.trim()) + '”.</li>'; return; }
+    results.innerHTML = top.map(function (h, i) {
+      var snip = snippet(h.e, h.pos, terms);
+      return '<li' + (i === 0 ? ' class="is-hot"' : '') + '><a href="#' + h.e.id + '"><span class="r-part">Parte ' + h.e.part.num + ' · ' + esc(h.e.part.name) + '</span><span class="r-title">' + hl(h.e.title, terms) + '</span>' + (snip ? '<span class="r-snip">' + snip + '</span>' : '') + '</a></li>';
+    }).join('');
+  }
+  function moveHot(dir) {
+    var items = $$('#navResults li:not(.sn-empty)'); if (!items.length) return;
+    var cur = items.findIndex(function (li) { return li.classList.contains('is-hot'); });
+    var next = Math.max(0, Math.min(items.length - 1, cur + dir));
+    items.forEach(function (li, i) { li.classList.toggle('is-hot', i === next); });
+    items[next].scrollIntoView({ block: 'nearest' });
+  }
+  function focusSearch() { if (narrow.matches) openNav(true); input.focus(); input.select(); }
+  if (input) {
+    input.addEventListener('input', function () { runSearch(input.value); });
+    input.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowDown') { e.preventDefault(); moveHot(1); }
+      else if (e.key === 'ArrowUp') { e.preventDefault(); moveHot(-1); }
+      else if (e.key === 'Enter') { var hot = $('#navResults li.is-hot a'); if (hot) { e.preventDefault(); hot.click(); } }
+      else if (e.key === 'Escape') { if (input.value) { input.value = ''; runSearch(''); } else { input.blur(); openNav(false); } e.stopPropagation(); }
+    });
+  }
+  var searchBtn = $('#searchBtn'); if (searchBtn) searchBtn.addEventListener('click', focusSearch);
+  document.addEventListener('keydown', function (e) {
+    var t = e.target, typing = t && (t.tagName === 'INPUT' || t.tagName === 'TEXTAREA' || t.isContentEditable);
+    if ((e.key === '/' && !typing && !e.ctrlKey && !e.metaKey && !e.altKey) || ((e.key === 'k' || e.key === 'K') && (e.ctrlKey || e.metaKey))) { e.preventDefault(); focusSearch(); }
+    else if (e.key === 'Escape' && body.classList.contains('nav-open')) openNav(false);
+  });
+
+  /* ── Scroll: progresso, spy, voltar ao topo ────────── */
+  var progress = $('#progress'), toTop = $('#toTop');
+  var targets = [];
+  parts.forEach(function (p) {
+    targets.push({ part: p.id, sub: null, el: p.el });
+    p.subs.forEach(function (s) { targets.push({ part: p.id, sub: s.id, el: s.el }); });
+  });
+  var lastPart = null, lastSub = null, ticking = false;
+  function onScroll() {
+    ticking = false;
+    var y = window.scrollY || window.pageYOffset;
+    var docH = document.documentElement.scrollHeight - window.innerHeight;
+    if (progress) progress.style.width = (docH > 0 ? Math.min(100, y / docH * 100) : 0) + '%';
+    if (toTop) toTop.classList.toggle('is-visible', y > 900);
+    var line = y + TOP + 28, curPart = null, curSub = null;
+    for (var i = 0; i < targets.length; i++) {
+      var t = targets[i];
+      if (t.el.getBoundingClientRect().top + y <= line) { curPart = t.part; curSub = t.sub; } else break;
+    }
+    if (curPart !== lastPart || curSub !== lastSub) {
+      lastPart = curPart; lastSub = curSub;
+      $$('.sn-part', tree).forEach(function (li) { li.classList.toggle('is-active', li.getAttribute('data-id') === curPart); });
+      $$('.sn-subs li', tree).forEach(function (li) { li.classList.toggle('is-active', li.getAttribute('data-id') === curSub); });
+      var act = curSub ? $('.sn-subs li.is-active', tree) : $('.sn-part.is-active', tree);
+      if (act && sidenav && !sidenav.classList.contains('is-searching') && !narrow.matches && !sidenav.matches(':hover')) act.scrollIntoView({ block: 'nearest' });
+    }
+  }
+  window.addEventListener('scroll', function () { if (!ticking) { ticking = true; requestAnimationFrame(onScroll); } }, { passive: true });
+  window.addEventListener('resize', onScroll);
+  if (toTop) toTop.addEventListener('click', function () { window.scrollTo({ top: 0, behavior: 'smooth' }); });
+  onScroll();
+})();
+</script>
 </body>
 </html>

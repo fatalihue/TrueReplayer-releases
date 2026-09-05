@@ -43,8 +43,8 @@ Cada um desses assuntos é uma parte do **[manual web](https://fatalihue.github.
 
 ## Primeiros 60 segundos
 
-1. **Grave** — `Ctrl+PageUp`, faça suas ações, `Ctrl+PageUp` de novo.
-2. **Reproduza** — `Ctrl+PageDown`.
+1. **Grave** — `Ctrl+PgUp`, faça suas ações, `Ctrl+PgUp` de novo.
+2. **Reproduza** — `Ctrl+PgDn`.
 3. **Salve** e **atribua um atalho** — botão direito no perfil → *Assign hotkey*.
 
 O resto — condições, loops, tokens, data loop, clicker — está no **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**, na ordem em que você vai precisar.

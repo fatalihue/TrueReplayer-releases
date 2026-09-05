@@ -805,7 +805,7 @@
         <tr><td><strong>Perfil</strong></td><td>Uma macro: a lista de ações + suas configurações. Um arquivo <code>.json</code>.</td></tr>
         <tr><td><strong>Ação</strong></td><td>Um passo (um clique, uma tecla, um If…). Uma linha na grade.</td></tr>
         <tr><td><strong>Pasta</strong></td><td>Grupo colorido de perfis. Um perfil fica em no máximo uma.</td></tr>
-        <tr><td><strong>Macro / Clicker</strong></td><td>Dois modos: <em>Macro</em> grava e reproduz listas de ações; <em>Clicker</em> é um auto-clicker. Alterne com <span class="kbd">ScrollLock</span>.</td></tr>
+        <tr><td><strong>Macro / Clicker</strong></td><td>Dois modos: <em>Macro</em> grava e reproduz listas de ações; <em>Clicker</em> é um auto-clicker. Alterne com <span class="kbd">ScrLk</span>.</td></tr>
       </tbody>
     </table>
   </div>
@@ -841,11 +841,11 @@
       </g>
       <g font-family="'Spline Sans Mono', monospace" font-size="12">
         <text x="114" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Gravar</text>
-        <text x="114" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PageUp</text>
+        <text x="114" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PgUp</text>
         <text x="380" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Grade de ações</text>
         <text x="380" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">edite cada linha</text>
         <text x="646" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Reproduzir</text>
-        <text x="646" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PageDown</text>
+        <text x="646" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PgDn</text>
         <text x="243" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">vira linhas</text>
         <text x="509" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">executa</text>
         <text x="513" y="160" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="'Figtree', sans-serif">ajuste e rode de novo — o fluxo normal</text>
@@ -867,9 +867,9 @@
     <h3 id="p1-gravando">Gravando</h3>
     <ol>
       <li>Tenha um perfil ativo (crie um em <strong>New</strong>, no painel Profiles).</li>
-      <li><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span> (ou o botão <strong>Recording</strong>) começa a gravar.</li>
+      <li><span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span> (ou o botão <strong>Recording</strong>) começa a gravar.</li>
       <li>Faça as ações normalmente.</li>
-      <li><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span> de novo para parar.</li>
+      <li><span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span> de novo para parar.</li>
     </ol>
     <p><strong>Onde os passos entram:</strong> com linhas <em>selecionadas</em> na grade, a gravação insere <strong>antes</strong> da primeira selecionada; <em>sem seleção</em>, acrescenta no <strong>fim</strong>. (Se um passo gravado "foi parar no lugar errado", quase sempre é isso.)</p>
 
@@ -890,7 +890,7 @@
 
   <div class="subsec">
     <h3 id="p1-reproduzindo">Reproduzindo</h3>
-    <p><span class="kbd">Ctrl</span>+<span class="kbd">PageDown</span> (ou <strong>Replay</strong>) executa. O mesmo atalho (ou <strong>Stop</strong>) interrompe na hora — soltando qualquer tecla que a macro estivesse segurando.</p>
+    <p><span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span> (ou <strong>Replay</strong>) executa. O mesmo atalho (ou <strong>Stop</strong>) interrompe na hora — soltando qualquer tecla que a macro estivesse segurando.</p>
     <p>A reprodução agenda cada ação contra um <strong>prazo</strong>, não empilha esperas: se algo atrasar, ela ressincroniza em vez de disparar uma rajada de ações acumuladas. Depois de ações que esperam por natureza (Wait Image, Pause, Run Profile, ações de navegador, If com espera), o relógio também ressincroniza — um delay colocado como acomodação nunca é comprimido.</p>
 
     <div class="tbl-wrap">
@@ -1240,9 +1240,9 @@
         <thead><tr><th>Token</th><th>Tecla</th><th>Token</th><th>Tecla</th></tr></thead>
         <tbody>
           <tr><td><span class="tok">{enter}</span></td><td>Enter</td><td><span class="tok">{home}</span> / <span class="tok">{end}</span></td><td>Home / End</td></tr>
-          <tr><td><span class="tok">{tab}</span></td><td>Tab</td><td><span class="tok">{pageup}</span> / <span class="tok">{pagedown}</span></td><td>Page Up / Down</td></tr>
+          <tr><td><span class="tok">{tab}</span></td><td>Tab</td><td><span class="tok">{pageup}</span> / <span class="tok">{pagedown}</span></td><td>PgUp / PgDn</td></tr>
           <tr><td><span class="tok">{space}</span></td><td>Espaço</td><td><span class="tok">{up}</span> <span class="tok">{down}</span></td><td>Setas ↑ ↓</td></tr>
-          <tr><td><span class="tok">{backspace}</span> / <span class="tok">{delete}</span></td><td>Backspace / Delete</td><td><span class="tok">{left}</span> <span class="tok">{right}</span></td><td>Setas ← →</td></tr>
+          <tr><td><span class="tok">{backspace}</span> / <span class="tok">{delete}</span></td><td>Backspace / Del</td><td><span class="tok">{left}</span> <span class="tok">{right}</span></td><td>Setas ← →</td></tr>
           <tr><td><span class="tok">{escape}</span> (ou <span class="tok">{esc}</span>)</td><td>Esc</td><td><span class="tok">{delay:500}</span></td><td>Pausa de 500 ms na digitação</td></tr>
         </tbody>
       </table>
@@ -2331,7 +2331,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p10-clicker-mode">Clicker mode</h3>
-    <p><span class="kbd">ScrollLock</span> alterna entre Macro e Clicker. <span class="kbd">PageDown</span> inicia/para, <span class="kbd">PageUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo.</p>
+    <p><span class="kbd">ScrLk</span> alterna entre Macro e Clicker. <span class="kbd">PgDn</span> inicia/para, <span class="kbd">PgUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Grupo</th><th>O que controla</th></tr></thead>
@@ -2593,10 +2593,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <table>
         <thead><tr><th>Atalho</th><th>Faz</th><th>Atalho</th><th>Faz</th></tr></thead>
         <tbody>
-          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PageUp</span></td><td>Gravar / parar gravação</td><td><span class="kbd">ScrollLock</span></td><td>Alternar Macro ↔ Clicker</td></tr>
-          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PageDown</span></td><td>Reproduzir / parar</td><td><span class="kbd">Insert</span></td><td>Trazer o app para frente</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span></td><td>Gravar / parar gravação</td><td><span class="kbd">ScrLk</span></td><td>Alternar Macro ↔ Clicker</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span></td><td>Reproduzir / parar</td><td><span class="kbd">Ins</span></td><td>Trazer o app para frente</td></tr>
           <tr><td><span class="kbd">Pause</span></td><td>Chave-mestra das hotkeys de perfil</td><td><span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span></td><td>Capture Slot</td></tr>
-          <tr><td><span class="kbd">PageDown</span> / <span class="kbd">PageUp</span></td><td>Clicker: iniciar / pausar</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span></td><td>Paleta de comandos</td></tr>
+          <tr><td><span class="kbd">PgDn</span> / <span class="kbd">PgUp</span></td><td>Clicker: iniciar / pausar</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span></td><td>Paleta de comandos</td></tr>
         </tbody>
       </table>
     </div>

@@ -1255,6 +1255,7 @@
       <li><strong>Repetir uma tecla:</strong> <span class="tok">{enter:3}</span> pressiona Enter 3 vezes. <span class="tok">{backspace:10}</span> apaga 10 caracteres.</li>
       <li><strong>Pausar:</strong> <span class="tok">{delay:1000}</span> espera 1 segundo antes de continuar — útil quando o site demora para reagir.</li>
     </ul>
+    <p><strong>No Browser Type é diferente:</strong> quem pressiona as teclas ali é a extensão do Chrome, e ela só conhece <span class="tok">{enter}</span>, <span class="tok">{tab}</span>, <span class="tok">{esc}</span>, <span class="tok">{backspace}</span>, <span class="tok">{delete}</span> e as setas, sem repetição — <span class="tok">{space}</span>, <span class="tok">{home}</span>, <span class="tok">{delay:N}</span> e <span class="tok">{enter:3}</span> seriam digitados como texto. Por isso o campo "Text to Type" não os transforma em chip nem os oferece na lista do <code>{</code>. E, ao contrário do Send Text, um <span class="tok">{enter}</span> que venha <em>dentro</em> do conteúdo copiado vira tecla ali, porque quem lê o texto final é a extensão.</p>
 
     <h4 style="margin-top:26px">A área de transferência: <span class="tok">{clipboard}</span></h4>
     <p>O token mais usado. Vira <strong>o que estiver copiado (Ctrl+C)</strong> no momento da execução — a ponte perfeita: copie algo em um lugar, aperte o atalho, e a macro usa esse conteúdo na resposta. Seu clipboard real é restaurado depois. No modo <strong>Type</strong> ele nem chega a ser alterado — o app só lê.</p>
@@ -1271,7 +1272,7 @@
           <div class="pane-body">Localizei o pedido PED-48812, um momento!</div>
         </div>
       </div>
-      <div class="xmpl-note">Segurança embutida: se o texto copiado contiver <code>{enter}</code> escrito, ele é digitado como texto normal — conteúdo colado nunca "vira tecla" sem querer.</div>
+      <div class="xmpl-note">Segurança embutida: se o texto copiado contiver <code>{enter}</code> escrito, ele é digitado como texto normal — conteúdo colado nunca "vira tecla" sem querer. O mesmo vale para os tokens de dados dentro do conteúdo copiado (<code>{var:x}</code>, <code>{input:…}</code>, <code>{date}</code>): ficam como estão em qualquer ação que resolva tokens — Send Text, Browser Type, Set Variable, condições.</div>
     </div>
 
     <h4 style="margin-top:26px">Como o texto chega: Paste ou Type</h4>
@@ -2386,7 +2387,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
       <tbody>
         <tr><td><strong>Browser Click / Right Click</strong></td><td>Clica por seletor ou pelo <strong>texto</strong> visível.</td></tr>
-        <tr><td><strong>Browser Type</strong></td><td>Digita num campo, com os mesmos tokens do Send Text.</td></tr>
+        <tr><td><strong>Browser Type</strong></td><td>Digita num campo, com os mesmos tokens de <em>dados</em> do Send Text (<span class="tok">{clipboard}</span>, <span class="tok">{var:…}</span>, <span class="tok">{row:…}</span>…). Das teclas, a extensão pressiona só Enter, Tab, Esc, Backspace, Delete e as setas — <span class="tok">{space}</span>, <span class="tok">{home}</span>, <span class="tok">{delay:N}</span> e a repetição <span class="tok">{enter:3}</span> virariam texto, e por isso o campo os mostra como texto comum.</td></tr>
         <tr><td><strong>Navigate</strong></td><td>Abre uma URL; opcionalmente espera a URL casar ou um elemento aparecer.</td></tr>
         <tr><td><strong>Wait Element</strong></td><td>Espera um elemento aparecer (ou sumir).</td></tr>
         <tr><td><strong>Assert Element</strong></td><td>Confere o estado e <strong>para</strong> se não estiver como esperado. É guarda, não espera.</td></tr>

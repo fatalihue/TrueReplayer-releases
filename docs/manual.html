@@ -2336,7 +2336,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <table>
         <thead><tr><th>Grupo</th><th>O que controla</th></tr></thead>
         <tbody>
-          <tr><td><strong>Clicker</strong></td><td><strong>Button</strong> (Left/Right/Middle) e <strong>Rate</strong> (cliques/s ou ms). O rótulo mostra <code>≈ N/s</code> já contando Hold e Gap — a taxa <em>real</em>.</td></tr>
+          <tr><td><strong>Clicker</strong></td><td><strong>Preset</strong> (salve a configuração atual com um nome e alterne entre setups; o chip mostra qual preset está carregado, ou <em>Custom</em>), <strong>Button</strong> (Left/Right/Middle) e <strong>Rate</strong> (cliques/s ou ms). O rótulo mostra <code>~N/s</code> já contando Hold e Gap — a taxa <em>real</em>, inclusive quando o Hold passa do período.</td></tr>
           <tr><td><strong>Target</strong></td><td>Um desliga os outros: <strong>Position</strong> (em volta do cursor) · <strong>Area</strong> (pontos aleatórios num retângulo) · <strong>Fixed</strong> (sempre o mesmo ponto).</td></tr>
           <tr><td><strong>Stop after</strong></td><td><strong>Clicks</strong> e <strong>Time</strong>, independentes — o primeiro que chegar encerra. <strong>Ambos vêm desligados: por padrão o Clicker roda sem fim (∞).</strong></td></tr>
           <tr><td><strong>Tuning</strong></td><td><strong>Jitter</strong> (± % em cada atraso) · <strong>Hold</strong> (10 ms normal; 50–200 para apps que perdem cliques curtos) · <strong>Gap</strong> (tempo extra por clique) · <strong>Game move</strong> (move por um caminho em vez de teletransportar — só age quando o cursor se move: Position, Area e Fixed).</td></tr>
@@ -2347,7 +2347,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="co-icon">⚠️</div>
       <div>
         <p><span class="co-title">Parece rodando, mas o alvo não reage?</span></p>
-        <p>O Windows não avisa quando bloqueia clique sintético em janela elevada — a taxa continua saudável enquanto nada acontece. Se o alvo roda como administrador, rode o TrueReplayer como administrador também.</p>
+        <p>O Windows não avisa quando bloqueia clique sintético em janela elevada — a taxa continua saudável enquanto nada acontece. O TrueReplayer compara os níveis de integridade e, se a janela sob o cursor roda como administrador e ele não, avisa no painel e na barra de status ("elevated target"). A saída é rodar o TrueReplayer como administrador também.</p>
       </div>
     </div>
   </div>

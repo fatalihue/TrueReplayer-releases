@@ -2472,7 +2472,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p12-colocando-dados-na-tabela">Colocando dados na tabela</h3>
-    <p>Barra → ícone de tabela. Três caminhos: <strong>Paste / bulk edit…</strong> (cole do Excel; <em>First row is the header</em> usa a primeira linha como nomes), <strong>Import CSV…</strong> (delimitador detectado sozinho, inclusive o ponto e vírgula do Excel brasileiro) ou editar direto na grade. Cabeçalhos usam só letras, números e <code>_</code> — um inválido ganha ⚠, e a varinha conserta.</p>
+    <p>Barra → ícone de tabela. Três caminhos: <strong>Paste / bulk edit…</strong> (cole do Excel; <em>First row is the header</em> usa a primeira linha como nomes), <strong>Import CSV…</strong> (delimitador detectado sozinho, inclusive o ponto e vírgula do Excel brasileiro) ou editar direto na grade. Cabeçalhos podem ter espaços, acentos e pontuação — <span class="tok">{row:Nome Completo}</span> funciona; a busca ignora maiúsculas e espaços nas pontas. Só <code>{</code>, <code>}</code> e <code>:</code> não entram no nome: um cabeçalho com eles ganha ⚠, e a varinha conserta.</p>
   </div>
 
   <div class="subsec">

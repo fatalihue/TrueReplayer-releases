@@ -1202,6 +1202,7 @@
           <tr><td><span class="tok">{time}</span></td><td>Hora atual</td><td class="num"><code>14:35:07</code></td></tr>
           <tr><td><span class="tok">{datetime}</span></td><td>Data e hora</td><td class="num"><code>21/08/2026 - 14:35:07</code></td></tr>
           <tr><td><span class="tok">{date:+7:yyyy-MM-dd}</span></td><td>Daqui a 7 dias, no formato que você pedir</td><td class="num"><code>2026-08-28</code></td></tr>
+          <tr><td><span class="tok">{timestamp}</span></td><td>Unix time — segundos desde 1970 (UTC); <span class="tok">{timestamp:ms}</span> em milissegundos</td><td class="num"><code>1787333707</code></td></tr>
           <tr><td><span class="tok">{random:1-10}</span></td><td>Número aleatório entre 1 e 10 (incluindo as pontas)</td><td class="num"><code>7</code></td></tr>
         </tbody>
       </table>
@@ -1341,7 +1342,7 @@
 
   <div class="subsec">
     <h3 id="p4-modificadores-transformando-o-texto"><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
-    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span> — e também para os contadores <span class="tok">{counter}</span>, <span class="tok">{loop}</span> e <span class="tok">{datarow}</span>, onde servem para moldar o número (<span class="tok">{counter:pad:3}</span> escreve <code>007</code>).</p>
+    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span> — e também para os contadores <span class="tok">{counter}</span>, <span class="tok">{loop}</span> e <span class="tok">{datarow}</span>, onde servem para moldar o número (<span class="tok">{counter:pad:3}</span> escreve <code>007</code>), e para <span class="tok">{uuid}</span>, <span class="tok">{timestamp}</span> e <span class="tok">{env:NOME}</span>.</p>
 
     <div class="xmpl">
       <div class="xmpl-title"><span class="tok">{clipboard:trim:upper}</span> — limpar e caprichar</div>
@@ -1678,6 +1679,8 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <tr><td><span class="tok">{datarow}</span></td><td>O número da linha de dados atual (1 = primeira): no Data Loop, no For Each e no Run Profile sobre dados.</td></tr>
           <tr><td><span class="tok">{row:coluna}</span> / <span class="tok">{rownext:coluna}</span></td><td>A tabela do Data Loop — <a class="xref" href="#p12">Parte 12</a>.</td></tr>
           <tr><td><span class="tok">{row}</span></td><td>O número da linha <strong>da ação na grade</strong> — não é a tabela.</td></tr>
+          <tr><td><span class="tok">{uuid}</span></td><td>Um identificador único novo <strong>a cada uso</strong> (<code>3f2b9c1e-…</code>, 36 caracteres). Dois <code>{uuid}</code> na mesma mensagem são dois identificadores; para repetir o mesmo, guarde num <strong>Set Variable</strong> e use <span class="tok">{var:id}</span>. Aceita modificadores: <span class="tok">{uuid:upper}</span>, <span class="tok">{uuid:replace:-:}</span> (sem traços).</td></tr>
+          <tr><td><span class="tok">{env:NOME}</span></td><td>Uma <strong>variável de ambiente</strong> do Windows: <span class="tok">{env:USERNAME}</span>, <span class="tok">{env:USERPROFILE}</span>, <span class="tok">{env:TEMP}</span>. Nome inexistente vira vazio. Cuidado como no histórico do Windows: uma variável pode guardar uma chave ou um token que algum instalador deixou lá.</td></tr>
         </tbody>
       </table>
     </div>

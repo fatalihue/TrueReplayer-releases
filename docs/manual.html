@@ -1341,7 +1341,7 @@
 
   <div class="subsec">
     <h3 id="p4-modificadores-transformando-o-texto"><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
-    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span>.</p>
+    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior, como uma linha de montagem — <strong>a ordem importa</strong>. Valem para <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span> — e também para os contadores <span class="tok">{counter}</span>, <span class="tok">{loop}</span> e <span class="tok">{datarow}</span>, onde servem para moldar o número (<span class="tok">{counter:pad:3}</span> escreve <code>007</code>).</p>
 
     <div class="xmpl">
       <div class="xmpl-title"><span class="tok">{clipboard:trim:upper}</span> — limpar e caprichar</div>
@@ -1368,6 +1368,20 @@
       </table>
     </div>
     <p><code>digits</code> é o atalho para números de telefone e documentos: <span class="tok">{clipboard:digits}</span> transforma <code>+55 (11) 98888-7777</code> em <code>5511988887777</code>. Ele mantém apenas os dígitos comuns <code>0-9</code> — dígitos "de largura total" como <code>１２３</code> saem fora, de propósito, para a prévia do construtor e a execução nunca discordarem. Na cadeia, os dois entram <strong>depois</strong> dos recortes e <strong>antes</strong> da caixa (recortar → limpar → maiusculizar); no construtor eles são a etapa <strong>Clean up</strong>.</p>
+
+    <h4 style="margin-top:22px">Moldando o valor final</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Modificador</th><th>O que faz</th><th>Exemplo</th></tr></thead>
+        <tbody>
+          <tr><td><code>replace:de:para</code></td><td>Troca <strong>toda</strong> ocorrência de "de" por "para", sem diferenciar maiúsculas. "para" vazio apaga.</td><td><span class="tok">{clipboard:replace:-: }</span> — traços viram espaços</td></tr>
+          <tr><td><code>count</code></td><td>O valor vira o número de linhas não vazias</td><td><span class="tok">{clipboard:dedupe:count}</span> — quantas linhas distintas</td></tr>
+          <tr><td><code>pad:N</code></td><td>Completa com zeros à esquerda até N caracteres (aceita <code>@variável</code>)</td><td><span class="tok">{counter:pad:3}</span> → <code>007</code></td></tr>
+          <tr><td><code>default:texto</code></td><td>Se o resultado ficou <strong>vazio</strong>, escreve o texto</td><td><span class="tok">{var:cupom:default:sem cupom}</span></td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>O <code>replace</code> segue a regra do <code>join</code>: os dois lados não aceitam <code>:</code>, e um "para" vazio é significativo (apaga). O <code>default</code> segue a regra dos cortes: <code>::</code> vale por um <code>:</code> literal (<code>default:12::00</code>). No construtor, <strong>Replace</strong> vem logo depois de Trim, porque age no texto bruto; <strong>Count &amp; pad</strong> vem depois de Clean up, e <strong>Default</strong> fecha a escada — ele olha o valor final, e só quando está vazio. É o complemento da regra "pediu o que não existe, recebe vazio": <span class="tok">{clipboard:line:9:default:-}</span> escreve um traço em vez de nada.</p>
 
     <h4 style="margin-top:26px">Pegando pedaços: linha, palavra, caracteres</h4>
     <p>Imagine este conteúdo copiado — um cadastro de 3 linhas:</p>
@@ -1442,7 +1456,7 @@ maria@email.com
         </tbody>
       </table>
     </div>
-    <p>Vale para os quatro cortes e para <code>dropnum</code>. <strong>Exceção: o <code>join</code></strong> — ali o dobrado já significa "juntar sem separador nenhum", então o campo Juntar com continua removendo o <code>:</code>.</p>
+    <p>Vale para os quatro cortes, para <code>dropnum</code> e para <code>default</code>. <strong>Exceção: o <code>join</code> e o <code>replace</code></strong> — ali o dobrado já significa "juntar sem separador nenhum", então o campo Juntar com continua removendo o <code>:</code>.</p>
 
     <h4 style="margin-top:26px">Removendo quantidade do começo: <code>dropnum</code></h4>
     <p>Texto que vem "às vezes com, às vezes sem" um contador na frente: <code>1x Caixa de Sapato</code> num dia, <code>Caixa de Sapato</code> no outro. O <code>dropnum:X</code> resolve: <strong>se</strong> o texto começa com números seguidos de X, remove os dois; <strong>senão, não mexe em nada</strong>.</p>

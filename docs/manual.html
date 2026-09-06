@@ -1201,10 +1201,12 @@
           <tr><td><span class="tok">{date}</span></td><td>Data de hoje</td><td class="num"><code>21/08/2026</code></td></tr>
           <tr><td><span class="tok">{time}</span></td><td>Hora atual</td><td class="num"><code>14:35:07</code></td></tr>
           <tr><td><span class="tok">{datetime}</span></td><td>Data e hora</td><td class="num"><code>21/08/2026 - 14:35:07</code></td></tr>
+          <tr><td><span class="tok">{date:+7:yyyy-MM-dd}</span></td><td>Daqui a 7 dias, no formato que você pedir</td><td class="num"><code>2026-08-28</code></td></tr>
           <tr><td><span class="tok">{random:1-10}</span></td><td>Número aleatório entre 1 e 10 (incluindo as pontas)</td><td class="num"><code>7</code></td></tr>
         </tbody>
       </table>
     </div>
+    <p><strong>Deslocar e formatar:</strong> os três tokens de relógio aceitam argumentos. Um <em>deslocamento</em> é um número com sinal e uma unidade — <span class="tok">{date:+7}</span> (dias, a unidade padrão), <span class="tok">{date:-1mo}</span> (meses; <code>w</code> semanas, <code>y</code> anos, <code>h</code> horas, <code>min</code> minutos) — e o que sobrar é o <em>formato</em>, no padrão do .NET: <span class="tok">{date:yyyy-MM-dd}</span>, <span class="tok">{time:HH:mm}</span>, <span class="tok">{datetime:+1:dd/MM/yyyy HH:mm}</span>, <span class="tok">{date:D}</span> (data por extenso). Maiúsculas importam: <code>MM</code> é mês, <code>mm</code> é minuto. Nomes de mês e dia seguem o idioma do Windows; <code>/</code> e <code>:</code> saem como estão. Um formato que o .NET não aceita deixa o token como texto. Clique no chip para montar tudo sem decorar nada.</p>
     <p>Cada <span class="tok">{random:a-b}</span> sorteia por conta própria: <code>{random:1-6} {random:1-6}</code> são dois dados, não o mesmo número duas vezes.</p>
 
     <h4 style="margin-top:26px">Sortear um <em>texto</em>: <span class="tok">{pick:a|b|c}</span></h4>

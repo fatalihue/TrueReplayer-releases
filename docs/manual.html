@@ -1601,6 +1601,7 @@ maria@email.com
       <li>Guardar um valor <strong>vazio apaga</strong> a variável. Variáveis somem no fim de cada execução.</li>
       <li><span class="tok">{var:nome}</span> aceita modificadores: <span class="tok">{var:cliente:upper}</span>.</li>
       <li><strong>Modo Cycle:</strong> o valor vira uma lista (um item por linha) e cada execução guarda o <strong>próximo</strong>, voltando ao início no fim. A posição é <strong>guardada em disco</strong> — fechar o app não recomeça. Para zerar: botão direito na linha → <strong>Reset cycle position</strong>.</li>
+      <li><strong>Modo Add:</strong> soma o valor ao que a variável guarda (vazia conta como 0); negativo subtrai. É o contador que faltava ao While: dentro do bloco, <code>Set Variable · i · Add · 1</code>, e <span class="tok">{var:i}</span> lê o total — ou use <span class="tok">{loop}</span>, que já conta as voltas sozinho.</li>
     </ul>
   </div>
 
@@ -1656,7 +1657,9 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tbody>
           <tr><td><span class="tok">{winclip:1}</span></td><td>O <strong>histórico do Windows</strong> (Win+V): 1 = a última coisa copiada, 2 = a anterior… Precisa do histórico ativado nas configurações do Windows.</td></tr>
           <tr><td><span class="tok">{clipboard:next}</span></td><td>Auto-avança: cada uso cola a <strong>próxima linha</strong> do clipboard. Linhas em branco são puladas; no fim vira vazio (não volta ao começo); copiar outra coisa recomeça sozinho. Combina: <code>{clipboard:next:trim:upper}</code> transforma <em>aquela</em> linha.</td></tr>
-          <tr><td><span class="tok">{counter}</span></td><td>A volta atual do loop (1, 2, 3…).</td></tr>
+          <tr><td><span class="tok">{counter}</span></td><td>A repetição atual do perfil (Loops): 1, 2, 3…</td></tr>
+          <tr><td><span class="tok">{loop}</span></td><td>A volta do bloco <strong>While</strong> ou <strong>For Each Data Row</strong> mais interno — fora de um bloco, o mesmo que <span class="tok">{counter}</span>.</td></tr>
+          <tr><td><span class="tok">{datarow}</span></td><td>O número da linha de dados atual (1 = primeira): no Data Loop, no For Each e no Run Profile sobre dados.</td></tr>
           <tr><td><span class="tok">{row:coluna}</span> / <span class="tok">{rownext:coluna}</span></td><td>A tabela do Data Loop — <a class="xref" href="#p12">Parte 12</a>.</td></tr>
           <tr><td><span class="tok">{row}</span></td><td>O número da linha <strong>da ação na grade</strong> — não é a tabela.</td></tr>
         </tbody>
@@ -1674,7 +1677,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p5-truques-de-quem-ja-domina">Truques de quem já domina</h3>
     <ul>
-      <li><strong>Número vindo de variável:</strong> onde a transformação pede um número, escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada pela variável <code>i</code>. Reservados: <code>@counter</code> (a volta do loop — num loop, <code>{clipboard:line:@counter}</code> pega a linha 1 na primeira volta, a 2 na segunda…) e <code>@row</code> (a linha do Data Loop). Vale em Line #, Word #, First N e Last N; no construtor, o botãozinho <strong>@</strong> alterna entre número fixo e variável.</li>
+      <li><strong>Número vindo de variável:</strong> onde a transformação pede um número, escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada pela variável <code>i</code>. Reservados: <code>@counter</code> (a repetição do perfil — <code>{clipboard:line:@counter}</code> pega a linha 1 na primeira, a 2 na segunda…), <code>@loop</code> (a volta do While / For Each mais interno), <code>@row</code> (a linha da ação na grade) e <code>@datarow</code> (a linha do Data Loop). Vale em Line #, Word #, First N e Last N; no construtor, o botãozinho <strong>@</strong> alterna entre número fixo e variável.</li>
       <li><strong>Nome que não existe sai vazio</strong>, de propósito — o contrário colaria o clipboard inteiro por causa de um erro de digitação.</li>
       <li><code>{clipboard:line:{var:i}}</code> com chaves <strong>não funciona</strong> e nunca funcionou — a grafia com <code>@</code> existe justamente por isso.</li>
     </ul>
@@ -1917,6 +1920,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li><strong>O Delay da linha While é por volta</strong> — acontece antes de <em>cada</em> checagem. Ele acumula duas funções: dar tempo para a tela assentar antes de olhar, e espaçar as repetições. Três voltas com Delay 350 gastam pelo menos ~1 s, sempre.</li>
       <li><strong>Max iterations é o freio de emergência</strong> — em branco (0) vale o padrão de <strong>1000</strong>. Bater no teto é uma saída <em>normal</em>: o loop termina, a linha seguinte roda, o log registra o motivo. Sem erro, sem toast.</li>
+      <li><strong>Contar as voltas:</strong> <span class="tok">{loop}</span> vale 1 na primeira volta, 2 na segunda… em qualquer ação dentro do bloco (e <code>@loop</code> nas transformações: <code>{clipboard:line:@loop}</code> percorre o clipboard linha a linha). Para um contador seu, <strong>Set Variable</strong> em modo <strong>Add</strong> soma 1 a cada volta, e a condição <em>Variable</em> do While lê o total.</li>
       <li><strong>Random não está no menu Loop</strong>, de propósito: um loop guiado por cara ou coroa não tem término estável.</li>
       <li><strong>Checagem quebrada não gira o loop:</strong> com o On Probe Error padrão (<em>Treat as false</em>), um probe que falha lê "não" — e "não" <em>sai</em> do While. Num <em>While NOT</em>, a leitura invertida vira "sim" e quem segura é o teto.</li>
     </ul>

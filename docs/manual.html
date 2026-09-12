@@ -2395,6 +2395,13 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p10-clicker-mode">Clicker mode</h3>
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Trocar de modo desliga a lista de ações — e o <span class="kbd">ScrLk</span> funciona de dentro de qualquer app.</span> <span class="ver-next">(a partir da versão 2.38.0)</span> No modo Clicker a grade não aceita escrita: o painel de edição de uma ação <strong>fecha</strong> ao trocar, avisando que descartou o que não estava salvo, e um diálogo de inserir ação que esteja aberto <strong>fica</strong> aberto mas recusa o confirmar — para não jogar fora o que você digitou. <strong>Salve antes de trocar de modo</strong>, porque o atalho é global e pode cair no meio de uma frase.</p>
+        <p>Do outro lado, o que o modo Clicker <em>deixou</em> de fazer: ele não engole mais hotkeys de perfil, hotstrings, a roda nem os botões laterais do mouse. Essas teclas passam adiante para o app que está na frente, em vez de sumirem sem executar nada — e uma hotstring, que antes chegava a apagar o texto recém-digitado em troca de nada, agora só digita.</p>
+      </div>
+    </div>
     <p><span class="kbd">ScrLk</span> alterna entre Macro e Clicker. <span class="kbd">PgDn</span> inicia/para, <span class="kbd">PgUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo. Pelo botão <strong>Click</strong>, em modo cursor, há uma contagem de 3 s antes do primeiro clique — tempo de levar o mouse até o alvo (pelo atalho começa na hora). No fim, o painel diz por que parou: pelo atalho, pelo limite de cliques ou pelo tempo.</p>
     <div class="tbl-wrap">
       <table>
@@ -2767,6 +2774,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <tbody>
         <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
         <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert to Relative (<a class="xref" href="#p8">Parte 8</a>)</td></tr>
+        <tr><td>Cliquei numa célula da grade durante um replay e o editor não abriu <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>A lista de ações fica travada enquanto um run está ativo — de propósito: editá-la reescreveria a lista que o motor está percorrendo naquele instante</td><td>Espere o run terminar, ou pare com a hotkey de replay. Vale para o mesmo conjunto: <strong>Save</strong> e <span class="kbd">Ctrl</span>+<span class="kbd">S</span> do painel lateral, <strong>Recapture</strong>, <strong>Configure search region</strong>, <strong>Test action</strong>, o botão <strong>Data Loop</strong> e os comandos de grade da paleta. Todos avisam com um aviso no rodapé em vez de falhar calados</td></tr>
+        <tr><td>Virei para o modo Clicker e o painel de edição sumiu com o que eu estava digitando <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O modo Clicker desliga a lista de ações, então o painel não tem mais a linha que estava editando</td><td>Ele avisa ao fechar (<em>Alterações descartadas</em>). Volte ao <strong>Macro</strong> e salve antes de trocar — a troca de modo também acontece pelo <span class="kbd">ScrLk</span>, que pode cair no meio de uma frase</td></tr>
+        <tr><td>Uma hotstring, uma hotkey de perfil ou a roda não fazem nada em modo Clicker <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>É o esperado: o modo Clicker não executa perfis, e agora ele também não engole mais a tecla — ela chega ao app que está na frente</td><td>Nada a fazer. Antes a tecla sumia sem executar nada, e uma hotstring chegava a apagar o que você tinha acabado de digitar</td></tr>
+        <tr><td>Um diálogo de inserir ação ficou aberto depois de eu virar o modo, e o botão de confirmar recusa <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O diálogo fica ABERTO de propósito, para não jogar fora o que você digitou — mas a grade não aceita escrita naquele modo</td><td>Volte ao <strong>Macro</strong> e confirme. O texto continua lá</td></tr>
         <tr><td>Cliques disparam duas vezes</td><td>Focus-click ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
         <tr><td>Um jogo ignora os cliques</td><td>Movimento teleportado</td><td>Game mode ligado; se ainda errar, desligue o Fast approach</td></tr>
         <tr><td>A automação nunca dispara</td><td>Salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>

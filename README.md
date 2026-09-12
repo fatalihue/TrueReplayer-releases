@@ -1,20 +1,16 @@
 <div align="center">
 
-<img src="Assets/Square150x150Logo.png" width="104" alt="TrueReplayer logo" />
+<img src="Assets/Square150x150Logo.png" width="104" alt="TrueReplayer" />
 
 # TrueReplayer
 
-**Grave o que você faz. Reproduza quando quiser — sob demanda ou com um atalho.**
+**Grave o que você faz. Reproduza quando quiser.**
 
 Gravador de macros e automação para Windows: cliques, teclas e rolagem, com esperas, condições, loops, injeção de texto, auto-clicker e controle do Chrome.
 
-[![Latest release](https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=download)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
-[![Windows 10/11](https://img.shields.io/badge/Windows-10%20%2F%2011%20(x64)-0078D4?style=flat-square&logo=windows)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
-[![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](LICENSE)
+[![Baixar para Windows](https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=for-the-badge&color=60CDFF&label=Baixar%20para%20Windows)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 
-### 📖 **[Manual completo — ilustrado, em 15 partes →](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**
-
-<sub>Do primeiro clique gravado à automação que roda sozinha.</sub>
+### 📖 [Manual completo — ilustrado, em 15 partes →](https://fatalihue.github.io/TrueReplayer-releases/manual.html)
 
 </div>
 
@@ -24,20 +20,8 @@ Gravador de macros e automação para Windows: cliques, teclas e rolagem, com es
 
 ---
 
-## Instalar
+Baixe o **`TrueReplayer-win-Setup.exe`**, execute e pronto: instala em segundos e passa a se atualizar sozinho. Windows 10 ou 11, 64 bits.
 
-Baixe o **`TrueReplayer-win-Setup.exe`** na **[página de Releases](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)** e execute. Ele instala em segundos e passa a se atualizar sozinho.
-
-**Requisitos:** Windows 10 ou 11 (64 bits). A interface usa o [WebView2 Runtime](https://developer.microsoft.com/microsoft-edge/webview2/), que já vem no Windows moderno — se faltar, o app se oferece para instalar.
-
-## Começar
-
-1. **Grave** — `Ctrl+PageUp`, faça suas ações, `Ctrl+PageUp` de novo.
-2. **Reproduza** — `Ctrl+PageDown`.
-3. **Salve** e atribua um atalho: botão direito no perfil → *Hotkey…*.
-
-O resto — condições, loops, tokens, tabela de dados, clicker, ações de navegador — está no **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**, na ordem em que você vai precisar.
-
----
+Do primeiro clique gravado à automação que roda sozinha, está tudo no **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**.
 
 [MIT](LICENSE) © fatalihue

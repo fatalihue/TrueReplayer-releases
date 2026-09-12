@@ -34,7 +34,7 @@ Baixe o **`TrueReplayer-win-Setup.exe`** na **[página de Releases](https://gith
 
 1. **Grave** — `Ctrl+PageUp`, faça suas ações, `Ctrl+PageUp` de novo.
 2. **Reproduza** — `Ctrl+PageDown`.
-3. **Salve** e atribua um atalho: botão direito no perfil → *Assign hotkey*.
+3. **Salve** e atribua um atalho: botão direito no perfil → *Hotkey…*.
 
 O resto — condições, loops, tokens, tabela de dados, clicker, ações de navegador — está no **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**, na ordem em que você vai precisar.
 

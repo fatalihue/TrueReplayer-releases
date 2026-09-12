@@ -941,11 +941,11 @@
       <thead><tr><th>Tarefa</th><th>Como</th></tr></thead>
       <tbody>
         <tr><td><strong>Selecionar</strong></td><td>Clique · <span class="kbd">Ctrl</span>+clique alterna · <span class="kbd">Shift</span>+clique estende o intervalo.</td></tr>
-        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula: Delay, Notes, coordenadas, Key. <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela.</td></tr>
+        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula <strong>Delay</strong> ou <strong>Notes</strong> e escreva ali mesmo: <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela. As demais células não abrem editor — clicar nelas seleciona a linha.</td></tr>
         <tr><td><strong>Reordenar</strong></td><td>Arraste, ou <span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">Alt</span>+<span class="kbd">↓</span>.</td></tr>
         <tr><td><strong>Pular uma linha</strong></td><td>Desmarque a caixa — fica na lista, não roda.</td></tr>
         <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Set delay, Set X/Y, Set notes, Move, Skip, Delete.</td></tr>
-        <tr><td><strong>Formulário completo</strong></td><td>Botão direito → <strong>Edit</strong> abre o painel lateral com todos os campos da ação.</td></tr>
+        <tr><td><strong>Formulário completo</strong></td><td>Passe o mouse na linha e clique no <strong>lápis</strong> que aparece na borda direita — abre o painel lateral com todos os campos da ação. O mesmo painel abre com <span class="kbd">Enter</span> (linha selecionada, foco na grade) ou por botão direito → <strong>Edit</strong>.</td></tr>
       </tbody>
     </table>
   </div>
@@ -2400,7 +2400,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <table>
         <thead><tr><th>Grupo</th><th>O que controla</th></tr></thead>
         <tbody>
-          <tr><td><strong>Clicker</strong></td><td><strong>Preset</strong> (salve a configuração atual com um nome e alterne entre setups; o chip mostra qual preset está carregado, ou <em>Custom</em>), <strong>Button</strong> (Left/Right/Middle) e <strong>Rate</strong> (cliques/s ou ms). O rótulo mostra <code>~N/s</code> já contando Hold e Gap — a taxa <em>real</em>, inclusive quando o Hold passa do período.</td></tr>
+          <tr><td><strong>Clicker</strong></td><td><strong>Preset</strong> (salve a configuração atual com um nome e alterne entre setups; o chip mostra qual preset está carregado, ou <em>Custom</em>; para atualizar um preset que já existe, salve com o <em>mesmo nome</em> — ele é substituído no lugar, sem virar um segundo), <strong>Button</strong> (Left/Right/Middle) e <strong>Rate</strong> (cliques/s ou ms). O rótulo mostra <code>~N/s</code> já contando Hold e Gap — a taxa <em>real</em>, inclusive quando o Hold passa do período.</td></tr>
           <tr><td><strong>Target</strong></td><td>Um desliga os outros: <strong>Position</strong> (em volta do cursor) · <strong>Area</strong> (pontos aleatórios num retângulo) · <strong>Fixed</strong> (sempre o mesmo ponto).</td></tr>
           <tr><td><strong>Stop after</strong></td><td><strong>Clicks</strong> e <strong>Time</strong>, independentes — o primeiro que chegar encerra. <strong>Ambos vêm desligados: por padrão o Clicker roda sem fim (∞).</strong></td></tr>
           <tr><td><strong>Tuning</strong></td><td><strong>Jitter</strong> (± % em cada atraso) · <strong>Hold</strong> (10 ms normal; 50–200 para apps que perdem cliques curtos) · <strong>Gap</strong> (tempo extra por clique) · <strong>Game move</strong> (move por um caminho em vez de teletransportar — só age quando o cursor se move: Position, Area e Fixed).</td></tr>

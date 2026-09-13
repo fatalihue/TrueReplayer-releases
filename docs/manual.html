@@ -947,7 +947,7 @@
         <tr><td><strong>Reordenar</strong></td><td>Arraste, ou <span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">Alt</span>+<span class="kbd">↓</span>.</td></tr>
         <tr><td><strong>Pular uma linha</strong></td><td>Desmarque a caixa — fica na lista, não roda.</td></tr>
         <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Set delay, Set X/Y, Set notes, Move, Skip, Delete.</td></tr>
-        <tr><td><strong>Formulário completo</strong></td><td>Passe o mouse na linha e clique no <strong>lápis</strong> que aparece na borda direita — abre o painel lateral com todos os campos da ação. O mesmo painel abre com <span class="kbd">Enter</span> (linha selecionada, foco na grade) ou por botão direito → <strong>Edit</strong>.</td></tr>
+        <tr><td><strong>Formulário completo</strong></td><td>Passe o mouse na linha e clique no <strong>lápis</strong> que aparece na borda direita — abre o painel lateral com todos os campos da ação. O mesmo painel abre com <span class="kbd">Enter</span> (linha selecionada, foco na grade) ou por botão direito → <strong>Edit</strong>. Durante um run os três caminhos somem juntos: o lápis deixa de ser desenhado e o menu de botão direito não abre <span class="ver-next">(a partir da versão 2.38.0)</span>.</td></tr>
       </tbody>
     </table>
   </div>
@@ -1049,7 +1049,7 @@
   <div class="subsec">
     <h3 id="p3-perfis-e-pastas">Perfis e pastas</h3>
     <ul>
-      <li><strong>New / Save / Rename / Duplicate / Delete</strong> no painel Profiles. <strong>Pin</strong> mantém no topo.</li>
+      <li><strong>New / Rename / Duplicate / Delete</strong> no painel Profiles. <strong>Pin</strong> mantém no topo. <strong>Save</strong> e <strong>Load</strong> ficam na <strong>barra de baixo</strong>, não aqui — e ficam apagados no modo Clicker <span class="ver-next">(a partir da versão 2.38.0)</span>.</li>
       <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (<a class="xref" href="#p8">Parte 8</a>).</li>
       <li><strong>Edit info…</strong> (botão direito → <strong>More</strong>, ou pela paleta → <strong>Edit Profile Info</strong>) — emoji, descrição e <strong>tags</strong> pesquisáveis.</li>
       <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. Na importação <strong>nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip. Um perfil que exige um TrueReplayer mais novo que o seu aparece esmaecido, com o motivo.</li>
@@ -1062,7 +1062,7 @@
       <li><strong>Hotkey</strong> — botão direito no perfil → <strong>Hotkey…</strong> → pressione a combinação. Dispara em qualquer app.</li>
       <li><strong>Hotstring</strong> — uma sequência digitada (ex.: <code>.cp</code>) que roda o perfil ao terminar de ser escrita.</li>
       <li><strong>Chave-mestra</strong> — <span class="kbd">Pause</span> liga/desliga todas de uma vez.</li>
-      <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os modos — ideais para jogo. A roda também, sempre em On Press.</li>
+      <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os <em>modos de gatilho</em> da tabela acima — ideais para jogo. A roda também, sempre em On Press. Atenção ao outro sentido de "modo": em <strong>modo Clicker</strong> nenhum dos dois dispara perfil, e a tecla passa adiante para o jogo <span class="ver-next">(a partir da versão 2.38.0)</span> — veja a <a class="xref" href="#p10">Parte 10</a>.</li>
     </ul>
     <div class="tbl-wrap">
       <table>
@@ -2228,7 +2228,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ol>
       <li>Botão direito no perfil → <strong>Window target…</strong> → <strong>Detect window</strong> → clique na janela do app.</li>
       <li><strong>Test</strong> — ele lê a janela que está <em>na frente agora</em>, e tem que dar <em>✓ Matches</em>. Título que muda a cada atendimento? Use <strong>Contains</strong> com só o pedaço fixo (ou Regex, se o fixo estiver no começo <em>e</em> no fim).</li>
-      <li>Ligue <strong>Relative Coordinates</strong>. Se a macro já estava gravada, aparece <em>N actions captured in absolute coords</em> — clique em <strong>Apply target &amp; convert</strong>.</li>
+      <li>Ligue <strong>Relative Coordinates</strong>. Se a macro já estava gravada, aparece <em>N actions captured in absolute coords</em> — clique em <strong>Apply target &amp; convert</strong>. Essa contagem só aparece no modo <strong>Macro</strong>: no Clicker ela é zerada, e com ela a dica e o botão <span class="ver-next">(a partir da versão 2.38.0)</span>.</li>
       <li><strong>Set Target</strong>. Nada é gravado até esse clique.</li>
     </ol>
     <div class="callout co-warn">
@@ -2287,7 +2287,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p9-como-se-comporta">Como se comporta</h3>
     <ul>
       <li><strong>Armed é local desta máquina</strong> — perfis importados ou duplicados chegam desarmados. Automações armadas se re-armam ao iniciar o app.</li>
-      <li><strong>Uma execução por vez</strong> — durante um replay, gravação, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). Uma automação nunca atropela trabalho não salvo.</li>
+      <li><strong>Uma execução por vez</strong> — durante um replay, gravação, <strong>modo Clicker</strong>, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). O Clicker é o mais fácil de esquecer ligado, porque o <span class="kbd">ScrLk</span> funciona de dentro de qualquer app. Uma automação nunca atropela trabalho não salvo.</li>
       <li><strong>Respeita os Loops, nunca roda para sempre</strong> — o infinito de While Pressed / Toggle é ignorado quando quem chama é o gatilho.</li>
       <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta).</li>
       <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo (mude para <strong>Continuous</strong> para repetir enquanto verdadeira). Cooldown padrão <strong>30 s</strong> — mas <strong>5 s no Clipboard changed</strong>, que muda com muito mais frequência. <code>0</code> no campo significa "use o padrão do tipo", não "sem cooldown".</li>
@@ -2402,6 +2402,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div>
         <p><span class="co-title">Trocar de modo desliga a lista de ações — e o <span class="kbd">ScrLk</span> funciona de dentro de qualquer app.</span> <span class="ver-next">(a partir da versão 2.38.0)</span> No modo Clicker a grade não aceita escrita: o painel de edição de uma ação <strong>fecha</strong> ao trocar, avisando que descartou o que não estava salvo, e um diálogo de inserir ação que esteja aberto <strong>fica</strong> aberto mas recusa o confirmar — para não jogar fora o que você digitou. <strong>Salve antes de trocar de modo</strong>, porque o atalho é global e pode cair no meio de uma frase.</p>
         <p>Do outro lado, o que o modo Clicker <em>deixou</em> de fazer: ele não engole mais hotkeys de perfil, hotstrings, a roda nem os botões laterais do mouse. Essas teclas passam adiante para o app que está na frente, em vez de sumirem sem executar nada — e uma hotstring, que antes chegava a apagar o texto recém-digitado em troca de nada, agora só digita.</p>
+        <p>O que ele <em>continua</em> recusando, e que não é a grade: <strong>clicar num perfil não o carrega</strong> — nem na lista nem na rail recolhida — e <strong>Save</strong> e <strong>Load</strong> da barra de baixo ficam apagados. Organizar perfis continua valendo (renomear, mover para pasta, <strong>Edit info…</strong>, duplicar, atribuir gatilho): o modo desliga a <em>lista de ações</em>, não o perfil.</p>
       </div>
     </div>
     <p><span class="kbd">ScrLk</span> alterna entre Macro e Clicker. <span class="kbd">PgDn</span> inicia/para, <span class="kbd">PgUp</span> pausa/retoma — e o painel mostra contagem, taxa, tempo e ETA ao vivo. Pelo botão <strong>Click</strong>, em modo cursor, há uma contagem de 3 s antes do primeiro clique — tempo de levar o mouse até o alvo (pelo atalho começa na hora). No fim, o painel diz por que parou: pelo atalho, pelo limite de cliques ou pelo tempo.</p>
@@ -2431,7 +2432,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li><strong>Fast approach</strong> — em movimentos longos, teleporta até uma distância do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
       <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms).</li>
-      <li><strong>Focus-click</strong> <em>(por ação, no botão direito da linha)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong> — um botão dispararia duas vezes.</li>
+      <li><strong>Focus click</strong> <em>(por ação, no botão direito da linha → <strong>More</strong>)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong> — um botão dispararia duas vezes.</li>
     </ul>
     <p>O Clicker tem o próprio <strong>Game move</strong>, independente deste interruptor.</p>
   </div>
@@ -2454,7 +2455,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
       <tbody>
         <tr><td><strong>Browser Click / Right Click</strong></td><td>Clica por seletor ou pelo <strong>texto</strong> visível.</td></tr>
-        <tr><td><strong>Browser Type</strong></td><td>Digita num campo, com os mesmos tokens do Send Text — os de <em>dados</em> (<span class="tok">{clipboard}</span>, <span class="tok">{var:…}</span>, <span class="tok">{row:…}</span>…) e os de <em>tecla</em>, com repetição e pausa (<span class="tok">{tab:2}</span>, <span class="tok">{space}</span>, <span class="tok">{home}</span>, <span class="tok">{delay:500}</span>). Quem pressiona é a extensão do Chrome, que também move o foco no Tab e o cursor no Home/End; o <span class="tok">{enter}</span> e as teclas de apagar dependem do elemento em foco, e a regra está na <a class="xref" href="#p4">Parte 4</a>. A versão da extensão tem de ser <strong>exatamente</strong> a que o app espera — a <strong>1.4.21</strong> nesta versão. Quem vem da 2.37.0 está com a <strong>1.4.18</strong> e precisa recarregar a extensão; uma extensão mais nova que a esperada também acusa diferença, e o app mostra os dois números lado a lado.</td></tr>
+        <tr><td><strong>Browser Type</strong></td><td>Digita num campo, com os mesmos tokens do Send Text — os de <em>dados</em> (<span class="tok">{clipboard}</span>, <span class="tok">{var:…}</span>, <span class="tok">{row:…}</span>…) e os de <em>tecla</em>, com repetição e pausa (<span class="tok">{tab:2}</span>, <span class="tok">{space}</span>, <span class="tok">{home}</span>, <span class="tok">{delay:500}</span>). Quem pressiona é a extensão do Chrome, que também move o foco no Tab e o cursor no Home/End; o <span class="tok">{enter}</span> e as teclas de apagar dependem do elemento em foco, e a regra está na <a class="xref" href="#p4">Parte 4</a>. A versão da extensão tem de ser <strong>exatamente</strong> a que o app espera — a <strong>1.4.21</strong> a partir da <strong>2.38.0</strong>. Quem vem da 2.37.0 está com a <strong>1.4.18</strong> e precisa recarregar a extensão; uma extensão mais nova que a esperada também acusa diferença, e o app mostra os dois números lado a lado.</td></tr>
         <tr><td><strong>Navigate</strong></td><td>Abre uma URL; opcionalmente espera a URL casar ou um elemento aparecer.</td></tr>
         <tr><td><strong>Wait Element</strong></td><td>Espera um elemento aparecer (ou sumir).</td></tr>
         <tr><td><strong>Assert Element</strong></td><td>Confere o estado e <strong>para</strong> se não estiver como esperado. É guarda, não espera.</td></tr>
@@ -2499,7 +2500,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Por que falhou, em texto</strong> — não achou; achou mas invisível; achou mas desabilitado; tem algo por cima; seletor inválido; página não carregou.</li>
       <li><strong>Run Profile que não rodou nada</strong> — chamar um perfil <em>desabilitado</em>, que não existe mais, sem nome escolhido, ou que faria a corrente voltar nela mesma é pulado de propósito. Essas linhas aparecem como <em>skipped</em> com o motivo escrito — inclusive <em>qual</em> corrente laçou, ou que ela passou de cinco níveis — em vez do tique verde que davam antes.</li>
     </ul>
-    <p>É só a última execução — cada nova substitui a anterior. Para registro duradouro: bandeja → <strong>Open Logs Folder</strong>.</p>
+    <p>É só a última execução — cada nova substitui a anterior. Para registro duradouro: <strong>Open Logs Folder</strong>, na paleta de comandos (<span class="kbd">Ctrl</span>+<span class="kbd">K</span>) ou pela bandeja.</p>
   </div>
 </section>
 
@@ -2776,11 +2777,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <tbody>
         <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
         <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert Coordinates to Relative (<a class="xref" href="#p8">Parte 8</a>)</td></tr>
-        <tr><td>Cliquei numa célula da grade durante um replay e o editor não abriu <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>A lista de ações fica travada enquanto um run está ativo — de propósito: editá-la reescreveria a lista que o motor está percorrendo naquele instante</td><td>Espere o run terminar, ou pare com a hotkey de replay. Vale para o mesmo conjunto: <strong>Save</strong> e <span class="kbd">Ctrl</span>+<span class="kbd">S</span> do painel lateral, <strong>Recapture</strong>, <strong>Configure search region</strong>, <strong>Test action</strong>, o botão <strong>Data Loop</strong> e os comandos de grade da paleta. O painel lateral e o editor de célula avisam com um aviso no rodapé, em vez de falhar calados; o botão <strong>Data Loop</strong> e os comandos da paleta ficam <strong>apagados</strong>, e a paleta escreve o motivo na própria linha</td></tr>
+        <tr><td>Cliquei numa célula da grade durante um replay <em>ou uma gravação</em> e o editor não abriu <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>A lista de ações fica travada enquanto um run está ativo — de propósito: editá-la reescreveria a lista que o motor está percorrendo naquele instante</td><td>Espere o run terminar, ou pare com a hotkey correspondente — <em>run</em> aqui é replay <strong>e</strong> gravação, as duas travam a lista igual. Vale para o mesmo conjunto: toda a fileira de inserção da barra (<strong>Conditional</strong>, <strong>Loop</strong>, <strong>Assert</strong>, <strong>Pause</strong>, os <strong>Wait</strong>, <strong>Browser</strong>, <strong>Undo</strong> e <strong>Redo</strong>), <strong>Save</strong> e <span class="kbd">Ctrl</span>+<span class="kbd">S</span> do painel lateral, <strong>Recapture</strong>, <strong>Configure search region</strong>, <strong>Test action</strong>, o botão <strong>Data Loop</strong> e os comandos de grade da paleta. O painel lateral e o editor de célula avisam com um aviso no rodapé, em vez de falhar calados; o botão <strong>Data Loop</strong> e os comandos da paleta ficam <strong>apagados</strong>, e a paleta escreve o motivo na própria linha</td></tr>
         <tr><td>Virei para o modo Clicker e o painel de edição sumiu com o que eu estava digitando <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O modo Clicker desliga a lista de ações, então o painel não tem mais a linha que estava editando</td><td>Ele avisa ao fechar (<em>Alterações descartadas</em>). Volte ao <strong>Macro</strong> e salve antes de trocar — a troca de modo também acontece pelo <span class="kbd">ScrLk</span>, que pode cair no meio de uma frase</td></tr>
         <tr><td>Uma hotstring, uma hotkey de perfil ou a roda não fazem nada em modo Clicker <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>É o esperado: o modo Clicker não executa perfis, e agora ele também não engole mais a tecla — ela chega ao app que está na frente</td><td>Nada a fazer. Antes a tecla sumia sem executar nada, e uma hotstring chegava a apagar o que você tinha acabado de digitar</td></tr>
         <tr><td>Um diálogo de inserir ação ficou aberto depois de eu virar o modo, e o botão de confirmar recusa <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O diálogo fica ABERTO de propósito, para não jogar fora o que você digitou — mas a grade não aceita escrita naquele modo</td><td>Volte ao <strong>Macro</strong> e confirme. O texto continua lá</td></tr>
-        <tr><td>Cliques disparam duas vezes</td><td>Focus-click ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
+        <tr><td>Cliques disparam duas vezes</td><td><strong>Focus click</strong> ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
         <tr><td>Um jogo ignora os cliques</td><td>Movimento teleportado</td><td>Game mode ligado; se ainda errar, desligue o Fast approach</td></tr>
         <tr><td>A automação nunca dispara</td><td>Salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>
         <tr><td>O sub-perfil ignora os próprios Loops</td><td>É de propósito</td><td>Vale só o Repeat do diálogo Run Profile</td></tr>

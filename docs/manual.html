@@ -2421,7 +2421,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="co-icon">⚠️</div>
       <div>
         <p><span class="co-title">Parece rodando, mas o alvo não reage?</span></p>
-        <p>O Windows não avisa quando bloqueia clique sintético em janela elevada — a taxa continua saudável enquanto nada acontece. O TrueReplayer compara os níveis de integridade e, se a janela sob o cursor roda como administrador e ele não, avisa no painel e na barra de status ("elevated target"). A saída é rodar o TrueReplayer como administrador também.</p>
+        <p>O Windows não avisa quando bloqueia clique sintético em janela elevada — a taxa continua saudável enquanto nada acontece. O TrueReplayer compara os níveis de integridade e, se a janela sob o cursor roda como administrador e ele não, avisa no painel e na barra de status ("elevated target"). A saída é rodar o TrueReplayer como administrador também — há um interruptor para isso em <a class="xref" href="#p13-configuracoes-do-app">Settings → App → Startup → <strong>Run as Administrator</strong></a>, que passa a valer no próximo início.</p>
       </div>
     </div>
   </div>
@@ -2682,6 +2682,36 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
+    <h3 id="p13-configuracoes-do-app">Configurações do app</h3>
+    <p>A aba <strong>Settings → App</strong> guarda o que não pertence a nenhuma macro em particular: como a janela se porta, como o app inicia e como ele avisa. O padrão de cada uma está entre parênteses.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Seção</th><th>Opção</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Window</strong></td><td><strong>Always On Top</strong></td><td>Mantém a janela do TrueReplayer acima das outras (desligado).</td></tr>
+          <tr><td><strong>Window</strong></td><td><strong>System Tray</strong></td><td>Minimizar manda o app para a bandeja em vez da barra de tarefas (ligado). O menu da bandeja espelha os interruptores principais.</td></tr>
+          <tr><td><strong>Startup</strong></td><td><strong>Run on Startup</strong></td><td>Sobe junto com o Windows (ligado).</td></tr>
+          <tr><td><strong>Startup</strong></td><td><strong>Startup Minimized</strong></td><td>Nesse início automático, já começa recolhido (ligado). Só fica disponível com o de cima ligado.</td></tr>
+          <tr><td><strong>Startup</strong></td><td><strong>Run as Administrator</strong></td><td>Sobe elevado, que é o que faz a macro alcançar janelas de programas elevados (desligado) — veja o aviso abaixo.</td></tr>
+          <tr><td><strong>Notifications</strong></td><td><strong>Flash on Replay End</strong></td><td>Pisca ao terminar uma execução (desligado).</td></tr>
+          <tr><td><strong>Notifications</strong></td><td><strong>Sound on Replay End</strong></td><td>Toca um som ao terminar (desligado).</td></tr>
+          <tr><td><strong>Automation</strong></td><td><strong>Enable Automations</strong></td><td><strong>Chave-mestra das automações</strong> (ligada). Desligada, <em>nenhuma</em> automação dispara, por mais armada que esteja — e o interruptor também está no menu da bandeja.</td></tr>
+          <tr><td><strong>Interface</strong></td><td><strong>Tooltips</strong></td><td>Idioma das dicas: <em>English</em> ou <em>Português (BR)</em>. Os nomes de ações, menus e campos seguem em inglês, como na interface.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>As duas de <strong>Notifications</strong> só avisam quando a janela do TrueReplayer <strong>não</strong> está na frente — que é justamente o caso em que você não veria o fim da execução, porque o jogo ou o navegador está cobrindo o app.</p>
+
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Run as Administrator vale a partir do próximo início — e o UAC pode fechar o app.</span></p>
+        <p>Ligar não eleva a janela que já está aberta: no próximo início o app se relança elevado e o processo comum encerra. Nesse relançamento o Windows mostra o prompt do UAC, e <strong>se você recusar, o app fecha</strong> em vez de abrir sem elevação — é de propósito, porque abrir sem elevação depois de você ter pedido elevação é a receita de a macro falhar em silêncio contra a janela que motivou a opção.</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="subsec">
     <h3 id="p13-onde-seus-dados-ficam">Onde seus dados ficam</h3>
     <div class="tbl-wrap">
       <table>
@@ -2784,7 +2814,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>Um diálogo de inserir ação ficou aberto depois de eu virar o modo, e o botão de confirmar recusa <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O diálogo fica ABERTO de propósito, para não jogar fora o que você digitou — mas a grade não aceita escrita naquele modo</td><td>Volte ao <strong>Macro</strong> e confirme. O texto continua lá</td></tr>
         <tr><td>Cliques disparam duas vezes</td><td><strong>Focus click</strong> ligado nessas linhas</td><td>Desligue — ele é só para campos de texto pequenos</td></tr>
         <tr><td>Um jogo ignora os cliques</td><td>Movimento teleportado</td><td>Game mode ligado; se ainda errar, desligue o Fast approach</td></tr>
-        <tr><td>A automação nunca dispara</td><td>Salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>
+        <tr><td>A automação nunca dispara</td><td>A chave-mestra <strong>Enable Automations</strong> está desligada; ou salvou mas não armou; ou replay/diálogo/edição não salva no caminho</td><td>Confira a chave-mestra em <a class="xref" href="#p13-configuracoes-do-app">Settings → App → Automation</a>, ligue a chave <strong>Armed</strong> e use o <strong>Run now</strong> — ele escreve o motivo</td></tr>
         <tr><td>O sub-perfil ignora os próprios Loops</td><td>É de propósito</td><td>Vale só o Repeat do diálogo Run Profile</td></tr>
         <tr><td>Um passo gravado foi para o lugar errado</td><td>A gravação insere antes da primeira linha <em>selecionada</em></td><td>Limpe a seleção para acrescentar no fim</td></tr>
         <tr><td>Um token não digitou nada</td><td>Resolveu para vazio — variável nunca definida, coluna inexistente, lista do <span class="tok">{clipboard:next}</span> acabou</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → Toggle Live Variables e rode de novo</td></tr>

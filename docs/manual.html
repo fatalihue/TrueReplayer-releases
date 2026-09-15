@@ -1083,7 +1083,7 @@
     <ul>
       <li><strong>Hotkey</strong> — botão direito no perfil → <strong>Hotkey…</strong> → pressione a combinação. Dispara em qualquer app.</li>
       <li><strong>Hotstring</strong> — uma sequência digitada (ex.: <code>.cp</code>) que roda o perfil ao terminar de ser escrita.</li>
-      <li><strong>Chave-mestra</strong> — <span class="kbd">Pause</span> liga/desliga todas de uma vez.</li>
+      <li><strong>Chave-mestra</strong> — <span class="kbd">Pause</span> liga/desliga todas de uma vez. A partir da 2.42.0 ela desliga mais do que as hotkeys de perfil: veja <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">o que ela desliga</a>, logo abaixo.</li>
       <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os <em>modos de gatilho</em> da tabela acima — ideais para jogo. A roda também, sempre em On Press. Atenção ao outro sentido de "modo": em <strong>modo Clicker</strong> nenhum dos dois dispara perfil, e a tecla passa adiante para o jogo <span class="ver-next">(a partir da versão 2.38.0)</span> — veja a <a class="xref" href="#p10">Parte 10</a>.</li>
     </ul>
     <div class="tbl-wrap">
@@ -1159,6 +1159,32 @@
       <figcaption>A mesma tecla, seis comportamentos. <strong>While Pressed</strong> e <strong>Toggle</strong> são os únicos que repetem — é por eles que se roda "até eu mandar parar", já que Loops não tem infinito.</figcaption>
     </figure>
     <p>Os modos valem só para hotkeys — uma hotstring não tem modo: dispara ao terminar de ser escrita, e pronto. Em <strong>modo Clicker</strong> nada disso chega a disparar, nem hotkey nem hotstring, porque o modo não executa perfis; a tecla passa adiante para o app que está na frente <span class="ver-next">(a partir da versão 2.38.0)</span>, em vez de sumir sem executar nada — o quadro completo está na <a class="xref" href="#p10">Parte 10</a>.</p>
+  </div>
+
+  <div class="subsec">
+    <h3 id="p3-o-que-a-chave-mestra-desliga">O que a chave-mestra desliga</h3>
+    <p><span class="kbd">Pause</span> (o campo <strong>Profile Keys</strong> em Settings) é o <em>“modo digitar normal”</em> do app. Desligada, o TrueReplayer para de <strong>agir</strong> — mas continua ouvindo o que serve para pilotar ele mesmo.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Com Profile Keys desligadas</th><th>O que acontece</th></tr></thead>
+        <tbody>
+          <tr><td>Hotkeys de perfil · hotstrings · botões laterais · roda</td><td>Silenciam. Sempre foi assim.</td></tr>
+          <tr><td>Remaps de tecla</td><td>A camada inteira pausa — o par que já estava aberto ainda fecha, então nenhuma tecla fica presa.</td></tr>
+          <tr><td><strong>Gravar</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span>) · <strong>Replay</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span>) · <strong>Capture Slot</strong> <span class="ver-next">(a partir da versão 2.42.0)</span></td><td>Param de disparar <em>e a tecla vai para o app que estiver na frente</em>. Antes disso elas disparavam e ainda assim engoliam a tecla — quem desligava justamente para usar o <span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span> de trocar aba no navegador via a troca morrer no caminho.</td></tr>
+          <tr><td><span class="kbd">Pause</span> · <strong>Foreground</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">Insert</span>) · <span class="kbd">ScrLk</span> · as teclas do Clicker</td><td>Continuam valendo. Elas só mexem no próprio TrueReplayer — e sem a primeira não haveria como religar pelo teclado, já que o menu da bandeja não tem item de Profile Keys.</td></tr>
+          <tr><td>Automations</td><td>Não entram: têm a chave-mestra <strong>Enable Automations</strong>, no menu da bandeja e em Settings.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>O que estiver rodando ainda pode ser parado.</strong> Gravar e Replay são a mesma tecla para começar e para encerrar, então cortá-las de vez deixaria uma macro em curso sem saída pelo teclado. Com a chave-mestra desligada elas continuam valendo <em>só para parar</em>, nunca para começar — e a tecla muda de dono no instante em que a execução termina. É de propósito: a saída de emergência nunca some, e também não fica reservada à toa.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">💡</div>
+      <div>
+        <p><span class="co-title">O app avisa em vez de ficar mudo.</span></p>
+        <p>Apertar Gravar ou Replay com a chave-mestra desligada mostra <em>“Profile Keys are off — Ctrl+PageDown went to the app in front. Press Pause to switch them back on”</em>. Ele não repete a cada tecla. O ícone da bandeja fica <strong>vermelho</strong> e o ícone de <strong>Hotkeys</strong> no painel lateral ganha um ponto enquanto durar.</p>
+      </div>
+    </div>
+    <p>Desligar é uma pausa de <em>sessão</em>: fechar e abrir o app volta com as Profile Keys ligadas, sempre.</p>
   </div>
 
   <div class="subsec">
@@ -2695,7 +2721,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tbody>
           <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span></td><td>Gravar / parar gravação</td><td><span class="kbd">ScrLk</span></td><td>Alternar Macro ↔ Clicker</td></tr>
           <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span></td><td>Reproduzir / parar</td><td><span class="kbd">Ins</span></td><td>Trazer o app para frente</td></tr>
-          <tr><td><span class="kbd">Pause</span></td><td>Chave-mestra das hotkeys de perfil</td><td><span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span></td><td>Capture Slot</td></tr>
+          <tr><td><span class="kbd">Pause</span></td><td>Chave-mestra — <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">o que ela desliga</a></td><td><span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span></td><td>Capture Slot</td></tr>
           <tr><td><span class="kbd">PgDn</span> / <span class="kbd">PgUp</span></td><td>Clicker: iniciar / pausar</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span></td><td>Paleta de comandos</td></tr>
         </tbody>
       </table>
@@ -2828,6 +2854,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <thead><tr><th>Sintoma</th><th>Causa provável</th><th>Conserto</th></tr></thead>
       <tbody>
         <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
+        <tr><td><strong>Gravar</strong> ou <strong>Replay</strong> não responde, e a tecla foi parar no app da frente <span class="ver-next">(a partir da versão 2.42.0)</span></td><td>A chave-mestra (<span class="kbd">Pause</span>) está desligada. Com ela off o app para de agir, e essas teclas passam adiante em vez de serem engolidas — é o que faz o <span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span> voltar a trocar de aba no navegador</td><td>Aperte <span class="kbd">Pause</span>. O app avisa na primeira vez, o ícone da bandeja fica vermelho enquanto durar, e <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">a tabela da Parte 3</a> lista o que cala e o que continua valendo. Se havia algo <em>rodando</em>, a mesma tecla ainda o PARA — ela só perde o poder de começar</td></tr>
         <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert Coordinates to Relative (<a class="xref" href="#p8">Parte 8</a>)</td></tr>
         <tr><td>Cliquei numa célula da grade durante um replay <em>ou uma gravação</em> e o editor não abriu <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>A lista de ações fica travada enquanto um run está ativo — de propósito: editá-la reescreveria a lista que o motor está percorrendo naquele instante</td><td>Espere o run terminar, ou pare com a hotkey correspondente — <em>run</em> aqui é replay <strong>e</strong> gravação, as duas travam a lista igual. Vale para o mesmo conjunto: toda a fileira de inserção da barra (<strong>Conditional</strong>, <strong>Loop</strong>, <strong>Assert</strong>, <strong>Pause</strong>, os <strong>Wait</strong>, <strong>Browser</strong>, <strong>Undo</strong> e <strong>Redo</strong>), <strong>Save</strong> e <span class="kbd">Ctrl</span>+<span class="kbd">S</span> do painel lateral, <strong>Recapture</strong>, <strong>Configure search region</strong>, <strong>Test action</strong>, o botão <strong>Data Loop</strong> e os comandos de grade da paleta. O painel lateral e o editor de célula avisam com um aviso no rodapé, em vez de falhar calados; o botão <strong>Data Loop</strong> e os comandos da paleta ficam <strong>apagados</strong>, e a paleta escreve o motivo na própria linha. O mesmo vale para o <strong>painel de dados já aberto</strong> — Save, Clear table e <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span> recusam com aviso, porque é essa a tabela que um For Each em andamento está percorrendo — e para o <span class="kbd">Enter</span> no campo <strong>Delay</strong> de Settings, que reescreveria a demora das linhas selecionadas <span class="ver-next">(a partir da versão 2.39.0)</span></td></tr>
         <tr><td>Virei para o modo Clicker e o painel de edição sumiu com o que eu estava digitando <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O modo Clicker desliga a lista de ações, então o painel não tem mais a linha que estava editando</td><td>Ele avisa ao fechar (<em>Alterações descartadas</em>). Volte ao <strong>Macro</strong> e salve antes de trocar — a troca de modo também acontece pelo <span class="kbd">ScrLk</span>, que pode cair no meio de uma frase</td></tr>

@@ -1012,7 +1012,7 @@
         <p>E o caminho de volta tem a sua própria recusa: um par que aperta e solta em <em>pontos diferentes</em> é um arrasto, e continua duas linhas.</p>
       </div>
     </div>
-    <p>A mesma troca de forma está no formulário completo, no campo <strong>Form</strong> da seção <strong>ACTION TYPE</strong> — ali ela vale ao <strong>Save</strong>, junto com o resto da edição.</p>
+    <p>A mesma troca de forma está no formulário completo, no campo <strong>Form</strong>, logo abaixo de <strong>Button</strong> e <strong>Kind</strong> — ali ela vale ao <strong>Save</strong>, junto com o resto da edição.</p>
   </div>
 
   <div class="subsec">
@@ -1054,13 +1054,13 @@
       <table>
         <thead><tr><th>Campo</th><th>O que escolher</th></tr></thead>
         <tbody>
-          <tr><td><strong>Click</strong> / <strong>Hold</strong></td><td>Um toque, ou um botão pressionado por um tempo. O mesmo par do diálogo de teclado — um diálogo por dispositivo de entrada, não um por ação.</td></tr>
-          <tr><td><strong>Form</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td><strong>One row</strong> escreve a pressão inteira numa linha. <strong>Two rows</strong> escreve <strong>Down</strong> e <strong>Up</strong> separadas — a forma do <strong>arrasto</strong>.</td></tr>
+          <tr><td><strong>Mode</strong></td><td><strong>Click</strong> é um toque. <strong>Hold</strong> mantém o botão pressionado por um tempo.</td></tr>
           <tr><td><strong>Button</strong></td><td><strong>Left</strong>, <strong>Right</strong> ou <strong>Middle</strong>.</td></tr>
-          <tr><td><strong>Position</strong></td><td><strong>This point</strong> pede a coordenada: <strong>Pick from screen</strong> minimiza o app e o próximo clique na tela é a resposta. <strong>At cursor</strong> dispensa coordenada — o ponto é lido do mouse na hora de rodar.</td></tr>
-          <tr><td><strong>Clicks</strong> <em>(modo Click)</em></td><td><strong>Single</strong>, <strong>Double</strong> ou <strong>Triple</strong>.</td></tr>
-          <tr><td><strong>Times to repeat</strong> · <strong>Gap between clicks</strong> <em>(modo Click)</em></td><td>A repetição na própria linha, descrita logo abaixo. O Gap acompanha o tipo escolhido: 30 ms no Single, 600 ms no Double e no Triple.</td></tr>
-          <tr><td><strong>Hold</strong> <em>(modo Hold)</em></td><td>Quanto tempo o botão fica pressionado, de 10 a 60000 ms, com atalhos de 100 ms a 30 s.</td></tr>
+          <tr><td><strong>Clicks</strong></td><td><strong>Single</strong>, <strong>Double</strong> ou <strong>Triple</strong>. Fixo em <strong>Single</strong> no modo Hold.</td></tr>
+          <tr><td><strong>Position</strong></td><td><strong>This point</strong> pede a coordenada: digite <strong>X</strong> e <strong>Y</strong> <span class="ver-next">(a partir da versão 2.43.0)</span>, ou clique em <strong>Pick from screen</strong> — o app minimiza e o próximo clique na tela é a resposta. <strong>At cursor</strong> dispensa coordenada: o ponto é lido do mouse na hora de rodar.</td></tr>
+          <tr><td><strong>Repeat</strong>: <strong>Times</strong> · <strong>Gap</strong> <em>(modo Click)</em></td><td>A repetição na própria linha, descrita logo abaixo. O Gap acompanha o tipo escolhido: 30 ms no Single, 600 ms no Double e no Triple.</td></tr>
+          <tr><td><strong>Hold</strong> <em>(modo Hold)</em></td><td>Quanto tempo o botão fica pressionado, de 10 a 60000 ms, com atalhos de 100 ms a 5 s.</td></tr>
+          <tr><td><strong>Form</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td><strong>One row</strong> escreve a pressão inteira numa linha. <strong>Two rows</strong> escreve <strong>Down</strong> e <strong>Up</strong> separadas — a forma do <strong>arrasto</strong>.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1068,11 +1068,11 @@
     <div class="callout co-rule">
       <div class="co-icon">🖱️</div>
       <div>
-        <p><span class="co-title">Montar um arrasto à mão.</span> Em <strong>Two rows</strong> aparece o campo <strong>Release at</strong>, com um segundo <strong>Pick from screen</strong>. Escolha o ponto de soltura e a linha vira um arrasto: aperta em A, solta em B.</p>
-        <p>Deixe o Release at vazio e as duas metades ficam no mesmo ponto — é a divisão simples. E um arrasto <strong>sobrevive</strong> a um <em>Convert Actions to Combined</em> da paleta: pontos diferentes não se juntam numa linha só.</p>
+        <p><span class="co-title">Montar um arrasto à mão.</span> Em <strong>Two rows</strong> aparece o campo <strong>Release at</strong>: digite <strong>X</strong> e <strong>Y</strong>, ou clique em <strong>Same point</strong> para escolher na tela. Com os dois preenchidos a linha vira um arrasto: aperta em A, solta em B.</p>
+        <p>Deixe o Release at vazio e as duas metades ficam no mesmo ponto — é a divisão simples. <strong>Um eixo só bloqueia o Add</strong>, e a nota abaixo do campo diz isso. E um arrasto <strong>sobrevive</strong> a um <em>Convert Actions to Combined</em> da paleta: pontos diferentes não se juntam numa linha só.</p>
       </div>
     </div>
-    <p>A faixa colorida no rodapé lê a linha em voz de gente: <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> Ela fica vermelha enquanto falta o ponto.</p>
+    <p>A faixa no rodapé lê a linha em voz de gente: <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> Sem o ponto ela fica cinza e diz o que falta. Vermelha só num caso: <strong>Release at</strong> com um número só.</p>
     <p><strong>Double e Triple são do botão esquerdo.</strong> O Windows não tem duplo-clique de botão direito, então escolher um dos dois apaga o seletor de botão e o fixa em Left.</p>
     <p><strong>Gap jitter</strong>, <strong>Position jitter</strong> e <strong>Focus click</strong> não estão no diálogo: eles ajustam uma linha que já existe, e ficam a um clique no formulário completo (o lápis).</p>
   </div>
@@ -1081,8 +1081,8 @@
     <h3 id="p2-repeticao-em-cliques-e-teclas">Repetição em cliques e teclas</h3>
     <p>Keystroke e os cliques repetem na própria linha, sem precisar de loop:</p>
     <ul>
-      <li><strong>Times to repeat</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
-      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima. Padrão 30 ms; <strong>600 ms</strong> no Double e no Triple, que precisam de folga acima da velocidade do Windows.</li>
+      <li><strong>Times</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
+      <li><strong>Gap</strong> — intervalo entre uma repetição e a próxima. Padrão 30 ms; <strong>600 ms</strong> no Double e no Triple, que precisam de folga acima da velocidade do Windows.</li>
       <li><strong>Gap jitter</strong> — ± % aleatório em cada intervalo.</li>
       <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo. Desabilitado em <strong>At cursor</strong>: o desvio moveria o próprio cursor que a ação lê.</li>
     </ul>

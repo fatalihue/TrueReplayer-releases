@@ -1027,6 +1027,7 @@
           <tr><td><strong>Hold Left / Right / Middle Click</strong> <span class="ver-next">(a partir da versão 2.41.0)</span></td><td>Pressiona o botão em (x, y), <strong>segura por N ms</strong> (padrão 1000, faixa de 10 a 60000) e solta — tudo numa linha só. É o gêmeo de mouse do <strong>Hold Key</strong>. Aceita <strong>At cursor</strong> e × N.</td></tr>
           <tr><td><strong>Keystroke</strong></td><td>Uma tecla ou combinação — ou N vezes com intervalo e Gap jitter.</td></tr>
           <tr><td><strong>Hold Key</strong></td><td>Segura uma tecla por N ms (padrão 1000). Modificadores são descartados.</td></tr>
+          <tr><td><strong>Left/Right/MiddleClickDown</strong> · <strong>…ClickUp</strong></td><td>As duas metades de um clique, em linhas separadas. É a forma que representa um <strong>arrasto</strong> — apertar num ponto e soltar noutro.</td></tr>
           <tr><td><strong>Key Down / Key Up</strong></td><td>Pressionar ou soltar isolado — para arrastar ou segurar tecla.</td></tr>
           <tr><td><strong>Scroll Up / Down</strong></td><td>Um passo da roda, na posição do cursor.</td></tr>
           <tr><td><strong>Send Text</strong></td><td>Injeta texto com tokens — <a class="xref" href="#p4">Parte 4</a>.</td></tr>
@@ -1679,7 +1680,7 @@ maria@email.com
       <div class="co-icon">🛠️</div>
       <div>
         <p><span class="co-title">Você não precisa montar isso de cabeça.</span></p>
-    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>. São etapas numeradas com <strong>prévia ao vivo</strong>: Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up, Case. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
+    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>. São etapas numeradas com <strong>prévia ao vivo</strong>: Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up, Count &amp; pad, Case. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
       </div>
     </div>
   </div>
@@ -2216,7 +2217,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Wait until</strong> — <em>Appears</em> ou <em>Disappears</em> (esperar um "Carregando…" sumir vale tanto quanto esperar um botão surgir).</li>
       <li><strong>Timeout + On Timeout</strong> — quanto esperar e o que fazer se estourar: <strong>Halt</strong> para a macro, <strong>Continue</strong> segue.</li>
       <li><strong>Click on found location</strong> — clica direto no ponto encontrado, poupando uma ação de clique.</li>
-      <li><strong>Search region</strong> — o pedaço da tela onde procurar. Sem região, a busca é na tela inteira, e isso custa caro nos dois sentidos (veja abaixo).</li>
+      <li><strong>Search region</strong> — o pedaço da tela onde procurar, pelo botão <strong>Configure search region</strong>. Sem região, a busca é na tela inteira, e isso custa caro nos dois sentidos (veja abaixo).</li>
     </ul>
 
     <div class="callout co-warn">
@@ -2278,7 +2279,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p7-a-lupa-acertar-o-pixel-certo-nao-o-vizinho">A lupa — acertar o pixel certo, não o vizinho</h3>
-    <p>Quando o app pede um ponto, uma área ou um recorte, a tela escurece e uma <strong>lupa</strong> segue o cursor. Ela mostra os pixels ampliados e sem borrar; a célula do centro é <em>exatamente</em> o pixel que será gravado.</p>
+    <p>Quando o app pede um ponto, uma área ou um recorte — o conta-gotas do Wait Pixel, o <strong>Pick position</strong> da Sheet, a área do Click Area —, a tela escurece e uma <strong>lupa</strong> segue o cursor. Ela mostra os pixels ampliados e sem borrar; a célula do centro é <em>exatamente</em> o pixel que será gravado.</p>
     <ul>
       <li><strong>Roda do mouse = zoom.</strong> São cinco níveis e ela abre no mais afastado, para você achar a região primeiro; role para cima ao chegar perto.</li>
       <li><strong>Segure Shift para o modo lento.</strong> O mouse anda cinco vezes menos — a diferença entre pegar a borda do botão e o fundo atrás dele. A lupa mostra <strong>SLOW</strong> enquanto a tecla está pressionada.</li>
@@ -2581,7 +2582,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p10-game-mode">Game Mode</h3>
     <p>Para jogos que ignoram um teleporte instantâneo do cursor, o movimento vira um caminho percorrido. <strong>O cabeçalho da seção é o interruptor mestre</strong> — ligado por padrão.</p>
     <ul>
-      <li><strong>Fast approach</strong> — em movimentos longos, teleporta até uma distância do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
+      <li><strong>Fast approach</strong> — em movimentos longos, teleporta até a <strong>Distance</strong> do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
       <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms).</li>
       <li><strong>Focus click</strong> <em>(botão direito na linha → <strong>More</strong>)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong>: um botão dispararia duas vezes.</li>
     </ul>
@@ -2618,6 +2619,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <ul>
       <li><strong>Mirando por texto</strong>, o alvo é o elemento <em>clicável</em> que carrega o texto — o botão inteiro, não o span de dentro. Sem prefixo, <code>text=Enviar</code> é <strong>exato</strong>; <code>text*=</code> contém, <code>text~=</code> ignora maiúsculas, <code>text/…/i</code> é regex.</li>
     <li>Um selo de <strong>qualidade do seletor</strong> (S → C) indica quão estável ele tende a ser.</li>
+    <li><strong>Test action</strong>, no formulário da linha, executa aquele passo <em>agora</em> na aba da frente — é como conferir o seletor sem rodar a macro inteira.</li>
       <li><strong>Em qual aba a macro age:</strong> na que estava na frente <em>quando a execução começou</em>, até o fim. Trocar de aba no meio não leva a macro junto; aba fechada para a macro com <code>TAB_GONE</code>.</li>
   </ul>
 
@@ -2639,7 +2641,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Durante</strong> — a barra mostra um ícone enquanto a extensão está conectada, e troca para <strong>"Extension disconnected"</strong> se ela cair. O aviso só aparece depois de alguns segundos de queda contínua, para não virar pisca-pisca.</li>
       <li>O indicador só aparece com <strong>Browser Actions</strong> ligado em Settings — se você não usa navegador, ele não ocupa espaço.</li>
       <li>Aviso de <strong>versão</strong>: recarregue a extensão em <code>chrome://extensions</code> — fechar e reabrir o Chrome não basta para uma extensão descompactada. A recarga <strong>não alcança páginas já abertas</strong>: dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> em cada aba que a macro usa.</li>
-      <li>Numa aba dessas o <strong>Click Element</strong> falha alto, mas o <strong>If Browser Element</strong> lê "não encontrado" e segue pelo <em>senão</em>, calado. <strong>O indicador da barra não desempata</strong>: ele fala da ponte com o app, que está de pé.</li>
+      <li>Numa aba dessas o <strong>Click Element</strong> falha alto — <em>"The active Chrome tab cannot be automated."</em> no Run report — mas o <strong>If Browser Element</strong> lê "não encontrado" e segue pelo <em>senão</em>, calado. <strong>O indicador da barra não desempata</strong>: ele fala da ponte com o app, que está de pé.</li>
     </ul>
   </div>
 

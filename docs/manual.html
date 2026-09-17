@@ -954,11 +954,65 @@
 
   <div class="subsec">
     <h3 id="p2-o-menu-da-linha">O menu da linha</h3>
-    <p>Botão direito numa linha: <strong>Edit · Pick from screen · Duplicate · More · Delete</strong>.</p>
-    <ul>
-      <li><strong>Pick from screen</strong> <em>(linhas de clique)</em> — escolha o ponto e o formulário abre com X/Y como rascunho. Numa linha <strong>At cursor</strong> a opção não aparece: ela não guarda ponto.</li>
-      <li><strong>More</strong> guarda o resto, começando por <strong>Copy Coordinates</strong>.</li>
-    </ul>
+    <p>Botão direito numa linha. O topo é sempre o mesmo — <strong>Edit</strong>, <strong>Duplicate</strong>, <strong>Skip</strong>, <strong>More</strong> e <strong>Delete</strong>. Entre Edit e Duplicate entra o que faz sentido para o <em>tipo</em> daquela linha.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Entrada</th><th>Em que linha</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Edit</strong></td><td>todas</td><td>Abre o formulário completo — o mesmo do lápis e do <span class="kbd">Enter</span>.</td></tr>
+          <tr><td><strong>Pick from screen</strong></td><td>clique</td><td>Escolha o ponto e o formulário abre com X/Y como rascunho.</td></tr>
+          <tr><td><strong>Change click type ▸</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>clique</td><td>Troca o tipo do clique — os oito da Sheet — e divide ou junta as metades. Abaixo.</td></tr>
+          <tr><td><strong>Select block</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>If, Else If, Else, End If, While, For Each, End Loop</td><td>Seleciona o bloco inteiro, com os dois marcadores, e acende a barra de baixo — é assim que se pula, move ou duplica um bloco de uma vez.</td></tr>
+          <tr><td><strong>Reset cycle position</strong></td><td>Set Variable em Cycle</td><td>A próxima execução volta ao primeiro item da lista.</td></tr>
+          <tr><td><strong>Copy Selector</strong> · <strong>Copy URL</strong> · <strong>Copy Text</strong> · <strong>Open Profile</strong></td><td>Browser · Open URL · Send Text · Run Profile</td><td>Copia o valor da linha, ou abre o perfil chamado.</td></tr>
+          <tr><td><strong>Duplicate</strong></td><td>todas</td><td>Copia as linhas logo abaixo.</td></tr>
+          <tr><td><strong>Skip</strong> / <strong>Enable</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>todas</td><td>Tira a linha da execução sem apagá-la. Num marcador de bloco, o bloco inteiro é pulado.</td></tr>
+          <tr><td><strong>Delete</strong></td><td>todas</td><td>Num marcador, o rótulo diz o que vai levar: <strong>Delete block</strong>, <strong>Delete loop</strong> ou <strong>Delete arm</strong>.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Com várias linhas selecionadas, o menu age em <strong>todas</strong> — e o número aparece no rótulo: <em>Duplicate (12)</em>. O número é o que a entrada vai tocar de verdade, então <em>Focus click</em> pode mostrar menos que a seleção.</p>
+
+    <h4 style="margin-top:26px">More ▸</h4>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Entrada</th><th>O que faz</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Copy</strong> · <strong>Paste here</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>Mover passos entre perfis, com o teclado em <span class="kbd">Ctrl</span>+<span class="kbd">C</span> / <span class="kbd">Ctrl</span>+<span class="kbd">V</span>. O <em>here</em> é literal: as linhas caem <strong>acima</strong> da que você clicou.</td></tr>
+          <tr><td><strong>Select Similar</strong></td><td>Seleciona todas as linhas iguais a esta — o passo antes de uma edição em lote.</td></tr>
+          <tr><td><strong>Copy Coordinates</strong></td><td>Põe <code>x, y</code> no clipboard. Não aparece em linha <strong>At cursor</strong>, que não guarda ponto.</td></tr>
+          <tr><td><strong>Focus click</strong></td><td>Liga o clique duplo de foco — <a class="xref" href="#p10">Parte 10</a>.</td></tr>
+          <tr><td><strong>Collapse to × N</strong> · <strong>Expand × N</strong></td><td>Dobra pares <strong>Key Down + Key Up</strong> da mesma tecla num <strong>Keystroke × N</strong>, e desdobra. Cinza quando a seleção não serve — o tooltip diz o que falta.</td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <h4 style="margin-top:26px">Change click type <span class="ver-next">(a partir da versão 2.43.0)</span></h4>
+    <p>O submenu oferece os oito tipos de clique — <strong>Left</strong>, <strong>Right</strong>, <strong>Middle</strong>, os três <strong>Hold</strong> e <strong>Double</strong> / <strong>Triple</strong> — e troca o tipo de todas as linhas de clique selecionadas de uma vez, num só desfazer.</p>
+    <p>Embaixo fica a <strong>forma</strong> da linha, que é outro eixo:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Forma</th><th>O que é</th></tr></thead>
+        <tbody>
+          <tr><td><strong>Combined</strong> — uma linha</td><td>A linha carrega a pressão inteira: aperta e solta.</td></tr>
+          <tr><td><strong>Paired</strong> — duas linhas</td><td><strong>Down</strong> e <strong>Up</strong> separadas. É a única forma que representa um <strong>arrasto</strong>, porque só ela pode soltar num ponto diferente de onde apertou.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p><strong>Split into Down + Up</strong> divide a linha; <strong>Merge Down + Up</strong> junta o par. Editando uma metade, o submenu mostra só os três botões — Double, Triple e os Hold são gestos inteiros, que não se cortam ao meio.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">📐</div>
+      <div>
+        <p><span class="co-title">Três cliques não se dividem, e o app diz qual.</span></p>
+        <ul>
+          <li><strong>× N</strong> — as metades não repetem. Ponha <em>Times</em> em 1 primeiro.</li>
+          <li><strong>At cursor</strong> — as metades leem o ponto guardado, não o cursor.</li>
+          <li><strong>Double</strong> e <strong>Triple</strong> — um gesto só. Troque para clique simples antes.</li>
+        </ul>
+        <p>E o caminho de volta tem a sua própria recusa: um par que aperta e solta em <em>pontos diferentes</em> é um arrasto, e continua duas linhas.</p>
+      </div>
+    </div>
+    <p>A mesma troca de forma está no formulário completo, no campo <strong>Form</strong> da seção <strong>ACTION TYPE</strong> — ali ela vale ao <strong>Save</strong>, junto com o resto da edição.</p>
   </div>
 
   <div class="subsec">
@@ -1000,6 +1054,7 @@
         <thead><tr><th>Campo</th><th>O que escolher</th></tr></thead>
         <tbody>
           <tr><td><strong>Click</strong> / <strong>Hold</strong></td><td>Um toque, ou um botão pressionado por um tempo. O mesmo par do diálogo de teclado — um diálogo por dispositivo de entrada, não um por ação.</td></tr>
+          <tr><td><strong>Form</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td><strong>One row</strong> escreve a pressão inteira numa linha. <strong>Two rows</strong> escreve <strong>Down</strong> e <strong>Up</strong> separadas — a forma do <strong>arrasto</strong>.</td></tr>
           <tr><td><strong>Button</strong></td><td><strong>Left</strong>, <strong>Right</strong> ou <strong>Middle</strong>.</td></tr>
           <tr><td><strong>Position</strong></td><td><strong>This point</strong> pede a coordenada: <strong>Pick from screen</strong> minimiza o app e o próximo clique na tela é a resposta. <strong>At cursor</strong> dispensa coordenada — o ponto é lido do mouse na hora de rodar.</td></tr>
           <tr><td><strong>Clicks</strong> <em>(modo Click)</em></td><td><strong>Single</strong>, <strong>Double</strong> ou <strong>Triple</strong>.</td></tr>
@@ -1007,6 +1062,14 @@
           <tr><td><strong>Hold</strong> <em>(modo Hold)</em></td><td>Quanto tempo o botão fica pressionado, de 10 a 60000 ms, com atalhos de 100 ms a 30 s.</td></tr>
         </tbody>
       </table>
+    </div>
+    <p><strong>Two rows fixa três controles.</strong> Mode volta a <strong>Click</strong>, Clicks a <strong>Single</strong> e Position a <strong>This point</strong>: nenhum dos três existe para uma metade de clique.</p>
+    <div class="callout co-rule">
+      <div class="co-icon">🖱️</div>
+      <div>
+        <p><span class="co-title">Montar um arrasto à mão.</span> Em <strong>Two rows</strong> aparece o campo <strong>Release at</strong>, com um segundo <strong>Pick from screen</strong>. Escolha o ponto de soltura e a linha vira um arrasto: aperta em A, solta em B.</p>
+        <p>Deixe o Release at vazio e as duas metades ficam no mesmo ponto — é a divisão simples. E um arrasto <strong>sobrevive</strong> a um <em>Convert Actions to Combined</em> da paleta: pontos diferentes não se juntam numa linha só.</p>
+      </div>
     </div>
     <p>A faixa colorida no rodapé lê a linha em voz de gente: <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> Ela fica vermelha enquanto falta o ponto.</p>
     <p><strong>Double e Triple são do botão esquerdo.</strong> O Windows não tem duplo-clique de botão direito, então escolher um dos dois apaga o seletor de botão e o fixa em Left.</p>

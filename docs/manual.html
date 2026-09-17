@@ -2504,6 +2504,22 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </figure>
 
   <div class="subsec">
+    <h3 id="p9-vigia-que-segue-a-janela">Vigia que segue a janela <span class="ver-next">(a partir da versão 2.43.0)</span></h3>
+    <p>Nas condições <strong>Pixel color</strong> e <strong>Image on screen</strong>, o interruptor <strong>Relative to a window</strong> mede o ponto — ou a região de busca — a partir do canto da janela, não da tela. Ligue e escolha a janela nos campos que aparecem.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Situação</th><th>O que o vigia faz</th></tr></thead>
+        <tbody>
+          <tr><td>A janela mudou de lugar</td><td>Reencontra a janela <strong>a cada checagem</strong>. Arrastar a janela não quebra o gatilho.</td></tr>
+          <tr><td>Janela fechada ou minimizada</td><td>A condição fica <strong>falsa</strong>, e o vigia segue armado. Não vira erro nem balão.</td></tr>
+          <tr><td>Interruptor desligado</td><td>A coordenada é da tela, como em toda automação feita até aqui.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>É o mesmo alvo de janela da <a class="xref" href="#p8">Parte 8</a>, aqui respondendo <em>onde ela está</em> em vez de <em>se está aberta</em>. Um perfil com esse gatilho <strong>exige a 2.43.0</strong> na importação: um app mais antigo não conhece o campo e voltaria a medir pela tela, sem avisar.</p>
+  </div>
+
+  <div class="subsec">
     <h3 id="p9-active-hours-so-dentro-de-uma-faixa-do-dia">Active hours — só dentro de uma faixa do dia</h3>
     <p>Interval e Condition aceitam uma <strong>janela de horário</strong>: "a cada dez minutos, mas só entre 09:00 e 18:00". Fora dela o vigia não dispara.</p>
     <ul>

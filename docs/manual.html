@@ -956,7 +956,7 @@
     <h3 id="p2-o-menu-da-linha">O menu da linha</h3>
     <p>Botão direito numa linha: <strong>Edit · Pick from screen · Duplicate · More · Delete</strong>.</p>
     <ul>
-      <li><strong>Pick from screen</strong> <em>(linhas de clique)</em> — escolha o ponto na tela e o formulário abre com X/Y preenchidos como rascunho: <strong>Save</strong> grava, <strong>Cancel</strong> descarta. Numa linha <strong>At cursor</strong> a opção não aparece — ela não guarda ponto.</li>
+      <li><strong>Pick from screen</strong> <em>(linhas de clique)</em> — escolha o ponto e o formulário abre com X/Y como rascunho. Numa linha <strong>At cursor</strong> a opção não aparece: ela não guarda ponto.</li>
       <li><strong>More</strong> guarda o resto, começando por <strong>Copy Coordinates</strong>.</li>
     </ul>
   </div>
@@ -1008,8 +1008,8 @@
         </tbody>
       </table>
     </div>
-    <p>A faixa colorida no rodapé do diálogo lê a linha inteira em voz de gente — <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> — e vira vermelha enquanto faltar o ponto, com o <strong>Add</strong> apagado.</p>
-    <p><strong>Double</strong> e <strong>Triple</strong> são do botão <strong>esquerdo</strong>: o Windows não tem duplo-clique de botão direito, então escolher um dos dois apaga o seletor de botão e o fixa em <strong>Left</strong>. A escolha anterior volta assim que você sai deles.</p>
+    <p>A faixa colorida no rodapé lê a linha em voz de gente: <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> Ela fica vermelha enquanto falta o ponto.</p>
+    <p><strong>Double e Triple são do botão esquerdo.</strong> O Windows não tem duplo-clique de botão direito, então escolher um dos dois apaga o seletor de botão e o fixa em Left.</p>
     <p><strong>Gap jitter</strong>, <strong>Position jitter</strong> e <strong>Focus click</strong> não estão no diálogo: eles ajustam uma linha que já existe, e ficam a um clique no formulário completo (o lápis).</p>
   </div>
 
@@ -1018,9 +1018,9 @@
     <p>Keystroke e os cliques repetem na própria linha, sem precisar de loop:</p>
     <ul>
       <li><strong>Times to repeat</strong> — 1 a 999. Em 1, a linha se comporta como sempre.</li>
-      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima. Padrão 30 ms; <strong>600 ms</strong> no Double e no Triple Click, que precisam de folga acima da velocidade do Windows para o seguinte contar como distinto.</li>
+      <li><strong>Gap between</strong> — intervalo entre uma repetição e a próxima. Padrão 30 ms; <strong>600 ms</strong> no Double e no Triple, que precisam de folga acima da velocidade do Windows.</li>
       <li><strong>Gap jitter</strong> — ± % aleatório em cada intervalo.</li>
-      <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo. Fica desabilitado quando a linha está em <strong>At cursor</strong>: o desvio moveria o próprio cursor que a ação lê, e cada repetição partiria deslocada pela anterior.</li>
+      <li><strong>Position jitter</strong> <em>(só cliques)</em> — espalha o ponto em ± N px por eixo. Desabilitado em <strong>At cursor</strong>: o desvio moveria o próprio cursor que a ação lê.</li>
     </ul>
     <div class="callout co-rule">
       <div class="co-icon">🎲</div>
@@ -1043,7 +1043,7 @@
       antes de disparar. Vale para Left, Right, Middle, Double e Triple Click e para as linhas de <strong>Hold</strong> <span class="ver-next">(a partir da versão 2.41.0)</span>, onde o ponto é lido <em>uma vez</em>, antes de pressionar, e reusado na soltura.</p>
     <ul>
       <li>A posição é lida <strong>uma vez por repetição</strong>, nunca a cada meia-ação — senão um esbarrão no mouse entre o pressionar e o soltar viraria um arrasto.</li>
-      <li>Esse clique <strong>não depende do alvo de janela</strong>: com coordenadas relativas ligadas (<a class="xref" href="#p8">Parte 8</a>) ele funciona mesmo se a janela não for encontrada, porque não há coordenada a traduzir.</li>
+      <li>Esse clique <strong>não depende do alvo de janela</strong>: com coordenadas relativas (<a class="xref" href="#p8">Parte 8</a>) ele funciona mesmo sem a janela, porque não há coordenada a traduzir.</li>
       <li>O ponto gravado <strong>não é apagado</strong> — voltar para <em>This point</em> devolve a coordenada original.</li>
     </ul>
     <div class="callout co-warn">
@@ -1071,10 +1071,10 @@
   <div class="subsec">
     <h3 id="p3-perfis-e-pastas">Perfis e pastas</h3>
     <ul>
-      <li><strong>New / Rename / Duplicate / Delete</strong> no painel Profiles. <strong>Pin</strong> mantém no topo. <strong>Save</strong> e <strong>Load</strong> ficam na <strong>barra de baixo</strong>, não aqui — e ficam apagados no modo Clicker <span class="ver-next">(a partir da versão 2.38.0)</span>.</li>
+      <li><strong>New / Rename / Duplicate / Delete</strong> no painel Profiles; <strong>Pin</strong> mantém no topo. <strong>Save</strong> e <strong>Load</strong> ficam na <strong>barra de baixo</strong>, apagados no modo Clicker.</li>
       <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (<a class="xref" href="#p8">Parte 8</a>).</li>
       <li><strong>Edit info…</strong> (botão direito → <strong>More</strong>, ou pela paleta → <strong>Edit Profile Info</strong>) — emoji, descrição e <strong>tags</strong> pesquisáveis.</li>
-      <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. Na importação <strong>nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip. Perfil que exige uma versão mais nova aparece esmaecido, com o motivo.</li>
+      <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. <strong>Nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip.</li>
     </ul>
   </div>
 
@@ -1084,7 +1084,7 @@
       <li><strong>Hotkey</strong> — botão direito no perfil → <strong>Hotkey…</strong> → pressione a combinação. Dispara em qualquer app.</li>
       <li><strong>Hotstring</strong> — uma sequência digitada (ex.: <code>.cp</code>) que roda o perfil ao terminar de ser escrita.</li>
       <li><strong>Chave-mestra</strong> — <span class="kbd">Pause</span> liga/desliga todas de uma vez. A partir da 2.42.0 ela desliga mais do que as hotkeys de perfil: veja <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">o que ela desliga</a>, logo abaixo.</li>
-      <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os modos da tabela acima. A roda também, sempre em On Press. Em <strong>modo Clicker</strong> nenhum dos dois dispara perfil — a tecla passa adiante (<a class="xref" href="#p10">Parte 10</a>).</li>
+      <li><strong>Botões laterais do mouse</strong> (XButton1/2) valem como teclas, com todos os modos da tabela. A roda também, sempre em On Press. Em <strong>Clicker</strong> nenhum dispara perfil (<a class="xref" href="#p10">Parte 10</a>).</li>
     </ul>
     <div class="tbl-wrap">
       <table>
@@ -1176,7 +1176,7 @@
         </tbody>
       </table>
     </div>
-    <p><strong>O que estiver rodando ainda pode ser parado.</strong> Gravar e Replay são a mesma tecla para começar e encerrar, então com a chave-mestra desligada elas valem <em>só para parar</em> — e voltam ao app da frente assim que a execução termina.</p>
+    <p><strong>O que estiver rodando ainda pode ser parado.</strong> Gravar e Replay são a mesma tecla para começar e encerrar. Com a chave-mestra desligada elas valem <em>só para parar</em>, e voltam ao app da frente assim que a execução termina.</p>
     <div class="callout co-rule">
       <div class="co-icon">💡</div>
       <div>
@@ -1220,7 +1220,7 @@
         </tbody>
       </table>
     </div>
-    <p>Fora da paleta: importar e exportar perfis é um ícone no painel <strong>Profiles</strong>, e o Theme Editor abre em Settings → App → Interface → <strong>Theme &amp; layout</strong> → <strong>Customize</strong>.</p>
+    <p>Fora da paleta: importar e exportar perfis é um ícone no painel <strong>Profiles</strong>. O Theme Editor abre em Settings → App → Interface → <strong>Theme &amp; layout</strong> → <strong>Customize</strong>.</p>
   </div>
 </section>
 
@@ -1357,7 +1357,7 @@
           </table>
         </div>
         <p>Para garantir um envio, use um <strong>Click Element</strong> no botão depois do Type Text (<code>text=Enviar</code>): é explícito e aparece no <strong>Run Report</strong>. Para quebrar linha, escreva a quebra no próprio texto da ação.</p>
-        <p><span class="co-title">Depois de atualizar o app, recarregue a extensão.</span> O app já põe a versão nova no disco, mas quem executa é a cópia que o Chrome carregou: recarregue em <code>chrome://extensions</code> e dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> nas abas que já estavam abertas.</p>
+    <p><span class="co-title">Depois de atualizar o app, recarregue a extensão.</span> O app já põe a versão nova no disco, mas quem executa é a cópia que o Chrome carregou. Recarregue em <code>chrome://extensions</code> e dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> nas abas que já estavam abertas.</p>
       </div>
     </div>
 
@@ -1396,10 +1396,10 @@
     <div class="callout co-warn">
       <div class="co-icon">&#9888;&#65039;</div>
       <div>
-    <p><span class="co-title">Type não envia formatação.</span> Tecla não carrega negrito: em <strong>Type</strong> com Delivery em <strong>Rich</strong> a mensagem chega <strong>sem formatação nenhuma</strong> — os botões ficam apagados e a linha mostra o selo <span class="tok">type</span> com a tinta de alerta.</p>
+    <p><span class="co-title">Type não envia formatação.</span> Tecla não carrega negrito. Em <strong>Type</strong> com Delivery em <strong>Rich</strong> a mensagem chega <strong>sem formatação nenhuma</strong>. Os botões ficam apagados e a linha mostra o selo <span class="tok">type</span> com a tinta de alerta.</p>
     <p>A formatação não se perde: fica salva na ação e volta em <strong>Paste</strong>. Para digitar <em>e</em> manter formatação, use <strong>Markdown</strong> ou <strong>Discord</strong> — as marcas deles (<code>*negrito*</code>) são caracteres comuns.</p>
         <p><span class="co-title">Cada quebra de linha vira um Enter de verdade.</span> Uma mensagem de três linhas <em>colada</em> num chat é <strong>uma</strong> mensagem; <em>digitada</em>, são <strong>três</strong>. Se o destino envia com Enter, escreva uma ação por mensagem.</p>
-        <p><span class="co-title">Perfil com Type não abre em versão antiga.</span> Quem estiver abaixo da <strong>2.33.0</strong> vê a linha recusada na importação — de propósito: aquela versão ignoraria o ajuste e <em>colaria</em>, ou seja, não entregaria nada justamente no alvo que não aceita colar.</p>
+    <p><span class="co-title">Perfil com Type não abre em versão antiga.</span> Abaixo da 2.33.0 a linha é recusada na importação: aquela versão ignoraria o ajuste e colaria.</p>
       </div>
     </div>
 
@@ -1422,8 +1422,8 @@
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
       <div>
-        <p><span class="co-title">A formatação só sobrevive num bloco contínuo.</span> Uma tecla ou pausa no <em>meio</em> — <span class="tok">{enter}</span>, <span class="tok">{tab}</span>, <span class="tok">{delay:N}</span> com texto dos <strong>dois</strong> lados — parte o bloco, e a mensagem chega <strong>sem formatação nenhuma</strong>. Na ponta não atrapalha.</p>
-        <p>Três saídas: mova a tecla para a <strong>ponta</strong> do texto; quebre em <strong>duas</strong> ações Send Text; ou use <strong>Markdown</strong> ou <strong>Discord</strong>, que mandam as marcas como texto literal e não passam por essa regra.</p>
+    <p><span class="co-title">A formatação só sobrevive num bloco contínuo.</span> Uma tecla ou pausa no <em>meio</em> parte o bloco — <span class="tok">{enter}</span>, <span class="tok">{tab}</span> ou <span class="tok">{delay:N}</span> com texto dos <strong>dois</strong> lados. Aí a mensagem chega <strong>sem formatação nenhuma</strong>. Na ponta não atrapalha.</p>
+    <p>Três saídas: mova a tecla para a ponta do texto; quebre em duas ações Send Text; ou use <strong>Markdown</strong> ou <strong>Discord</strong>, que mandam as marcas como texto literal.</p>
     <p>O editor avisa antes do envio, e o selo da linha na grade fica com a tinta de dúvida. É um <em>palpite</em> sobre o texto — um token que resolve vazio pode juntar dois blocos em um.</p>
       </div>
     </div>
@@ -1443,7 +1443,8 @@
 
   <div class="subsec">
     <h3 id="p4-modificadores-transformando-o-texto"><span class="nivel">Nível 2</span> Modificadores — transformando o texto</h3>
-    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior — <strong>a ordem importa</strong>. Valem em todo token de dado (<span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span>, <span class="tok">{rownext:coluna}</span>, <span class="tok">{uuid}</span>, <span class="tok">{timestamp}</span>, <span class="tok">{env:NOME}</span>) e moldam o número nos contadores <span class="tok">{counter}</span>, <span class="tok">{loop}</span> e <span class="tok">{datarow}</span> — <span class="tok">{counter:pad:3}</span> escreve <code>007</code>.</p>
+    <p>Depois do nome do token, encaixe <strong>modificadores</strong> separados por dois-pontos. Cada um transforma o resultado do anterior — <strong>a ordem importa</strong>.</p>
+    <p>Valem em todo token de dado: <span class="tok">{clipboard}</span>, <span class="tok">{clip:nome}</span>, <span class="tok">{var:nome}</span>, <span class="tok">{winclip:N}</span>, <span class="tok">{row:coluna}</span>, <span class="tok">{rownext:coluna}</span>, <span class="tok">{uuid}</span>, <span class="tok">{timestamp}</span> e <span class="tok">{env:NOME}</span>. Nos contadores <span class="tok">{counter}</span>, <span class="tok">{loop}</span> e <span class="tok">{datarow}</span> eles moldam o número — <span class="tok">{counter:pad:3}</span> escreve <code>007</code>.</p>
 
     <div class="xmpl">
       <div class="xmpl-title"><span class="tok">{clipboard:trim:upper}</span> — limpar e caprichar</div>
@@ -1542,7 +1543,7 @@ maria@email.com
       <div>
         <p><span class="co-title">Espaços contam — a armadilha nº 1 dos cortes.</span></p>
         <p><code>after:-</code> e <code>after:&nbsp;-&nbsp;</code> são cortes <em>diferentes</em>. Se o texto é <code>Produto - 1x Caixa</code> e você corta só no <code>-</code>, o resultado começa com um espaço: <code>&nbsp;1x Caixa</code>. Quase sempre você quer o marcador <strong>com os espaços em volta</strong>: <code>after:&nbsp;-&nbsp;</code>.</p>
-        <p>E se o marcador <strong>não existir</strong> no texto, o resultado é <strong>vazio</strong> — de propósito, para a macro nunca colar um clipboard inteiro onde você esperava um pedacinho.</p>
+    <p>Marcador que não existe no texto dá resultado <strong>vazio</strong> — nunca o clipboard inteiro onde você esperava um pedaço.</p>
       </div>
     </div>
 
@@ -1615,7 +1616,7 @@ maria@email.com
       <div class="co-icon">🛠️</div>
       <div>
         <p><span class="co-title">Você não precisa montar isso de cabeça.</span></p>
-    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>: etapas numeradas (Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up, Case) com <strong>prévia ao vivo</strong>. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
+    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>. São etapas numeradas com <strong>prévia ao vivo</strong>: Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up, Case. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
       </div>
     </div>
   </div>
@@ -1718,8 +1719,8 @@ maria@email.com
       <li><strong>Nomes:</strong> letras, números e <code>_</code> — sem espaço e sem acento. <code>{var:nome_cliente}</code> funciona; <code>{var:Ação}</code> não resolve.</li>
       <li>Guardar um valor <strong>vazio apaga</strong> a variável. Variáveis somem no fim de cada execução.</li>
       <li><span class="tok">{var:nome}</span> aceita modificadores: <span class="tok">{var:cliente:upper}</span>.</li>
-      <li><strong>Modo Cycle:</strong> o valor vira uma lista (um item por linha) e cada execução guarda o <strong>próximo</strong>, voltando ao início no fim. A posição fica <strong>em disco</strong>. Para zerar: botão direito na linha → <strong>Reset cycle position</strong>.</li>
-      <li><strong>Modo Add:</strong> soma o valor ao que a variável guarda (vazia conta como 0); negativo subtrai. É o contador do While: <code>Set Variable · i · Add · 1</code> dentro do bloco, e <span class="tok">{var:i}</span> lê o total.</li>
+      <li><strong>Modo Cycle:</strong> o valor vira uma lista (um item por linha) e cada execução guarda o <strong>próximo</strong>, voltando ao início no fim. A posição fica <strong>em disco</strong>.</li>
+      <li><strong>Modo Add:</strong> soma o valor ao que a variável guarda (vazia conta como 0); negativo subtrai. É o contador do While — <code>Set Variable · i · Add · 1</code> dentro do bloco.</li>
     </ul>
   </div>
 
@@ -1727,8 +1728,8 @@ maria@email.com
     <h3 id="p5-slots-copy-to-slot-e-a-hotkey-capture-slot">Slots: Copy to Slot e a hotkey Capture Slot</h3>
     <p>Slots são "clipboards extras" com nome, que <strong>sobrevivem entre execuções</strong> — capture agora, use depois. Dois jeitos de encher um:</p>
     <ul>
-      <li><strong>A hotkey</strong> (<span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span>) — quando <em>você</em> escolhe o que copiar. Selecione e aperte: cai em <span class="tok">{clip:1}</span>; de novo, <span class="tok">{clip:2}</span>… até 9. <strong>Não funciona durante uma execução.</strong></li>
-      <li><strong>A ação Copy to Slot</strong> — quando a <em>macro</em> acha o valor sempre no mesmo lugar. <strong>Capture</strong> (padrão) copia o que estiver <strong>selecionado</strong>: garanta a seleção antes, com um <code>Ctrl+A</code> na linha acima. <strong>Clear</strong> esvazia o slot; com o nome em branco, limpa todos.</li>
+      <li><strong>A hotkey</strong> (<span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span>) — quando <em>você</em> escolhe. Selecione e aperte: cai em <span class="tok">{clip:1}</span>; de novo, <span class="tok">{clip:2}</span>… até 9. <strong>Não funciona durante uma execução.</strong></li>
+      <li><strong>A ação Copy to Slot</strong> — quando a <em>macro</em> acha o valor sempre no mesmo lugar. <strong>Capture</strong> copia o que está <strong>selecionado</strong> (garanta a seleção com um <code>Ctrl+A</code> antes). <strong>Clear</strong> esvazia.</li>
     </ul>
     <div class="callout co-rule">
       <div class="co-icon">📋</div>
@@ -1789,7 +1790,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="co-icon">🔍</div>
       <div>
         <p><span class="co-title">Regra de ouro: token sem valor vira texto vazio, nunca erro.</span></p>
-        <p>Se algo saiu em branco: <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Toggle Live Variables</strong> e rode de novo — o painel mostra variáveis, slots e a linha atual, ao vivo.</p>
+    <p>Se algo saiu em branco: <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Toggle Live Variables</strong> e rode de novo. O painel mostra variáveis, slots e a linha atual, ao vivo.</p>
       </div>
     </div>
   </div>
@@ -1797,7 +1798,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p5-truques-de-quem-ja-domina">Truques de quem já domina</h3>
     <ul>
-      <li><strong>Número vindo de variável:</strong> escreva <code>@</code> e o nome onde a transformação pede um número — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada por <code>i</code>. Reservados: <code>@counter</code>, <code>@loop</code>, <code>@row</code> e <code>@datarow</code>. Vale em Line #, Word #, First N e Last N.</li>
+      <li><strong>Número vindo de variável:</strong> escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada por <code>i</code>. Reservados: <code>@counter</code>, <code>@loop</code>, <code>@row</code>, <code>@datarow</code>.</li>
       <li><strong>Nome que não existe sai vazio</strong>, de propósito — o contrário colaria o clipboard inteiro por causa de um erro de digitação.</li>
       <li><code>{clipboard:line:{var:i}}</code> com chaves <strong>não funciona</strong> e nunca funcionou — a grafia com <code>@</code> existe justamente por isso.</li>
     </ul>
@@ -1896,7 +1897,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="card"><h4>If Time</h4><p>O relógio está na janela início–fim, nos dias escolhidos? Janelas que viram a noite (22:00–02:00) funcionam.</p><div class="card-ex">Ex.: é horário comercial?</div></div>
       <div class="card"><h4>If Browser Element</h4><p>Um elemento da página está presente / visível / habilitado (via extensão do Chrome).</p><div class="card-ex">Ex.: o botão Enviar saiu do cinza?</div></div>
     </div>
-    <p>Nas condições de <strong>estado</strong> (Clipboard, Variable, Random, Time) as opções aparecem como <em>Met / NOT Met</em>; nas de <strong>objeto</strong> (Image, Pixel, Window, Process, File, Browser), como <em>Found / NOT Found</em>. Mesma ideia.</p>
+    <p>Nas condições de estado (Clipboard, Variable, Random, Time) as opções são <strong>Met / NOT Met</strong>. Nas de objeto (Image, Pixel, Window, Process, File) são <strong>Found / NOT Found</strong>.</p>
   </div>
 
   <div class="subsec">
@@ -1932,7 +1933,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li><strong>Negate</strong> — inverte a pergunta: "If <em>NOT</em> Image Found" = "se a imagem <em>não</em> está na tela".</li>
       <li><strong>On Probe Error</strong> — se a <em>própria checagem</em> falhar (ex.: janela de referência sumiu), o padrão <strong>Treat as false</strong> segue pelo Else; <strong>Halt</strong> para a execução.</li>
-      <li><strong>Dois tempos que não se confundem:</strong> o <strong>Delay</strong> da linha If é espera fixa <em>antes</em> da checagem — gasta tudo mesmo que já estivesse pronto. O <strong>Wait for condition</strong> gasta <em>só o necessário</em>, até o limite. Preenchendo os dois, eles somam.</li>
+      <li><strong>Dois tempos que não se confundem:</strong> o <strong>Delay</strong> da linha If é espera fixa <em>antes</em> da checagem. O <strong>Wait for condition</strong> gasta <em>só o necessário</em>, até o limite. Preenchendo os dois, eles somam.</li>
     </ul>
 
     <h4 style="margin-top:24px">Wait for condition: "espere até valer"</h4>
@@ -2038,11 +2039,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div></div>
 
     <ul>
-      <li><strong>O Delay da linha While é por volta</strong> — acontece antes de <em>cada</em> checagem. Ele acumula duas funções: dar tempo para a tela assentar antes de olhar, e espaçar as repetições. Três voltas com Delay 350 gastam pelo menos ~1 s, sempre.</li>
-      <li><strong>Max iterations é o freio de emergência</strong> — em branco (0) vale o padrão de <strong>1000</strong>. Bater no teto é uma saída <em>normal</em>: o loop termina, a linha seguinte roda, o log registra o motivo. Sem erro, sem toast.</li>
+      <li><strong>O Delay da linha While é por volta</strong> — antes de <em>cada</em> checagem. Ele dá tempo para a tela assentar e espaça as repetições: três voltas com Delay 350 gastam ~1 s, sempre.</li>
+      <li><strong>Max iterations é o freio de emergência</strong> — em branco (0) vale o padrão de <strong>1000</strong>. Bater no teto é saída <em>normal</em>: o loop termina, a linha seguinte roda, o log registra.</li>
       <li><strong>Contar as voltas:</strong> <span class="tok">{loop}</span> vale 1 na primeira volta, 2 na segunda, em qualquer ação do bloco (e <code>@loop</code> nas transformações). Para um contador seu, <strong>Set Variable</strong> em <strong>Add</strong> soma 1 a cada volta.</li>
       <li><strong>Random não está no menu Loop</strong>, de propósito: um loop guiado por cara ou coroa não tem término estável.</li>
-      <li><strong>Checagem quebrada não gira o loop:</strong> com o On Probe Error padrão (<em>Treat as false</em>), um probe que falha lê "não" — e "não" <em>sai</em> do While. Num <em>While NOT</em>, a leitura invertida vira "sim" e quem segura é o teto.</li>
+      <li><strong>Checagem quebrada não gira o loop:</strong> com o On Probe Error padrão (<em>Treat as false</em>), um probe que falha lê "não" — e "não" <em>sai</em> do While. Num <em>While NOT</em>, quem segura é o teto.</li>
     </ul>
 
     <h4 style="margin-top:24px">Break loop e Next iteration</h4>
@@ -2064,7 +2065,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p6-o-numero-da-linha-dentro-de-uma-condicao"><span class="nivel">Nível 3</span> O número da linha dentro de uma condição</h3>
-    <p><span class="tok">{row}</span> e <code>@row</code> escrevem <strong>o número da linha que está rodando</strong>. Numa linha que <em>pergunta</em> — If, Else If, While — é a linha <strong>da própria pergunta</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>: um Else If na linha 4 escreve <strong>4</strong>, mesmo com o bloco aberto na linha 2.</p>
+    <p><span class="tok">{row}</span> e <code>@row</code> escrevem <strong>o número da linha que está rodando</strong>. Numa linha que <em>pergunta</em> — If, Else If, While — é a linha <strong>da própria pergunta</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>. Um Else If na linha 4 escreve <strong>4</strong>, mesmo com o bloco aberto na linha 2.</p>
 
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
@@ -2073,14 +2074,14 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       </div>
     </div>
 
-    <p>O <strong>Else</strong> não faz pergunta, então não resolve token. Não confunda com <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span>, que são a <strong>tabela de dados</strong> (<a class="xref" href="#p12">Parte 12</a>) — quem conta linha da grade é o <span class="tok">{row}</span> sozinho, sem dois-pontos.</p>
+    <p>O <strong>Else</strong> não faz pergunta, então não resolve token. Não confunda com <span class="tok">{row:coluna}</span> e <span class="tok">{rownext:coluna}</span>, que são a <strong>tabela de dados</strong> (<a class="xref" href="#p12">Parte 12</a>). Quem conta linha da grade é o <span class="tok">{row}</span> sozinho, sem dois-pontos.</p>
   </div>
 
   <div class="subsec">
     <h3 id="p6-stop-e-return-encerrar-no-meio"><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
     <p>Até aqui, uma macro só terminava chegando ao fim da lista. Duas linhas novas (menu <strong>Assert ▾</strong> → <em>End the run</em>) encerram antes:</p>
     <ul>
-      <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>, o mesmo sinal de quando a lista acaba. As linhas depois dele nunca rodam — inclusive dentro de sub-perfis: um Stop no filho encerra a cadeia toda.</li>
+      <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>. As linhas seguintes nunca rodam, inclusive em sub-perfis: um Stop no filho encerra a cadeia.</li>
       <li><strong>Return</strong> — encerra <em>só o passe atual</em>. Com Loops = 3, ou rodando uma vez por linha de dados, os passes restantes continuam; o que morre é o resto <em>deste</em> passe.</li>
     </ul>
 
@@ -2092,7 +2093,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="gm-row"><span class="gm-type">Click</span><span class="gm-detail">tentar de novo…</span><span class="gm-note">só roda se NÃO conseguiu ainda</span></div>
     </div></div>
 
-    <p>A diferença de temperamento importa: <strong>Stop</strong> é decisão da macro ("terminei"); um <strong>Assert</strong> que falha em Abort é acidente ("algo que eu exigia não vale") — e por isso um grita e o outro não.</p>
+    <p>A diferença de temperamento importa. <strong>Stop</strong> é decisão da macro ("terminei"). Um <strong>Assert</strong> que falha em Abort é acidente ("algo que eu exigia não vale") — e por isso grita.</p>
   </div>
 
   <div class="subsec">
@@ -2214,10 +2215,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p7-a-lupa-acertar-o-pixel-certo-nao-o-vizinho">A lupa — acertar o pixel certo, não o vizinho</h3>
-    <p>Toda vez que o app pede um ponto, uma área ou um recorte, a tela escurece e uma <strong>lupa</strong> segue o cursor com os pixels ampliados e sem borrar. A célula destacada no centro é <em>exatamente</em> o pixel que será gravado.</p>
+    <p>Quando o app pede um ponto, uma área ou um recorte, a tela escurece e uma <strong>lupa</strong> segue o cursor. Ela mostra os pixels ampliados e sem borrar; a célula do centro é <em>exatamente</em> o pixel que será gravado.</p>
     <ul>
       <li><strong>Roda do mouse = zoom.</strong> São cinco níveis e ela abre no mais afastado, para você achar a região primeiro; role para cima ao chegar perto.</li>
-      <li><strong>Segure Shift para o modo lento.</strong> O mouse passa a andar cinco vezes menos, o que é a diferença entre pegar a borda do botão e pegar o fundo atrás dele. A lupa mostra <strong>SLOW</strong> enquanto a tecla está pressionada.</li>
+      <li><strong>Segure Shift para o modo lento.</strong> O mouse anda cinco vezes menos — a diferença entre pegar a borda do botão e o fundo atrás dele. A lupa mostra <strong>SLOW</strong> enquanto a tecla está pressionada.</li>
       <li><strong>No conta-gotas, a etiqueta traz HEX, RGB e uma amostra da cor</strong> — dá para conferir o valor antes de clicar, em vez de descobrir depois que pegou o pixel errado.</li>
     </ul>
     <div class="callout co-rule">
@@ -2237,7 +2238,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p7-esperar-por-um-estado-os-presets-do-wait">Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
     <p>No menu <strong>Wait ▾</strong>, a seção <strong>"Wait for condition — stop quietly on timeout"</strong> traz seis condições de estado: <strong>Until Window Open</strong>, <strong>Until Process Running</strong>, <strong>Until Clipboard</strong>, <strong>Until Variable</strong>, <strong>Until File Exists</strong> e <strong>Until Time</strong>.</p>
-    <p>Cada item insere em um clique um Assert já configurado — <strong>10 s</strong> e <strong>Stop quietly</strong>: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em>. O editor abre em seguida, preenchido.</p>
+    <p>Cada item insere em um clique um Assert já configurado, com <strong>10 s</strong> e <strong>Stop quietly</strong>. Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em>. O editor abre em seguida, preenchido.</p>
     <p>É a <strong>mesma ação</strong> do menu Assert ▾ — a linha diz <em>Assert</em> nos dois casos. Só os padrões mudam: pelo Assert ▾ ela nasce exigente (1500 ms, <em>Abort</em>); por aqui, paciente (10 s, <em>Stop quietly</em>). Qualquer uma vira a outra no editor.</p>
     <div class="callout co-rule">
       <div class="co-icon">⏳</div>
@@ -2305,7 +2306,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p8-configurando-o-fluxo-de-4-passos">Configurando — o fluxo de 4 passos</h3>
     <ol>
       <li>Botão direito no perfil → <strong>Window target…</strong> → <strong>Detect window</strong> → clique na janela do app.</li>
-      <li><strong>Test</strong> — ele lê a janela que está <em>na frente agora</em>, e tem que dar <em>✓ Matches</em>. Título que muda a cada atendimento? Use <strong>Contains</strong> com só o pedaço fixo (ou Regex, se o fixo estiver no começo <em>e</em> no fim).</li>
+      <li><strong>Test</strong> — lê a janela que está <em>na frente agora</em>, e tem que dar <em>✓ Matches</em>. Título que muda a cada atendimento? Use <strong>Contains</strong> com só o pedaço fixo.</li>
       <li>Ligue <strong>Relative Coordinates</strong>. Numa macro já gravada aparece <em>N actions captured in absolute coords</em> — clique em <strong>Apply target &amp; convert</strong>. A contagem só existe no modo <strong>Macro</strong>.</li>
       <li><strong>Set Target</strong>. Nada é gravado até esse clique.</li>
     </ol>
@@ -2313,12 +2314,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <div class="co-icon">⚠️</div>
       <div>
         <p><span class="co-title">No passo 3, não clique em Skip.</span></p>
-        <p>Ele deixa os números antigos e o app passa a lê-los como se já fossem relativos — é aí que a macro começa a clicar no canto errado. Deixe o app converter.</p>
+    <p>Ele deixa os números antigos, e o app passa a lê-los como se já fossem relativos. É aí que a macro começa a clicar no canto errado.</p>
       </div>
     </div>
     <ul>
       <li>Com alvo definido, a <strong>hotkey só dispara com aquela janela na frente</strong> (a chave <strong>Bring to Focus</strong> traz a janela para frente antes de rodar, e devolve a hotkey a qualquer janela).</li>
-      <li><strong>Restore Position / Size</strong> devolve a janela a uma geometria salva — grave com <strong>Update Window Size &amp; Position</strong> antes de ligar. Relativa faz a macro <em>seguir</em> a janela; Restore <em>devolve</em> a janela ao lugar. Juntas, segurança em dobro.</li>
+      <li><strong>Restore Position / Size</strong> devolve a janela a uma geometria salva — grave com <strong>Update Window Size &amp; Position</strong> antes de ligar. Relativa faz a macro <em>seguir</em> a janela; Restore <em>devolve</em> a janela ao lugar.</li>
       <li>Se o perfil usa coordenadas relativas e a janela não for achada, a execução <strong>para com erro</strong> — em vez de clicar em qualquer lugar.</li>
       <li>Uma <strong>pasta</strong> pode ter alvo próprio, que os perfis dela herdam.</li>
     </ul>
@@ -2326,7 +2327,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p8-activate-window-trocar-de-app-no-meio-da-execucao">Activate Window — trocar de app no meio da execução</h3>
-    <p>O alvo de janela prende o perfil inteiro a uma janela. A ação <strong>Activate Window</strong> é outra coisa: um <em>passo</em> que muda qual app está na frente — <strong>Activate / Maximize / Minimize / Close</strong> — no meio da macro.</p>
+    <p>A ação <strong>Activate Window</strong> é outra coisa: um passo que muda qual app está na frente, no meio da macro — Activate / Maximize / Minimize / Close.</p>
     <div class="callout co-rule">
       <div class="co-icon">🎯</div>
       <div>
@@ -2343,7 +2344,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div>
       </div>
     </div>
-    <p><strong>Campos:</strong> Process e/ou Title identificam a janela (<strong>Match #</strong> escolhe a N-ésima); <strong>Path / Args</strong> abrem o app se nenhuma janela casar; <strong>Placement</strong> posiciona; <strong>Timeout / On Timeout</strong> (Halt padrão / Continue); <strong>Test</strong> confere agora.</p>
+    <p><strong>Campos:</strong> <strong>Process</strong> e/ou <strong>Title</strong> identificam a janela (<strong>Match #</strong> escolhe a N-ésima). <strong>Path / Args</strong> abrem o app se nenhuma janela casar. <strong>Placement</strong> posiciona, e <strong>Timeout</strong> limita a espera.</p>
   </div>
 </section>
 
@@ -2374,12 +2375,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p9-como-se-comporta">Como se comporta</h3>
     <ul>
       <li><strong>Armed é local desta máquina</strong> — perfis importados ou duplicados chegam desarmados. Automações armadas se re-armam ao iniciar o app.</li>
-      <li><strong>Uma execução por vez</strong> — durante replay, gravação, <strong>modo Clicker</strong>, diálogo aberto ou grade com edição não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado). Uma automação nunca atropela trabalho não salvo.</li>
+      <li><strong>Uma execução por vez</strong> — durante replay, gravação, <strong>Clicker</strong>, diálogo aberto ou grade não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado).</li>
       <li><strong>Respeita os Loops, nunca roda para sempre</strong> — o infinito de While Pressed / Toggle é ignorado quando quem chama é o gatilho.</li>
       <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta).</li>
-      <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo (<strong>Continuous</strong> repete enquanto verdadeira). Cooldown padrão <strong>30 s</strong>, ou <strong>5 s no Clipboard changed</strong>. <code>0</code> significa "use o padrão do tipo", não "sem cooldown".</li>
-      <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: trocar 1 s por 5 s corta o custo em cinco.</li>
-      <li><strong>Um vigia pode se aposentar sozinho</strong> — imagem de referência que sumiu do disco, cor inválida, regex de título que não compila. Ele continua marcado como <strong>Armed</strong> na bandeja, então o app <strong>avisa por um balão</strong> quando isso acontece.</li>
+      <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo. <strong>Continuous</strong> repete enquanto verdadeira. Cooldown padrão <strong>30 s</strong>, ou <strong>5 s no Clipboard changed</strong>; <code>0</code> significa "use o padrão do tipo".</li>
+      <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: 1 s → 5 s corta o custo em cinco.</li>
+      <li><strong>Um vigia pode se aposentar sozinho</strong> — imagem que sumiu do disco, cor inválida, regex de título que não compila. Ele segue marcado como <strong>Armed</strong>, então o app <strong>avisa por um balão</strong>.</li>
       <li><strong>Reset counters</strong> — os contadores de disparo e de pulo são totais de sempre. O botão zera os <em>daquela</em> automação e <strong>não</strong> mexe no próximo horário nem no intervalo em contagem.</li>
     </ul>
   </div>
@@ -2443,9 +2444,9 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <p>Interval e Condition aceitam uma <strong>janela de horário</strong>: "a cada dez minutos, mas só entre 09:00 e 18:00". Fora dela o vigia não dispara.</p>
     <ul>
       <li><strong>Se o fim vier antes do começo, a janela cruza a meia-noite</strong> — <code>22:00</code> a <code>06:00</code> é a madrugada inteira, e funciona.</li>
-      <li><strong>O que fica de fora é pulado, não guardado.</strong> Um Interval de 10 min com janela 09:00–18:00 não acumula as dezenas de batidas da noite para despejá-las às nove da manhã: a hora de abrir é uma batida como qualquer outra.</li>
+      <li><strong>O que fica de fora é pulado, não guardado.</strong> Um Interval de 10 min com janela 09:00–18:00 não acumula as batidas da noite para despejá-las às nove.</li>
       <li><strong>Campo vazio = sem janela</strong>, ou seja, o dia inteiro. Basta um dos dois lados em branco para a faixa deixar de valer — a janela só existe com os dois preenchidos.</li>
-      <li><strong>Apagar um lado não destrói o outro.</strong> Se você apagar o início para redigitá-lo, o fim continua ali esperando: o app guarda a metade preenchida em vez de inventar um <code>00:00</code> ou <code>23:59</code> no lugar do que sumiu.</li>
+      <li><strong>Apagar um lado não destrói o outro.</strong> Apague o início para redigitá-lo e o fim continua ali — o app guarda a metade preenchida em vez de inventar <code>00:00</code> no lugar.</li>
       <li>Não vale para <strong>Schedule</strong>, que já é um horário.</li>
     </ul>
     <div class="callout co-rule">
@@ -2487,7 +2488,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
       <div>
-    <p><span class="co-title">Trocar de modo desliga a lista de ações — e o <span class="kbd">ScrLk</span> funciona de dentro de qualquer app.</span> No Clicker a grade não aceita escrita: o painel de edição <strong>fecha</strong> avisando o que descartou, e um diálogo de inserção aberto <strong>fica</strong>, mas recusa o confirmar. <strong>Salve antes de trocar.</strong></p>
+    <p><span class="co-title">Trocar de modo desliga a lista de ações — e o <span class="kbd">ScrLk</span> funciona de dentro de qualquer app.</span> No Clicker a grade não aceita escrita. O painel de edição <strong>fecha</strong> avisando o que descartou; um diálogo de inserção aberto <strong>fica</strong>, mas recusa o confirmar. <strong>Salve antes de trocar.</strong></p>
         <p>O Clicker <strong>não engole</strong> hotkeys de perfil, hotstrings, a roda nem os botões laterais: essas teclas passam adiante para o app que está na frente. Uma hotstring ali só digita.</p>
         <p>Fora da grade, o Clicker também recusa: <strong>clicar num perfil não o carrega</strong>, e <strong>Save</strong> e <strong>Load</strong> ficam apagados. Organizar perfis continua valendo (renomear, mover, <strong>Edit info…</strong>, duplicar, atribuir gatilho) — o modo desliga a <em>lista de ações</em>, não o perfil.</p>
       </div>
@@ -2519,7 +2520,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li><strong>Fast approach</strong> — em movimentos longos, teleporta até uma distância do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
       <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms).</li>
-      <li><strong>Focus click</strong> <em>(por ação, no botão direito da linha → <strong>More</strong>)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong> — um botão dispararia duas vezes.</li>
+      <li><strong>Focus click</strong> <em>(botão direito na linha → <strong>More</strong>)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong>: um botão dispararia duas vezes.</li>
     </ul>
     <p>O Clicker tem o próprio <strong>Game move</strong>, independente deste interruptor.</p>
   </div>
@@ -2552,9 +2553,9 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <ul>
-    <li><strong>Mirando por texto</strong>, o alvo é o elemento <em>clicável</em> que carrega o texto — o botão inteiro, não o span de dentro. Sem prefixo, <code>text=Enviar</code> é <strong>exato</strong>; para um pedaço: <code>text*=Salvar</code> (contém), <code>text~=salvar</code> (ignora maiúsculas), <code>text/^Salvar.*/i</code> (regex).</li>
+      <li><strong>Mirando por texto</strong>, o alvo é o elemento <em>clicável</em> que carrega o texto — o botão inteiro, não o span de dentro. Sem prefixo, <code>text=Enviar</code> é <strong>exato</strong>; <code>text*=</code> contém, <code>text~=</code> ignora maiúsculas, <code>text/…/i</code> é regex.</li>
     <li>Um selo de <strong>qualidade do seletor</strong> (S → C) indica quão estável ele tende a ser.</li>
-      <li><strong>Em qual aba a macro age:</strong> na que estava na frente <em>quando a execução começou</em>, até o fim. Trocar de aba no meio não leva a macro junto; um Navigate re-fixa na página que abriu; aba fechada para a macro com <code>TAB_GONE</code>.</li>
+      <li><strong>Em qual aba a macro age:</strong> na que estava na frente <em>quando a execução começou</em>, até o fim. Trocar de aba no meio não leva a macro junto; aba fechada para a macro com <code>TAB_GONE</code>.</li>
   </ul>
 
   <div class="subsec">
@@ -2571,11 +2572,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </div>
 
     <ul>
-      <li><strong>Antes de rodar</strong> — ao iniciar uma execução que tem linhas de navegador com a extensão desconectada, o app avisa quantas linhas não vão funcionar. Vale para todo jeito de iniciar: botão, atalho global, automação e perfil chamado por outro.</li>
+      <li><strong>Antes de rodar</strong> — com a extensão desconectada, o app avisa quantas linhas de navegador não vão funcionar. Vale para todo jeito de iniciar: botão, atalho, automação e perfil chamado por outro.</li>
       <li><strong>Durante</strong> — a barra mostra um ícone enquanto a extensão está conectada, e troca para <strong>"Extension disconnected"</strong> se ela cair. O aviso só aparece depois de alguns segundos de queda contínua, para não virar pisca-pisca.</li>
       <li>O indicador só aparece com <strong>Browser Actions</strong> ligado em Settings — se você não usa navegador, ele não ocupa espaço.</li>
-      <li>Se o aviso for de <strong>versão</strong>, recarregue a extensão em <code>chrome://extensions</code> — fechar e reabrir o Chrome não basta para uma extensão descompactada. A recarga <strong>não alcança páginas já abertas</strong>: dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> em cada aba que a macro usa.</li>
-      <li>Numa aba dessas o <strong>Click Element</strong> falha alto, mas o <strong>If Browser Element</strong> lê "não encontrado" e segue pelo <em>senão</em>, calado. <strong>Nem o indicador da barra nem o aviso de versão desempatam</strong>: os dois falam da ponte com o app, que está de pé.</li>
+      <li>Aviso de <strong>versão</strong>: recarregue a extensão em <code>chrome://extensions</code> — fechar e reabrir o Chrome não basta para uma extensão descompactada. A recarga <strong>não alcança páginas já abertas</strong>: dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> em cada aba que a macro usa.</li>
+      <li>Numa aba dessas o <strong>Click Element</strong> falha alto, mas o <strong>If Browser Element</strong> lê "não encontrado" e segue pelo <em>senão</em>, calado. <strong>O indicador da barra não desempata</strong>: ele fala da ponte com o app, que está de pé.</li>
     </ul>
   </div>
 
@@ -2616,7 +2617,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       </table>
     </div>
     <p><strong>Cole junto com a linha de cabeçalho</strong> — é dela que saem os nomes que o Append usa para casar. O painel da direita mostra o que leu antes de você aplicar (<strong>3 columns · 40 rows</strong>), e o botão diz o que vai fazer.</p>
-    <p><strong>Célula sobrando vira coluna nova</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>: linha com mais células que o cabeçalho ganha <code>col3</code>, <code>col4</code>… — o painel avisa antes. Linha mais curta não dá erro: as que faltam ficam vazias.</p>
+    <p><strong>Célula sobrando vira coluna nova</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>. Linha com mais células que o cabeçalho ganha <code>col3</code>, <code>col4</code>… — o painel avisa antes. Linha mais curta não dá erro: as que faltam ficam vazias.</p>
     <p><strong>Renomeie antes de espalhar o token.</strong> Clique no cabeçalho na grade e escreva o nome de verdade: <code>col3</code> vira <code>preço</code>, e o token vira <span class="tok">{row:preço}</span>. A lista <strong>Columns · tokens</strong>, ao lado da grade, dá o token pronto e quantas ações usam cada coluna. Token sem coluna aparece com ⚠ <code>no column</code> e sai <strong>vazio</strong>.</p>
   </div>
 
@@ -2701,10 +2702,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p12-executando-sobre-os-dados">Executando sobre os dados</h3>
     <ul>
-      <li><strong>Loop over data ligado</strong> — uma execução completa <strong>por linha</strong>. Ignora os Loops do perfil; não inicia com a tabela vazia. Com ele aparece o <strong>On row error</strong>: <strong>Halt</strong> (padrão) para na primeira falha; <strong>Skip row</strong> registra, solta o que ficou pressionado e continua, com resumo no fim.</li>
-      <li><strong>Desligado (modo cursor)</strong> — cada execução usa a <strong>próxima</strong> linha e avança; no fim volta à primeira. É o "um por toque". A linha que a próxima execução vai usar fica <strong>marcada no grid</strong>, então dá para conferir antes de disparar.</li>
-      <li><strong>O lugar é guardado em disco</strong> — o cursor de linha (e o do Set Variable em Cycle) sobrevive a fechar o app. Trabalhe 12 linhas hoje, continue da 13 amanhã. Para mover: <strong>clique no número da linha</strong> e o cursor passa a ser aquela; botão direito → <strong>Reset row position</strong> volta para a primeira.</li>
-      <li><strong>O avanço acontece quando a execução COMEÇA</strong>, não quando termina: uma execução parada no meio já consumiu a linha dela. Um toque de hotkey gasta uma linha, aconteça o que acontecer. Clique no marcador para pôr o cursor de volta.</li>
+      <li><strong>Loop over data ligado</strong> — uma execução completa <strong>por linha</strong>. Ignora os Loops do perfil e não inicia com a tabela vazia. O <strong>On row error</strong> escolhe entre <strong>Halt</strong> (padrão) e <strong>Skip row</strong>.</li>
+      <li><strong>Desligado (modo cursor)</strong> — cada execução usa a <strong>próxima</strong> linha e avança; no fim volta à primeira. A linha da próxima execução fica <strong>marcada no grid</strong>.</li>
+      <li><strong>O lugar é guardado em disco</strong> — o cursor de linha (e o do Set Variable em Cycle) sobrevive a fechar o app. Trabalhe 12 linhas hoje, continue da 13 amanhã. Para mover, <strong>clique no número da linha</strong>.</li>
+      <li><strong>O avanço acontece quando a execução COMEÇA</strong>, não quando termina: uma execução parada no meio já consumiu a linha dela. Clique no marcador para pôr o cursor de volta.</li>
     </ul>
     <div class="gridmock-wrap"><div class="gridmock gm-steps">
       <div class="gm-head">Exemplo — cadastrar 40 produtos num formulário</div>
@@ -2717,7 +2718,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p12-for-each-data-row-repetir-so-um-trecho">For Each Data Row — repetir só um trecho</h3>
-    <p>O <strong>Loop over data</strong> repete o perfil <em>inteiro</em> por linha. Quando só um pedaço deve repetir — o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez — use o bloco <strong>For Each Data Row</strong> (menu <strong>Loop ▾</strong>):</p>
+    <p>Quando só um pedaço deve repetir, use o bloco <strong>For Each Data Row</strong> (menu Loop ▾): o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Setup uma vez, miolo por linha, fechamento uma vez</div>
@@ -2731,17 +2732,17 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li>Dentro do bloco, <span class="tok">{row:coluna}</span> resolve a <strong>linha da vez</strong>; ao sair, o contexto <strong>volta ao que era</strong> — inclusive quando o bloco é interrompido por Stop, Return ou um erro.</li>
       <li><strong>Tabela vazia = bloco pulado</strong>, sem rodar o corpo nenhuma vez (o relatório registra).</li>
-      <li>Com <strong>On row error = Skip row</strong>, uma linha que falhar dentro do bloco é absorvida <em>ali</em>: a próxima linha roda, e no fim vem o resumo de quantas foram puladas. Um <strong>Next iteration</strong> no corpo também pula direto para a próxima linha.</li>
-      <li>A tabela usada é a <strong>ativa</strong>: num sub-perfil rodando <em>once per data row</em>, é a dele; num RunProfile comum, é a do chamador. Para iterar a tabela do próprio sub, continue usando <strong>Run once per data row</strong> (abaixo).</li>
+      <li>Com <strong>On row error = Skip row</strong>, a linha que falhar dentro do bloco é absorvida <em>ali</em> e a próxima roda, com resumo no fim. Um <strong>Next iteration</strong> no corpo também pula para a próxima linha.</li>
+      <li>A tabela usada é a <strong>ativa</strong>: num sub-perfil rodando <em>once per data row</em>, é a dele; num RunProfile comum, é a do chamador.</li>
     </ul>
   </div>
 
   <div class="subsec">
     <h3 id="p12-run-profile-sub-perfis-e-lotes">Run Profile — sub-perfis e lotes</h3>
     <ul>
-      <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte. (Mova os passos com <span class="kbd">Ctrl</span>+<span class="kbd">K</span> → Copy as Table / Paste Actions.)</li>
+      <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte.</li>
       <li><strong>Run once per data row</strong> — o perfil <em>chamado</em> roda uma vez por linha da tabela <em>dele</em>: a macro pai faz o setup uma vez e processa um lote no meio da execução.</li>
-      <li><strong>O sub-perfil não manda na própria repetição</strong> — os Loops e o Interval dele são ignorados; vale só o <strong>Repeat</strong> do diálogo Run Profile. Um perfil não chama a si mesmo, e a cadeia para em 5 níveis. Perfil que não aparece na lista está <strong>desligado</strong>.</li>
+      <li><strong>O sub-perfil não manda na própria repetição</strong> — os Loops e o Interval dele são ignorados; vale o <strong>Repeat</strong> do diálogo Run Profile. Um perfil não chama a si mesmo, e a cadeia para em 5 níveis.</li>
     </ul>
   </div>
 </section>
@@ -2758,7 +2759,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p13-temas">Temas</h3>
-    <p>Settings → App → Interface → <strong>Theme &amp; layout</strong> → <strong>Customize</strong>: galeria com <strong>37 presets</strong> (23 escuros + 14 claros, padrão <em>Lavender Coal</em>), com prévia ao vivo. Em Customize você ajusta as 29 cores (com verificador de contraste), densidade, fonte, cantos, altura de linha e zoom — e importa/exporta um tema como JSON.</p>
+    <p>Settings → App → Interface → <strong>Theme &amp; layout</strong> → <strong>Customize</strong>. Galeria com 37 presets (23 escuros + 14 claros, padrão <em>Lavender Coal</em>), com prévia ao vivo.</p>
   </div>
 
   <div class="subsec">
@@ -2779,7 +2780,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p13-configuracoes-do-app">Configurações do app</h3>
-    <p>A aba <strong>Settings → App</strong> guarda o que não pertence a nenhuma macro em particular: como a janela se porta, como o app inicia e como ele avisa. O padrão de cada uma está entre parênteses.</p>
+    <p>A aba <strong>Settings → App</strong> guarda o que não pertence a nenhuma macro: como a janela se porta, como o app inicia e como ele avisa.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Seção</th><th>Opção</th><th>O que faz</th></tr></thead>
@@ -2796,13 +2797,13 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         </tbody>
       </table>
     </div>
-    <p>As duas de <strong>Notifications</strong> só avisam quando a janela do TrueReplayer <strong>não</strong> está na frente — que é justamente o caso em que você não veria o fim da execução, porque o jogo ou o navegador está cobrindo o app.</p>
+    <p>As duas de <strong>Notifications</strong> só avisam quando a janela do TrueReplayer <em>não</em> está na frente — que é justamente quando você não veria o fim da execução.</p>
 
     <div class="callout co-warn">
       <div class="co-icon">⚠️</div>
       <div>
         <p><span class="co-title">Run as Administrator vale a partir do próximo início — e o UAC pode fechar o app.</span></p>
-        <p>Ligar não eleva a janela já aberta: no próximo início o app se relança elevado. O Windows mostra o prompt do UAC e, <strong>se você recusar, o app fecha</strong> em vez de abrir sem elevação — abrir sem ela seria falhar em silêncio contra a janela que motivou a opção.</p>
+    <p>Ligar não eleva a janela já aberta: no próximo início o app se relança elevado. O Windows mostra o prompt do UAC. <strong>Se você recusar, o app fecha</strong> em vez de abrir sem elevação.</p>
       </div>
     </div>
   </div>
@@ -2837,7 +2838,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p14-receita-1-resposta-pronta-em-qualquer-chat">Receita 1 — Resposta pronta em qualquer chat</h3>
-    <p>A mais usada de todas, e são dois passos: um <strong>Send Text</strong> com a mensagem (feche com <span class="tok">{enter}</span> para já enviar) → botão direito no perfil → <strong>Hotstring…</strong> → <code>.cp</code>. Digitar <code>.cp</code> em qualquer chat solta a resposta inteira.</p>
+    <p>A mais usada de todas, em dois passos: um <strong>Send Text</strong> com a mensagem (feche com <span class="tok">{enter}</span> para já enviar), depois botão direito no perfil → <strong>Hotstring…</strong> → <code>.cp</code>.</p>
   </div>
 
   <div class="subsec">
@@ -2869,7 +2870,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p14-receita-4-tentar-de-novo-com-limite">Receita 4 — Tentar de novo, com limite</h3>
-    <p>Num perfil com repetição (Loops), <span class="tok">{counter}</span> conta as voltas — e um <strong>Assert</strong> cria o limite: enquanto a premissa "tentativa &lt; 6" vale, a macro segue; na 6ª volta o Assert falha e a execução para, nomeando o motivo.</p>
+    <p>Num perfil com repetição (<strong>Loops</strong>), <span class="tok">{counter}</span> conta as voltas, e um <strong>Assert</strong> cria o limite. Enquanto a premissa "tentativa &lt; 6" vale, a macro segue; na 6ª, ela para.</p>
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Perfil: Confirmar com paciência (Loops = 10)</div>
       <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">tentativa = {counter}</span></div>
@@ -2883,7 +2884,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p14-receita-5-funcionar-so-no-app-certo">Receita 5 — Funcionar só no app certo</h3>
-    <p>Botão direito no perfil → <strong>Window target…</strong> → <strong>Detect window</strong> → <strong>Test</strong> → ligue <strong>Relative Coordinates</strong> (deixe converter!) → <strong>Set Target</strong>. A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for — o fluxo completo está na <a class="xref" href="#p8">Parte 8</a>.</p>
+    <p>A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for. O fluxo completo está na <a class="xref" href="#p8">Parte 8</a>.</p>
   </div>
 </section>
 

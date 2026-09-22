@@ -648,6 +648,10 @@
     box-shadow: var(--shadow); background: #17181C; line-height: 0;
   }
   .shot-frame img { width: 100%; height: auto; display: block; }
+  figure.shot-narrow { max-width: var(--shot-w); margin-left: auto; margin-right: auto; }
+  figure.shot-narrow figcaption { text-align: center; margin-left: auto; margin-right: auto; }
+  /* na tela estreita a figura encolhe e a etiqueta de 22 px passa a cobrir o que aponta */
+  @media (max-width: 560px) { .shot-frame .shot-tag { width: 16px; height: 16px; font-size: .58rem; line-height: 16px; box-shadow: 0 0 0 2px rgba(255,255,255,.85), 0 1px 6px rgba(0,0,0,.45); } }
   .shot-tag {
     position: absolute; transform: translate(-50%, -50%); width: 22px; height: 22px; border-radius: 99px;
     background: var(--gold); color: #fff; text-align: center;
@@ -823,9 +827,9 @@
   <figure class="shot">
     <div class="shot-frame">
       <img src="img/main.png" alt="A janela principal do TrueReplayer: painel de perfis à esquerda, grade de ações no centro, configurações do perfil à direita e a barra Macro/Clicker, Recording e Replay embaixo." width="1166" height="773" decoding="async">
-      <span class="shot-tag" style="left:12%;top:17.3%" aria-hidden="true">1</span>
-      <span class="shot-tag" style="left:34%;top:8.9%" aria-hidden="true">2</span>
-      <span class="shot-tag" style="left:92.5%;top:14.3%" aria-hidden="true">3</span>
+      <span class="shot-tag" style="left:12%;top:17.4%" aria-hidden="true">1</span>
+      <span class="shot-tag" style="left:34.3%;top:13.6%" aria-hidden="true">2</span>
+      <span class="shot-tag" style="left:92.5%;top:14.8%" aria-hidden="true">3</span>
       <span class="shot-tag" style="left:60%;top:94%" aria-hidden="true">4</span>
     </div>
     <figcaption><b class="n">1</b> Profiles — pastas e perfis, cada um com sua hotkey · <b class="n">2</b> a grade de ações, uma linha por passo · <b class="n">3</b> as configurações do perfil ativo: Delay, Loops, gravação · <b class="n">4</b> a barra: Macro ou Clicker, Recording, Replay.</figcaption>
@@ -856,7 +860,7 @@
         <text x="380" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">edite cada linha</text>
         <text x="646" y="76" text-anchor="middle" fill="var(--ink)" font-weight="600">Reproduzir</text>
         <text x="646" y="96" text-anchor="middle" fill="var(--muted)" font-size="11">Ctrl+PgDn</text>
-        <text x="243" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">vira linhas</text>
+        <text x="247" y="72" text-anchor="middle" fill="var(--muted)" font-size="9">vira linhas</text>
         <text x="509" y="72" text-anchor="middle" fill="var(--muted)" font-size="10">executa</text>
         <text x="513" y="160" text-anchor="middle" fill="var(--muted)" font-size="11" font-family="'Figtree', sans-serif">ajuste e rode de novo — o fluxo normal</text>
       </g>
@@ -958,6 +962,12 @@
   <div class="subsec">
     <h3 id="p2-o-menu-da-linha">O menu da linha</h3>
     <p>Botão direito numa linha. O topo é sempre o mesmo — <strong>Edit</strong>, <strong>Duplicate</strong>, <strong>Skip</strong>, <strong>More</strong> e <strong>Delete</strong>. Entre Edit e Duplicate entra o que faz sentido para o <em>tipo</em> daquela linha.</p>
+    <figure class="shot shot-narrow" style="--shot-w:470px">
+      <div class="shot-frame">
+        <img src="img/row-menu.webp" alt="Menu de contexto aberto sobre uma linha LeftClick da grade, com o submenu Change click type listando Left, Right e Middle Click, os três Hold, Double Click, Triple Click e Split into Down + Up." width="470" height="362" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Botão direito numa linha de clique. À esquerda, o topo fixo do menu; em <strong>Change click type ▸</strong>, os oito tipos e <strong>Split into Down + Up</strong>.</figcaption>
+    </figure>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Entrada</th><th>Em que linha</th><th>O que faz</th></tr></thead>
@@ -1054,6 +1064,12 @@
   <div class="subsec">
     <h3 id="p2-inserir-um-clique-sem-gravar">Inserir um clique sem gravar</h3>
     <p>O ícone de <strong>mouse</strong> na barra abre o <strong>Insert Click</strong> <span class="ver-next">(a partir da versão 2.41.0)</span>. Ele monta a linha inteira antes de criá-la — <strong>Cancel</strong> não deixa nada para trás. A linha nasce na seleção, ou no fim da lista.</p>
+    <figure class="shot shot-narrow" style="--shot-w:400px">
+      <div class="shot-frame">
+        <img src="img/insert-click.webp" alt="Diálogo Insert Click com Mode Click, botão Left, Clicks Double, posição This point em X 1742 e Y 388, Times 5 e Gap 600 ms, e a faixa Double-clicks at 1742, 388 · 5×, 600 ms apart." width="436" height="671" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Um duplo clique em 1742, 388, repetido cinco vezes. A faixa roxa lê a linha antes de criá-la; <strong>Right</strong> e <strong>Middle</strong> ficam apagados porque Double é do botão esquerdo.</figcaption>
+    </figure>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Campo</th><th>O que escolher</th></tr></thead>
@@ -1338,6 +1354,12 @@
   </figure>
 
     <p>O editor <strong>Insert Text</strong> mostra uma paleta de <strong>chips</strong> (Clipboard · Values · Keys &amp; timing · Run state): clicar insere o token pronto. Pelo teclado, digite <span class="kbd">{</span> para abrir a mesma lista, filtrada pelo que vier depois. Confirme a ação com <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span>; o <span class="kbd">Enter</span> sozinho pula linha.</p>
+    <figure class="shot">
+      <div class="shot-frame">
+        <img src="img/insert-text.webp" alt="Editor Insert Text com uma mensagem em que três tokens aparecem como chips (Var:cliente, Clipboard:trim e Date), a barra com Paste e Type e o seletor Rich, Markdown, Discord e Plain, e a paleta de tokens à direita." width="904" height="652" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Os tokens digitados viram chips. Na barra, <strong>Paste</strong> / <strong>Type</strong> e o seletor <strong>Delivery</strong>; à direita, a paleta.</figcaption>
+    </figure>
 
   <div class="subsec">
     <h3 id="p4-tokens-prontos-para-usar"><span class="nivel">Nível 1</span> Tokens prontos para usar</h3>
@@ -2038,7 +2060,8 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <text x="290" y="110" text-anchor="middle" fill="var(--bad)">não</text>
           <text x="390" y="112" text-anchor="middle" fill="var(--ok)" font-weight="600">valeu! → ramo "sim"</text>
           <text x="510" y="45" text-anchor="middle" fill="var(--muted)">fim do tempo</text>
-          <text x="518" y="112" fill="var(--muted)">se chegasse aqui sem sucesso → ramo "não"</text>
+          <text x="518" y="112" fill="var(--muted)">se chegasse aqui sem sucesso</text>
+          <text x="518" y="127" fill="var(--muted)">→ ramo "não"</text>
         </g>
       </svg>
       </div>
@@ -2267,7 +2290,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <text x="292" y="110" text-anchor="middle" fill="var(--bad)">parecido noutro canto:</text>
           <text x="292" y="122" text-anchor="middle" fill="var(--bad)">pode casar aqui</text>
           <text x="412" y="188" fill="var(--ok)">só olha aqui · ~4 ms por verificação</text>
-          <text x="674" y="110" text-anchor="middle" fill="var(--muted)">fora da região: ignorado</text>
+          <text x="674" y="106" text-anchor="middle" fill="var(--muted)">fora da região: ignorado</text>
           <text x="552" y="106" text-anchor="middle" fill="var(--gold)" font-weight="600">Search region</text>
         </g>
         <g font-family="'Figtree', sans-serif" font-size="10.5" fill="var(--muted)" text-anchor="middle">
@@ -2358,12 +2381,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <text x="26" y="24" fill="var(--bad)" font-size="10" letter-spacing="1.5">COORDENADA ABSOLUTA (DA TELA)</text>
         <text x="99" y="52" fill="var(--muted)" font-size="10">janela antes</text>
         <text x="245" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">janela movida</text>
-        <text x="112" y="122" text-anchor="middle" fill="var(--bad)" font-size="10">o clique ficou aqui</text>
+        <text x="99" y="122" text-anchor="middle" fill="var(--bad)" font-size="10">o clique ficou aqui</text>
         <text x="189" y="196" fill="var(--bad)" font-size="10">→ erra o botão</text>
         <text x="408" y="24" fill="var(--ok)" font-size="10" letter-spacing="1.5">COORDENADA RELATIVA (DA JANELA)</text>
         <text x="481" y="52" fill="var(--muted)" font-size="10">janela antes</text>
         <text x="627" y="92" text-anchor="middle" fill="var(--muted)" font-size="10">janela movida</text>
-        <text x="640" y="160" text-anchor="middle" fill="var(--ok)" font-size="10">o clique acompanha</text>
+        <text x="627" y="160" text-anchor="middle" fill="var(--ok)" font-size="10">o clique acompanha</text>
         <text x="571" y="196" fill="var(--ok)" font-size="10">→ acerta sempre</text>
       </g>
     </svg>
@@ -2440,6 +2463,13 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </table>
   </div>
 
+  <figure class="shot">
+    <div class="shot-frame">
+      <img src="img/automation.webp" alt="Painel Automation com a lista de automações à esquerda e o editor da automação WhatsApp: gatilho Schedule às 08:00, de segunda a sexta." width="904" height="580" loading="lazy" decoding="async">
+    </div>
+    <figcaption>O exemplo das 8h: <strong>Schedule</strong> às 08:00, de segunda a sexta. Na lista, a chave arma a automação e o ponto verde diz que ela está vigiando.</figcaption>
+  </figure>
+
   <div class="subsec">
     <h3 id="p9-como-se-comporta">Como se comporta</h3>
     <ul>
@@ -2482,7 +2512,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <g font-family="'Figtree', sans-serif" font-size="10">
         <text x="252" y="36" fill="var(--violet)" font-weight="600">dispara</text>
         <text x="492" y="36" fill="var(--violet)" font-weight="600">dispara de novo</text>
-        <text x="320" y="48" text-anchor="middle" fill="var(--muted)">continua verdadeira → não repete</text>
+        <text x="336" y="48" text-anchor="middle" fill="var(--muted)">continua verdadeira → não repete</text>
         <text x="440" y="104" text-anchor="middle" fill="var(--muted)">voltou a ser falsa</text>
         <text x="685" y="104" text-anchor="middle" fill="var(--muted)">falsa de novo</text>
       </g>
@@ -2581,6 +2611,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       </div>
     </div>
     <p><span class="kbd">ScrLk</span> alterna Macro e Clicker. <span class="kbd">PgDn</span> inicia/para, <span class="kbd">PgUp</span> pausa/retoma, e o painel mostra contagem, taxa, tempo e ETA ao vivo. Pelo botão <strong>Click</strong> há uma contagem de 3 s antes do primeiro clique; pelo atalho começa na hora. No fim, o painel diz por que parou.</p>
+    <figure class="shot">
+      <div class="shot-frame">
+        <img src="img/clicker.webp" alt="Janela do TrueReplayer no modo Clicker, rodando: 1.284 cliques a 10 por segundo em 2:08, botão Pause, e as configurações do Clicker à direita." width="1166" height="773" loading="lazy" decoding="async">
+      </div>
+      <figcaption>O Clicker rodando: contagem, taxa e tempo ao vivo no centro; os grupos Clicker, Target, Stop after e Tuning à direita.</figcaption>
+    </figure>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Grupo</th><th>O que controla</th></tr></thead>
@@ -2676,6 +2712,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Por que falhou, em texto</strong> — não achou; achou mas invisível; achou mas desabilitado; tem algo por cima; seletor inválido; página não carregou.</li>
       <li><strong>Run Profile que não rodou nada</strong> — perfil <em>desabilitado</em>, inexistente, sem nome escolhido, ou que faria a corrente voltar nela mesma. A linha aparece como <em>skipped</em> com o motivo escrito, inclusive qual corrente laçou.</li>
     </ul>
+    <figure class="shot shot-narrow" style="--shot-w:688px">
+      <div class="shot-frame">
+        <img src="img/run-report.webp" alt="Painel Run report de um run com seis passos, cinco ok e um falhado: o passo 5 casou pelo seletor de reserva (tier 2) e o passo 6 falhou com ELEMENT_COVERED e uma dica." width="688" height="499" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Um run que parou no passo 6, com o código e o motivo. O passo 5 passou pelo seletor de reserva — o aviso no topo pede para re-escolher o elemento.</figcaption>
+    </figure>
     <p>É só a última execução — cada nova substitui a anterior. Para registro duradouro: <strong>Open Logs Folder</strong>, na paleta de comandos (<span class="kbd">Ctrl</span>+<span class="kbd">K</span>) ou pela bandeja.</p>
   </div>
 </section>
@@ -2707,6 +2749,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <p><strong>Cole junto com a linha de cabeçalho</strong> — é dela que saem os nomes que o Append usa para casar. O painel da direita mostra o que leu antes de você aplicar (<strong>3 columns · 40 rows</strong>), e o botão diz o que vai fazer.</p>
     <p><strong>Célula sobrando vira coluna nova</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>. Linha com mais células que o cabeçalho ganha <code>col3</code>, <code>col4</code>… — o painel avisa antes. Linha mais curta não dá erro: as que faltam ficam vazias.</p>
     <p><strong>Renomeie antes de espalhar o token.</strong> Clique no cabeçalho na grade e escreva o nome de verdade: <code>col3</code> vira <code>preço</code>, e o token vira <span class="tok">{row:preço}</span>. A lista <strong>Columns · tokens</strong>, ao lado da grade, dá o token pronto e quantas ações usam cada coluna. Token sem coluna aparece com ⚠ <code>no column</code> e sai <strong>vazio</strong>.</p>
+    <figure class="shot">
+      <div class="shot-frame">
+        <img src="img/data-loop.webp" alt="Painel Data Loop com uma tabela de 12 linhas (nome, email, pedido), Loop over data ligado, On row error em Skip row e a lista Columns · tokens com cada coluna marcada ×1." width="904" height="652" loading="lazy" decoding="async">
+      </div>
+      <figcaption>Doze linhas, uma execução por linha, com <strong>Skip row</strong>. Em <strong>Columns · tokens</strong>, cada coluna mostra ×1: uma ação a usa.</figcaption>
+    </figure>
   </div>
 
   <div class="subsec">
@@ -2849,6 +2897,12 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p13-temas">Temas</h3>
     <p>Settings → App → Interface → <strong>Theme &amp; layout</strong> → <strong>Customize</strong>. Galeria com 37 presets (23 escuros + 14 claros, padrão <em>Lavender Coal</em>), com prévia ao vivo.</p>
+    <figure class="shot">
+      <div class="shot-frame">
+        <img src="img/themes.webp" alt="Theme Editor com a galeria de temas em cartões coloridos, filtros All, Dark, Light, Vivid, Pastel e Monochrome, e a prévia ao vivo à direita." width="904" height="652" loading="lazy" decoding="async">
+      </div>
+      <figcaption>A galeria: filtros por família, os presets em cartões e a prévia ao vivo à direita.</figcaption>
+    </figure>
   </div>
 
   <div class="subsec">

@@ -893,9 +893,11 @@
           <tr><td><strong>Mouse Scroll</strong></td><td>Roda do mouse.</td></tr>
           <tr><td><strong>Keyboard</strong></td><td>Teclas e modificadores.</td></tr>
           <tr><td><strong>Combined Actions</strong></td><td><strong>Ligado</strong> → <code>Ctrl+C</code> vira uma linha só. <strong>Desligado</strong> → linhas KeyDown/KeyUp separadas — necessário para gravar arrastar ou segurar tecla.</td></tr>
+          <tr><td><strong>Browser Actions</strong></td><td>No Chrome, grava <strong>seletor de elemento</strong> em vez de coordenada (<a class="xref" href="#p11">Parte 11</a>). Desligado, o clique numa página vira um clique de tela.</td></tr>
         </tbody>
       </table>
     </div>
+    <p>A mesma seção traz um interruptor que não é de captura: <strong>Profile Keys</strong>, a chave-mestra espelhada na tecla <span class="kbd">Pause</span> — <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">o que ela desliga</a>.</p>
     <p><strong>Cliques repetidos no mesmo ponto viram uma linha só</strong> <span class="ver-next">(a partir da versão 2.44.0)</span>: dois viram <strong>Double Click</strong>, três viram <strong>Triple Click</strong>, e o quarto começa linha nova. Vale com <strong>Combined Actions</strong> ligado, no botão esquerdo, dentro do tempo e da tolerância de duplo clique do Windows.</p>
   </div>
 
@@ -1014,7 +1016,7 @@
       </div>
     </div>
     <p>A mesma troca de forma está no formulário completo, no campo <strong>Form</strong>, logo abaixo de <strong>Button</strong> e <strong>Kind</strong> — ali ela vale ao <strong>Save</strong>, junto com o resto da edição.</p>
-    <p>Esse <strong>Save</strong> inteiro é <strong>um</strong> desfazer, mesmo mudando a forma e campos na mesma passada <span class="ver-next">(a partir da versão 2.44.1)</span>. Juntar o par guarda a metade <strong>Down</strong>, então editar a metade <strong>Up</strong> e juntar na mesma passada é recusado, com o motivo na tela — em vez de salvar perdendo o que você digitou.</p>
+    <p>Esse <strong>Save</strong> inteiro é <strong>um</strong> desfazer, mesmo mudando a forma e campos na mesma passada <span class="ver-next">(a partir da versão 2.44.1)</span>. Juntar o par guarda a metade <strong>Down</strong>, então editar a metade <strong>Up</strong> e juntar na mesma passada é recusado, com o motivo na tela.</p>
   </div>
 
   <div class="subsec">
@@ -1043,7 +1045,7 @@
           <tr><td><strong>While / End Loop · Break / Next</strong></td><td>Bloco que repete enquanto a condição vale, e os saltos de controle — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
           <tr><td><strong>For Each Data Row</strong></td><td>Repete só um trecho, uma vez por linha da tabela — <a class="xref" href="#p12">Parte 12</a>.</td></tr>
           <tr><td><strong>Stop · Return</strong></td><td>Encerram no meio: a execução inteira, ou só o passe atual — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
-          <tr><td><strong>Browser actions</strong></td><td>Click Element / Type Text / Open URL / Wait Element / Assert Element / Select Option, no Chrome — <a class="xref" href="#p11">Parte 11</a>.</td></tr>
+          <tr><td><strong>Browser actions</strong></td><td>Click Element / Right Click Element / Type Text / Open URL / Wait Element / Assert Element / Select Option, no Chrome — <a class="xref" href="#p11">Parte 11</a>.</td></tr>
         </tbody>
       </table>
     </div>
@@ -1141,6 +1143,7 @@
       <li><strong>Pastas</strong> — arraste um perfil para dentro; cor, renomear, recolher. Uma pasta pode ter um <strong>alvo de janela</strong> que os perfis herdam (<a class="xref" href="#p8">Parte 8</a>).</li>
       <li><strong>Edit info…</strong> (botão direito → <strong>More</strong>, ou pela paleta → <strong>Edit Profile Info</strong>) — emoji, descrição e <strong>tags</strong> pesquisáveis.</li>
       <li><strong>Import / Export</strong> — arquivo <code>.trprofile</code> com ações, metadados, imagens e layout. <strong>Nada é sobrescrito em silêncio</strong>: cada conflito de nome recebe Rename (padrão), Overwrite ou Skip.</li>
+      <li><strong>Versão mínima</strong> — o arquivo carrega a versão mais antiga que entende os recursos usados. Instalação abaixo dela recusa o import e nomeia o recurso. A recusa é proposital: a versão antiga ignoraria o campo em silêncio e a macro faria outra coisa.</li>
     </ul>
   </div>
 
@@ -1237,7 +1240,7 @@
           <tr><td>Hotkeys de perfil · hotstrings · botões laterais · roda</td><td>Silenciam. Sempre foi assim.</td></tr>
           <tr><td>Remaps de tecla</td><td>A camada inteira pausa — o par que já estava aberto ainda fecha, então nenhuma tecla fica presa.</td></tr>
           <tr><td><strong>Gravar</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">PgUp</span>) · <strong>Replay</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span>) · <strong>Capture Slot</strong> <span class="ver-next">(a partir da versão 2.42.0)</span></td><td>Param de disparar <em>e a tecla vai para o app que estiver na frente</em> — é o que devolve o <span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span> de trocar aba ao navegador.</td></tr>
-          <tr><td><span class="kbd">Pause</span> · <strong>Foreground</strong> (<span class="kbd">Ctrl</span>+<span class="kbd">Insert</span>) · <span class="kbd">ScrLk</span> · as teclas do Clicker</td><td>Continuam valendo — só mexem no próprio TrueReplayer. O <span class="kbd">Pause</span> é o único caminho de volta pelo teclado.</td></tr>
+          <tr><td><span class="kbd">Pause</span> · <strong>Foreground</strong> (<span class="kbd">Ins</span>) · <span class="kbd">ScrLk</span> · as teclas do Clicker</td><td>Continuam valendo — só mexem no próprio TrueReplayer. O <span class="kbd">Pause</span> é o único caminho de volta pelo teclado.</td></tr>
           <tr><td>Automations</td><td>Não entram: têm a chave-mestra <strong>Enable Automations</strong>, no menu da bandeja e em Settings.</td></tr>
         </tbody>
       </table>
@@ -1866,7 +1869,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <ul>
       <li><strong>Número vindo de variável:</strong> escreva <code>@</code> e o nome — <span class="tok">{clipboard:line:@i}</span> pega a linha indicada por <code>i</code>. Reservados: <code>@counter</code>, <code>@loop</code>, <code>@row</code>, <code>@datarow</code>.</li>
       <li><strong>Nome que não existe sai vazio</strong>, de propósito — o contrário colaria o clipboard inteiro por causa de um erro de digitação.</li>
-      <li><code>{clipboard:line:{var:i}}</code> com chaves <strong>não funciona</strong> e nunca funcionou — a grafia com <code>@</code> existe justamente por isso.</li>
+      <li><code>{clipboard:line:{var:i}}</code> com chaves <strong>não funciona</strong>: número vindo de variável se escreve só com <code>@</code>.</li>
     </ul>
   </div>
 </section>
@@ -2145,7 +2148,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p6-stop-e-return-encerrar-no-meio"><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
-    <p>Até aqui, uma macro só terminava chegando ao fim da lista. Duas linhas novas (menu <strong>Assert ▾</strong> → <em>End the run</em>) encerram antes:</p>
+    <p>Duas linhas encerram a macro antes do fim da lista (menu <strong>Assert ▾</strong> → <em>End the run</em>):</p>
     <ul>
       <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>. As linhas seguintes nunca rodam, inclusive em sub-perfis: um Stop no filho encerra a cadeia.</li>
       <li><strong>Return</strong> — encerra <em>só o passe atual</em>. Com Loops = 3, ou rodando uma vez por linha de dados, os passes restantes continuam; o que morre é o resto <em>deste</em> passe.</li>
@@ -2861,7 +2864,37 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         </tbody>
       </table>
     </div>
-    <p>Tudo remapeável em Settings → Keys; apagar o campo desativa o atalho. As dicas da interface podem ficar em <strong>Português (BR)</strong> (Settings → App → Interface) — nomes de ações e menus seguem em inglês.</p>
+    <p>Todos menos o <span class="kbd">Ctrl</span>+<span class="kbd">K</span> são remapeáveis em Settings → Keys; apagar o campo desativa o atalho. As dicas da interface podem ficar em <strong>Português (BR)</strong> (Settings → App → Interface) — nomes de ações e menus seguem em inglês.</p>
+  </div>
+
+  <div class="subsec">
+    <h3 id="p13-teclado-da-janela">Teclado dentro da janela</h3>
+    <p>Não são globais: valem com a janela do TrueReplayer em foco e não disparam enquanto você digita num campo.</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Atalho</th><th>Faz</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">S</span></td><td>Salva o perfil — o mesmo Save da barra de baixo.</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">Z</span> / <span class="kbd">Ctrl</span>+<span class="kbd">Y</span></td><td>Desfaz e refaz a última edição da grade. <span class="kbd">Ctrl</span>+<span class="kbd">Shift</span>+<span class="kbd">Z</span> também refaz.</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">C</span> / <span class="kbd">Ctrl</span>+<span class="kbd">V</span></td><td>Copia as linhas selecionadas e cola — inclusive noutro perfil (<a class="xref" href="#p2">Parte 2</a>).</td></tr>
+          <tr><td><span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">↓</span></td><td>Reordena a seleção; tocando um marcador, leva o bloco (<a class="xref" href="#p6">Parte 6</a>).</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Os de baixo pedem a <strong>grade em foco</strong> — clique numa linha, ou chegue nela com <span class="kbd">Tab</span>:</p>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Atalho</th><th>Faz</th></tr></thead>
+        <tbody>
+          <tr><td><span class="kbd">↑</span> / <span class="kbd">↓</span></td><td>Anda pelas linhas. Com <span class="kbd">Shift</span>, estende a seleção.</td></tr>
+          <tr><td><span class="kbd">Home</span> / <span class="kbd">End</span></td><td>Primeira / última linha.</td></tr>
+          <tr><td><span class="kbd">Espaço</span></td><td>Marca ou desmarca a linha atual na seleção.</td></tr>
+          <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">A</span> · <span class="kbd">Esc</span></td><td>Seleciona a grade inteira · limpa a seleção.</td></tr>
+          <tr><td><span class="kbd">Enter</span> · <span class="kbd">Delete</span></td><td>Abre o formulário da linha · apaga as selecionadas.</td></tr>
+        </tbody>
+      </table>
+    </div>
+    <p>Enquanto um run está ativo, o que mexe na lista fica travado; copiar continua valendo.</p>
   </div>
 
   <div class="subsec">

@@ -287,6 +287,16 @@
   td code { white-space: nowrap; }
   .num { font-variant-numeric: tabular-nums; }
 
+  /* ── Cartão de download (Parte 14) ──────────────────── */
+  .dl-card {
+    display: flex; align-items: center; gap: 12px 14px; flex-wrap: wrap; margin: 18px 0;
+    padding: 14px 16px; border: 1px solid var(--border); border-radius: 10px; background: var(--surface);
+  }
+  .dl-card .dl-ico { width: 26px; height: 26px; color: var(--violet); }
+  .dl-card .dl-meta { flex: 1 1 200px; min-width: 0; }
+  .dl-card .dl-name { font-family: 'Spline Sans Mono', monospace; font-size: .84rem; color: var(--ink); overflow-wrap: anywhere; }
+  .dl-card .dl-sub { font-size: .8rem; color: var(--muted); }
+
   /* ── Callouts ───────────────────────────────────────── */
   .callout {
     border-radius: 10px; padding: 14px 16px; margin: 20px 0;
@@ -775,7 +785,7 @@
     <span class="pill pill-ver" data-version></span>
     <a class="pill" href="#p1"><svg class="ico" aria-hidden="true"><use href="#i-p1"/></svg>Comece aqui</a>
     <a class="pill" href="#p4"><svg class="ico" aria-hidden="true"><use href="#i-p4"/></svg>Tokens</a>
-    <a class="pill" href="#p14"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Receitas prontas</a>
+    <a class="pill" href="#p14"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Perfis de exemplo</a>
     <a class="pill" href="#p15"><svg class="ico" aria-hidden="true"><use href="#i-p15"/></svg>Solução de problemas</a>
   </div>
   <p class="hero-hint">O sumário lateral acompanha a leitura. <span class="kbd">/</span> ou <span class="kbd">Ctrl</span>+<span class="kbd">K</span> abre a busca — igual à paleta do app. Passe o mouse num título para copiar o link daquela seção.</p>
@@ -795,7 +805,7 @@
     <li><a class="c-plain" href="#p11"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p11"/></svg></span><span class="t-body"><span class="t-part">Parte 11</span><span class="t-name">Navegador</span><span class="t-desc">Chrome por seletor, não por pixel</span></span></a></li>
     <li><a class="c-plain" href="#p12"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p12"/></svg></span><span class="t-body"><span class="t-part">Parte 12</span><span class="t-name">Data Loop</span><span class="t-desc">Uma tabela, uma execução por linha</span></span></a></li>
     <li><a class="c-plain" href="#p13"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p13"/></svg></span><span class="t-body"><span class="t-part">Parte 13</span><span class="t-name">Aparência e dados</span><span class="t-desc">Temas, configurações, onde tudo fica</span></span></a></li>
-    <li><a class="c-mix" href="#p14"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p14"/></svg></span><span class="t-body"><span class="t-part">Parte 14</span><span class="t-name">Receitas completas</span><span class="t-desc">Perfis prontos, passo a passo</span></span></a></li>
+    <li><a class="c-mix" href="#p14"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p14"/></svg></span><span class="t-body"><span class="t-part">Parte 14</span><span class="t-name">Perfis de exemplo</span><span class="t-desc">Do primeiro token ao sistema completo</span></span></a></li>
     <li><a class="c-mix" href="#p15"><span class="t-ico"><svg aria-hidden="true"><use href="#i-p15"/></svg></span><span class="t-body"><span class="t-part">Parte 15</span><span class="t-name">Solução de problemas</span><span class="t-desc">Sintoma → causa → conserto</span></span></a></li>
   </ul>
 </header>
@@ -1866,7 +1876,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <thead><tr><th>Token</th><th>De onde vem o texto</th></tr></thead>
         <tbody>
           <tr><td><span class="tok">{winclip:1}</span></td><td>O <strong>histórico do Windows</strong> (Win+V): 1 = a última coisa copiada, 2 = a anterior… Precisa do histórico ativado nas configurações do Windows.</td></tr>
-          <tr><td><span class="tok">{clipboard:next}</span></td><td>Auto-avança: cada uso cola a <strong>próxima linha</strong> do clipboard. Linhas em branco são puladas; no fim vira vazio (não volta ao começo); copiar outra coisa recomeça sozinho. Combina: <code>{clipboard:next:trim:upper}</code> transforma <em>aquela</em> linha.</td></tr>
+          <tr><td><span class="tok">{clipboard:next}</span></td><td>Auto-avança: cada uso cola a <strong>próxima linha</strong> do clipboard. Linhas em branco são puladas; no fim vira vazio (não volta ao começo); copiar outra coisa recomeça sozinho, e o mesmo texto de novo, não. Combina: <code>{clipboard:next:trim:upper}</code> transforma <em>aquela</em> linha.</td></tr>
           <tr><td><span class="tok">{counter}</span></td><td>A repetição atual do perfil (Loops): 1, 2, 3…</td></tr>
           <tr><td><span class="tok">{loop}</span></td><td>A volta do bloco <strong>While</strong> ou <strong>For Each Data Row</strong> mais interno — fora de um bloco, o mesmo que <span class="tok">{counter}</span>.</td></tr>
           <tr><td><span class="tok">{datarow}</span></td><td>O número da linha de dados atual (1 = primeira): no Data Loop, no For Each e no Run Profile sobre dados.</td></tr>
@@ -2877,6 +2887,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p12-run-profile-sub-perfis-e-lotes">Run Profile — sub-perfis e lotes</h3>
     <ul>
       <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte.</li>
+      <li><strong>As variáveis são as mesmas</strong> — o sub-perfil roda dentro da execução de quem chamou: lê o que ela guardou, e o que ele guarda continua valendo na volta.</li>
       <li><strong>Run once per data row</strong> — o perfil <em>chamado</em> roda uma vez por linha da tabela <em>dele</em>: a macro pai faz o setup uma vez e processa um lote no meio da execução.</li>
       <li><strong>O sub-perfil não manda na própria repetição</strong> — os Loops e o Interval dele são ignorados; vale o <strong>Repeat</strong> do diálogo Run Profile. Um perfil não chama a si mesmo, e a cadeia para em 5 níveis.</li>
       <li><strong>Com <em>Run once per data row</em> ligado, nem o Repeat vale</strong> <span class="ver-next">(a partir da versão 2.44.1)</span> — quem decide quantas vezes é a tabela, e o campo <strong>Repeat</strong> aparece apagado enquanto isso durar.</li>
@@ -2999,65 +3010,137 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 </section>
 
-<!-- ═══════════════════════ PARTE 14 — RECEITAS ═══════════════════════ -->
+<!-- ═══════════════════════ PARTE 14 — PERFIS DE EXEMPLO ═══════════════════════ -->
 <section id="p14" class="p-mix">
   <div class="part-head">
     <div class="part-head-text">
-      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Parte 14 · Receitas completas</span>
-      <h2>Perfis prontos, passo a passo</h2>
+      <span class="eyebrow"><svg class="ico" aria-hidden="true"><use href="#i-p14"/></svg>Parte 14 · Perfis de exemplo</span>
+      <h2>Do primeiro token ao sistema completo</h2>
     </div>
     <span class="part-num" aria-hidden="true">14</span>
   </div>
 
+  <p>Dezoito perfis prontos, em degraus: tokens, variáveis, condicionais e, no fim, sistemas que juntam tudo. Cada um escreve o resultado no Bloco de Notas, e a coluna <strong>Notes</strong> diz o que cada linha faz. Abra as linhas, mude os valores e rode de novo.</p>
+
   <div class="subsec">
-    <h3 id="p14-receita-1-resposta-pronta-em-qualquer-chat">Receita 1 — Resposta pronta em qualquer chat</h3>
-    <p>A mais usada de todas, em dois passos: um <strong>Send Text</strong> com a mensagem (feche com <span class="tok">{enter}</span> para já enviar), depois botão direito no perfil → <strong>Hotstring…</strong> → <code>.cp</code>.</p>
+    <h3 id="p14-baixar-e-rodar">Baixar e rodar</h3>
+    <div class="dl-card">
+      <svg class="ico dl-ico" aria-hidden="true"><use href="#i-p14"/></svg>
+      <div class="dl-meta">
+        <div class="dl-name">TrueReplayer-exemplos.trprofile</div>
+        <div class="dl-sub">19 perfis · pasta Exemplos</div>
+      </div>
+      <a class="tb-btn" href="exemplos/TrueReplayer-exemplos.trprofile" download><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg><span>Baixar os exemplos</span></a>
+    </div>
+    <ol>
+      <li>No painel Profiles, ícone <strong>Import / Export</strong> → <strong>Import…</strong> → escolha o arquivo → <strong>Import Selected (19)</strong>. Os perfis chegam na pasta <strong>Exemplos</strong>.</li>
+      <li>Deixe um Bloco de Notas vazio aberto.</li>
+      <li>Selecione um perfil e aperte <strong>Replay</strong>.</li>
+    </ol>
+    <div class="callout co-warn">
+      <div class="co-icon">⚠️</div>
+      <div>
+        <p><span class="co-title">Eles digitam de verdade.</span></p>
+        <p>Cada perfil escreve no Bloco de Notas que estiver aberto, ou abre um. O 04, o 05, o 06, o 07 e o 18 digitam uma amostra, selecionam e copiam: o seu clipboard muda.</p>
+      </div>
+    </div>
+    <p>Datas, sorteios, a hora do dia e o rodízio mudam de uma execução para outra. Rode duas vezes e compare.</p>
   </div>
 
   <div class="subsec">
-    <h3 id="p14-receita-2-saudacao-certa-para-a-hora-do-dia">Receita 2 — Saudação certa para a hora do dia</h3>
+    <h3 id="p14-tokens">Tokens</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>O que mostra</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td><strong>01&nbsp;·&nbsp;Olá com Enter</strong></td><td><span class="tok">{enter}</span> e <span class="tok">{tab}</span> dentro do texto viram teclas.</td><td><a class="xref" href="#p4-tokens-prontos-para-usar">Parte&nbsp;4</a></td></tr>
+          <tr><td><strong>02&nbsp;·&nbsp;Datas</strong></td><td><span class="tok">{date}</span> e <span class="tok">{time}</span>, com dias a somar e formato: <span class="tok">{date:+7:dd/MM/yyyy}</span>, <span class="tok">{date:-1:dddd}</span>.</td><td><a class="xref" href="#p4-tokens-prontos-para-usar">Parte&nbsp;4</a></td></tr>
+          <tr><td><strong>03&nbsp;·&nbsp;Sorteio</strong></td><td><span class="tok">{Pick:…}</span> sorteia uma frase e <span class="tok">{random:1-60}</span> um número. Cada ocorrência sorteia a sua.</td><td><a class="xref" href="#p4-tokens-prontos-para-usar">Parte&nbsp;4</a></td></tr>
+          <tr><td><strong>04&nbsp;·&nbsp;Limpar o copiado</strong></td><td><span class="tok">{clipboard:trim:lower:title}</span> e <span class="tok">{clipboard:digits}</span>. A ordem dos modificadores importa.</td><td><a class="xref" href="#p4-modificadores-transformando-o-texto">Parte&nbsp;4</a></td></tr>
+          <tr><td><strong>05&nbsp;·&nbsp;Recortar</strong></td><td><code>line</code>, <code>word</code>, <code>after</code> e <code>dropnum</code>. Os espaços do marcador contam: <code>&nbsp;-&nbsp;</code> não é <code>-</code>.</td><td><a class="xref" href="#p4-modificadores-transformando-o-texto">Parte&nbsp;4</a></td></tr>
+          <tr><td><strong>06&nbsp;·&nbsp;Listas</strong></td><td>O clipboard como lista: <code>sort</code>, <code>dedupe</code>, <code>count</code>, <code>reverse</code> e <code>join</code>.</td><td><a class="xref" href="#p4-modificadores-transformando-o-texto">Parte&nbsp;4</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3 id="p14-variaveis">Variáveis</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>O que mostra</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td><strong>07&nbsp;·&nbsp;Guardar e reusar</strong></td><td><strong>Set Variable</strong> guarda o valor na hora. O clipboard muda depois; a variável, não.</td><td><a class="xref" href="#p5-set-variable">Parte&nbsp;5</a></td></tr>
+          <tr><td><strong>08&nbsp;·&nbsp;Perguntar</strong></td><td><span class="tok">{input:Seu nome}</span> e a lista <span class="tok">{input:Produto|menu:Caixa,Chave,Mapa}</span>, guardados em variáveis.</td><td><a class="xref" href="#p5-perguntar-na-hora-input-rotulo">Parte&nbsp;5</a></td></tr>
+          <tr><td><strong>09&nbsp;·&nbsp;Contar e somar</strong></td><td><strong>Loops</strong> = 3, <span class="tok">{counter:pad:3}</span> e Set Variable em <strong>Add</strong>: a soma atravessa as voltas.</td><td><a class="xref" href="#p5-set-variable">Parte&nbsp;5</a></td></tr>
+          <tr><td><strong>10&nbsp;·&nbsp;Rodízio</strong></td><td>Set Variable em <strong>Cycle</strong>: um item por execução, e a posição fica guardada.</td><td><a class="xref" href="#p5-set-variable">Parte&nbsp;5</a></td></tr>
+          <tr><td><strong>11&nbsp;·&nbsp;Número vindo de variável</strong></td><td><span class="tok">{var:lista:line:@counter}</span> e <span class="tok">{var:lista:line:@i}</span>: <code>@</code> e o nome no lugar do número.</td><td><a class="xref" href="#p5-truques-de-quem-ja-domina">Parte&nbsp;5</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3 id="p14-condicionais">Condicionais</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>O que mostra</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td><strong>12&nbsp;·&nbsp;Primeiro If</strong></td><td>If <strong>Variable</strong> com <code>&gt;</code> e um <strong>Else</strong>. Rode com 0 e depois com 5.</td><td><a class="xref" href="#p6-a-dupla-set-variable-if-variable">Parte&nbsp;6</a></td></tr>
+          <tr><td><strong>13&nbsp;·&nbsp;Escada</strong></td><td><strong>Else If</strong>: de cima para baixo, a primeira que vale vence.</td><td><a class="xref" href="#p6-varios-caminhos-else-if-e-aninhamento">Parte&nbsp;6</a></td></tr>
+          <tr><td><strong>14&nbsp;·&nbsp;Perguntas ao sistema</strong></td><td>Window Open, Process Running, Time, File Exists, Clipboard e Random, cada um num If.</td><td><a class="xref" href="#p6-os-tipos-de-condicao">Parte&nbsp;6</a></td></tr>
+          <tr><td><strong>15&nbsp;·&nbsp;Repetir</strong></td><td><strong>While</strong>, <span class="tok">{loop}</span>, <strong>Next iteration</strong>, <strong>Break loop</strong> e <strong>Max iterations</strong>.</td><td><a class="xref" href="#p6-while-o-bloco-que-repete">Parte&nbsp;6</a></td></tr>
+          <tr><td><strong>16&nbsp;·&nbsp;Exigir e encerrar</strong></td><td><strong>Assert</strong> em Abort e em Stop quietly; <strong>Return</strong> encerra o passe, <strong>Stop</strong> a execução.</td><td><a class="xref" href="#p6-assert-exigir-que-algo-seja-verdade">Parte&nbsp;6</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="subsec">
+    <h3 id="p14-sistemas-completos">Sistemas completos</h3>
+    <div class="tbl-wrap">
+      <table>
+        <thead><tr><th>Perfil</th><th>O que mostra</th><th>Onde</th></tr></thead>
+        <tbody>
+          <tr><td><strong>17&nbsp;·&nbsp;Planilha que decide</strong></td><td>Tabela dentro do perfil, <strong>For Each Data Row</strong> e um If por linha. A linha sem <code>@</code> sai pelo <strong>Next iteration</strong>.</td><td><a class="xref" href="#p12-for-each-data-row-repetir-so-um-trecho">Parte&nbsp;12</a></td></tr>
+          <tr><td><strong>18&nbsp;·&nbsp;Atendimento completo</strong></td><td>Tudo junto, na grade abaixo.</td><td><a class="xref" href="#p12-run-profile-sub-perfis-e-lotes">Parte&nbsp;12</a></td></tr>
+          <tr><td><strong>18b&nbsp;·&nbsp;Assinatura</strong></td><td>O subperfil que o 18 chama. Lê as variáveis de quem chamou.</td><td><a class="xref" href="#p12-run-profile-sub-perfis-e-lotes">Parte&nbsp;12</a></td></tr>
+        </tbody>
+      </table>
+    </div>
+
     <div class="gridmock-wrap"><div class="gridmock">
-      <div class="gm-head">Perfil: Saudação inteligente</div>
-      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Time — 05:00 até 11:59</span></div>
-      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Bom dia, {clipboard:trim:title}! Como posso ajudar?</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
-      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Boa tarde, {clipboard:trim:title}! Como posso ajudar?</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
+      <div class="gm-head">Perfil: 18 · Atendimento completo</div>
+      <div class="gm-row"><span class="gm-type">Activate Window</span><span class="gm-detail">notepad</span><span class="gm-note">abre, ou traz para a frente</span></div>
+      <div class="gm-row"><span class="gm-type">Keystroke</span><span class="gm-detail">Ctrl+End</span><span class="gm-note">vai para o fim do texto</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">Lote {time} · PED-101 · PED-102 · PED-103</span><span class="gm-note">modo Type, uma linha cada</span></div>
+      <div class="gm-row"><span class="gm-type">Keystroke</span><span class="gm-detail">Shift+Home</span><span class="gm-note">seleciona a linha</span></div>
+      <div class="gm-row"><span class="gm-type">Keystroke</span><span class="gm-detail">Shift+Up · 3×</span><span class="gm-note">e as três de cima</span></div>
+      <div class="gm-row"><span class="gm-type">Keystroke</span><span class="gm-detail">Ctrl+C</span><span class="gm-note">copia</span></div>
+      <div class="gm-row"><span class="gm-type">Keystroke</span><span class="gm-detail">Ctrl+End</span><span class="gm-note">sai da seleção</span></div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">atendente = {input:Seu nome}</span></div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">motivo = {input:Motivo|menu:Troca,Devolução,Dúvida}</span></div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">saudacao · Cycle · Olá / Oi / Bom dia</span><span class="gm-note">uma por execução</span></div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">lote = {clipboard:next}</span><span class="gm-note">1ª linha: o lote</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">Atendendo o {var:lote}:</span></div>
+      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">pedido = {clipboard:next}</span><span class="gm-note">a seguinte: o 1º pedido</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">While</span><span class="gm-detail">Variable — pedido ≠ vazio · Max 10×</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Set Variable</span><span class="gm-detail">n · Add · 1</span><span class="gm-note">conta os pedidos</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">Assert</span><span class="gm-detail">Variable — n &lt; 5 · "no máximo 4 pedidos por lote"</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">If</span><span class="gm-detail">Variable — motivo = Troca</span></div>
+      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">{var:saudacao}! Pedido {var:pedido}: troca aprovada.</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">Else If</span><span class="gm-detail">Variable — motivo = Devolução</span></div>
+      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">… devolução em andamento.</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">Else</span></div>
+      <div class="gm-row gm-body d2 ind-2"><span class="gm-type">Send Text</span><span class="gm-detail">… dúvida registrada.</span></div>
+      <div class="gm-row gm-body gm-if ind-1"><span class="gm-type">End If</span></div>
+      <div class="gm-row gm-body ind-1"><span class="gm-type">Set Variable</span><span class="gm-detail">pedido = {clipboard:next}</span><span class="gm-note">no fim da lista, vazio</span></div>
+      <div class="gm-row gm-if"><span class="gm-type">End Loop</span></div>
+      <div class="gm-row"><span class="gm-type">Send Text</span><span class="gm-detail">{var:n} pedidos atendidos.</span></div>
+      <div class="gm-row"><span class="gm-type">Run Profile</span><span class="gm-detail">18b · Assinatura</span><span class="gm-note">escreve {var:atendente}</span></div>
     </div></div>
-    <p>Copie o nome do cliente, aperte o atalho — <code>&nbsp;&nbsp;joão pedro&nbsp;</code> vira "Bom dia, João Pedro! Como posso ajudar?".</p>
-  </div>
-
-  <div class="subsec">
-    <h3 id="p14-receita-3-responder-um-anuncio-de-troca">Receita 3 — Responder um anúncio de troca</h3>
-    <p>O anúncio copiado é sempre <code>Vendedor - 2x Item Raro</code>, com a quantidade aparecendo só às vezes. A macro extrai o item limpo e confere se é o que você procura:</p>
-    <div class="gridmock-wrap"><div class="gridmock">
-      <div class="gm-head">Perfil: Responder anúncio</div>
-      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">item = {clipboard:after: - :dropnum:x }</span><span class="gm-note">corta e limpa o "2x"</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Variable — item contém "Raro"</span></div>
-      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Tenho interesse no {var:item}! Ainda está disponível?</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">Else</span></div>
-      <div class="gm-row gm-body ind-1"><span class="gm-type">Send Text</span><span class="gm-detail">Valeu, mas procuro outro item no momento!</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
-    </div></div>
-  </div>
-
-  <div class="subsec">
-    <h3 id="p14-receita-4-tentar-de-novo-com-limite">Receita 4 — Tentar de novo, com limite</h3>
-    <p>Num perfil com repetição (<strong>Loops</strong>), <span class="tok">{counter}</span> conta as voltas, e um <strong>Assert</strong> cria o limite. Enquanto a premissa "tentativa &lt; 6" vale, a macro segue; na 6ª, ela para.</p>
-    <div class="gridmock-wrap"><div class="gridmock">
-      <div class="gm-head">Perfil: Confirmar com paciência (Loops = 10)</div>
-      <div class="gm-row"><span class="gm-type">Set Variable</span><span class="gm-detail">tentativa = {counter}</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">Assert</span><span class="gm-detail">Variable — tentativa &lt; 6 · Notes: "limite de tentativas"</span><span class="gm-note">6ª volta → para com aviso</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">If</span><span class="gm-detail">Image Found — botao_confirmar.png (wait 3000 ms)</span></div>
-      <div class="gm-row gm-body ind-1"><span class="gm-type">Click</span><span class="gm-detail">no botão Confirmar</span></div>
-      <div class="gm-row gm-if"><span class="gm-type">End If</span></div>
-    </div></div>
-    <p>Quando parar, a mensagem diz exatamente o quê: <code>Assert failed: 'limite de tentativas'</code>. Repare que o Assert fica <strong>fora</strong> do If da imagem — o limite precisa ser verificado em toda volta, não só quando a imagem aparece.</p>
-  </div>
-
-  <div class="subsec">
-    <h3 id="p14-receita-5-funcionar-so-no-app-certo">Receita 5 — Funcionar só no app certo</h3>
-    <p>A hotkey passa a valer só com aquela janela na frente, e os cliques seguem a janela aonde ela for. O fluxo completo está na <a class="xref" href="#p8">Parte 8</a>.</p>
+    <p>Cada <span class="tok">{clipboard:next}</span> pega a próxima linha copiada. Quando a lista acaba, vem vazio e o <strong>While</strong> sai. O <strong>Assert</strong> barra um lote grande demais, e o <strong>Run Profile</strong> chama o 18b, que roda na mesma execução e por isso lê <span class="tok">{var:atendente}</span>.</p>
+    <p>A 1ª linha copiada leva a hora (<code>Lote 14:32:07</code>), então o texto muda a cada execução. É isso que faz a lista recomeçar: copiar o mesmo texto de novo não reinicia o <span class="tok">{clipboard:next}</span>.</p>
   </div>
 </section>
 

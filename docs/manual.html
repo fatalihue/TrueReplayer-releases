@@ -2879,6 +2879,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li>Dentro do bloco, <span class="tok">{row:coluna}</span> resolve a <strong>linha da vez</strong>; ao sair, o contexto <strong>volta ao que era</strong> — inclusive quando o bloco é interrompido por Stop, Return ou um erro.</li>
       <li><strong>Tabela vazia = bloco pulado</strong>, sem rodar o corpo nenhuma vez (o relatório registra).</li>
       <li>Com <strong>On row error = Skip row</strong>, a linha que falhar dentro do bloco é absorvida <em>ali</em> e a próxima roda, com resumo no fim. Um <strong>Next iteration</strong> no corpo também pula para a próxima linha.</li>
+      <li>Num perfil com For Each, o <strong>On row error</strong> aparece no painel <strong>Data Loop</strong> mesmo com Loop over data desligado <span class="ver-next">(a partir da versão 2.44.2)</span>.</li>
       <li>A tabela usada é a <strong>ativa</strong>: num sub-perfil rodando <em>once per data row</em>, é a dele; num RunProfile comum, é a do chamador.</li>
     </ul>
   </div>
@@ -2889,6 +2890,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li>A ação <strong>Run Profile</strong> executa outro perfil como subpasso. Reúna um final comum num perfil <code>Confirmar</code> e chame-o de vinte macros: conserte num lugar, melhore em vinte.</li>
       <li><strong>As variáveis são as mesmas</strong> — o sub-perfil roda dentro da execução de quem chamou: lê o que ela guardou, e o que ele guarda continua valendo na volta.</li>
       <li><strong>Run once per data row</strong> — o perfil <em>chamado</em> roda uma vez por linha da tabela <em>dele</em>: a macro pai faz o setup uma vez e processa um lote no meio da execução.</li>
+      <li>Linha que falha no perfil chamado segue o <strong>On row error</strong> da tabela <em>dele</em>. O controle aparece no painel Data Loop dele mesmo com Loop over data desligado <span class="ver-next">(a partir da versão 2.44.2)</span>.</li>
       <li><strong>O sub-perfil não manda na própria repetição</strong> — os Loops e o Interval dele são ignorados; vale o <strong>Repeat</strong> do diálogo Run Profile. Um perfil não chama a si mesmo, e a cadeia para em 5 níveis.</li>
       <li><strong>Com <em>Run once per data row</em> ligado, nem o Repeat vale</strong> <span class="ver-next">(a partir da versão 2.44.1)</span> — quem decide quantas vezes é a tabela, e o campo <strong>Repeat</strong> aparece apagado enquanto isso durar.</li>
     </ul>

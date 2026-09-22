@@ -967,7 +967,7 @@
           <tr><td><strong>Reset cycle position</strong></td><td>Set Variable em Cycle</td><td>A próxima execução volta ao primeiro item da lista.</td></tr>
           <tr><td><strong>Copy Selector</strong> · <strong>Copy URL</strong> · <strong>Copy Text</strong> · <strong>Open Profile</strong></td><td>Browser · Open URL · Send Text · Run Profile</td><td>Copia o valor da linha, ou abre o perfil chamado.</td></tr>
           <tr><td><strong>Duplicate</strong></td><td>todas</td><td>Copia as linhas logo abaixo.</td></tr>
-          <tr><td><strong>Skip</strong> / <strong>Enable</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>todas</td><td>Tira a linha da execução sem apagá-la. Num marcador de bloco, o bloco inteiro é pulado.</td></tr>
+          <tr><td><strong>Skip</strong> / <strong>Enable</strong> <span class="ver-next">(a partir da versão 2.43.0)</span></td><td>todas</td><td>Tira a linha da execução sem apagá-la. Num marcador de bloco, o bloco inteiro é pulado. Num braço — <strong>Else If</strong> ou <strong>Else</strong> —, o corpo daquele braço vai junto, e a macro segue pelo caminho seguinte <span class="ver-next">(a partir da versão 2.44.1)</span>.</td></tr>
           <tr><td><strong>Delete</strong></td><td>todas</td><td>Num marcador, o rótulo diz o que vai levar: <strong>Delete block</strong>, <strong>Delete loop</strong> ou <strong>Delete arm</strong>.</td></tr>
         </tbody>
       </table>
@@ -2513,11 +2513,13 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tbody>
           <tr><td>A janela mudou de lugar</td><td>Reencontra a janela <strong>a cada checagem</strong>. Arrastar a janela não quebra o gatilho.</td></tr>
           <tr><td>Janela fechada ou minimizada</td><td>A condição fica <strong>falsa</strong>, e o vigia segue armado. Não vira erro nem balão.</td></tr>
+          <tr><td>Pegar o ponto ou a região <span class="ver-next">(a partir da versão 2.44.1)</span></td><td>Pede a janela <strong>nomeada e aberta</strong>. Sem isso o app recusa e diz o motivo, em vez de gravar uma coordenada de tela sob um rótulo que promete a janela.</td></tr>
+          <tr><td>Ligar ou desligar o interruptor <span class="ver-next">(a partir da versão 2.44.1)</span></td><td>O ponto e a região gravados são <strong>limpos</strong>, com um aviso ao lado do campo: o mesmo número quer dizer coisas diferentes nos dois estados. Pegue de novo.</td></tr>
           <tr><td>Interruptor desligado</td><td>A coordenada é da tela, como em toda automação feita até aqui.</td></tr>
         </tbody>
       </table>
     </div>
-    <p>É o mesmo alvo de janela da <a class="xref" href="#p8">Parte 8</a>, aqui respondendo <em>onde ela está</em> em vez de <em>se está aberta</em>. Um perfil com esse gatilho <strong>exige a 2.43.0</strong> na importação: um app mais antigo não conhece o campo e voltaria a medir pela tela, sem avisar.</p>
+    <p>É o mesmo alvo de janela da <a class="xref" href="#p8">Parte 8</a>, aqui respondendo <em>onde ela está</em> em vez de <em>se está aberta</em>. Um perfil com esse gatilho <strong>exige a 2.43.1</strong> na importação: uma versão anterior mede pela tela e, ao salvar, reescreve a coordenada nesse espaço — sem avisar.</p>
   </div>
 
   <div class="subsec">
@@ -2987,6 +2989,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>Uma hotkey não dispara</td><td>Alvo de janela não casa com o app em foco; chave-mestra (<span class="kbd">Pause</span>) desligada; perfil desativado; ou o alvo roda como admin e o TrueReplayer não</td><td>Confira os quatro, nessa ordem</td></tr>
         <tr><td><strong>Gravar</strong> ou <strong>Replay</strong> não responde, e a tecla foi parar no app da frente <span class="ver-next">(a partir da versão 2.42.0)</span></td><td>A chave-mestra (<span class="kbd">Pause</span>) está desligada: as teclas passam adiante</td><td>Aperte <span class="kbd">Pause</span>. O ícone da bandeja fica vermelho enquanto durar, e <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">a tabela da Parte 3</a> lista o que cala. O que já estava <em>rodando</em> ainda pode ser parado pela mesma tecla</td></tr>
         <tr><td>Cliques caem no lugar errado depois que a janela se moveu</td><td>Coordenadas absolutas</td><td>Alvo de janela + Relative Coordinates + Convert Coordinates to Relative (<a class="xref" href="#p8">Parte 8</a>)</td></tr>
+        <tr><td>O replay parou dizendo que a janela do alvo está <strong>minimizada</strong> <span class="ver-next">(a partir da versão 2.44.1)</span></td><td>Coordenadas relativas precisam da posição da janela na tela, e uma janela minimizada não tem uma</td><td>Restaure a janela e rode de novo. A parada é deliberada: sem posição, todo clique do perfil cairia no canto da tela</td></tr>
         <tr><td>Cliquei numa célula da grade durante um replay ou uma gravação e o editor não abriu <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>A lista de ações fica travada enquanto um run está ativo</td><td>Espere o run terminar, ou pare com a hotkey. Tudo que mexe na lista trava junto — inserção, Undo/Redo, Save, Recapture, painel de dados, paleta —, e nada falha calado</td></tr>
         <tr><td>Virei para o modo Clicker e o painel de edição sumiu com o que eu estava digitando <span class="ver-next">(a partir da versão 2.38.0)</span></td><td>O Clicker desliga a lista de ações, então o painel perde a linha que editava</td><td>Ele avisa ao fechar. Volte ao <strong>Macro</strong> e salve antes de trocar — o <span class="kbd">ScrLk</span> cai de dentro de qualquer app</td></tr>
         <tr><td>O painel de dados fechou sozinho quando virei o modo, ou quando outro perfil foi carregado <span class="ver-next">(a partir da versão 2.39.0)</span></td><td>A tabela pertence ao perfil, e só linhas de macro leem os tokens dela</td><td>Ele avisa ao fechar quando havia alterações. Salve antes de trocar: <span class="kbd">ScrLk</span> e as hotkeys de perfil são globais</td></tr>
@@ -3034,7 +3037,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <footer class="site-foot">
-    <p class="footer-note">Manual do TrueReplayer · versão 2.44.0 · setembro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
+    <p class="footer-note">Manual do TrueReplayer · versão 2.44.1 · setembro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
     <div class="site-foot-links">
       <a class="pill" href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Voltar ao topo</a>
       <a class="pill" href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Baixar a versão mais recente</a>

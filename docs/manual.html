@@ -2486,10 +2486,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Armed é local desta máquina</strong> — perfis importados ou duplicados chegam desarmados. Automações armadas se re-armam ao iniciar o app.</li>
       <li><strong>Uma execução por vez</strong> — durante replay, gravação, <strong>Clicker</strong>, diálogo aberto ou grade não salva, o disparo tenta por uma janela curta e depois é <strong>pulado</strong> (e contado).</li>
       <li><strong>Respeita os Loops, nunca roda para sempre</strong> — o infinito de While Pressed / Toggle é ignorado quando quem chama é o gatilho.</li>
-      <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta).</li>
+      <li><strong>Schedule perdido é descartado</strong> — a máquina estava suspensa às 08:00 e acordou às 18:00? O disparo não te embosca (perdido por poucos minutos, ainda tenta). O <strong>Interval</strong> faz o mesmo <span class="ver-next">(a partir da versão 2.45.0)</span>: um disparo que a suspensão atrasou mais de 10 min é pulado, e a contagem recomeça do despertar.</li>
       <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo. <strong>Continuous</strong> repete enquanto verdadeira. Cooldown padrão <strong>30 s</strong>, ou <strong>5 s no Clipboard changed</strong>; <code>0</code> significa "use o padrão do tipo".</li>
       <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: 1 s → 5 s corta o custo em cinco.</li>
-      <li><strong>Um vigia pode se aposentar sozinho</strong> — imagem que sumiu do disco, cor inválida, regex de título que não compila. Ele segue marcado como <strong>Armed</strong>, então o app <strong>avisa por um balão</strong>.</li>
+      <li><strong>Um vigia pode se aposentar sozinho</strong> — imagem que sumiu do disco, cor inválida, regex de título que não compila. Ele segue marcado como <strong>Armed</strong>, então o app <strong>avisa por um balão</strong> — e <span class="ver-next">(a partir da versão 2.45.0)</span> também por um som e por um aviso na janela do app, guardado até ela aparecer se estiver na bandeja.</li>
       <li><strong>Reset counters</strong> — os contadores de disparo e de pulo são totais de sempre. O botão zera os <em>daquela</em> automação e <strong>não</strong> mexe no próximo horário nem no intervalo em contagem.</li>
     </ul>
   </div>
@@ -3205,14 +3205,14 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>O Triple Click só selecionou uma palavra</td><td>O app-alvo não encadeia três cliques, ou o intervalo do sistema é curto demais</td><td>Confirme com um triplo-clique à mão no mesmo lugar; se à mão também não seleciona, o app não suporta</td></tr>
         <tr><td>Um perfil com Triple Click ou At cursor foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.31.0</strong> e não tem esses recursos</td><td>Atualize o TrueReplayer daquela máquina — a recusa é proposital, rodar mesmo assim clicaria no lugar errado</td></tr>
         <tr><td>Um perfil com <strong>Active hours</strong> na automação foi recusado na importação</td><td>A instalação de destino é anterior à <strong>2.35.0</strong>, que não conhece a janela de horário</td><td>Atualize aquela máquina. A recusa evita o pior desfecho silencioso: a versão antiga leria a faixa como um horário simples e deixaria a automação rodando <em>o dia inteiro</em></td></tr>
-        <tr><td>A automação está Armed, mas parou de disparar e nada explica</td><td>O vigia se aposentou — imagem de referência apagada, ou condição que nunca pode bater</td><td>A partir da 2.35.0 um balão na bandeja avisa quando isso acontece. Abra Automation e use <strong>Run now</strong>: ele escreve o motivo na tela</td></tr>
+        <tr><td>A automação está Armed, mas parou de disparar e nada explica</td><td>O vigia se aposentou — imagem de referência apagada, ou condição que nunca pode bater</td><td>A partir da 2.35.0 um balão na bandeja avisa quando isso acontece, e <span class="ver-next">(a partir da versão 2.45.0)</span> também um som e um aviso na janela. Abra Automation e use <strong>Run now</strong>: ele escreve o motivo na tela</td></tr>
         <tr><td>A interface não carrega</td><td>WebView2 ausente</td><td>Instale o WebView2 Runtime da Microsoft</td></tr>
       </tbody>
     </table>
   </div>
 
   <footer class="site-foot">
-    <p class="footer-note">Manual do TrueReplayer · versão 2.44.2 · setembro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
+    <p class="footer-note">Manual do TrueReplayer · versão 2.45.0 · setembro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
     <div class="site-foot-links">
       <a class="pill" href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Voltar ao topo</a>
       <a class="pill" href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Baixar a versão mais recente</a>

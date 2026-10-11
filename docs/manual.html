@@ -1041,6 +1041,7 @@
 
   <div class="subsec">
     <h3 id="p2-referencia-de-acoes">Referência de ações</h3>
+    <p>Quase tudo entra pela barra acima da grade. <strong>Set Variable</strong>, <strong>Copy to Slot</strong>, <strong>Loop</strong> e <strong>Assert</strong> ficam no último botão dela, o menu <strong>More actions</strong> <span class="ver-next">(a partir da versão 2.45.2)</span>.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
@@ -2130,7 +2131,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p6-while-o-bloco-que-repete"><span class="nivel">Nível 3</span> While — o bloco que repete</h3>
-    <p>O If pergunta <em>uma vez</em>. O <strong>While</strong> pergunta <strong>a cada volta</strong>: enquanto a resposta for sim, o corpo roda de novo. Na barra, <strong>Loop ▾</strong> insere o par <strong>While … End Loop</strong>, com as mesmas condições e o mesmo editor do If.</p>
+    <p>O If pergunta <em>uma vez</em>. O <strong>While</strong> pergunta <strong>a cada volta</strong>: enquanto a resposta for sim, o corpo roda de novo. Na barra, o menu <strong>Loop</strong> insere o par <strong>While … End Loop</strong>, com as mesmas condições e o mesmo editor do If.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Exemplo — esperar o "Carregando…" ir embora, agindo enquanto isso</div>
@@ -2149,7 +2150,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     </ul>
 
     <h4 style="margin-top:24px">Break loop e Next iteration</h4>
-    <p>Dois saltos, no mesmo menu Loop ▾, sob <strong>Loop control</strong>:</p>
+    <p>Dois saltos, no mesmo menu <strong>Loop</strong>, sob <strong>Loop control</strong>:</p>
     <ul>
       <li><strong>Break loop</strong> — sai do loop mais interno <em>agora</em>; a execução continua depois do End Loop dele.</li>
       <li><strong>Next iteration</strong> — pula o resto do corpo e volta ao topo: o While re-checa a condição; num For Each Data Row (<a class="xref" href="#p12">Parte 12</a>), já vai para a <strong>próxima linha</strong>.</li>
@@ -2181,7 +2182,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p6-stop-e-return-encerrar-no-meio"><span class="nivel">Nível 3</span> Stop e Return — encerrar no meio</h3>
-    <p>Duas linhas encerram a macro antes do fim da lista (menu <strong>Assert ▾</strong> → <em>End the run</em>):</p>
+    <p>Duas linhas encerram a macro antes do fim da lista (menu <strong>Assert</strong> → <em>End the run</em>):</p>
     <ul>
       <li><strong>Stop</strong> — encerra a execução <em>inteira</em>, como um término normal: <strong>sem erro, sem toast</strong>. As linhas seguintes nunca rodam, inclusive em sub-perfis: um Stop no filho encerra a cadeia.</li>
       <li><strong>Return</strong> — encerra <em>só o passe atual</em>. Com Loops = 3, ou rodando uma vez por linha de dados, os passes restantes continuam; o que morre é o resto <em>deste</em> passe.</li>
@@ -2200,7 +2201,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p6-assert-exigir-que-algo-seja-verdade"><span class="nivel">Nível 3</span> Assert — exigir que algo seja verdade</h3>
-    <p>Um If <em>pergunta</em> e segue por um dos dois caminhos. Um <strong>Assert</strong> <em>exige</em>: se não for verdade, <strong>para na hora e diz qual premissa falhou</strong>. Uma linha só, sem ramificação — barra → ícone de ramificação → <strong>Insert Assert</strong>.</p>
+    <p>Um If <em>pergunta</em> e segue por um dos dois caminhos. Um <strong>Assert</strong> <em>exige</em>: se não for verdade, <strong>para na hora e diz qual premissa falhou</strong>. Uma linha só, sem ramificação — na barra, menu <strong>Assert</strong>.</p>
     <div class="callout co-rule">
       <div class="co-icon">🧭</div>
       <div>
@@ -2341,7 +2342,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p7-esperar-por-um-estado-os-presets-do-wait">Esperar por um <em>estado</em> — os presets do Wait ▾</h3>
     <p>No menu <strong>Wait ▾</strong>, a seção <strong>"Wait for condition — stop quietly on timeout"</strong> traz seis condições de estado: <strong>Until Window Open</strong>, <strong>Until Process Running</strong>, <strong>Until Clipboard</strong>, <strong>Until Variable</strong>, <strong>Until File Exists</strong> e <strong>Until Time</strong>.</p>
     <p>Cada item insere em um clique um Assert já configurado, com <strong>10 s</strong> e <strong>Stop quietly</strong>. Ou seja: <em>"espere a janela abrir; se não abrir, encerre sem erro"</em>. O editor abre em seguida, preenchido.</p>
-    <p>É a <strong>mesma ação</strong> do menu Assert ▾ — a linha diz <em>Assert</em> nos dois casos. Só os padrões mudam: pelo Assert ▾ ela nasce exigente (1500 ms, <em>Abort</em>); por aqui, paciente (10 s, <em>Stop quietly</em>). Qualquer uma vira a outra no editor.</p>
+    <p>É a <strong>mesma ação</strong> do menu <strong>Assert</strong> — a linha diz <em>Assert</em> nos dois casos. Só os padrões mudam: pelo menu <strong>Assert</strong> ela nasce exigente (1500 ms, <em>Abort</em>); por aqui, paciente (10 s, <em>Stop quietly</em>). Qualquer uma vira a outra no editor.</p>
     <div class="callout co-rule">
       <div class="co-icon">⏳</div>
       <div>
@@ -2864,7 +2865,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p12-for-each-data-row-repetir-so-um-trecho">For Each Data Row — repetir só um trecho</h3>
-    <p>Quando só um pedaço deve repetir, use o bloco <strong>For Each Data Row</strong> (menu Loop ▾): o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez.</p>
+    <p>Quando só um pedaço deve repetir, use o bloco <strong>For Each Data Row</strong> (menu <strong>Loop</strong>): o setup roda uma vez, o miolo roda por linha, o fechamento roda uma vez.</p>
 
     <div class="gridmock-wrap"><div class="gridmock">
       <div class="gm-head">Setup uma vez, miolo por linha, fechamento uma vez</div>

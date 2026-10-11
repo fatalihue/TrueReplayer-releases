@@ -960,10 +960,10 @@
       <thead><tr><th>Tarefa</th><th>Como</th></tr></thead>
       <tbody>
         <tr><td><strong>Selecionar</strong></td><td>Clique · <span class="kbd">Ctrl</span>+clique alterna · <span class="kbd">Shift</span>+clique estende o intervalo.</td></tr>
-        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula <strong>Delay</strong> ou <strong>Notes</strong> e escreva ali mesmo: <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela. As demais células não abrem editor — clicar nelas seleciona a linha.</td></tr>
+        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula <strong>Delay</strong> ou <strong>Notes</strong>, no texto <strong>x, y</strong> de um clique ou na tecla de um <strong>KeyDown</strong>/<strong>KeyUp</strong> <span class="ver-next">(x, y e tecla: a partir da versão 2.45.2)</span> e edite ali mesmo: <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela. Na tecla, a próxima tecla apertada vira a nova — <span class="kbd">Esc</span> inclusive; clicar fora cancela. O resto da linha só seleciona.</td></tr>
         <tr><td><strong>Reordenar</strong></td><td>Arraste, ou <span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">Alt</span>+<span class="kbd">↓</span>.</td></tr>
         <tr><td><strong>Pular uma linha</strong></td><td>Desmarque a caixa — fica na lista, não roda.</td></tr>
-        <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Set delay, Set X/Y, Set notes, Move, Skip, Delete.</td></tr>
+        <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Delay, X/Y, Notes, Move, Skip, Delete. Em Delay e X/Y, <strong>Set</strong> define o valor e <strong>Add</strong> soma — negativo subtrai, e o Delay para em 0 <span class="ver-next">(a partir da versão 2.45.2)</span>. Em Notes, <strong>Clear</strong> apaga as notas. Campo vazio cancela.</td></tr>
         <tr><td><strong>Formulário completo</strong></td><td>Clique no <strong>lápis</strong> na borda direita da linha — abre o painel com todos os campos. Também por <span class="kbd">Enter</span> (linha selecionada) ou botão direito → <strong>Edit</strong>. Durante um run os três somem juntos <span class="ver-next">(a partir da versão 2.38.0)</span>.</td></tr>
       </tbody>
     </table>
@@ -2649,10 +2649,10 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p10-game-mode">Game Mode</h3>
-    <p>Para jogos que ignoram um teleporte instantâneo do cursor, o movimento vira um caminho percorrido. <strong>O cabeçalho da seção é o interruptor mestre</strong> — ligado por padrão.</p>
+    <p>Para jogos que ignoram um teleporte instantâneo do cursor, o movimento vira um caminho percorrido. <strong>O cabeçalho da seção é o interruptor mestre</strong>, e vale por perfil <span class="ver-next">(a partir da versão 2.46.0)</span>: com um perfil carregado, liga ou desliga só aquele perfil (salva com <span class="kbd">Ctrl</span>+<span class="kbd">S</span>); sem perfil, define o padrão — ligado de fábrica — dos perfis sem escolha própria. Um sub-perfil sem escolha própria usa a de quem o chamou. Ao lado do interruptor, <strong>Default</strong> indica que o perfil segue o padrão; <strong>↺</strong> aparece quando ele tem escolha própria e o faz voltar a seguir.</p>
     <ul>
       <li><strong>Fast approach</strong> — em movimentos longos, teleporta até a <strong>Distance</strong> do alvo (padrão 80 px) e percorre só o final devagar. Se um jogo errar o clique, desligue.</li>
-      <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms).</li>
+      <li><strong>Tuning</strong> — Click delay (10 ms), Path step (20 px), Step delay (2 ms). Vale para todos os perfis.</li>
       <li><strong>Focus click</strong> <em>(botão direito na linha → <strong>More</strong>)</em> — para campos minúsculos que só recebem foco no <em>segundo</em> clique. <strong>Use só em campos de texto, nunca em botões</strong>: um botão dispararia duas vezes.</li>
     </ul>
     <p>O Clicker tem o próprio <strong>Game move</strong>, independente deste interruptor.</p>

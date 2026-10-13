@@ -960,10 +960,10 @@
       <thead><tr><th>Tarefa</th><th>Como</th></tr></thead>
       <tbody>
         <tr><td><strong>Selecionar</strong></td><td>Clique · <span class="kbd">Ctrl</span>+clique alterna · <span class="kbd">Shift</span>+clique estende o intervalo.</td></tr>
-        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula <strong>Delay</strong> ou <strong>Notes</strong>, no texto <strong>x, y</strong> de um clique ou na tecla de um <strong>KeyDown</strong>/<strong>KeyUp</strong> <span class="ver-next">(x, y e tecla: a partir da versão 2.45.2)</span> e edite ali mesmo: <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela. Na tecla, a próxima tecla apertada vira a nova — <span class="kbd">Esc</span> inclusive; clicar fora cancela. O resto da linha só seleciona.</td></tr>
+        <tr><td><strong>Editar na linha</strong></td><td>Clique na célula <strong>Delay</strong> ou <strong>Notes</strong>, no texto <strong>x, y</strong> de um clique ou na tecla de um <strong>KeyDown</strong>/<strong>KeyUp</strong> <span class="ver-next">(x, y e tecla: a partir da versão 2.46.0)</span> e edite ali mesmo: <span class="kbd">Enter</span> confirma, <span class="kbd">Esc</span> cancela. Na tecla, a próxima tecla apertada vira a nova — <span class="kbd">Esc</span> inclusive; clicar fora cancela. O resto da linha só seleciona.</td></tr>
         <tr><td><strong>Reordenar</strong></td><td>Arraste, ou <span class="kbd">Alt</span>+<span class="kbd">↑</span> / <span class="kbd">Alt</span>+<span class="kbd">↓</span>.</td></tr>
         <tr><td><strong>Pular uma linha</strong></td><td>Desmarque a caixa — fica na lista, não roda.</td></tr>
-        <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Delay, X/Y, Notes, Move, Skip, Delete. Em Delay e X/Y, <strong>Set</strong> define o valor e <strong>Add</strong> soma — negativo subtrai, e o Delay para em 0 <span class="ver-next">(a partir da versão 2.45.2)</span>. Em Notes, <strong>Clear</strong> apaga as notas. Campo vazio cancela.</td></tr>
+        <tr><td><strong>Editar em massa</strong></td><td>Com várias selecionadas: Delay, X/Y, Notes, Move, Skip, Delete. Em Delay e X/Y, <strong>Set</strong> define o valor e <strong>Add</strong> soma — negativo subtrai, e o Delay para em 0 <span class="ver-next">(a partir da versão 2.46.0)</span>. Em Notes, <strong>Clear</strong> apaga as notas. Campo vazio cancela.</td></tr>
         <tr><td><strong>Formulário completo</strong></td><td>Clique no <strong>lápis</strong> na borda direita da linha — abre o painel com todos os campos. Também por <span class="kbd">Enter</span> (linha selecionada) ou botão direito → <strong>Edit</strong>. Durante um run os três somem juntos <span class="ver-next">(a partir da versão 2.38.0)</span>.</td></tr>
       </tbody>
     </table>
@@ -1041,7 +1041,7 @@
 
   <div class="subsec">
     <h3 id="p2-referencia-de-acoes">Referência de ações</h3>
-    <p>Quase tudo entra pela barra acima da grade. <strong>Run Profile</strong>, <strong>Copy to Slot</strong>, <strong>Loop</strong> e <strong>Assert</strong> ficam no último botão dela, o menu <strong>More actions</strong> <span class="ver-next">(a partir da versão 2.45.2)</span>.</p>
+    <p>Quase tudo entra pela barra acima da grade. <strong>Run Profile</strong>, <strong>Copy to Slot</strong>, <strong>Loop</strong> e <strong>Assert</strong> ficam no último botão dela, o menu <strong>More actions</strong> <span class="ver-next">(a partir da versão 2.46.0)</span>.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Ação</th><th>O que faz</th></tr></thead>
@@ -1060,7 +1060,7 @@
           <tr><td><strong>Copy to Slot</strong></td><td>Copia a seleção atual para um slot, lido com <span class="tok">{clip:nome}</span> — <a class="xref" href="#p5">Parte 5</a>.</td></tr>
           <tr><td><strong>Pause</strong></td><td>Para até uma hotkey de retomada ou um timeout — <a class="xref" href="#p7">Parte 7</a>.</td></tr>
           <tr><td><strong>Wait Image / Wait Pixel Color</strong></td><td>Esperam a tela ficar pronta — <a class="xref" href="#p7">Parte 7</a>.</td></tr>
-          <tr><td><strong>Wait Text</strong> <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>Espera um texto aparecer, sumir ou mudar numa região da tela — <a class="xref" href="#p7-wait-for-text-ler-a-tela">Parte 7</a>.</td></tr>
+          <tr><td><strong>Wait Text</strong> <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>Espera um texto aparecer, sumir ou mudar numa região da tela — <a class="xref" href="#p7-wait-for-text-ler-a-tela">Parte 7</a>.</td></tr>
           <tr><td><strong>Run Profile</strong></td><td>Executa outro perfil como subpasso. Ciclos e mais de 5 níveis são bloqueados.</td></tr>
           <tr><td><strong>Activate Window</strong></td><td>Activate / Maximize / Minimize / Close noutra janela — <a class="xref" href="#p8">Parte 8</a>.</td></tr>
           <tr><td><strong>If / Else If / Else / EndIf · Assert</strong></td><td>Blocos condicionais e exigências — <a class="xref" href="#p6">Parte 6</a>.</td></tr>
@@ -1824,7 +1824,7 @@ maria@email.com
       <li><span class="tok">{var:nome}</span> aceita modificadores: <span class="tok">{var:cliente:upper}</span>.</li>
       <li><strong>Modo Cycle:</strong> o valor vira uma lista (um item por linha) e cada execução guarda o <strong>próximo</strong>, voltando ao início no fim. A posição fica <strong>em disco</strong>.</li>
       <li><strong>Modo Add:</strong> soma o valor ao que a variável guarda (vazia conta como 0); negativo subtrai. É o contador do While — <code>Set Variable · i · Add · 1</code> dentro do bloco.</li>
-      <li><strong>Modo Screen</strong> <span class="ver-next">(a partir da versão 2.47.0)</span>: guarda o texto de uma região da tela — ou, em <strong>Read As → Number</strong>, o primeiro número dela. <strong>Wait Up To</strong> espera até algo ser lido; <code>0</code> lê uma vez. Nada lido apaga a variável. Os campos são os do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>.</li>
+      <li><strong>Modo Screen</strong> <span class="ver-next">(a partir da versão 2.46.0)</span>: guarda o texto de uma região da tela — ou, em <strong>Read As → Number</strong>, o primeiro número dela. <strong>Wait Up To</strong> espera até algo ser lido; <code>0</code> lê uma vez. Nada lido apaga a variável. Os campos são os do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>.</li>
     </ul>
   </div>
 
@@ -1991,7 +1991,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <p>Todos funcionam do mesmo jeito — o que muda é <em>o que</em> o If verifica:</p>
     <div class="cards">
       <div class="card"><h4>If Image Found</h4><p>Uma imagem de referência está visível na tela?</p><div class="card-ex">Ex.: o ícone de "salvo" apareceu?</div></div>
-      <div class="card"><h4>If Screen Text <span class="ver-next">(a partir da versão 2.47.0)</span></h4><p>Um texto está numa região da tela — ou o número dela é = ≠ &gt; &lt; um valor? Mesmos campos do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>.</p><div class="card-ex">Ex.: o HUD mostra HP &lt; 30? Use a poção.</div></div>
+      <div class="card"><h4>If Screen Text <span class="ver-next">(a partir da versão 2.46.0)</span></h4><p>Um texto está numa região da tela — ou o número dela é = ≠ &gt; &lt; um valor? Mesmos campos do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>.</p><div class="card-ex">Ex.: o HUD mostra HP &lt; 30? Use a poção.</div></div>
       <div class="card"><h4>If Pixel Color Match</h4><p>O pixel na posição X,Y tem determinada cor (com tolerância)?</p><div class="card-ex">Ex.: o botão liga/desliga está verde? Então pule o clique.</div></div>
       <div class="card"><h4>If Window Open</h4><p>Existe uma janela daquele processo/título? Pode exigir que esteja em primeiro plano.</p><div class="card-ex">Ex.: o Bloco de Notas está aberto?</div></div>
       <div class="card"><h4>If Clipboard</h4><p>O texto copiado contém / é igual a / bate com um padrão (regex)?</p><div class="card-ex">Ex.: regex ^\d{11}$ — o que copiei é um CPF?</div></div>
@@ -2321,7 +2321,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <div class="subsec">
-    <h3 id="p7-wait-for-text-ler-a-tela">Wait for Text — ler a tela <span class="ver-next">(a partir da versão 2.47.0)</span></h3>
+    <h3 id="p7-wait-for-text-ler-a-tela">Wait for Text — ler a tela <span class="ver-next">(a partir da versão 2.46.0)</span></h3>
     <p>Barra → <strong>Wait ▾</strong> → <strong>Wait for Text</strong> → arraste um retângulo em volta do texto. O app lê o recorte, preenche <strong>Text</strong> com a primeira linha em <strong>Contains</strong> e abre o editor. <strong>Test read</strong> confere contra a tela agora.</p>
     <div class="tbl-wrap">
       <table>
@@ -2337,7 +2337,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         </tbody>
       </table>
     </div>
-    <p>O <strong>Test read</strong> mostra o que foi lido, se casou, o tempo e a imagem que o reconhecedor recebeu. <strong>Use this text</strong> leva a leitura para o campo. Perfil com linhas de texto de tela <strong>exige a 2.47.0</strong> na importação.</p>
+    <p>O <strong>Test read</strong> mostra o que foi lido, se casou, o tempo e a imagem que o reconhecedor recebeu. <strong>Use this text</strong> leva a leitura para o campo. Perfil com linhas de texto de tela <strong>exige a 2.46.0</strong> na importação.</p>
     <div class="callout co-rule">
       <div class="co-icon">🔤</div>
       <div>
@@ -2500,7 +2500,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <tbody>
         <tr><td><strong>Interval</strong></td><td>A cada N segundos, contando <strong>do último disparo real</strong> — sobrevive a fechar o app. Armar às 9h47 com 5 min dá 9h52, 9h57…</td></tr>
         <tr><td><strong>Schedule</strong></td><td>Num horário <code>HH:mm</code>, nos dias escolhidos (nenhum dia aceso = todos). Conta pelo relógio: 08:00 é 08:00.</td></tr>
-        <tr><td><strong>Condition</strong></td><td>Quando a condição <strong>fica verdadeira</strong>. São sete, e no seletor elas aparecem com estes nomes: <strong>Window open</strong> (janela abre), <strong>Process running</strong> (processo inicia), <strong>File exists</strong> (arquivo aparece), <strong>Pixel color</strong> (pixel bate), <strong>Image on screen</strong> (imagem aparece), <strong>Text on screen</strong> (texto aparece) <span class="ver-next">(a partir da versão 2.47.0)</span> e <strong>Clipboard changed</strong> (clipboard muda).</td></tr>
+        <tr><td><strong>Condition</strong></td><td>Quando a condição <strong>fica verdadeira</strong>. São sete, e no seletor elas aparecem com estes nomes: <strong>Window open</strong> (janela abre), <strong>Process running</strong> (processo inicia), <strong>File exists</strong> (arquivo aparece), <strong>Pixel color</strong> (pixel bate), <strong>Image on screen</strong> (imagem aparece), <strong>Text on screen</strong> (texto aparece) <span class="ver-next">(a partir da versão 2.46.0)</span> e <strong>Clipboard changed</strong> (clipboard muda).</td></tr>
       </tbody>
     </table>
   </div>
@@ -2522,7 +2522,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Condição só dispara na virada</strong> — precisa voltar a ser falsa antes do próximo disparo. <strong>Continuous</strong> repete enquanto verdadeira. Cooldown padrão <strong>30 s</strong>, ou <strong>5 s no Clipboard changed</strong>; <code>0</code> significa "use o padrão do tipo".</li>
       <li><strong>Check every</strong> — o custo do vigia é por checagem. <code>0</code> usa o padrão (250 ms pixel, 500 ms clipboard, 1 s o resto). Vigia de <em>imagem</em> captura a tela inteira toda vez: 1 s → 5 s corta o custo em cinco.</li>
       <li><strong>Um vigia pode se aposentar sozinho</strong> — imagem que sumiu do disco, cor inválida, regex de título que não compila. Ele segue marcado como <strong>Armed</strong>, então o app <strong>avisa por um balão</strong> — e <span class="ver-next">(a partir da versão 2.45.0)</span> também por um som e por um aviso na janela do app, guardado até ela aparecer se estiver na bandeja.</li>
-      <li><strong>Text on screen exige região de busca</strong> <span class="ver-next">(a partir da versão 2.47.0)</span> — ler a tela inteira a cada checagem pesa demais. O editor tem os campos e o <strong>Test read</strong> do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>, e o vigia checa a cada 1 s.</li>
+      <li><strong>Text on screen exige região de busca</strong> <span class="ver-next">(a partir da versão 2.46.0)</span> — ler a tela inteira a cada checagem pesa demais. O editor tem os campos e o <strong>Test read</strong> do <a class="xref" href="#p7-wait-for-text-ler-a-tela">Wait for Text</a>, e o vigia checa a cada 1 s.</li>
       <li><strong>Reset counters</strong> — os contadores de disparo e de pulo são totais de sempre. O botão zera os <em>daquela</em> automação e <strong>não</strong> mexe no próximo horário nem no intervalo em contagem.</li>
     </ul>
   </div>
@@ -2583,7 +2583,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
 
   <div class="subsec">
     <h3 id="p9-vigia-que-segue-a-janela">Vigia que segue a janela <span class="ver-next">(a partir da versão 2.43.0)</span></h3>
-    <p>Nas condições <strong>Pixel color</strong>, <strong>Image on screen</strong> e <strong>Text on screen</strong> <span class="ver-next">(a partir da versão 2.47.0)</span>, o interruptor <strong>Relative to a window</strong> mede o ponto — ou a região de busca — a partir do canto da janela, não da tela. Ligue e escolha a janela nos campos que aparecem.</p>
+    <p>Nas condições <strong>Pixel color</strong>, <strong>Image on screen</strong> e <strong>Text on screen</strong> <span class="ver-next">(a partir da versão 2.46.0)</span>, o interruptor <strong>Relative to a window</strong> mede o ponto — ou a região de busca — a partir do canto da janela, não da tela. Ligue e escolha a janela nos campos que aparecem.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Situação</th><th>O que o vigia faz</th></tr></thead>
@@ -2961,11 +2961,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <tr><td><span class="kbd">Ctrl</span>+<span class="kbd">PgDn</span></td><td>Reproduzir / parar</td><td><span class="kbd">Ins</span></td><td>Trazer o app para frente</td></tr>
           <tr><td><span class="kbd">Pause</span></td><td>Chave-mestra — <a class="xref" href="#p3-o-que-a-chave-mestra-desliga">o que ela desliga</a></td><td><span class="kbd">Win</span>+<span class="kbd">Ctrl</span>+<span class="kbd">C</span></td><td>Capture Slot</td></tr>
           <tr><td><span class="kbd">PgDn</span> / <span class="kbd">PgUp</span></td><td>Clicker: iniciar / pausar</td><td><span class="kbd">Ctrl</span>+<span class="kbd">K</span></td><td>Paleta de comandos</td></tr>
-          <tr><td><span class="kbd">Win</span>+<span class="kbd">F12</span> <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>Screen Text: texto da tela → clipboard</td><td></td><td></td></tr>
+          <tr><td><span class="kbd">Win</span>+<span class="kbd">F12</span> <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>Screen Text: texto da tela → clipboard</td><td></td><td></td></tr>
         </tbody>
       </table>
     </div>
-    <p><strong>Screen Text</strong> <span class="ver-next">(a partir da versão 2.47.0)</span>, em Settings → Keys, lê uma região da tela e põe o texto no clipboard. Em <strong>Text Region</strong>, <em>Ask</em> pede um retângulo a cada vez; clicar fixa uma região, e o <strong>×</strong> volta ao Ask. Não dispara durante replay ou gravação.</p>
+    <p><strong>Screen Text</strong> <span class="ver-next">(a partir da versão 2.46.0)</span>, em Settings → Keys, lê uma região da tela e põe o texto no clipboard. Em <strong>Text Region</strong>, <em>Ask</em> pede um retângulo a cada vez; clicar fixa uma região, e o <strong>×</strong> volta ao Ask. Não dispara durante replay ou gravação.</p>
     <p>Todos menos o <span class="kbd">Ctrl</span>+<span class="kbd">K</span> são remapeáveis em Settings → Keys; apagar o campo desativa o atalho. As dicas da interface podem ficar em <strong>Português (BR)</strong> (Settings → App → Interface) — nomes de ações e menus seguem em inglês.</p>
   </div>
 
@@ -3014,7 +3014,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
           <tr><td><strong>Notifications</strong></td><td><strong>Flash on Replay End</strong></td><td>Pisca ao terminar uma execução (desligado).</td></tr>
           <tr><td><strong>Notifications</strong></td><td><strong>Sound on Replay End</strong></td><td>Toca um som ao terminar (desligado).</td></tr>
           <tr><td><strong>Automation</strong></td><td><strong>Enable Automations</strong></td><td><strong>Chave-mestra das automações</strong> (ligada). Desligada, <em>nenhuma</em> automação dispara, por mais armada que esteja — e o interruptor também está no menu da bandeja.</td></tr>
-          <tr><td><strong>Screen Text</strong> <span class="ver-next">(a partir da versão 2.47.0)</span></td><td><strong>Language</strong></td><td>Idioma do reconhecedor de texto. <em>Auto</em> segue os idiomas do Windows; a lista traz os pacotes instalados. Sem nenhum, aparece <strong>None installed</strong> — veja a <a class="xref" href="#p15">Parte 15</a>.</td></tr>
+          <tr><td><strong>Screen Text</strong> <span class="ver-next">(a partir da versão 2.46.0)</span></td><td><strong>Language</strong></td><td>Idioma do reconhecedor de texto. <em>Auto</em> segue os idiomas do Windows; a lista traz os pacotes instalados. Sem nenhum, aparece <strong>None installed</strong> — veja a <a class="xref" href="#p15">Parte 15</a>.</td></tr>
           <tr><td><strong>Interface</strong></td><td><strong>Tooltips</strong></td><td>Idioma das dicas: <em>English</em> ou <em>Português (BR)</em>. Os nomes de ações, menus e campos seguem em inglês, como na interface.</td></tr>
         </tbody>
       </table>
@@ -3216,11 +3216,11 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
         <tr><td>"O dropnum não removeu o 1x"</td><td>O texto chega ao dropnum começando com espaço, ou o sufixo está sem o espaço final</td><td>Use <code>after:&nbsp;-&nbsp;</code> (com espaços) e sufixo <code>x&nbsp;</code></td></tr>
         <tr><td>"{var:...} veio vazio"</td><td>Nome com espaço/acento, ou nunca definida nesta execução</td><td>Nomes só com letras, números e <code>_</code></td></tr>
         <tr><td>O If de imagem nunca dá sim</td><td>Confiança em 100%</td><td>Baixe para 80–90%</td></tr>
-        <tr><td>"No OCR language installed" <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>O Windows não tem nenhum pacote de reconhecimento de texto</td><td>Configurações do Windows → Hora e idioma → Idioma e região → adicione um idioma com "Reconhecimento óptico de caracteres"</td></tr>
-        <tr><td>O Test read volta vazio, ou o atalho diz "No text found in that region" <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>Região larga demais, ou texto pequeno e de pouco contraste</td><td>Recorte colado no texto; em jogo, pegue a cor em <strong>Text Color</strong></td></tr>
-        <tr><td>O HUD do jogo não é lido <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>O cenário atrás do texto confunde o reconhecedor</td><td><strong>Text Color</strong> com a cor do texto; se ela varia, suba a <strong>Color Tolerance</strong></td></tr>
-        <tr><td>Num jogo em tela cheia, a leitura vem sempre vazia <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>Tela cheia exclusiva pode entregar uma captura preta — o Wait Image sofre o mesmo</td><td>Rode o jogo em janela sem borda</td></tr>
-        <tr><td>O número lido veio errado <span class="ver-next">(a partir da versão 2.47.0)</span></td><td>O reconhecedor troca letra por dígito. Dentro de um número o app corrige O→0, l→1, S→5, B→8, mas um S <em>no começo</em> vira cifrão: "S10" é 10</td><td>Confira no Test read; região justa e <strong>Text Color</strong> resolvem a maioria</td></tr>
+        <tr><td>"No OCR language installed" <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>O Windows não tem nenhum pacote de reconhecimento de texto</td><td>Configurações do Windows → Hora e idioma → Idioma e região → adicione um idioma com "Reconhecimento óptico de caracteres"</td></tr>
+        <tr><td>O Test read volta vazio, ou o atalho diz "No text found in that region" <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>Região larga demais, ou texto pequeno e de pouco contraste</td><td>Recorte colado no texto; em jogo, pegue a cor em <strong>Text Color</strong></td></tr>
+        <tr><td>O HUD do jogo não é lido <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>O cenário atrás do texto confunde o reconhecedor</td><td><strong>Text Color</strong> com a cor do texto; se ela varia, suba a <strong>Color Tolerance</strong></td></tr>
+        <tr><td>Num jogo em tela cheia, a leitura vem sempre vazia <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>Tela cheia exclusiva pode entregar uma captura preta — o Wait Image sofre o mesmo</td><td>Rode o jogo em janela sem borda</td></tr>
+        <tr><td>O número lido veio errado <span class="ver-next">(a partir da versão 2.46.0)</span></td><td>O reconhecedor troca letra por dígito. Dentro de um número o app corrige O→0, l→1, S→5, B→8, mas um S <em>no começo</em> vira cifrão: "S10" é 10</td><td>Confira no Test read; região justa e <strong>Text Color</strong> resolvem a maioria</td></tr>
         <tr><td>O Wait Image deixa o PC pesado enquanto espera</td><td>Sem região de busca, cada verificação varre a tela inteira (~440 ms, contra ~4 ms numa região)</td><td>Defina a <strong>Search region</strong> — o Test match já sugere uma</td></tr>
         <tr><td>Um If de navegador "decidiu errado", sem erro nenhum</td><td>Extensão desconectada: a condição lê "não encontrado", igual a um elemento realmente ausente, e a macro segue pelo senão</td><td>Confira o indicador na barra de status; ação de navegador falharia alto, condição não (<a class="xref" href="#p11">Parte 11</a>)</td></tr>
         <tr><td>Recarreguei a extensão e, numa aba que já estava aberta, as linhas de navegador falham ou decidem errado</td><td>A recarga não alcança páginas já abertas — e o indicador da barra mostra <strong>conectado</strong>, então não é queda de conexão</td><td>Dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> em cada aba que a macro usa (<a class="xref" href="#p11">Parte 11</a>)</td></tr>
@@ -3253,7 +3253,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   </div>
 
   <footer class="site-foot">
-    <p class="footer-note">Manual do TrueReplayer · versão 2.45.1 · setembro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
+    <p class="footer-note">Manual do TrueReplayer · versão 2.46.0 · outubro de 2026. Nomes de ações, menus e campos aparecem em inglês, como na interface; as dicas do app podem ser exibidas em português em Settings → App → Interface. Tokens funcionam no Send Text e no Type Text.</p>
     <div class="site-foot-links">
       <a class="pill" href="#top"><svg class="ico" aria-hidden="true"><use href="#i-up"/></svg>Voltar ao topo</a>
       <a class="pill" href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest" target="_blank" rel="noopener"><svg class="ico" aria-hidden="true"><use href="#i-down"/></svg>Baixar a versão mais recente</a>

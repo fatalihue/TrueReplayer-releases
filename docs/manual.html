@@ -837,10 +837,10 @@
   <figure class="shot">
     <div class="shot-frame">
       <img src="img/main.png" alt="A janela principal do TrueReplayer: painel de perfis à esquerda, grade de ações no centro, configurações do perfil à direita e a barra Macro/Clicker, Recording e Replay embaixo." width="1166" height="773" decoding="async">
-      <span class="shot-tag" style="left:12%;top:17.4%" aria-hidden="true">1</span>
-      <span class="shot-tag" style="left:34.3%;top:13.6%" aria-hidden="true">2</span>
-      <span class="shot-tag" style="left:92.5%;top:14.8%" aria-hidden="true">3</span>
-      <span class="shot-tag" style="left:60%;top:94%" aria-hidden="true">4</span>
+      <span class="shot-tag" style="left:12%;top:17.3%" aria-hidden="true">1</span>
+      <span class="shot-tag" style="left:34.3%;top:13.5%" aria-hidden="true">2</span>
+      <span class="shot-tag" style="left:93%;top:14.7%" aria-hidden="true">3</span>
+      <span class="shot-tag" style="left:58.4%;top:94%" aria-hidden="true">4</span>
     </div>
     <figcaption><b class="n">1</b> Profiles — pastas e perfis, cada um com sua hotkey · <b class="n">2</b> a grade de ações, uma linha por passo · <b class="n">3</b> as configurações do perfil ativo: Delay, Loops, gravação · <b class="n">4</b> a barra: Macro ou Clicker, Recording, Replay.</figcaption>
   </figure>
@@ -940,7 +940,7 @@
         <p>O mínimo de Loops é 1. Para rodar até você mandar parar, use os modos de disparo <strong>While pressed</strong> ou <strong>Toggle</strong> na hotkey (<a class="xref" href="#p3">Parte 3</a>).</p>
       </div>
     </div>
-    <p>A pílula de loop na barra mostra o que a <strong>próxima execução</strong> fará: <code>3×</code>, <code>por linha</code> (Data Loop) ou <code>∞</code>. Contorno tracejado âmbar = você mexeu nas configurações e ainda não salvou.</p>
+    <p>A pílula de loop na barra mostra o que a <strong>próxima execução</strong> fará: <code>3×</code>, <code>per row</code> (Data Loop) ou <code>∞</code>. Contorno tracejado âmbar = você mexeu nas configurações e ainda não salvou.</p>
   </div>
 </section>
 
@@ -1079,7 +1079,7 @@
     <p>O ícone de <strong>mouse</strong> na barra abre o <strong>Insert click</strong> <span class="ver-next">(a partir da versão 2.41.0)</span>. Ele monta a linha inteira antes de criá-la — <strong>Cancel</strong> não deixa nada para trás. A linha nasce na seleção, ou no fim da lista.</p>
     <figure class="shot shot-narrow" style="--shot-w:400px">
       <div class="shot-frame">
-        <img src="img/insert-click.webp" alt="Diálogo Insert Click com Mode Click, botão Left, Clicks Double, posição This point em X 1742 e Y 388, Times 5 e Gap 600 ms, e a faixa Double-clicks at 1742, 388 · 5×, 600 ms apart." width="436" height="671" loading="lazy" decoding="async">
+        <img src="img/insert-click.webp" alt="Diálogo Insert click com Mode Click, botão Left, Clicks Double, posição This point em X 1742 e Y 388, Times 5 e Gap 600 ms, e a faixa Double-clicks at 1742, 388 · 5×, 600 ms apart." width="436" height="671" loading="lazy" decoding="async">
       </div>
       <figcaption>Um duplo clique em 1742, 388, repetido cinco vezes. A faixa roxa lê a linha antes de criá-la; <strong>Right</strong> e <strong>Middle</strong> ficam apagados porque Double é do botão esquerdo.</figcaption>
     </figure>
@@ -1102,7 +1102,7 @@
       <div class="co-icon">🖱️</div>
       <div>
         <p><span class="co-title">Montar um arrasto à mão.</span> Em <strong>Two rows</strong> aparece o campo <strong>Release at</strong>: digite <strong>X</strong> e <strong>Y</strong>, ou escolha o ponto na tela pelo botão ao lado. Com os dois preenchidos a linha vira um arrasto: aperta em A, solta em B.</p>
-        <p>Deixe o Release at vazio e as duas metades ficam no mesmo ponto — é a divisão simples. <strong>Um eixo só bloqueia o Add</strong>, e a nota abaixo do campo diz isso. E um arrasto <strong>sobrevive</strong> a um <em>Convert actions to combined</em> da paleta: pontos diferentes não se juntam numa linha só.</p>
+        <p>Deixe o Release at vazio e as duas metades ficam no mesmo ponto — é a divisão simples. <strong>Um eixo só bloqueia o botão de criar a linha</strong>, e a nota abaixo do campo diz isso. E um arrasto <strong>sobrevive</strong> a um <em>Convert actions to combined</em> da paleta: pontos diferentes não se juntam numa linha só.</p>
       </div>
     </div>
     <p>A faixa no rodapé lê a linha em voz de gente: <em>“Double-clicks at 1742, 388 · 5×, 600 ms apart.”</em> Sem o ponto ela fica cinza e diz o que falta. Vermelha só num caso: <strong>Release at</strong> com um número só.</p>
@@ -1369,7 +1369,7 @@
     <p>O editor <strong>Insert text</strong> mostra uma paleta de <strong>chips</strong> (Clipboard · Values · Keys &amp; timing · Run state): clicar insere o token pronto. Pelo teclado, digite <span class="kbd">{</span> para abrir a mesma lista, filtrada pelo que vier depois. Confirme a ação com <span class="kbd">Ctrl</span>+<span class="kbd">Enter</span>; o <span class="kbd">Enter</span> sozinho pula linha.</p>
     <figure class="shot">
       <div class="shot-frame">
-        <img src="img/insert-text.webp" alt="Editor Insert Text com uma mensagem em que três tokens aparecem como chips (Var:cliente, Clipboard:trim e Date), a barra com Paste e Type e o seletor Rich, Markdown, Discord e Plain, e a paleta de tokens à direita." width="904" height="652" loading="lazy" decoding="async">
+        <img src="img/insert-text.webp" alt="Editor Insert text com uma mensagem em que três tokens aparecem como chips (Var:cliente, Clipboard:trim e Date), a barra com Paste e Type e o seletor Rich, Markdown, Discord e Plain, e a paleta de tokens à direita." width="904" height="652" loading="lazy" decoding="async">
       </div>
       <figcaption>Os tokens digitados viram chips. Na barra, <strong>Paste</strong> / <strong>Type</strong> e o seletor <strong>Delivery</strong>; à direita, a paleta.</figcaption>
     </figure>
@@ -1652,7 +1652,7 @@ maria@email.com
     </div>
 
     <h4 style="margin-top:26px">Cortar num dois-pontos</h4>
-    <p>O <code>:</code> separa a cadeia, então para usá-lo como marcador ele é gravado <strong>em dobro</strong> (<code>::</code>). No campo <strong>Cortar em</strong> do construtor você digita <code>&nbsp;:&nbsp;</code> normalmente — a dobra é só a forma de gravar. Montando à mão:</p>
+    <p>O <code>:</code> separa a cadeia, então para usá-lo como marcador ele é gravado <strong>em dobro</strong> (<code>::</code>). Na etapa <strong>Split at</strong> do construtor você digita <code>&nbsp;:&nbsp;</code> normalmente — a dobra é só a forma de gravar. Montando à mão:</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Você quer cortar em</th><th>Escreva</th></tr></thead>
@@ -1663,7 +1663,7 @@ maria@email.com
         </tbody>
       </table>
     </div>
-    <p>Vale para os quatro cortes, para <code>dropnum</code> e para <code>default</code>. <strong>Exceção: o <code>join</code> e o <code>replace</code></strong> — ali o dobrado já significa "juntar sem separador nenhum", então o campo Juntar com continua removendo o <code>:</code>.</p>
+    <p>Vale para os quatro cortes, para <code>dropnum</code> e para <code>default</code>. <strong>Exceção: o <code>join</code> e o <code>replace</code></strong> — ali o dobrado já significa "juntar sem separador nenhum", então o campo <strong>Join with</strong> continua removendo o <code>:</code>.</p>
 
     <h4 style="margin-top:26px">Removendo quantidade do começo: <code>dropnum</code></h4>
     <p>Texto que às vezes vem com contador na frente — <code>1x Caixa de Sapato</code> num dia, <code>Caixa de Sapato</code> no outro. O <code>dropnum:X</code> resolve: <strong>se</strong> começa com números seguidos de X, remove os dois; <strong>senão, não mexe</strong>.</p>
@@ -1720,7 +1720,7 @@ maria@email.com
       <div class="co-icon">🛠️</div>
       <div>
         <p><span class="co-title">Você não precisa montar isso de cabeça.</span></p>
-    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>. São etapas numeradas com <strong>prévia ao vivo</strong>: Trim, Cortar, Drop count, Linha/palavra, Ordenar, Juntar, Clean up, Count &amp; pad, Case. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
+    <p>O chip <strong>Advanced…</strong>, ou um clique num chip inserido, abre o <strong>construtor</strong>. São etapas numeradas com <strong>prévia ao vivo</strong>: Sequence (só no Clipboard), Trim, Replace, Split at, Drop count, Lines, Extract, Limit length, Clean up, Count &amp; pad, Case e Default. Elas aplicam nessa ordem fixa; modificador desconhecido é ignorado.</p>
       </div>
     </div>
   </div>
@@ -2262,6 +2262,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
       <li><strong>Timeout + On timeout</strong> — quanto esperar e o que fazer se estourar: <strong>Halt</strong> para a macro, <strong>Continue</strong> segue.</li>
       <li><strong>Click on found location</strong> — clica direto no ponto encontrado, poupando uma ação de clique.</li>
       <li><strong>Search region</strong> — o pedaço da tela onde procurar, pelo botão <strong>Configure search region</strong>. Sem região, a busca é na tela inteira, e isso custa caro nos dois sentidos (veja abaixo).</li>
+<li><strong>Ajustar o recorte</strong> — clique na miniatura da imagem para abrir o <strong>Crop reference image</strong> e arraste o retângulo ou as alças. Pelo teclado <span class="ver-next">(a partir da versão NEXT)</span>: <span class="kbd">Tab</span> até o retângulo; setas movem, <span class="kbd">Ctrl</span>+setas redimensionam, e com <span class="kbd">Shift</span> o passo é de 10 px.</li>
     </ul>
 
     <div class="callout co-warn">
@@ -2752,7 +2753,7 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <h3 id="p11-run-report-qual-passo-quebrou-e-por-que">Run report — qual passo quebrou, e por quê</h3>
     <p><span class="kbd">Ctrl</span>+<span class="kbd">K</span> → <strong>Run Report</strong>: a última execução passo a passo, com o que cada um mirou e quanto levou. Duas coisas que só ele mostra:</p>
     <ul>
-      <li><strong>"Casou por reserva"</strong> — o seletor que <em>você</em> escolheu já não casa e a macro acertou pelo plano B. O passo <em>passou</em>, mas está a uma mudança do site de parar: re-escolha o elemento.</li>
+      <li><strong>matched via fallback</strong> — o seletor que <em>você</em> escolheu já não casa e a macro acertou pelo plano B. O passo <em>passou</em>, mas está a uma mudança do site de parar: re-escolha o elemento.</li>
       <li><strong>Por que falhou, em texto</strong> — não achou; achou mas invisível; achou mas desabilitado; tem algo por cima; seletor inválido; página não carregou.</li>
       <li><strong>Run Profile que não rodou nada</strong> — perfil <em>desabilitado</em>, inexistente, sem nome escolhido, ou que faria a corrente voltar nela mesma. A linha aparece como <em>skipped</em> com o motivo escrito, inclusive qual corrente laçou.</li>
     </ul>
@@ -2781,16 +2782,17 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
   <div class="subsec">
     <h3 id="p12-colocando-dados-na-tabela">Colocando dados na tabela</h3>
     <p>Barra → ícone de tabela. Três caminhos: <strong>Paste / bulk edit…</strong> (cole do Excel), <strong>Import CSV…</strong> (delimitador detectado sozinho) ou editar direto na grade. Cabeçalhos aceitam espaços, acentos e pontuação — <span class="tok">{row:Nome Completo}</span> funciona. Só <code>{</code>, <code>}</code> e <code>:</code> não entram: o cabeçalho ganha ⚠, e a varinha conserta.</p>
+<p>O <strong>Import CSV…</strong> lê o CSV comum do Excel em português com os acentos certos <span class="ver-next">(a partir da versão NEXT)</span>.</p>
     <div class="tbl-wrap">
       <table>
         <thead><tr><th>Modo</th><th>O que faz</th></tr></thead>
         <tbody>
           <tr><td><strong>Replace table</strong></td><td>Troca a tabela inteira. Abre preenchido com a atual — é também o caminho da edição em massa: conserte o texto e aplique.</td></tr>
-          <tr><td><strong>Append rows</strong></td><td>Acrescenta linhas, casando as colunas <strong>pelo nome</strong>. Coluna colada que não existe vira coluna nova.</td></tr>
+          <tr><td><strong>Append rows</strong></td><td>Acrescenta linhas, casando as colunas <strong>pelo nome</strong>; coluna colada que não existe vira coluna nova. Com <strong>First row is the header</strong> desligado, preenche <strong>pela posição</strong> — a 1ª coluna colada na 1ª da tabela, e assim por diante <span class="ver-next">(a partir da versão NEXT)</span>.</td></tr>
         </tbody>
       </table>
     </div>
-    <p><strong>Cole junto com a linha de cabeçalho</strong> — é dela que saem os nomes que o Append usa para casar. O painel da direita mostra o que leu antes de você aplicar (<strong>3 columns · 40 rows</strong>), e o botão diz o que vai fazer.</p>
+    <p><strong>Para casar pelo nome, cole junto com a linha de cabeçalho</strong> — é dela que saem os nomes. O painel da direita mostra o que leu antes de você aplicar (<strong>3 columns · 40 rows</strong>), e o botão diz o que vai fazer.</p>
     <p><strong>Célula sobrando vira coluna nova</strong> <span class="ver-next">(a partir da versão 2.38.0)</span>. Linha com mais células que o cabeçalho ganha <code>col3</code>, <code>col4</code>… — o painel avisa antes. Linha mais curta não dá erro: as que faltam ficam vazias.</p>
     <p><strong>Renomeie antes de espalhar o token.</strong> Clique no cabeçalho na grade e escreva o nome de verdade: <code>col3</code> vira <code>preço</code>, e o token vira <span class="tok">{row:preço}</span>. A lista <strong>Columns · tokens</strong>, ao lado da grade, dá o token pronto e quantas ações usam cada coluna. Token sem coluna aparece com ⚠ <code>no column</code> e sai <strong>vazio</strong>.</p>
     <figure class="shot">

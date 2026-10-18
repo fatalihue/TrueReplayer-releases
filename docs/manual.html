@@ -1461,7 +1461,7 @@
           </table>
         </div>
         <p>Para garantir um envio, use um <strong>Click Element</strong> no botão depois do Type Text (<code>text=Enviar</code>): é explícito e aparece no <strong>Run Report</strong>. Para quebrar linha, escreva a quebra no próprio texto da ação.</p>
-    <p><span class="co-title">Depois de atualizar o app, recarregue a extensão.</span> O app já põe a versão nova no disco, mas quem executa é a cópia que o Chrome carregou. Recarregue em <code>chrome://extensions</code> e dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> nas abas que já estavam abertas.</p>
+    <p><span class="co-title">Depois de atualizar o app, recarregue as abas abertas.</span> O app já põe a versão nova no disco, e a extensão se recarrega sozinha ao reconectar <span class="ver-next">(a partir da versão NEXT)</span>. Se o aviso de versão aparecer, recarregue em <code>chrome://extensions</code>. Dê <span class="kbd">Ctrl</span>+<span class="kbd">R</span> nas abas que já estavam abertas.</p>
       </div>
     </div>
 
@@ -2726,6 +2726,18 @@ Código de entrega: <span class="hl">{clip:3}</span><span class="hl">{enter}</sp
     <li><strong>Test action</strong>, no formulário da linha, executa aquele passo <em>agora</em> na aba da frente — é como conferir o seletor sem rodar a macro inteira.</li>
       <li><strong>Em qual aba a macro age:</strong> na que estava na frente <em>quando a execução começou</em>, até o fim. Trocar de aba no meio não leva a macro junto; aba fechada para a macro com <code>TAB_GONE</code>.</li>
   </ul>
+
+  <div class="subsec">
+    <h3 id="p11-conectar-a-extensao">Conectar a extensão</h3>
+    <p>Clique em <strong>"Extension disconnected"</strong> na barra de status <span class="ver-next">(a partir da versão NEXT)</span>. O caminho da pasta da extensão vai para a área de transferência, e o diálogo <strong>Browser extension</strong> mostra os passos:</p>
+    <ol>
+      <li>Abra <code>chrome://extensions</code> (no Edge, <code>edge://extensions</code>).</li>
+      <li>Ative o <strong>Modo do desenvolvedor</strong>.</li>
+      <li>Clique em <strong>Carregar sem compactação</strong> e cole o caminho na barra de endereço da janela.</li>
+    </ol>
+    <p>O mesmo diálogo abre pelo ícone do Chrome na barra, pelo <strong>Browser extension…</strong> da bandeja, por <strong>Connect browser extension</strong> na paleta e pelo <strong>How?</strong> do aviso de versão. <strong>Open folder</strong> abre a pasta no Explorer.</p>
+    <p>A pasta não muda quando o app atualiza: carregue uma vez. Depois de cada atualização a extensão se recarrega sozinha ao reconectar, e as abas que já estavam abertas pedem <span class="kbd">Ctrl</span>+<span class="kbd">R</span>.</p>
+  </div>
 
   <div class="subsec">
     <h3 id="p11-quando-a-extensao-cai">Quando a extensão cai</h3>

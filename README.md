@@ -8,7 +8,7 @@
 
 Este é o repositório de **downloads e documentação**:
 
-📖 **[Manual completo](https://fatalihue.github.io/TrueReplayer-releases/manual.html)** &nbsp;·&nbsp; ⬇️ **[Baixar o instalador](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)**
+📖 **[Manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)** &nbsp;·&nbsp; ⬇️ **[Baixar o instalador](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)**
 
 [![Latest release](https://img.shields.io/github/v/release/fatalihue/TrueReplayer-releases?style=flat-square&color=60CDFF&label=download)](https://github.com/fatalihue/TrueReplayer-releases/releases/latest)
 [![License: MIT](https://img.shields.io/badge/license-MIT-9b8cff?style=flat-square)](LICENSE)
@@ -25,7 +25,7 @@ Grava e reproduz cliques, teclas e rolagem, com esperas, condições, loops, inj
 
 Baixe o **`TrueReplayer-win-Setup.exe`** da [última versão](https://github.com/fatalihue/TrueReplayer-releases/releases/latest) e execute: instala em segundos e passa a se atualizar sozinho.
 
-Do primeiro clique gravado à automação que roda sozinha, está tudo no **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)**.
+Do primeiro clique gravado à automação que roda sozinha, o **[manual](https://fatalihue.github.io/TrueReplayer-releases/manual.html)** mostra o caminho, com telas do próprio app.
 
 ---
 

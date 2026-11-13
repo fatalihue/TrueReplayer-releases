@@ -80,6 +80,13 @@ svg.i{width:18px;height:18px;flex:none;fill:none;stroke:currentColor;stroke-widt
 .dl:hover{filter:brightness(1.08)}
 .dl svg.i{width:16px;height:16px;stroke-width:2}
 .menu{display:none}
+/* A pesquisa no meio da coluna, não no meio do espaço entre a marca e os botões: fora do fluxo, pelo centro da
+   barra (sem o índice ao lado, o da janela; com ele, o da área à direita dele), e os botões vão para a direita. */
+@media (min-width:900px){
+  .search{position:absolute;top:50%;left:50%;width:min(440px,calc(100% - 640px));max-width:none;margin:0;transform:translate(-50%,-50%)}
+  .top-btn.tema{margin-left:auto}
+}
+@media (min-width:1180px){.search{left:calc(var(--index-w) + (100% - var(--index-w)) / 2);width:440px}}
 
 /* ── O índice: o trilho do app ── */
 .layout{display:grid;grid-template-columns:var(--index-w) minmax(0,1fr)}

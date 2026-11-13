@@ -243,6 +243,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
 <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></symbol>
 <symbol id="i-mouse-pointer-click" viewBox="0 0 24 24"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></symbol>
 <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+<symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></symbol>
 <symbol id="i-arrow-right-left" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></symbol>
 <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol>
 <symbol id="i-book-open" viewBox="0 0 24 24"><path d="M12 7v14"/><path d="M3 18a1 1 0 0 1-1-1V4a1 1 0 0 1 1-1h5a4 4 0 0 1 4 4 4 4 0 0 1 4-4h5a1 1 0 0 1 1 1v13a1 1 0 0 1-1 1h-6a3 3 0 0 0-3 3 3 3 0 0 0-3-3z"/></symbol>
@@ -286,6 +287,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
     <li class="ix-li"><a class="ix-ch" href="#p3"><svg class="i" aria-hidden="true"><use href="#i-list-plus"/></svg>O que cabe numa macro</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p4"><svg class="i" aria-hidden="true"><use href="#i-mouse-pointer-click"/></svg>Clicker</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p5"><svg class="i" aria-hidden="true"><use href="#i-zap"/></svg>Automações</a></li>
+    <li class="ix-li"><a class="ix-ch" href="#teclado"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Teclado</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p6"><svg class="i" aria-hidden="true"><use href="#i-arrow-right-left"/></svg>Key Remaps</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p7"><svg class="i" aria-hidden="true"><use href="#i-settings"/></svg>Configurações</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p8"><svg class="i" aria-hidden="true"><use href="#i-book-open"/></svg>Exemplos</a></li>
@@ -319,7 +321,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
   </div></div>
 </figure>
 <ol class="legend">
-  <li><span><b>O trilho</b>: as cinco áreas do app, de <strong>Macros</strong> a <strong>Configurações</strong>.</span></li>
+  <li><span><b>O trilho</b>: as seis áreas do app, de <strong>Macros</strong> a <strong>Configurações</strong>.</span></li>
   <li><span><b>A biblioteca</b>: suas macros, em pastas. As <strong>Fixadas</strong> ficam no topo.</span></li>
   <li><span><b>A lista de passos</b> da macro aberta: um passo por linha, de cima para baixo.</span></li>
   <li><span><b>O Inspector</b>: os detalhes do passo selecionado. O que você muda ali é salvo sozinho.</span></li>
@@ -898,6 +900,31 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
   <p>As automações rodam com o app aberto, mesmo escondido na bandeja. Se outra macro estiver rodando, o disparo espera um pouco e depois é pulado. <strong>Atividade</strong> mostra os disparos e os pulados.</p>
 </section>
 
+<section class="ch" id="teclado" aria-labelledby="teclado-t">
+  <h2 id="teclado-t"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Teclado</h2>
+  <p>No Teclado, cada jogo tem as teclas dele. Com o .exe do jogo na frente, a tecla faz o que você escolheu. Fora do jogo, nada muda.</p>
+  <figure class="shot" data-shot="teclado" style="--w:1114px">
+    <div class="shot-mat"><div class="shot-frame">
+      <button class="shot-open" type="button" aria-label="Ampliar a imagem: a página Teclado">
+        <picture>
+          <source data-tema="claro" srcset="img/tr3/teclado-claro.webp" media="(prefers-color-scheme: light)">
+          <img src="img/tr3/teclado-escuro.webp" width="2228" height="1410" loading="lazy" alt="A página Teclado com o jogo Jogo aberto: a lista de jogos à esquerda, o desenho do teclado com as teclas coloridas pela função e, à direita, a tecla Q, que manda a tecla 1.">
+        </picture>
+      </button>
+    </div></div>
+  </figure>
+  <ol class="steps">
+    <li>Em <strong>Teclado</strong>, clique em <strong>Adicionar</strong> e escolha o jogo pelo .exe dele.</li>
+    <li>Clique numa tecla do desenho. No painel, escolha a função: <strong>Outra tecla</strong>, <strong>Mouse</strong>, <strong>Macro</strong>, <strong>Texto</strong>, <strong>Desligar</strong> ou <strong>Camada</strong>.</li>
+    <li>Abra o jogo. Com ele na frente, a tecla faz o que você escolheu.</li>
+  </ol>
+  <p>A <strong>Camada</strong> é uma tecla que você segura. Enquanto ela está apertada, as teclas usam as funções da <strong>Camada</strong>, e não as da <strong>Base</strong>.</p>
+  <p>Na visão <strong>Mouse</strong>, o botão do meio, os laterais e a roda também ganham funções.</p>
+  <p><strong>Usar</strong> liga e desliga o jogo. O ⋯ do jogo, ou o clique direito nele na lista, tem <strong>Renomear</strong>, <strong>Adicionar outro .exe</strong>, <strong>Travar neste jogo</strong>, <strong>Importar…</strong> e <strong>Excluir</strong>.</p>
+  <p>Travado, o jogo vale com qualquer janela na frente, menos a do app, até você destravar ou fechar o app. <strong>Exportar</strong> grava o jogo e as macros que ele usa num arquivo só.</p>
+  <p>Uma tecla sem função no jogo segue os Key Remaps. Uma tecla com função ganha do remap enquanto o jogo está na frente.</p>
+</section>
+
 <section class="ch" id="p6" aria-labelledby="p6-t">
   <h2 id="p6-t"><svg class="i" aria-hidden="true"><use href="#i-arrow-right-left"/></svg>Key Remaps</h2>
   <p>Um remap faz uma tecla virar outra, um botão do mouse ou nada, em todo lugar ou num app só.</p>
@@ -906,7 +933,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
       <button class="shot-open" type="button" aria-label="Ampliar a imagem: a página Key Remaps">
         <picture>
           <source data-tema="claro" srcset="img/tr3/remaps-claro.webp" media="(prefers-color-scheme: light)">
-          <img src="img/tr3/remaps-escuro.webp" width="2228" height="576" loading="lazy" alt="A página Key Remaps com três remaps: Caps vira Esc só no app jogo, e F1 e Ins não fazem nada só no app planilha.">
+          <img src="img/tr3/remaps-escuro.webp" width="2228" height="648" loading="lazy" alt="A página Key Remaps com três remaps: Caps vira Esc só no app jogo, e F1 e Ins não fazem nada só no app planilha.">
         </picture>
       </button>
     </div></div>
@@ -1145,6 +1172,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
       <tr><td>A macro clica no lugar errado depois que a janela mudou de lugar</td><td>Defina a <strong>Janela-alvo</strong> da macro e ligue <strong>Coordenadas relativas</strong>. Para marcar um ponto de novo, use <strong>Escolher na tela</strong>, no botão direito do passo.</td></tr>
       <tr><td>Fechei a janela e o app continua aberto</td><td>O X esconde o app na bandeja. Para sair, use o ícone da bandeja.</td></tr>
       <tr><td>A macro parou com erro</td><td>O <strong>Run Report</strong> mostra o passo e o motivo. <strong>Rodar de novo</strong> repete.</td></tr>
+      <tr><td>Ao abrir, o aviso <strong>Pasta indisponível</strong></td><td>A pasta em que o app guarda os dados não pode ser usada. Confira se ela, ou o OneDrive ou a unidade de rede em que ela fica, está disponível e abra o app de novo.</td></tr>
     </tbody>
   </table>
 </section>
@@ -1159,7 +1187,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
 <footer class="foot">
   <svg class="logo" aria-hidden="true"><use href="#marca"/></svg>
   <div>
-    <p class="footer-note"><b>Manual do TrueReplayer 3</b> · versão 3.0.4 · novembro de 2026. Passos, condições, tokens e teclas aparecem em inglês, como no app.</p>
+    <p class="footer-note"><b>Manual do TrueReplayer 3</b> · versão 3.1.0 · novembro de 2026. Passos, condições, tokens e teclas aparecem em inglês, como no app.</p>
     <p><a href="manual-tr2.html">Manual do TrueReplayer 2</a> · <a href="https://github.com/fatalihue/TrueReplayer-releases/releases/latest">Baixar o TrueReplayer 3</a></p>
   </div>
 </footer>

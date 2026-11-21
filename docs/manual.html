@@ -252,6 +252,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
 <symbol id="i-list-checks" viewBox="0 0 24 24"><path d="M13 5h8"/><path d="M13 12h8"/><path d="M13 19h8"/><path d="m3 17 2 2 4-4"/><path d="m3 7 2 2 4-4"/></symbol>
 <symbol id="i-mouse-pointer-click" viewBox="0 0 24 24"><path d="M14 4.1 12 6"/><path d="m5.1 8-2.9-.8"/><path d="m6 12-1.9 2"/><path d="M7.2 2.2 8 5.1"/><path d="M9.037 9.69a.498.498 0 0 1 .653-.653l11 4.5a.5.5 0 0 1-.074.949l-4.349 1.041a1 1 0 0 0-.74.739l-1.04 4.35a.5.5 0 0 1-.95.074z"/></symbol>
 <symbol id="i-zap" viewBox="0 0 24 24"><path d="M4 14a1 1 0 0 1-.78-1.63l9.9-10.2a.5.5 0 0 1 .86.46l-1.92 6.02A1 1 0 0 0 13 10h7a1 1 0 0 1 .78 1.63l-9.9 10.2a.5.5 0 0 1-.86-.46l1.92-6.02A1 1 0 0 0 11 14z"/></symbol>
+<symbol id="i-layout-grid" viewBox="0 0 24 24"><rect width="7" height="7" x="3" y="3" rx="1"/><rect width="7" height="7" x="14" y="3" rx="1"/><rect width="7" height="7" x="14" y="14" rx="1"/><rect width="7" height="7" x="3" y="14" rx="1"/></symbol>
 <symbol id="i-keyboard" viewBox="0 0 24 24"><path d="M10 8h.01"/><path d="M12 12h.01"/><path d="M14 8h.01"/><path d="M16 12h.01"/><path d="M18 8h.01"/><path d="M6 8h.01"/><path d="M7 16h10"/><path d="M8 12h.01"/><rect width="20" height="16" x="2" y="4" rx="2"/></symbol>
 <symbol id="i-arrow-right-left" viewBox="0 0 24 24"><path d="m16 3 4 4-4 4"/><path d="M20 7H4"/><path d="m8 21-4-4 4-4"/><path d="M4 17h16"/></symbol>
 <symbol id="i-settings" viewBox="0 0 24 24"><path d="M9.671 4.136a2.34 2.34 0 0 1 4.659 0 2.34 2.34 0 0 0 3.319 1.915 2.34 2.34 0 0 1 2.33 4.033 2.34 2.34 0 0 0 0 3.831 2.34 2.34 0 0 1-2.33 4.033 2.34 2.34 0 0 0-3.319 1.915 2.34 2.34 0 0 1-4.659 0 2.34 2.34 0 0 0-3.32-1.915 2.34 2.34 0 0 1-2.33-4.033 2.34 2.34 0 0 0 0-3.831A2.34 2.34 0 0 1 6.35 6.051a2.34 2.34 0 0 0 3.319-1.915"/><circle cx="12" cy="12" r="3"/></symbol>
@@ -296,6 +297,7 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
     <li class="ix-li"><a class="ix-ch" href="#p3"><svg class="i" aria-hidden="true"><use href="#i-list-plus"/></svg>O que cabe numa macro</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p4"><svg class="i" aria-hidden="true"><use href="#i-mouse-pointer-click"/></svg>Clicker</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p5"><svg class="i" aria-hidden="true"><use href="#i-zap"/></svg>Automações</a></li>
+    <li class="ix-li"><a class="ix-ch" href="#deck"><svg class="i" aria-hidden="true"><use href="#i-layout-grid"/></svg>Deck</a></li>
     <li class="ix-li"><a class="ix-ch" href="#teclado"><svg class="i" aria-hidden="true"><use href="#i-keyboard"/></svg>Teclado</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p6"><svg class="i" aria-hidden="true"><use href="#i-arrow-right-left"/></svg>Key Remaps</a></li>
     <li class="ix-li"><a class="ix-ch" href="#p7"><svg class="i" aria-hidden="true"><use href="#i-settings"/></svg>Configurações</a></li>
@@ -907,6 +909,52 @@ code{font:.88em var(--font-mono);padding:.1em .35em;border-radius:5px;background
   </ol>
   <p><strong>Rodar automações</strong>, no topo, liga e desliga todas de uma vez. <strong>Só entre estes horários</strong> limita uma automação a uma faixa do dia.</p>
   <p>As automações rodam com o app aberto, mesmo escondido na bandeja. Se outra macro estiver rodando, o disparo espera um pouco e depois é pulado. <strong>Atividade</strong> mostra os disparos e os pulados.</p>
+</section>
+
+<section class="ch" id="deck" aria-labelledby="deck-t">
+  <h2 id="deck-t"><svg class="i" aria-hidden="true"><use href="#i-layout-grid"/></svg>Deck</h2>
+  <p>Um deck é um painel de botões que fica por cima das janelas. Clicar num botão não tira o foco do app da frente.</p>
+  <figure class="shot" data-shot="deck" style="--w:1114px">
+    <div class="shot-mat"><div class="shot-frame">
+      <button class="shot-open" type="button" aria-label="Ampliar a imagem: a página Deck">
+        <picture>
+          <source data-tema="claro" srcset="img/tr3/deck-claro.webp" media="(prefers-color-scheme: light)">
+          <img src="img/tr3/deck-escuro.webp" width="2228" height="1410" loading="lazy" alt="A página Deck: a lista de decks à esquerda, o deck Atendimento desenhado como na tela, no meio, e o painel do botão Registrar pedido à direita.">
+        </picture>
+      </button>
+    </div></div>
+  </figure>
+  <ol class="steps">
+    <li>Em <strong>Deck</strong>, clique em <strong>Criar um deck</strong>, ou em <strong>Começar com o exemplo</strong> para um deck pronto. Depois, <strong>Novo</strong> cria outros.</li>
+    <li>Clique num lugar da grade e escolha o que o botão faz.</li>
+    <li>O deck aparece na tela, no canto escolhido. Clique num botão para usá-lo.</li>
+  </ol>
+  <table class="tab">
+    <thead><tr><th scope="col">O botão</th><th scope="col">Faz</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Macro</strong></td><td>Roda uma macro. Apertado de novo, para.</td></tr>
+      <tr><td><strong>Teclas</strong></td><td>Aperta uma combinação, inclusive as teclas de mídia e de volume.</td></tr>
+      <tr><td><strong>Texto</strong></td><td>Digita ou cola um texto.</td></tr>
+      <tr><td><strong>Abrir</strong></td><td>Abre um programa, um arquivo, uma pasta ou um endereço.</td></tr>
+      <tr><td><strong>Pasta</strong></td><td>Abre outra grade no lugar do deck.</td></tr>
+      <tr><td><strong>TR3</strong></td><td>Grava, para tudo, ou liga e desliga uma chave do app.</td></tr>
+    </tbody>
+  </table>
+  <figure class="shot" data-shot="deck-tela" style="--w:324px">
+    <div class="shot-mat"><div class="shot-frame">
+      <button class="shot-open" type="button" aria-label="Ampliar a imagem: um deck na tela">
+        <picture>
+          <source data-tema="claro" srcset="img/tr3/deck-tela-claro.webp" media="(prefers-color-scheme: light)">
+          <img src="img/tr3/deck-tela-escuro.webp" width="324" height="206" loading="lazy" alt="Um deck na tela, com o nome no cabeçalho e os botões: cada um com o ícone e o rótulo.">
+        </picture>
+      </button>
+    </div></div>
+  </figure>
+  <p>Na tela, arraste o deck pelo nome para movê-lo. O lápis do cabeçalho liga a edição: arraste os botões, mude a grade pelo canto e use o menu de cada botão.</p>
+  <p>O clique direito num lugar vazio tem <strong>Gravar aqui</strong>: o botão ganha uma macro nova, que grava o que você fizer em seguida. Clicar no botão para a gravação.</p>
+  <p>No modo <strong>Chamado</strong>, o deck só aparece com a hotkey dele, no mouse. Escolha com um clique ou com os números; <kbd>Esc</kbd> fecha. Ele se edita na página Deck.</p>
+  <p>O ícone pode ser da lista, um emoji, o de um programa, uma imagem ou um recorte da tela. Soltar um arquivo no deck cria um botão que o abre.</p>
+  <p><strong>Exportar…</strong>, no ⋯ do deck, grava o deck e as imagens num arquivo .trdeck. <strong>Importar um deck…</strong> mostra antes o que os botões abrem e digitam.</p>
 </section>
 
 <section class="ch" id="teclado" aria-labelledby="teclado-t">
